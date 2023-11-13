@@ -2,6 +2,7 @@ import express from 'express'
 import 'dotenv/config'
 import mongoose from 'mongoose'
 import UsersRoutes from './src/routes/usersRoutes.js'
+import AuthenticationRoutes from './src/routes/authenticationRoutes.js'
 import cors from 'cors'
 
 //Configuration du cors
@@ -26,6 +27,7 @@ app.use(cors(corsOptions))
 
 //routes
 app.use('/api/users', UsersRoutes)
+app.use('/api/auth', AuthenticationRoutes)
 
 // connect to the database
 mongoose
