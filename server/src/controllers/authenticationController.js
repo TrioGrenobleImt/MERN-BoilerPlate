@@ -27,7 +27,6 @@ const register = async (req, res) => {
       maxAge: 30 * 24 * 60 * 60 * 1000,
       httpOnly: true,
     })
-    user.password = undefined
 
     res.status(200).json({ user: user, accessToken: accessToken })
   } catch (err) {
@@ -45,8 +44,6 @@ const login = async (req, res) => {
     const user = await User.findOne({ username })
 
     if (user && (await bcrypt.compare(password, user.password))) {
-      user.password = undefined
-
       const accessToken = generateAccessToken(user._id)
 
       res.cookie('__access__token', accessToken, {

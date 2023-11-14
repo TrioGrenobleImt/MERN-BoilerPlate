@@ -1,5 +1,6 @@
 import User from '../models/UserModel.js'
 import mongoose from 'mongoose'
+import bcrypt from 'bcrypt'
 
 //Get a single user
 const getUser = async (req, res) => {
@@ -35,7 +36,10 @@ const createUser = async (req, res) => {
     return res.status(404).json({ error: 'Missing fields' })
   }
   try {
-    const user = await User.create({ email, username, password })
+    const hashedPassword = await bcrypt.hash(password, 10)
+
+    const user = await User.create({ email: email, username: username, password: hashedPassword })
+
     res.status(200).json(user)
   } catch (err) {
     res.status(400).json({ error: err.message })
