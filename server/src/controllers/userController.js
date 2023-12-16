@@ -70,7 +70,12 @@ const updateUser = async (req, res) => {
     return res.status(404).json({ error: 'The ID user is invalid' })
   }
   try {
+    if (req.body.password) {
+      const hashedPassword = await bcrypt.hash(req.body.password, 10)
+      req.body.password = hashedPassword
+    }
     const user = await User.findOneAndUpdate({ _id: id }, { ...req.body })
+
     if (!user) {
       return res.status(400).json({ error: 'No such user' })
     }
