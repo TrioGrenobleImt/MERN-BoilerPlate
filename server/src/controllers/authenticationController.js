@@ -59,7 +59,17 @@ const login = async (req, res) => {
   }
 }
 
+const logout = async (req, res) => {
+  try {
+    res.clearCookie('__access__token')
+    res.status(200).json({ message: 'Signed out succesfully' })
+  } catch (err) {
+    return res.status(500).json({ error: err.message })
+  }
+}
+
 export default {
   login,
   register,
+  logout,
 }

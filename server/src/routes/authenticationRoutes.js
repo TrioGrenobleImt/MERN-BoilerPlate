@@ -9,4 +9,6 @@ router.post('/login', authenticationController.login)
 //Register
 router.post('/register', authenticationController.register)
 
+router.get('/logout', authenticationController.logout)
+
 export default router
