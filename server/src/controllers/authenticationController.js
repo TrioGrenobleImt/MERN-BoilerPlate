@@ -40,7 +40,7 @@ const login = async (req, res) => {
   }
 
   try {
-    const user = await User.findOne({ username })
+    const user = await User.findOne({ username }).select('+password')
 
     if (user && (await bcrypt.compare(password, user.password))) {
       const accessToken = generateAccessToken(user._id)
@@ -49,7 +49,10 @@ const login = async (req, res) => {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true,
       })
-      res.status(200).json({ user: user, accessToken: accessToken })
+
+      const { password, ...userWithoutPassword } = user._doc
+
+      res.status(200).json({ user: userWithoutPassword, accessToken: accessToken })
     } else {
       res.status(400).json({ error: 'Invalid credentials' })
     }

@@ -18,6 +18,7 @@ const UserSchema = new Schema(
     password: {
       type: String,
       required: true,
+      select: false,
     },
   },
   {
@@ -25,10 +26,10 @@ const UserSchema = new Schema(
   }
 )
 
-UserSchema.methods.toJSON = function () {
-  const user = this.toObject()
-  delete user.password
-  return user
-}
+// UserSchema.methods.toJSON = function () {
+//   const user = this.toObject()
+//   delete user.password
+//   return user
+// }
 
 export default mongoose.model('User', UserSchema)
