@@ -21,6 +21,7 @@ const Login = () => {
         <button type='submit' onClick={handleLogin} disabled={loading}>
           Login
         </button>
+        {/* SE CONNECTER AVEC GOOGLE/ Apple ... */}
       </form>
     </>
   )

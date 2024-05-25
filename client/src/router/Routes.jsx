@@ -4,16 +4,17 @@ import Home from '../pages/Home/Home'
 import Login from '../pages/Authentication/Login'
 import Register from '../pages/Authentication/Register'
 import Account from '../pages/Account/Account'
+import { useAuthContext } from '../contexts/authContext'
 
 export const Router = () => {
-  //Implement a user authentication check
-  const user = true
+  const { authUser } = useAuthContext()
+
   return (
     <Routes>
       <Route path='/' element={<Home />} />
-      <Route path='/register' element={user ? <Navigate to={'/'} /> : <Register />} />
-      <Route path='/login' element={user ? <Navigate to={'/'} /> : <Login />} />
-      <Route path='/account' element={!user ? <Navigate to={'/login'} /> : <Account />} />
+      <Route path='/register' element={authUser ? <Navigate to={'/'} /> : <Register />} />
+      <Route path='/login' element={authUser ? <Navigate to={'/'} /> : <Login />} />
+      <Route path='/account' element={!authUser ? <Navigate to={'/login'} /> : <Account />} />
     </Routes>
   )
 }

@@ -2,11 +2,12 @@ import { useState } from 'react'
 import axiosConfig from '../config/axiosConfig'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
+import { useAuthContext } from '../contexts/authContext'
 
 export const useLogin = () => {
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
-  // Declare the useAuthContext hook and extract the setAuthUser functions
+  const { authUser, setAuthUser } = useAuthContext()
 
   const login = async ({ username, password }) => {
     const success = handleInputsError(username, password)
@@ -24,10 +25,9 @@ export const useLogin = () => {
       }
 
       toast.success(data.message)
-      navigate('/')
 
-      //Store the user
-      // setAuthUser(data.user)
+      setAuthUser(data.user)
+      navigate('/')
     } catch (error) {
       console.error(error)
     } finally {
