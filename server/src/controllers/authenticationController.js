@@ -27,7 +27,7 @@ const register = async (req, res) => {
       httpOnly: true,
     })
 
-    res.status(200).json({ user: user, accessToken: accessToken })
+    res.status(200).json({ user: user, accessToken: accessToken, message: 'Registered succesfully' })
   } catch (err) {
     return res.status(500).json({ error: err.message })
   }
@@ -52,7 +52,7 @@ const login = async (req, res) => {
 
       const { password, ...userWithoutPassword } = user._doc
 
-      res.status(200).json({ user: userWithoutPassword, accessToken: accessToken })
+      res.status(200).json({ user: userWithoutPassword, accessToken: accessToken, message: 'Logged in succesfully' })
     } else {
       res.status(400).json({ error: 'Invalid credentials' })
     }
