@@ -85,10 +85,4 @@ const updateUser = async (req, res) => {
   }
 }
 
-export default {
-  createUser,
-  getUsers,
-  getUser,
-  updateUser,
-  deleteUser,
-}
+export { createUser, getUsers, getUser, updateUser, deleteUser }
