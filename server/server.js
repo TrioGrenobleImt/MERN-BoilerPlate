@@ -4,6 +4,7 @@ import { connectToDatabase } from './src/database/connectToDB.js'
 import UsersRoutes from './src/routes/usersRoutes.js'
 import AuthenticationRoutes from './src/routes/authenticationRoutes.js'
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
 
 //Configuration du cors
 const corsOptions = {
@@ -24,6 +25,7 @@ app.use((req, res, next) => {
   next()
 })
 app.use(cors(corsOptions))
+app.use(cookieParser())
 
 //routes
 app.use('/api/users', UsersRoutes)
