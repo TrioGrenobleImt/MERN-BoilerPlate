@@ -1,10 +1,6 @@
 import User from '../models/UserModel.js'
-import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
-
-const generateAccessToken = (req, res) => {
-  return jwt.sign({ id: req.body }, process.env.SECRET_ACCESS_TOKEN, { expiresIn: '30d' })
-}
+import { generateAccessToken } from '../utils/generateAccessToken.js'
 
 const register = async (req, res) => {
   const { email, username, password } = req.body
