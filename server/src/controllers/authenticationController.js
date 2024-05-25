@@ -76,7 +76,7 @@ const getConnectedUser = async (req, res) => {
     return res.status(404).json({ error: 'The ID user is invalid' })
   }
 
-  const user = await User.findOne({ _id: id }).select('-password')
+  const user = await User.findOne({ _id: id })
 
   if (!user) {
     return res.status(400).json({ error: 'No such user' })
