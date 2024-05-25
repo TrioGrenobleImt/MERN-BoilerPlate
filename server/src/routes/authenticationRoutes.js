@@ -1,14 +1,19 @@
 import express from 'express'
-import authenticationController from '../controllers/authenticationController.js'
+import { getConnectedUser, login, logout, register } from '../controllers/authenticationController.js'
+import verifyToken from '../middlewares/verifyToken.js'
 
 const router = express.Router()
 
 //Login to the app
-router.post('/login', authenticationController.login)
+router.post('/login', login)
 
 //Register
-router.post('/register', authenticationController.register)
+router.post('/register', register)
 
-router.get('/logout', authenticationController.logout)
+//Logout
+router.get('/logout', logout)
+
+//Check if user is logged in
+router.get('/me', verifyToken, getConnectedUser)
 
 export default router

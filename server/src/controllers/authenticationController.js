@@ -1,6 +1,7 @@
 import User from '../models/UserModel.js'
 import bcrypt from 'bcrypt'
 import { generateAccessToken } from '../utils/generateAccessToken.js'
+import mongoose from 'mongoose'
 
 const register = async (req, res) => {
   const { email, username, password } = req.body
@@ -66,8 +67,22 @@ const logout = async (req, res) => {
   }
 }
 
-export default {
-  login,
-  register,
-  logout,
+const getConnectedUser = async (req, res) => {
+  const id = req.userId
+
+  if (!id) return res.status(401).json({ message: 'Not Authenticated' })
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: 'The ID user is invalid' })
+  }
+
+  const user = await User.findOne({ _id: id }).select('-password')
+
+  if (!user) {
+    return res.status(400).json({ error: 'No such user' })
+  }
+
+  res.status(200).json(user)
 }
+
+export { login, register, logout, getConnectedUser }
