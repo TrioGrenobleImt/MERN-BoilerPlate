@@ -29,7 +29,8 @@ export const useLogin = () => {
       setAuthUser(data.user)
       navigate('/')
     } catch (error) {
-      console.error(error)
+      toast.error(error.response.data.error)
+      // toast.error(error.data)
     } finally {
       setLoading(false)
     }
