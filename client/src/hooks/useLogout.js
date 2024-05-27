@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import axiosConfig from '../config/axiosConfig'
 
 export const useLogout = () => {
@@ -6,7 +7,7 @@ export const useLogout = () => {
   const logout = async () => {
     setLoading(true)
     try {
-      const response = await axiosConfig.post('/auth/logout')
+      const response = await axiosConfig.get('/auth/logout')
       const data = await response.data
 
       if (data.error) {
