@@ -1,12 +1,26 @@
 import axiosConfig from '../config/axiosConfig'
 
-const useLogout = async () => {
-  try {
-    const response = await axiosConfig.post('/auth/logout')
-    return response.data
-  } catch (error) {
-    return error
-  }
-}
+export const useLogout = () => {
+  const [loading, setLoading] = useState(false)
 
-export { useLogout }
+  const logout = async () => {
+    setLoading(true)
+    try {
+      const response = await axiosConfig.post('/auth/logout')
+      const data = await response.data
+
+      if (data.error) {
+        throw new Error(data.error)
+      }
+
+      toast.success(data.message)
+      setAuthUser(null)
+      navigate('/')
+    } catch (error) {
+      return error
+    } finally {
+      setLoading(false)
+    }
+  }
+  return { loading, logout }
+}
