@@ -12,6 +12,8 @@ export const AuthContextProvider = ({ children }) => {
 
   useEffect(() => {
     const getAuthUser = async () => {
+
+      //Ne faire la requete que si le token est présent dans les cookies
       try {
         const response = await axiosConfig('/auth/me')
         if (response.data) {
