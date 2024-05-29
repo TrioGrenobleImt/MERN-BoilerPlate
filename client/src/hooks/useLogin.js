@@ -30,7 +30,6 @@ export const useLogin = () => {
       navigate('/')
     } catch (error) {
       toast.error(error.response.data.error)
-      // toast.error(error.data)
     } finally {
       setLoading(false)
     }
