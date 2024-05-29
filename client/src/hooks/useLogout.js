@@ -1,8 +1,11 @@
 import { useState } from 'react'
 import axiosConfig from '../config/axiosConfig'
+import { useAuthContext } from '../contexts/authContext'
+import toast from 'react-hot-toast'
 
 export const useLogout = () => {
   const [loading, setLoading] = useState(false)
+  const { authUser, setAuthUser } = useAuthContext()
 
   const logout = async () => {
     setLoading(true)
@@ -18,7 +21,7 @@ export const useLogout = () => {
       setAuthUser(null)
       navigate('/')
     } catch (error) {
-      return error
+      toast.error(error.response.data.error)
     } finally {
       setLoading(false)
     }
