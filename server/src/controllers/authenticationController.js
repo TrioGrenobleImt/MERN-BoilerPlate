@@ -76,13 +76,17 @@ const getConnectedUser = async (req, res) => {
     return res.status(404).json({ error: 'The ID user is invalid' })
   }
 
-  const user = await User.findOne({ _id: id })
+  try {
+    const user = await User.findOne({ _id: id })
 
-  if (!user) {
-    return res.status(400).json({ error: 'No such user' })
+    if (!user) {
+      return res.status(400).json({ error: 'No such user' })
+    }
+
+    res.status(200).json(user)
+  } catch (err) {
+    return res.status(500).json({ error: err.message })
   }
-
-  res.status(200).json(user)
 }
 
 export { login, register, logout, getConnectedUser }
