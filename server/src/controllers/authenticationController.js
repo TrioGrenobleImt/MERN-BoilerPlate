@@ -4,9 +4,13 @@ import { generateAccessToken } from '../utils/generateAccessToken.js'
 import mongoose from 'mongoose'
 
 const register = async (req, res) => {
-  const { email, username, password } = req.body
-  if (!username || !email || !password) {
+  const { email, username, password, confirmPassword } = req.body
+  if (!username || !email || !password || !confirmPassword) {
     return res.status(404).json({ error: 'Missing fields' })
+  }
+
+  if (password !== confirmPassword) {
+    return res.status(400).json({ error: 'Passwords do not match' })
   }
 
   try {
