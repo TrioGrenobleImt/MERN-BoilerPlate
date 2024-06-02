@@ -14,8 +14,6 @@ export const useRegister = () => {
     if (!success) return
     setLoading(true)
     try {
-      //Requete
-
       const response = await axiosConfig.post('/auth/register', {
         username,
         password,
@@ -45,6 +43,11 @@ export const useRegister = () => {
 function handleInputsError(username, password, confirmPassword, email) {
   if (!username || !password || !confirmPassword || !email) {
     toast.error('Please fill in all fields')
+    return false
+  }
+
+  if (password !== confirmPassword) {
+    toast.error('Passwords do not match')
     return false
   }
 
