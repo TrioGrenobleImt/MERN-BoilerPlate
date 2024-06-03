@@ -5,18 +5,16 @@ const NavBar = () => {
   const { authUser } = useAuthContext()
   return (
     <>
-      <div>
-        <Link to='/'>Home</Link>
+      <Link to='/'>Home</Link>
 
-        {authUser ? (
-          <Link to='/account'>Account</Link>
-        ) : (
-          <>
-            <Link to='/login'>Login</Link>
-            <Link to='/register'>Register</Link>
-          </>
-        )}
-      </div>
+      {authUser ? (
+        <Link to='/account'>Account</Link>
+      ) : (
+        <>
+          <Link to='/login'>Login</Link>
+          <Link to='/register'>Register</Link>
+        </>
+      )}
     </>
   )
 }

@@ -13,7 +13,11 @@ const Account = () => {
 
   return (
     <div>
-      <h1>Hello dear '{authUser.username}'</h1>
+      <h1>User informations</h1>
+
+      <p>Username: {authUser.username}</p>
+      <p>Email: {authUser.email}</p>
+
       <button onClick={handleClick} disabled={loading}>
         Logout
       </button>
