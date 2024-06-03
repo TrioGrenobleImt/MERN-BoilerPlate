@@ -1,5 +1,15 @@
 import jwt from 'jsonwebtoken'
 
+/**
+ * 
+ * @param {*} req -> request 
+ * @param {*} res -> response 
+ * @param {*} next -> Allows the request to move forward
+ * 
+  This function verifies the token that is sent in the request header. 
+  If the token is valid, it will call the next middleware function. 
+  If the token is invalid, it will return a 401 status code.
+ */
 const verifyToken = async (req, res, next) => {
   const token = req.cookies['__access__token']
 
