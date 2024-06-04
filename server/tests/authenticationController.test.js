@@ -4,8 +4,10 @@ import request from 'supertest'
 
 beforeAll(async () => {
   //Connect to database
+  await mongoose.connect(process.env.MONG_URI)
 })
 
 afterAll(async () => {
-  //Discornnect from database
+  //Disconnect from database
+  await mongoose.disconnect()
 })
