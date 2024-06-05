@@ -49,3 +49,24 @@ $ npm run dev
 
 Rendez vous sur l'URL écrite dans votre console.
 Et voila vous possédez une application d'authentification sécurisée.
+
+## Tests unitaires
+
+Pour lancez la suite de tests unitaires, vous devez d'abord **arreter** votre serveur :
+Un simple **ctrl+c** dans le terminal en question devrait suffir.
+
+Une fois le serveur arreté, lancez la commande suivante:
+
+```shell
+$ npm run test
+```
+
+Les tests unitaires devraient se lancer un par un.
+Si vous souhaitez avoir le coverage lancez la commande suivante :
+
+```shell
+$ npm run coverage
+```
+
+Et votre coverage devrait se trouver dans le répertoire `coverage` du server.
+N'oubliez pas de relancer votre backend apèrs utilisation.
