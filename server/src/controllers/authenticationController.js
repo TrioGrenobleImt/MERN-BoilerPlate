@@ -6,18 +6,18 @@ import mongoose from 'mongoose'
 const register = async (req, res) => {
   const { email, username, password, confirmPassword } = req.body
   if (!username || !email || !password || !confirmPassword) {
-    return res.status(404).json({ error: 'Missing fields' })
+    return res.status(422).json({ error: 'Missing fields' })
   }
 
   if (password !== confirmPassword) {
-    return res.status(400).json({ error: 'Passwords do not match' })
+    return res.status(401).json({ error: 'Passwords do not match' })
   }
 
   try {
     if (await User.findOne({ email })) {
-      return res.status(400).json({ error: 'This email is already taken' })
+      return res.status(409).json({ error: 'This email is already taken' })
     } else if (await User.findOne({ username })) {
-      return res.status(400).json({ error: 'This username is already taken' })
+      return res.status(409).json({ error: 'This username is already taken' })
     }
     const hashedPassword = await bcrypt.hash(password, 10)
     const user = await User.create({ email: email, username: username, password: hashedPassword })
