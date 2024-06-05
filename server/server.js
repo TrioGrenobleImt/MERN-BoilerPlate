@@ -6,7 +6,7 @@ import AuthenticationRoutes from './src/routes/authenticationRoutes.js'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 
-//Configuration du cors
+//Cors configuration
 const corsOptions = {
   origin: 'http://localhost:5173',
   credentials: true,
@@ -37,3 +37,6 @@ app.listen(process.env.PORT, () => {
   //connect to database
   connectToDatabase()
 })
+
+//export app for testing
+export default app
