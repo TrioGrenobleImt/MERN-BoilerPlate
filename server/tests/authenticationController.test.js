@@ -1,6 +1,5 @@
 import mongoose from 'mongoose'
-import bcrypt from 'bcrypt'
-import request from 'supertest'
+import { describe, it, beforeAll, afterAll } from 'vitest'
 
 beforeAll(async () => {
   //Connect to database
