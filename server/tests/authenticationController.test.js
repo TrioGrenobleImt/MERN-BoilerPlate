@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { describe, it, beforeAll, afterAll, expect, afterEach } from 'vitest'
+import { describe, it, beforeAll, afterAll, expect, afterEach, vitest } from 'vitest'
 import 'dotenv/config'
 import request from 'supertest'
 
@@ -63,7 +63,6 @@ describe('Register', () => {
     expect(response.status).toBe(409)
     expect(response.body.error).toBe('This username is already taken')
   })
-
   it('should return a 422 status error because of missing fields', async () => {
     const response = await request(app).post('/api/auth/register').send({
       username: 'test',
@@ -72,6 +71,21 @@ describe('Register', () => {
     })
     expect(response.status).toBe(422)
     expect(response.body.error).toBe('Missing fields')
+  })
+  it('should return a 500 status error because of an internal error', async () => {
+    vitest.spyOn(User, 'findOne').mockImplementationOnce(() => {
+      throw new Error('Test error')
+    })
+
+    const response = await request(app).post('/api/auth/register').send({
+      username: 'test',
+      email: 'test@gmail.com',
+      password: 'test',
+      confirmPassword: 'test',
+    })
+
+    expect(response.status).toBe(500)
+    expect(response.body.error).toBe('Test error')
   })
 
   afterEach(async () => {
