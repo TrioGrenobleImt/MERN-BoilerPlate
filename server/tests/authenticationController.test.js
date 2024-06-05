@@ -52,6 +52,17 @@ describe('Register', () => {
     expect(response.status).toBe(409)
     expect(response.body.error).toBe('This email is already taken')
   })
+  it('should return a 409 status error because the username is already taken', async () => {
+    await User.create({ username: 'test', email: 'test@gmail.com', password: 'test' })
+    const response = await request(app).post('/api/auth/register').send({
+      username: 'test',
+      email: 'test2@gmail.com',
+      password: 'test',
+      confirmPassword: 'test',
+    })
+    expect(response.status).toBe(409)
+    expect(response.body.error).toBe('This username is already taken')
+  })
 
   afterEach(async () => {
     if (await User.findOne({ username: 'test' })) {
