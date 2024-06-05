@@ -6,7 +6,6 @@ import request from 'supertest'
 //Import app
 import app from '../server.js'
 import User from '../src/models/UserModel.js'
-import exp from 'constants'
 
 beforeAll(async () => {
   //Connect to database
@@ -31,5 +30,8 @@ describe('Register', () => {
     expect(response.body.message).toBe('Registered succesfully')
     expect(response.body.user).toHaveProperty('_id' && 'username' && 'email')
     expect(response.body.password).toBe(undefined)
+  })
+  afterEach(async () => {
+    await User.deleteOne({ username: 'test' })
   })
 })
