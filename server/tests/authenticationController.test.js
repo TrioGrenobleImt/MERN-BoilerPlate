@@ -18,7 +18,7 @@ afterAll(async () => {
 })
 
 describe('Register', () => {
-  it('should create an account and stock __access__token into the cookies', async () => {
+  it('should create an account and stock the token into the cookies', async () => {
     const response = await request(app).post('/api/auth/register').send({
       username: 'test',
       email: 'test@gmail.com',
@@ -31,7 +31,20 @@ describe('Register', () => {
     expect(response.body.user).toHaveProperty('_id' && 'username' && 'email')
     expect(response.body.password).toBe(undefined)
   })
+  it('should return a 400 status error because the passwords do not match', async () => {
+    const response = await request(app).post('/api/auth/register').send({
+      username: 'test',
+      email: 'test@gmail.com',
+      password: 'test',
+      confirmPassword: 'test2',
+    })
+    expect(response.status).toBe(401)
+    expect(response.body.error).toBe('Passwords do not match')
+  })
+
   afterEach(async () => {
-    await User.deleteOne({ username: 'test' })
+    if (await User.findOne({ username: 'test' })) {
+      await User.deleteOne({ username: 'test' })
+    }
   })
 })
