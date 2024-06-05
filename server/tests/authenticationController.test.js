@@ -64,6 +64,16 @@ describe('Register', () => {
     expect(response.body.error).toBe('This username is already taken')
   })
 
+  it('should return a 422 status error because of missing fields', async () => {
+    const response = await request(app).post('/api/auth/register').send({
+      username: 'test',
+      password: 'test',
+      confirmPassword: 'test',
+    })
+    expect(response.status).toBe(422)
+    expect(response.body.error).toBe('Missing fields')
+  })
+
   afterEach(async () => {
     if (await User.findOne({ username: 'test' })) {
       await User.deleteOne({ username: 'test' })
