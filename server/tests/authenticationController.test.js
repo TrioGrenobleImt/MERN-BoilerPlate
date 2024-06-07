@@ -2,6 +2,7 @@ import mongoose from 'mongoose'
 import { describe, it, beforeAll, afterAll, expect, afterEach, vitest, beforeEach } from 'vitest'
 import 'dotenv/config'
 import request from 'supertest'
+import bcrypt from 'bcrypt'
 
 //Import app
 import app from '../server.js'
@@ -17,7 +18,7 @@ afterAll(async () => {
   await mongoose.disconnect()
 })
 
-describe('Register', () => {
+describe('POST /api/auth/register', () => {
   it('should return a 201 status, create an account and stock the token into the cookies', async () => {
     const response = await request(app).post('/api/auth/register').send({
       username: 'test',
@@ -89,8 +90,27 @@ describe('Register', () => {
   })
 
   afterEach(async () => {
-    if (await User.findOne({ username: 'test' })) {
-      await User.deleteOne({ username: 'test' })
-    }
+    await User.deleteMany()
+  })
+})
+
+describe('POST /api/auth/login', () => {
+  afterEach(async () => {
+    await User.deleteMany()
+  })
+
+  it('should return a 201 status, create an account and stock the token into the cookies', async () => {
+    const user = new User({ username: 'test', email: 'test@gmail.com', password: await bcrypt.hash('testPassword', 10) })
+    await user.save()
+    const response = await request(app).post('/api/auth/login').send({
+      username: 'test',
+      password: 'testPassword',
+    })
+
+    expect(response.status).toBe(201)
+    expect(response.headers['set-cookie'][0].startsWith('__access__token=')).toBe(true)
+    expect(response.body.message).toBe('Logged in succesfully')
+    expect(response.body.user).toHaveProperty('_id' && 'username' && 'email')
+    expect(response.body.password).toBe(undefined)
   })
 })
