@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { describe, it, beforeAll, afterAll, expect, afterEach, vitest } from 'vitest'
+import { describe, it, beforeAll, afterAll, expect, afterEach, vitest, beforeEach } from 'vitest'
 import 'dotenv/config'
 import request from 'supertest'
 
@@ -25,7 +25,7 @@ describe('Register', () => {
       password: 'test',
       confirmPassword: 'test',
     })
-    expect(response.status).toBe(200)
+    expect(response.status).toBe(201)
     expect(response.headers['set-cookie'][0].startsWith('__access__token=')).toBe(true)
     expect(response.body.message).toBe('Registered succesfully')
     expect(response.body.user).toHaveProperty('_id' && 'username' && 'email')
