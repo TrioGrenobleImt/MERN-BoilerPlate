@@ -10,7 +10,7 @@ const register = async (req, res) => {
   }
 
   if (password !== confirmPassword) {
-    return res.status(401).json({ error: 'Passwords do not match' })
+    return res.status(400).json({ error: 'Passwords do not match' })
   }
 
   try {
@@ -28,7 +28,7 @@ const register = async (req, res) => {
       httpOnly: true,
     })
 
-    res.status(200).json({ user: user, message: 'Registered succesfully' })
+    res.status(201).json({ user: user, message: 'Registered succesfully' })
   } catch (err) {
     return res.status(500).json({ error: err.message })
   }
@@ -37,7 +37,7 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   const { username, password } = req.body
   if (!username || !password) {
-    return res.status(404).json({ error: 'Missing fields' })
+    return res.status(422).json({ error: 'Missing fields' })
   }
 
   try {
@@ -53,7 +53,7 @@ const login = async (req, res) => {
 
       const { password, ...userWithoutPassword } = user._doc
 
-      res.status(200).json({ user: userWithoutPassword, message: 'Logged in succesfully' })
+      res.status(201).json({ user: userWithoutPassword, message: 'Logged in succesfully' })
     } else {
       res.status(400).json({ error: 'Invalid credentials' })
     }

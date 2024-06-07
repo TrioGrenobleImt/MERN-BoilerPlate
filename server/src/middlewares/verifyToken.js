@@ -16,7 +16,7 @@ const verifyToken = async (req, res, next) => {
   if (!token) return res.status(401).json({ message: 'Not Authenticated' })
 
   jwt.verify(token, process.env.SECRET_ACCESS_TOKEN, async (err, payload) => {
-    if (err) return res.status(401).json({ message: 'Access Token is invalid' })
+    if (err) return res.status(403).json({ message: 'Access Token is invalid' })
     req.userId = payload.id
 
     next()
