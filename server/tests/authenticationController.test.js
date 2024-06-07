@@ -18,7 +18,7 @@ afterAll(async () => {
 })
 
 describe('Register', () => {
-  it('should create an account and stock the token into the cookies', async () => {
+  it('should return a 201 status, create an account and stock the token into the cookies', async () => {
     const response = await request(app).post('/api/auth/register').send({
       username: 'test',
       email: 'test@gmail.com',
@@ -38,7 +38,7 @@ describe('Register', () => {
       password: 'test',
       confirmPassword: 'test2',
     })
-    expect(response.status).toBe(401)
+    expect(response.status).toBe(400)
     expect(response.body.error).toBe('Passwords do not match')
   })
   it('should return a 409 status error because the email is already taken', async () => {
