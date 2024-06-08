@@ -100,7 +100,7 @@ describe('POST /api/auth/login', () => {
   })
 
   it('should return a 201 status, create an account and stock the token into the cookies', async () => {
-    const user = new User({ username: 'test', email: 'test@gmail.com', password: await bcrypt.hash('testPassword', 10) })
+    const user = new User({ username: 'test', email: 'test@gmail.com', password: 'testPassword' })
     await user.save()
     const response = await request(app).post('/api/auth/login').send({
       username: 'test',
