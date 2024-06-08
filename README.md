@@ -15,8 +15,8 @@ SECRET_ACCESS_TOKEN=
 ```
 
 PORT -> Quel est le port que votre serveur va utiliser.  
-MONG_URI -> Adresse de connection à une base de données MongoDB (N'oubliez pas de mettre votre adresse IP dans **Network Access**).
-MONG_URI_TEST -> Adresse de connection à une base de données pour les tests unitaires (Il est possible d'utiliser la meme que celle de l'appli mais les données seront vidées pendant les tests).  
+MONG_URI -> Adresse de connection à une base de données MongoDB (N'oubliez pas de mettre votre adresse IP dans **Network Access**).  
+MONG_URI_TEST -> Adresse de connection à une base de données pour les tests unitaires (Il est possible d'utiliser la meme que celle de l'appli mais les données seront vidées pendant les tests, **très peu conseillé**).  
 SECRET_ACCESS_TOKEN -> Token **secret** utilisé pour générer des tokens d'accès aux utilisateurs.
 
 Ensuite, installez les **packages** requis pour faire tourner votre serveur
