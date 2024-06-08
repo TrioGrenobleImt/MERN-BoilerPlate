@@ -143,4 +143,17 @@ describe('POST /api/auth/login', () => {
     expect(response.status).toBe(400)
     expect(response.body.error).toBe('Invalid credentials')
   })
+  it('should return a 500 status error because of an internal error', async () => {
+    vitest.spyOn(User, 'findOne').mockImplementationOnce(() => {
+      throw new Error('Test error')
+    })
+
+    const response = await request(app).post('/api/auth/login').send({
+      username: 'test',
+      password: 'testPassword',
+    })
+
+    expect(response.status).toBe(500)
+    expect(response.body.error).toBe('Test error')
+  })
 })
