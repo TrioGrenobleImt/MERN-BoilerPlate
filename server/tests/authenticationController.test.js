@@ -157,3 +157,11 @@ describe('POST /api/auth/login', () => {
     expect(response.body.error).toBe('Test error')
   })
 })
+
+describe('GET /api/auth/logout', () => {
+  it('should return a 200 status and clear the cookies', async () => {
+    const response = await request(app).get('/api/auth/logout')
+    expect(response.status).toBe(200)
+    expect(response.headers['set-cookie'][0].startsWith('__access__token=;')).toBe(true)
+  })
+})
