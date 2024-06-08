@@ -132,4 +132,15 @@ describe('POST /api/auth/login', () => {
     expect(response.status).toBe(400)
     expect(response.body.error).toBe('Invalid credentials')
   })
+  it('should return a 400 error status because the password is wrong', async () => {
+    const user = new User({ username: 'test', email: 'test@gmail.com', password: 'testPassword' })
+    await user.save()
+    const response = await request(app).post('/api/auth/login').send({
+      username: 'test',
+      password: 'testPasswordFalse',
+    })
+
+    expect(response.status).toBe(400)
+    expect(response.body.error).toBe('Invalid credentials')
+  })
 })
