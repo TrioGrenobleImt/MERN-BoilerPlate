@@ -1,12 +1,14 @@
 import mongoose from 'mongoose'
-import { describe, it, beforeAll, afterAll, expect, afterEach, vitest } from 'vitest'
+import { describe, it, beforeAll, afterAll, expect, afterEach, vitest, beforeEach } from 'vitest'
 import 'dotenv/config'
 import request from 'supertest'
+import jwt from 'jsonwebtoken'
+import User from '../src/models/UserModel.js'
+import { logout } from '../src/controllers/authenticationController.js'
 
 //Import app
 import app from '../server.js'
-import User from '../src/models/UserModel.js'
-import { logout } from '../src/controllers/authenticationController.js'
+import { generateAccessToken } from '../src/utils/generateAccessToken.js'
 
 beforeAll(async () => {
   //Connect to database
@@ -179,5 +181,59 @@ describe('GET /api/auth/logout', () => {
     await logout({}, res)
     expect(res.status).toHaveBeenCalledWith(500)
     expect(res.json).toHaveBeenCalledWith({ error: error.message })
+  })
+})
+
+describe('GET /api/auth/me', () => {
+  let user
+  beforeEach(async () => {
+    user = new User({ username: 'test', email: 'test@gmail.com', password: 'testPassword' })
+    await user.save()
+  })
+  afterEach(async () => {
+    await User.deleteMany()
+  })
+
+  it('should return a 200 status and the connected user infos', async () => {
+    const response = await request(app)
+      .get('/api/auth/me')
+      .set('Cookie', `__access__token=${generateAccessToken(user._id)}`)
+    expect(response.status).toBe(200)
+    expect(response.body).toHaveProperty('_id' && 'username' && 'email')
+    console.log(response.body)
+  })
+  it('should return a 401 status if user is not authenticated', async () => {
+    const response = await request(app).get('/api/auth/me')
+    expect(response.status).toBe(401)
+    expect(response.body.message).toBe('Not Authenticated')
+  })
+  it('should return a 404 status if the user ID is invalid', async () => {
+    const response = await request(app)
+      .get('/api/auth/me')
+      .set('Cookie', `__access__token=${generateAccessToken(user.username)}`)
+
+    expect(response.status).toBe(404)
+    expect(response.body.error).toBe('The ID user is invalid')
+  })
+  it('should return a 400 status if the user does not exist', async () => {
+    const unknownId = new mongoose.Types.ObjectId()
+
+    const response = await request(app)
+      .get('/api/auth/me')
+      .set('Cookie', `__access__token=${generateAccessToken(unknownId)}`)
+    expect(response.status).toBe(400)
+    expect(response.body.error).toBe('No such user')
+  })
+  it('should return a 500 status in case of an internal error', async () => {
+    vitest.spyOn(User, 'findOne').mockImplementationOnce(() => {
+      throw new Error('Test error')
+    })
+
+    const response = await request(app)
+      .get('/api/auth/me')
+      .set('Cookie', `__access__token=${generateAccessToken(user._id)}`)
+
+    expect(response.status).toBe(500)
+    expect(response.body.error).toBe('Test error')
   })
 })
