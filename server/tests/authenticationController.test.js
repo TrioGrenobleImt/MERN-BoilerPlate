@@ -113,4 +113,13 @@ describe('POST /api/auth/login', () => {
     expect(response.body.user).toHaveProperty('_id' && 'username' && 'email')
     expect(response.body.password).toBe(undefined)
   })
+  it('should return a 422 error status because one of the fields is missing', async () => {
+    const user = new User({ username: 'test', email: 'test@gmail.com', password: 'testPassword' })
+    await user.save()
+    const response = await request(app).post('/api/auth/login').send({
+      username: 'test',
+    })
+    expect(response.status).toBe(422)
+    expect(response.body.error).toBe('Missing fields')
+  })
 })
