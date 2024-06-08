@@ -2,7 +2,6 @@ import mongoose from 'mongoose'
 import { describe, it, beforeAll, afterAll, expect, afterEach, vitest, beforeEach } from 'vitest'
 import 'dotenv/config'
 import request from 'supertest'
-import bcrypt from 'bcrypt'
 
 //Import app
 import app from '../server.js'
@@ -10,7 +9,7 @@ import User from '../src/models/UserModel.js'
 
 beforeAll(async () => {
   //Connect to database
-  await mongoose.connect(process.env.MONG_URI)
+  await mongoose.connect(process.env.MONG_URI_TEST)
 })
 
 afterAll(async () => {
@@ -19,6 +18,10 @@ afterAll(async () => {
 })
 
 describe('POST /api/auth/register', () => {
+  afterEach(async () => {
+    await User.deleteMany()
+  })
+
   it('should return a 201 status, create an account and stock the token into the cookies', async () => {
     const response = await request(app).post('/api/auth/register').send({
       username: 'test',
@@ -87,10 +90,6 @@ describe('POST /api/auth/register', () => {
 
     expect(response.status).toBe(500)
     expect(response.body.error).toBe('Test error')
-  })
-
-  afterEach(async () => {
-    await User.deleteMany()
   })
 })
 
