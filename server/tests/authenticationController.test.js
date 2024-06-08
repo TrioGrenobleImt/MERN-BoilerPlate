@@ -1,11 +1,12 @@
 import mongoose from 'mongoose'
-import { describe, it, beforeAll, afterAll, expect, afterEach, vitest, beforeEach } from 'vitest'
+import { describe, it, beforeAll, afterAll, expect, afterEach, vitest } from 'vitest'
 import 'dotenv/config'
 import request from 'supertest'
 
 //Import app
 import app from '../server.js'
 import User from '../src/models/UserModel.js'
+import { logout } from '../src/controllers/authenticationController.js'
 
 beforeAll(async () => {
   //Connect to database
@@ -143,7 +144,7 @@ describe('POST /api/auth/login', () => {
     expect(response.status).toBe(400)
     expect(response.body.error).toBe('Invalid credentials')
   })
-  it('should return a 500 status error because of an internal error', async () => {
+  it('should return a 500 error status because of an internal error', async () => {
     vitest.spyOn(User, 'findOne').mockImplementationOnce(() => {
       throw new Error('Test error')
     })
@@ -161,7 +162,22 @@ describe('POST /api/auth/login', () => {
 describe('GET /api/auth/logout', () => {
   it('should return a 200 status and clear the cookies', async () => {
     const response = await request(app).get('/api/auth/logout')
+
     expect(response.status).toBe(200)
+    expect(response.body.message).toBe('Signed out succesfully')
     expect(response.headers['set-cookie'][0].startsWith('__access__token=;')).toBe(true)
+  })
+  it('should return a 500 error status in case of an internal error', async () => {
+    const error = new Error('Test error')
+    const res = {
+      clearCookie: vitest.fn(() => {
+        throw error
+      }),
+      status: vitest.fn().mockReturnThis(),
+      json: vitest.fn(),
+    }
+    await logout({}, res)
+    expect(res.status).toHaveBeenCalledWith(500)
+    expect(res.json).toHaveBeenCalledWith({ error: error.message })
   })
 })
