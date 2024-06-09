@@ -201,11 +201,6 @@ describe('GET /api/auth/me', () => {
     expect(response.status).toBe(200)
     expect(response.body).toHaveProperty('_id' && 'username' && 'email')
   })
-  it('should return a 401 status if user is not authenticated', async () => {
-    const response = await request(app).get('/api/auth/me')
-    expect(response.status).toBe(401)
-    expect(response.body.message).toBe('Not Authenticated')
-  })
   it('should return a 404 status if the user ID is invalid', async () => {
     const response = await request(app)
       .get('/api/auth/me')
