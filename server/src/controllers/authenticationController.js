@@ -74,8 +74,6 @@ const logout = async (req, res) => {
 const getConnectedUser = async (req, res) => {
   const id = req.userId
 
-  if (!id) return res.status(401).json({ message: 'Not Authenticated' })
-
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({ error: 'The ID user is invalid' })
   }
