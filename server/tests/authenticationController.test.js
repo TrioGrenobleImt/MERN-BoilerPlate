@@ -2,13 +2,12 @@ import mongoose from 'mongoose'
 import { describe, it, beforeAll, afterAll, expect, afterEach, vitest, beforeEach } from 'vitest'
 import 'dotenv/config'
 import request from 'supertest'
-import jwt from 'jsonwebtoken'
 import User from '../src/models/UserModel.js'
 import { logout } from '../src/controllers/authenticationController.js'
+import { generateAccessToken } from '../src/utils/generateAccessToken.js'
 
 //Import app
 import app from '../server.js'
-import { generateAccessToken } from '../src/utils/generateAccessToken.js'
 
 beforeAll(async () => {
   //Connect to database
