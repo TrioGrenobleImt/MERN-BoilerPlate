@@ -200,7 +200,6 @@ describe('GET /api/auth/me', () => {
       .set('Cookie', `__access__token=${generateAccessToken(user._id)}`)
     expect(response.status).toBe(200)
     expect(response.body).toHaveProperty('_id' && 'username' && 'email')
-    console.log(response.body)
   })
   it('should return a 401 status if user is not authenticated', async () => {
     const response = await request(app).get('/api/auth/me')
@@ -235,5 +234,18 @@ describe('GET /api/auth/me', () => {
 
     expect(response.status).toBe(500)
     expect(response.body.error).toBe('Test error')
+  })
+})
+
+describe('GET /api/auth/check', () => {
+  it('should return a 200 status if the user is authenticated', async () => {
+    const response = await request(app).get('/api/auth/check').set('Cookie', '__access__token=test')
+    expect(response.status).toBe(200)
+    expect(response.body.authenticated).toBe(true)
+  })
+  it('should return a 200 status if the user is not authenticated', async () => {
+    const response = await request(app).get('/api/auth/check').set('Cookie', '__access__token=;')
+    expect(response.status).toBe(200)
+    expect(response.body.authenticated).toBe(false)
   })
 })
