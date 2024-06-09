@@ -94,11 +94,8 @@ const getConnectedUser = async (req, res) => {
 }
 
 const checkAuth = async (req, res) => {
-  if (req.cookies.__access__token) {
-    res.json({ authenticated: true })
-  } else {
-    res.json({ authenticated: false })
-  }
+  const authenticated = req.cookies.__access__token ? true : false
+  res.status(200).json({ authenticated })
 }
 
 export { login, register, logout, getConnectedUser, checkAuth }
