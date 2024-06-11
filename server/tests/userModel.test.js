@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
-import { describe, it, beforeAll, afterAll, expect, afterEach, vitest, beforeEach } from 'vitest'
+import { describe, it, beforeAll, afterAll, expect, afterEach } from 'vitest'
 import 'dotenv/config'
-import User from '../src/models/UserModel.js'
+import User from '../src/models/userModel.js'
 import bcrypt from 'bcrypt'
 
 beforeAll(async () => {

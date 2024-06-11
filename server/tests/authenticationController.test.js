@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import { describe, it, beforeAll, afterAll, expect, afterEach, vitest, beforeEach } from 'vitest'
 import 'dotenv/config'
 import request from 'supertest'
-import User from '../src/models/UserModel.js'
+import User from '../src/models/userModel.js'
 import { logout } from '../src/controllers/authenticationController.js'
 import { generateAccessToken } from '../src/utils/generateAccessToken.js'
 
