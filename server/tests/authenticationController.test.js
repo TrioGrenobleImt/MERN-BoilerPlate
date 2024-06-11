@@ -6,8 +6,8 @@ import User from '../src/models/userModel.js'
 import { logout } from '../src/controllers/authenticationController.js'
 import { generateAccessToken } from '../src/utils/generateAccessToken.js'
 
-//Import app
-import app from '../server.js'
+//Import server and app
+import { server, app } from '../server.js'
 
 beforeAll(async () => {
   //Connect to database
@@ -17,6 +17,7 @@ beforeAll(async () => {
 afterAll(async () => {
   //Disconnect from database
   await mongoose.disconnect()
+  server.close()
 })
 
 describe('POST /api/auth/register', () => {
@@ -25,6 +26,7 @@ describe('POST /api/auth/register', () => {
   })
 
   it('should return a 201 status, create an account and stock the token into the cookies', async () => {
+    console.log(User.find({}))
     const response = await request(app).post('/api/auth/register').send({
       username: 'test',
       email: 'test@gmail.com',
