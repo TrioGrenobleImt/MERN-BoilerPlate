@@ -32,11 +32,11 @@ app.use('/api/users', UsersRoutes)
 app.use('/api/auth', AuthenticationRoutes)
 
 //listen for requests
-app.listen(process.env.PORT, () => {
+const server = app.listen(process.env.PORT, () => {
   console.log('Server listening on port', process.env.PORT, '🚀')
   //connect to database
   connectToDatabase()
 })
 
 //export app for testing
-export default app
+export { app, server }
