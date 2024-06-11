@@ -36,13 +36,8 @@ describe('verifyToken', () => {
     const user = { id: 'userId123' }
     const token = jwt.sign(user, process.env.SECRET_ACCESS_TOKEN)
 
-    const res = await request(app)
-      .get('/some-protected-route') // Assurez-vous que cette route utilise le middleware verifyToken
-      .set('Cookie', `__access__token=${token}`)
-      .send()
+    const res = await request(app).get('/api/auth/me').set('Cookie', `__access__token=${token}`).send()
 
-    // We expect a 404 because the route '/some-protected-route' doesn't exist
-    // If the token is valid, it should pass the middleware and look for the next middleware or route handler
     expect(res.status).toBe(404)
   })
 })
