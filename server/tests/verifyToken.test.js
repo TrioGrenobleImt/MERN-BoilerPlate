@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { describe, it, beforeAll, afterAll, expect, afterEach, vitest } from 'vitest'
+import { describe, it, beforeAll, afterAll, expect } from 'vitest'
 import 'dotenv/config'
 import request from 'supertest'
 import jwt from 'jsonwebtoken'

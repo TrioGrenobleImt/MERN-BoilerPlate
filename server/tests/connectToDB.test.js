@@ -1,7 +1,7 @@
 import { describe, it, beforeEach, afterEach, expect, vi } from 'vitest'
 import sinon from 'sinon'
 import mongoose from 'mongoose'
-import { connectToDatabase } from '../src/database/connectToDB'
+import { connectToDatabase } from '../src/database/connectToDB.js'
 
 describe('connectToDatabase', () => {
   let connectStub
