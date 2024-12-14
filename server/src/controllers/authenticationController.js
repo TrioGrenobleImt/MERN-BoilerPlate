@@ -1,7 +1,7 @@
 import User from "../models/userModel.js";
-import bcrypt from "bcrypt";
 import { generateAccessToken } from "../utils/generateAccessToken.js";
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 const register = async (req, res) => {
   const { email, username, password, confirmPassword } = req.body;
@@ -20,7 +20,6 @@ const register = async (req, res) => {
       return res.status(409).json({ error: "This username is already taken" });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log(password, hashedPassword);
     const user = await User.create({ email, username, password: hashedPassword });
     const accessToken = generateAccessToken(user._id);
 
