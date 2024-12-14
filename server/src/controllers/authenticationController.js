@@ -42,21 +42,24 @@ const login = async (req, res) => {
 
   try {
     const user = await User.findOne({ username }).select("+password");
-
-    if (user && (await bcrypt.compare(password, user.password))) {
-      const accessToken = generateAccessToken(user._id);
-
-      res.cookie("__access__token", accessToken, {
-        maxAge: 30 * 24 * 60 * 60 * 1000,
-        httpOnly: true,
-      });
-
-      const { password, ...userWithoutPassword } = user._doc;
-
-      res.status(201).json({ user: userWithoutPassword, message: "Logged in succesfully" });
-    } else {
-      res.status(400).json({ error: "Invalid credentials" });
+    if (!user) {
+      return res.status(400).json({ error: "No such user" });
     }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ error: "Invalid credentials" });
+    }
+
+    const accessToken = generateAccessToken(user._id);
+    res.cookie("__access__token", accessToken, {
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+    });
+
+    const { password: userPassword, ...userWithoutPassword } = user._doc;
+
+    res.status(201).json({ user: userWithoutPassword, message: "Logged in succesfully" });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
