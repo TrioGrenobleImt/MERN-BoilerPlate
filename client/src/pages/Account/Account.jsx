@@ -1,15 +1,15 @@
-import React from 'react'
-import { useLogout } from '../../hooks/useLogout'
-import { useAuthContext } from '../../contexts/authContext'
+import React from "react";
+import { useLogout } from "../../hooks/useLogout";
+import { useAuthContext } from "../../contexts/authContext";
 
 const Account = () => {
-  const { logout, loading } = useLogout()
-  const { authUser } = useAuthContext()
+  const { logout, loading } = useLogout();
+  const { authUser } = useAuthContext();
 
   const handleClick = async (e) => {
-    e.preventDefault()
-    await logout()
-  }
+    e.preventDefault();
+    await logout();
+  };
 
   return (
     <div>
@@ -22,7 +22,7 @@ const Account = () => {
         Logout
       </button>
     </div>
-  )
-}
+  );
+};
 
-export default Account
+export default Account;

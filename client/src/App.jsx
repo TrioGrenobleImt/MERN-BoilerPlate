@@ -1,5 +1,5 @@
-import NavBar from './components/NavBar.jsx'
-import { Router } from './router/Routes.jsx'
+import NavBar from "./components/NavBar.jsx";
+import { Router } from "./router/Routes.jsx";
 
 function App() {
   return (
@@ -7,7 +7,7 @@ function App() {
       <NavBar />
       <Router />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
