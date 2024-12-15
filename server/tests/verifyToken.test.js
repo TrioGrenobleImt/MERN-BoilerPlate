@@ -5,7 +5,7 @@ import request from "supertest";
 import jwt from "jsonwebtoken";
 
 //Import server and app
-import { server, app } from "../server.js";
+import app from "../src/app";
 
 beforeAll(async () => {
   //Connect to database
@@ -15,7 +15,6 @@ beforeAll(async () => {
 afterAll(async () => {
   //Disconnect from database
   await mongoose.disconnect();
-  server.close();
 });
 
 describe("verifyToken", () => {

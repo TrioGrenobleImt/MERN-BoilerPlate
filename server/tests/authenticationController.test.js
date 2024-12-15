@@ -7,7 +7,7 @@ import { logout } from "../src/controllers/authenticationController.js";
 import { generateAccessToken } from "../src/utils/generateAccessToken.js";
 
 //Import server and app
-import { app, server } from "../server.js";
+import app from "../src/app.js";
 
 beforeAll(async () => {
   //Connect to database
@@ -17,7 +17,6 @@ beforeAll(async () => {
 afterAll(async () => {
   //Disconnect from database
   await mongoose.disconnect();
-  server.close();
 });
 
 describe("POST /api/auth/register", () => {
