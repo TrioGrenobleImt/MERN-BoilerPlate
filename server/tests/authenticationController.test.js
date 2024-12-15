@@ -6,8 +6,8 @@ import User from "../src/models/userModel.js";
 import { logout } from "../src/controllers/authenticationController.js";
 import { generateAccessToken } from "../src/utils/generateAccessToken.js";
 
-//Import app
-import app from "../server.js";
+//Import server and app
+import { app, server } from "../server.js";
 
 beforeAll(async () => {
   //Connect to database
@@ -17,6 +17,7 @@ beforeAll(async () => {
 afterAll(async () => {
   //Disconnect from database
   await mongoose.disconnect();
+  server.close();
 });
 
 describe("POST /api/auth/register", () => {
@@ -101,11 +102,15 @@ describe("POST /api/auth/login", () => {
   });
 
   it("should return a 201 status, create an account and stock the token into the cookies", async () => {
-    const user = new User({ username: "test", email: "test@gmail.com", password: "testPassword" });
-    await user.save();
+    await request(app).post("/api/auth/register").send({
+      username: "test",
+      email: "test@gmail.com",
+      password: "test",
+      confirmPassword: "test",
+    });
     const response = await request(app).post("/api/auth/login").send({
       username: "test",
-      password: "testPassword",
+      password: "test",
     });
 
     expect(response.status).toBe(201);
@@ -132,7 +137,7 @@ describe("POST /api/auth/login", () => {
     });
 
     expect(response.status).toBe(400);
-    expect(response.body.error).toBe("Invalid credentials");
+    expect(response.body.error).toBe("No such user");
   });
   it("should return a 400 error status because the password is wrong", async () => {
     const user = new User({ username: "test", email: "test@gmail.com", password: "testPassword" });

@@ -74,8 +74,7 @@ const updateUser = async (req, res) => {
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
       req.body.password = hashedPassword;
     }
-    const user = await User.findOneAndUpdate({ _id: id }, { ...req.body });
-
+    const user = await User.findOneAndUpdate({ _id: id }, { ...req.body }, { new: true });
     if (!user) {
       return res.status(400).json({ error: "No such user" });
     }

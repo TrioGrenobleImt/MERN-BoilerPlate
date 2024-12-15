@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
-import { describe, it, beforeAll, afterAll, expect, afterEach, vitest } from "vitest";
+import { describe, it, beforeAll, afterAll, expect } from "vitest";
 import "dotenv/config";
 import request from "supertest";
 import jwt from "jsonwebtoken";
 
-//Import app
-import app from "../server.js";
+//Import server and app
+import { server, app } from "../server.js";
 
 beforeAll(async () => {
   //Connect to database
@@ -15,6 +15,7 @@ beforeAll(async () => {
 afterAll(async () => {
   //Disconnect from database
   await mongoose.disconnect();
+  server.close();
 });
 
 describe("verifyToken", () => {
