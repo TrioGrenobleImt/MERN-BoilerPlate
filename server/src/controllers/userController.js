@@ -6,7 +6,7 @@ import bcrypt from "bcrypt";
 const getUser = async (req, res) => {
   const { id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "The ID user is invalid" });
+    return res.status(404).json({ error: "The user ID is invalid" });
   }
   try {
     const user = await User.findById(id);
@@ -25,7 +25,7 @@ const getUsers = async (req, res) => {
     const users = await User.find({}).sort({ createdAt: -1 });
     res.status(200).json(users);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(500).json({ error: err.message });
   }
 };
 
@@ -40,9 +40,11 @@ const createUser = async (req, res) => {
 
     const user = await User.create({ email: email, username: username, password: hashedPassword });
 
-    res.status(200).json(user);
+    const { password: userPassword, ...userWithoutPassword } = user._doc;
+
+    res.status(200).json({ user: userWithoutPassword, message: "User created successfully" });
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(500).json({ error: err.message });
   }
 };
 
@@ -57,7 +59,7 @@ const deleteUser = async (req, res) => {
     if (!user) {
       return res.status(400).json({ error: "No such user" });
     }
-    res.status(200).json(user);
+    res.status(200).json({ user, message: "User deleted successfully" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -78,7 +80,7 @@ const updateUser = async (req, res) => {
     if (!user) {
       return res.status(400).json({ error: "No such user" });
     }
-    res.status(200).json(user);
+    res.status(200).json({ user, message: "User updated successfully" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

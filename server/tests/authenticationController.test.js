@@ -37,6 +37,7 @@ describe("POST /api/auth/register", () => {
     expect(response.body.user).toHaveProperty("_id" && "username" && "email");
     expect(response.body.password).toBe(undefined);
   });
+
   it("should return a 400 status error because the passwords do not match", async () => {
     const response = await request(app).post("/api/auth/register").send({
       username: "test",
