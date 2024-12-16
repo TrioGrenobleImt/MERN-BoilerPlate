@@ -8,15 +8,15 @@ const router = express.Router();
 router.get("/list", isAdmin, getUsers);
 
 //Get a single user
-router.get("/:id", getUser);
+router.get("/:id", isAdmin, getUser);
 
 //Create a new user
-router.post("/new", createUser);
+router.post("/new", isAdmin, createUser);
 
 //Update a user
-router.put("/:id", updateUser);
+router.put("/:id", isAdmin, updateUser);
 
 //Delete a user
-router.delete("/:id", deleteUser);
+router.delete("/:id", isAdmin, deleteUser);
 
 export default router;
