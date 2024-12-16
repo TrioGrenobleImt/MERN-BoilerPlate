@@ -1,20 +1,44 @@
 import React from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Home from "../pages/Home/Home";
 import Login from "../pages/Authentication/Login";
 import Register from "../pages/Authentication/Register";
 import Account from "../pages/Account/Account";
-import { useAuthContext } from "../contexts/authContext";
+import { ProtectedRoute } from "./authRequired";
 
 export const Router = () => {
-  const { authUser } = useAuthContext();
-
   return (
     <Routes>
+      {/* Routes publiques */}
+      <Route
+        path="/login"
+        element={
+          <ProtectedRoute authRequired={false}>
+            <Login />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/register"
+        element={
+          <ProtectedRoute authRequired={false}>
+            <Register />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Routes privées */}
+      <Route
+        path="/account"
+        element={
+          <ProtectedRoute authRequired={true}>
+            <Account />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Routes accessibles à tous */}
       <Route path="/" element={<Home />} />
-      <Route path="/register" element={authUser ? <Navigate to={"/"} /> : <Register />} />
-      <Route path="/login" element={authUser ? <Navigate to={"/"} /> : <Login />} />
-      <Route path="/account" element={!authUser ? <Navigate to={"/login"} /> : <Account />} />
     </Routes>
   );
 };

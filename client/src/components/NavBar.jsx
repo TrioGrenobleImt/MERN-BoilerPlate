@@ -3,6 +3,11 @@ import { useAuthContext } from "../contexts/authContext";
 
 const NavBar = () => {
   const { authUser } = useAuthContext();
+
+  // if (loading) {
+  //   return <Loading />;
+  // }
+
   return (
     <>
       <Link to="/">Home</Link>
