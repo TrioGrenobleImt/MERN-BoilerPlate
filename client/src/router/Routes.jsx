@@ -1,11 +1,11 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Home from "../pages/Home/Home";
 import Login from "../pages/Authentication/Login";
 import Register from "../pages/Authentication/Register";
 import Account from "../pages/Account/Account";
 import { ProtectedRoute } from "./authRequired";
 import { Dashboard } from "../pages/Dashboard/Dashboard";
+import { Home } from "../pages/Home/Home";
 
 export const Router = () => {
   return (

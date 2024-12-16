@@ -1,11 +1,23 @@
-import React from "react";
+import { useTranslation } from "react-i18next";
 
-const Home = () => {
+export const Home = () => {
+  const {
+    t,
+    i18n: { changeLanguage, language },
+  } = useTranslation();
+
+  const handleChangeLanguage = () => {
+    const newLanguage = language === "en" ? "fr" : "en";
+    changeLanguage(newLanguage);
+  };
+
   return (
-    <>
-      <div>hello from home</div>
-    </>
+    <div>
+      <h1>{t("home")}</h1>
+      <h3>Current Language: {language}</h3>
+      <button type="button" onClick={handleChangeLanguage}>
+        Change Language
+      </button>
+    </div>
   );
 };
-
-export default Home;

@@ -4,6 +4,7 @@ import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { AuthContextProvider } from "./contexts/authContext.jsx";
+import "./config/i18n.js";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
