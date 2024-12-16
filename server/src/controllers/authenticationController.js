@@ -2,6 +2,7 @@ import User from "../models/userModel.js";
 import { generateAccessToken } from "../utils/generateAccessToken.js";
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+import { Constants } from "../utils/Constants.js";
 
 const register = async (req, res) => {
   const { email, username, password, confirmPassword } = req.body;
@@ -24,7 +25,7 @@ const register = async (req, res) => {
     const accessToken = generateAccessToken(user._id);
 
     res.cookie("__access__token", accessToken, {
-      maxAge: 30 * 24 * 60 * 60 * 1000,
+      maxAge: Constants.MAX_AGE,
       httpOnly: true,
     });
 
@@ -53,7 +54,7 @@ const login = async (req, res) => {
 
     const accessToken = generateAccessToken(user._id);
     res.cookie("__access__token", accessToken, {
-      maxAge: 30 * 24 * 60 * 60 * 1000,
+      maxAge: Constants.MAX_AGE,
       httpOnly: true,
     });
 
