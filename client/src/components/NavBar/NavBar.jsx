@@ -6,7 +6,7 @@ export const NavBar = () => {
   const { authUser } = useAuthContext();
 
   return (
-    <div className="flex flex-row h-24 gap-24 bg-blue-100">
+    <div className="flex flex-row h-24 gap-24">
       <Link to="/">Home</Link>
 
       {authUser ? (

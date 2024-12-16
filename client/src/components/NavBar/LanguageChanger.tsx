@@ -9,10 +9,11 @@ export const LanguageChanger = () => {
   const handleChangeLanguage = () => {
     const newLanguage = language === "en" ? "fr" : "en";
     changeLanguage(newLanguage);
+    localStorage.setItem("i18nextLng", newLanguage);
   };
 
   return (
-    <div className="flex items-start gap-12 bg-blue-300">
+    <div className="flex items-start gap-12">
       <h3>Current Language: {language}</h3>
       <button type="button" onClick={handleChangeLanguage}>
         Change Language
