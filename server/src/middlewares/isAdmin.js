@@ -1,5 +1,6 @@
-import User, { userRoles } from "../models/userModel.js";
+import User from "../models/userModel.js";
 import jwt from "jsonwebtoken";
+import { roles } from "../utils/enums/roles.js";
 
 export const isAdmin = async (req, res, next) => {
   const token = req.cookies["__access__token"];
@@ -11,7 +12,7 @@ export const isAdmin = async (req, res, next) => {
 
   if (!user) return res.status(400).json({ message: "No such user" });
 
-  if (user.role !== userRoles.ADMIN) return res.status(403).json({ message: "This route is only authorized for administrator" });
+  if (user.role !== roles.ADMIN) return res.status(403).json({ message: "This route is only authorized for administrator" });
 
   next();
 };

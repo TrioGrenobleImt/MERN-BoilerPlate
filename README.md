@@ -1,4 +1,4 @@
-# Auth-app README
+# MERN-APP BOILERPLATE README
 
 ## Backend
 
@@ -37,6 +37,14 @@ Une fois cela fait, vous devriez voir un message dans votre console affichant qu
 
 Pour le Frontend, rien de plus simple, placez vous dans le dossier client et suivez la procédure ci dessous:
 
+Créez un fichier **.env** contenant les variables d'environnements du frontend.
+
+Exemple ci-dessous:
+
+```env
+NEXT_PUBLIC_API_URL=
+```
+
 Installez les **packages** requis pour faire tourner votre client.
 
 ```shell
@@ -54,17 +62,14 @@ Et voila vous possédez une application d'authentification sécurisée.
 
 ## Tests unitaires
 
-Pour lancez la suite de tests unitaires, vous devez d'abord **arreter** votre serveur :
-Un simple **ctrl+c** dans le terminal en question devrait suffir.
-
-Une fois le serveur arreté, restez dans le répertoire server et lancez la commande suivante:
+Placez vous dans le répertoire server et lancez la commande suivante:
 
 ```shell
 $ npm run test
 ```
 
 Les tests unitaires devraient se lancer un par un.
-Si vous souhaitez avoir le coverage lancez la commande suivante :
+Si vous souhaitez avoir le coverage totale lancez la commande suivante :
 
 ```shell
 $ npm run coverage
@@ -72,3 +77,25 @@ $ npm run coverage
 
 Et votre coverage devrait se trouver dans le répertoire `coverage` du server.
 N'oubliez pas de relancer votre backend apèrs utilisation.
+
+## Fonctionnalités
+
+- **CRUD Utilisateurs** : Créez, lisez, mettez à jour et supprimez des utilisateurs.
+- **Authentification sécurisée avec JWT** : Connexion et déconnexion avec JWT pour garantir la sécurité des données.
+- **Gestion des rôles** : Accès différencié aux utilisateurs selon leur rôle (Admin, User).
+- **Routes protégées** : Accès conditionnel à certaines pages selon les droits d'accès (Dashboard Admin, etc.).
+- **Routage conditionnel** : Possibilité de bloquer certaines routes selon l'état de connexion.
+- **Traduction avec I18n** : Support multilingue avec des fichiers de traduction JSON (`client/src/locales/**.json`).
+- **Interface moderne** : Utilisation de **ShadCN** et **TailwindCSS** pour un design réactif et élégant.
+- **Tests unitaires** : Tests unitaires mis en place pour assurer la stabilité de l'application.
+
+## Technologies utilisées
+
+- [MongoDB](https://www.mongodb.com/)
+- [Express.js](https://expressjs.com/)
+- [React.js](https://reactjs.org/)
+- [Node.js](https://nodejs.org/en/)
+
+## Auteur
+
+- [Téo Villet](https://teovlt.github.io) - Développeur Web
