@@ -9,7 +9,7 @@ export const useLogin = () => {
   const navigate = useNavigate();
   const { authUser, setAuthUser } = useAuthContext();
 
-  const login = async ({ username, password }) => {
+  const login = async ({ username, password }: { username: string; password: string }) => {
     const success = handleInputsError(username, password);
     if (!success) return;
     setLoading(true);
@@ -28,7 +28,7 @@ export const useLogin = () => {
 
       setAuthUser(data.user);
       navigate("/");
-    } catch (error) {
+    } catch (error: any) {
       toast.error(error.response.data.error);
     } finally {
       setLoading(false);
@@ -38,7 +38,7 @@ export const useLogin = () => {
   return { loading, login };
 };
 
-function handleInputsError(username, password) {
+function handleInputsError(username: String, password: String) {
   if (!username || !password) {
     toast.error("Please fill in all fields");
     return false;

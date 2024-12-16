@@ -1,8 +1,8 @@
-import { Router } from "./router/Routes.jsx";
+import { Router } from "./router/Routes.js";
 import "./styles/index.css";
-import { useAuthContext } from "./contexts/authContext.jsx";
-import { Loading } from "./components/Loading.jsx";
-import { NavBar } from "./components/NavBar/NavBar.jsx";
+import { useAuthContext } from "./contexts/authContext.js";
+import { Loading } from "./components/Loading.js";
+import { NavBar } from "./components/NavBar/NavBar.js";
 
 function App() {
   const { loading } = useAuthContext();

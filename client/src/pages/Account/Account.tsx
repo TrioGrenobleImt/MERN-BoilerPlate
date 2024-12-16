@@ -6,7 +6,7 @@ const Account = () => {
   const { logout, loading } = useLogout();
   const { authUser } = useAuthContext();
 
-  const handleClick = async (e) => {
+  const handleClick = async (e: any) => {
     e.preventDefault();
     await logout();
   };

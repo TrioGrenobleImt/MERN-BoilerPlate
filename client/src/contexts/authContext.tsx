@@ -1,13 +1,23 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import axiosConfig from "../config/axiosConfig";
 
-const AuthContext = createContext();
+const AuthContext = createContext<{
+  authUser: any;
+  setAuthUser: React.Dispatch<React.SetStateAction<any>>;
+  loading: boolean;
+}>({
+  authUser: null,
+  setAuthUser: () => {},
+  loading: true,
+});
 
 export const useAuthContext = () => {
   return useContext(AuthContext);
 };
 
-export const AuthContextProvider = ({ children }) => {
+import { ReactNode } from "react";
+
+export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [authUser, setAuthUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
