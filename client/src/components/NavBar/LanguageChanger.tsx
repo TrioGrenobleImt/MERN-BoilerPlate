@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import toast from "react-hot-toast";
 
 export const LanguageChanger = () => {
   const {
@@ -10,6 +11,7 @@ export const LanguageChanger = () => {
     const newLanguage = language === "en" ? "fr" : "en";
     changeLanguage(newLanguage);
     localStorage.setItem("i18nextLng", newLanguage);
+    toast.success(`Language changed to ${newLanguage}`);
   };
 
   return (
