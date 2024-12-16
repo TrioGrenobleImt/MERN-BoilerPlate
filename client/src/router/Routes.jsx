@@ -5,6 +5,7 @@ import Login from "../pages/Authentication/Login";
 import Register from "../pages/Authentication/Register";
 import Account from "../pages/Account/Account";
 import { ProtectedRoute } from "./authRequired";
+import { Dashboard } from "../pages/Dashboard/Dashboard";
 
 export const Router = () => {
   return (
@@ -33,6 +34,15 @@ export const Router = () => {
         element={
           <ProtectedRoute authRequired={true}>
             <Account />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute authRequired={true} role="admin">
+            <Dashboard />
           </ProtectedRoute>
         }
       />

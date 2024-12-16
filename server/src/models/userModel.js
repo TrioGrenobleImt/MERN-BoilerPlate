@@ -1,8 +1,11 @@
 import mongoose from "mongoose";
 
-const Schema = mongoose.Schema;
+export const userRoles = {
+  ADMIN: "admin",
+  USER: "user",
+};
 
-const UserSchema = new Schema(
+const UserSchema = new mongoose.Schema(
   {
     email: {
       type: String,
@@ -19,6 +22,10 @@ const UserSchema = new Schema(
       type: String,
       required: true,
       select: false,
+    },
+    role: {
+      type: String,
+      default: userRoles.USER,
     },
   },
   {

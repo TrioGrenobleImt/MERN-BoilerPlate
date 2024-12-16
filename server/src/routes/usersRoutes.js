@@ -1,10 +1,11 @@
 import express from "express";
 import { getUsers, getUser, createUser, updateUser, deleteUser } from "../controllers/userController.js";
+import isAdmin from "../middlewares/isAdmin.js";
 
 const router = express.Router();
 
 //GET all users
-router.get("/list", getUsers);
+router.get("/list", isAdmin, getUsers);
 
 //Get a single user
 router.get("/:id", getUser);
