@@ -14,6 +14,6 @@ router.post("/register", register);
 router.get("/logout", logout);
 
 //Send the connected user infos
-router.get("/me", verifyToken, getConnectedUser);
+router.get("/me", verifyToken(), getConnectedUser);
 
 export default router;
