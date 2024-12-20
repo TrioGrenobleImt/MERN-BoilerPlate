@@ -1,9 +1,6 @@
 import jwt from "jsonwebtoken";
 import { Constants } from "./constants.js";
 
-import jwt from "jsonwebtoken";
-import { Constants } from "../utils/constants.js";
-
 /**
  * @function generateAccessToken
  * @description Generates a JWT (JSON Web Token) for the user, containing their user ID.
