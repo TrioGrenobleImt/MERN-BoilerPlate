@@ -7,7 +7,6 @@ import jwt from "jsonwebtoken";
 // Import server, app, and mock User model
 import app from "../src/app";
 import User from "../src/models/userModel.js";
-import { roles } from "../src/utils/enums/roles.js";
 
 vi.mock("../src/models/userModel.js"); // Mock le modèle User
 

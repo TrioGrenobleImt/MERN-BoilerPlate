@@ -2,7 +2,11 @@ import User from "../models/userModel.js";
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 
-//Get a single user
+/**
+ * Retrieves a single user by ID.
+ * @param {Object} req - The request object containing user ID in params.
+ * @param {Object} res - The response object for sending results or errors.
+ */
 const getUser = async (req, res) => {
   const { id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -19,7 +23,11 @@ const getUser = async (req, res) => {
   }
 };
 
-//Get all the users
+/**
+ * Retrieves all users sorted by creation date.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object for sending results or errors.
+ */
 const getUsers = async (req, res) => {
   try {
     const users = await User.find({}).sort({ createdAt: -1 });
@@ -29,7 +37,11 @@ const getUsers = async (req, res) => {
   }
 };
 
-// Create a user
+/**
+ * Creates a new user with the provided details.
+ * @param {Object} req - The request object containing user data in body.
+ * @param {Object} res - The response object for sending results or errors.
+ */
 const createUser = async (req, res) => {
   const { email, username, password } = req.body;
   if (!email || !username || !password) {
@@ -48,24 +60,11 @@ const createUser = async (req, res) => {
   }
 };
 
-//Delete a user
-const deleteUser = async (req, res) => {
-  const { id } = req.params;
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "The ID user is invalid" });
-  }
-  try {
-    const user = await User.findOneAndDelete({ _id: id });
-    if (!user) {
-      return res.status(400).json({ error: "No such user" });
-    }
-    res.status(200).json({ user, message: "User deleted successfully" });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
-//Update a user
+/**
+ * Updates a user's details by ID.
+ * @param {Object} req - The request object containing user ID in params and updated data in body.
+ * @param {Object} res - The response object for sending results or errors.
+ */
 const updateUser = async (req, res) => {
   const { id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -81,6 +80,27 @@ const updateUser = async (req, res) => {
       return res.status(400).json({ error: "No such user" });
     }
     res.status(200).json({ user, message: "User updated successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+/**
+ * Deletes a user by ID.
+ * @param {Object} req - The request object containing user ID in params.
+ * @param {Object} res - The response object for sending results or errors.
+ */
+const deleteUser = async (req, res) => {
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: "The ID user is invalid" });
+  }
+  try {
+    const user = await User.findOneAndDelete({ _id: id });
+    if (!user) {
+      return res.status(400).json({ error: "No such user" });
+    }
+    res.status(200).json({ user, message: "User deleted successfully" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

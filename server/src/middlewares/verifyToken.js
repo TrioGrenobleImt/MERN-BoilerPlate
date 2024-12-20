@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import User from "../models/userModel.js"; // Assurez-vous que le modèle User est importé
-import { roles } from "../utils/enums/roles.js";
+import { userRoles } from "../utils/enums/userRoles.js";
 
 /**
  * Middleware pour vérifier le token JWT et, si spécifié, vérifier le rôle de l'utilisateur.
@@ -19,12 +19,12 @@ const verifyToken = ({ role } = {}) => {
 
       req.userId = payload.id;
 
-      if (role === roles.ADMIN) {
+      if (role === userRoles.ADMIN) {
         try {
           const user = await User.findById(payload.id);
 
           if (!user) return res.status(400).json({ message: "No such user" });
-          if (user.role !== roles.ADMIN) {
+          if (user.role !== userRoles.ADMIN) {
             return res.status(403).json({ message: "Access restricted to administrators" });
           }
         } catch (error) {

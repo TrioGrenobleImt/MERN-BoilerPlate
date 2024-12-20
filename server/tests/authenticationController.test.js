@@ -33,7 +33,7 @@ describe("POST /api/auth/register", () => {
     });
     expect(response.status).toBe(201);
     expect(response.headers["set-cookie"][0].startsWith("__access__token=")).toBe(true);
-    expect(response.body.message).toBe("Registered succesfully");
+    expect(response.body.message).toBe("Registered successfully");
     expect(response.body.user).toHaveProperty("_id" && "username" && "email");
     expect(response.body.password).toBe(undefined);
   });
@@ -119,7 +119,7 @@ describe("POST /api/auth/login", () => {
 
     expect(response.status).toBe(201);
     expect(response.headers["set-cookie"][0].startsWith("__access__token=")).toBe(true);
-    expect(response.body.message).toBe("Logged in succesfully");
+    expect(response.body.message).toBe("Logged in successfully");
     expect(response.body.user).toHaveProperty("_id" && "username" && "email");
     expect(response.body.password).toBe(undefined);
   });
@@ -174,7 +174,7 @@ describe("GET /api/auth/logout", () => {
     const response = await request(app).get("/api/auth/logout");
 
     expect(response.status).toBe(200);
-    expect(response.body.message).toBe("Signed out succesfully");
+    expect(response.body.message).toBe("Signed out successfully");
     expect(response.headers["set-cookie"][0].startsWith("__access__token=;")).toBe(true);
   });
   it("should return a 500 error status in case of an internal error", async () => {
@@ -215,7 +215,7 @@ describe("GET /api/auth/me", () => {
       .set("Cookie", `__access__token=${generateAccessToken(user.username)}`);
 
     expect(response.status).toBe(404);
-    expect(response.body.error).toBe("The ID user is invalid");
+    expect(response.body.error).toBe("The user ID is invalid");
   });
   it("should return a 400 status if the user does not exist", async () => {
     const unknownId = new mongoose.Types.ObjectId();

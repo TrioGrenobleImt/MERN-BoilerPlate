@@ -4,19 +4,37 @@ import verifyToken from "../middlewares/verifyToken.js";
 
 const router = express.Router();
 
-//GET all users
+/**
+ * @route GET /list
+ * @description Retrieves a list of all users.
+ * @middleware verifyToken({ role: "admin" }) - Ensures the user has an admin role to access this route.
+ */
 router.get("/list", verifyToken({ role: "admin" }), getUsers);
 
-//Get a single user
+/**
+ * @route GET /:id
+ * @description Retrieves a single user by their ID.
+ */
 router.get("/:id", getUser);
 
-//Create a new user
+/**
+ * @route POST /new
+ * @description Creates a new user with the provided data.
+ */
 router.post("/new", createUser);
 
-//Update a user
+/**
+ * @route PUT /:id
+ * @description Updates an existing user by their ID.
+ * @param {string} id - The ID of the user to update.
+ */
 router.put("/:id", updateUser);
 
-//Delete a user
+/**
+ * @route DELETE /:id
+ * @description Deletes a user by their ID.
+ * @param {string} id - The ID of the user to delete.
+ */
 router.delete("/:id", deleteUser);
 
 export default router;

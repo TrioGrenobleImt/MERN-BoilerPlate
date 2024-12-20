@@ -4,16 +4,28 @@ import verifyToken from "../middlewares/verifyToken.js";
 
 const router = express.Router();
 
-//Login to the app
+/**
+ * @route POST /login
+ * @description Authenticates a user with their credentials (e.g., email and password).
+ */
 router.post("/login", login);
 
-//Register
+/**
+ * @route POST /register
+ * @description Registers a new user with the provided details.
+ */
 router.post("/register", register);
 
-//Logout
+/**
+ * @route GET /logout
+ */
 router.get("/logout", logout);
 
-//Send the connected user infos
+/**
+ * @route GET /me
+ * @description Fetches the currently authenticated user's information.
+ * @middleware verifyToken - Ensures the user is authenticated by validating the JWT token.
+ */
 router.get("/me", verifyToken(), getConnectedUser);
 
 export default router;

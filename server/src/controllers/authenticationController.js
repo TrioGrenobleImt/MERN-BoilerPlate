@@ -4,6 +4,18 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import { Constants } from "../utils/Constants.js";
 
+/**
+ * Registers a new user.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} req.body - Request body containing user details.
+ * @param {string} req.body.email - User's email address.
+ * @param {string} req.body.username - User's username.
+ * @param {string} req.body.password - User's password.
+ * @param {string} req.body.confirmPassword - Confirmation of user's password.
+ * @param {Object} res - Express response object.
+ * @returns {Object} JSON response with user details or error message.
+ */
 const register = async (req, res) => {
   const { email, username, password, confirmPassword } = req.body;
   if (!username || !email || !password || !confirmPassword) {
@@ -29,12 +41,22 @@ const register = async (req, res) => {
       httpOnly: true,
     });
 
-    res.status(201).json({ user: user, message: "Registered succesfully" });
+    res.status(201).json({ user: user, message: "Registered successfully" });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
 };
 
+/**
+ * Logs in a user.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} req.body - Request body containing login details.
+ * @param {string} req.body.username - User's username.
+ * @param {string} req.body.password - User's password.
+ * @param {Object} res - Express response object.
+ * @returns {Object} JSON response with user details or error message.
+ */
 const login = async (req, res) => {
   const { username, password } = req.body;
   if (!username || !password) {
@@ -60,26 +82,41 @@ const login = async (req, res) => {
 
     const { password: userPassword, ...userWithoutPassword } = user._doc;
 
-    res.status(201).json({ user: userWithoutPassword, message: "Logged in succesfully" });
+    res.status(201).json({ user: userWithoutPassword, message: "Logged in successfully" });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
 };
 
+/**
+ * Logs out a user by clearing the access token cookie.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} JSON response with success message.
+ */
 const logout = async (req, res) => {
   try {
     res.clearCookie("__access__token");
-    res.status(200).json({ message: "Signed out succesfully" });
+    res.status(200).json({ message: "Signed out successfully" });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
 };
 
+/**
+ * Retrieves the currently connected user's details.
+ *
+ * @param {Object} req - Express request object.
+ * @param {string} req.userId - User ID extracted from the token.
+ * @param {Object} res - Express response object.
+ * @returns {Object} JSON response with user details or error message.
+ */
 const getConnectedUser = async (req, res) => {
   const id = req.userId;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "The ID user is invalid" });
+    return res.status(404).json({ error: "The user ID is invalid" });
   }
 
   try {
