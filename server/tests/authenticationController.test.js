@@ -48,6 +48,7 @@ describe("POST /api/auth/register", () => {
     expect(response.status).toBe(400);
     expect(response.body.error).toBe("Passwords do not match");
   });
+
   it("should return a 409 status error because the email is already taken", async () => {
     await User.create({ username: "test", email: "test@gmail.com", password: "test" });
     const response = await request(app).post("/api/auth/register").send({
@@ -59,6 +60,7 @@ describe("POST /api/auth/register", () => {
     expect(response.status).toBe(409);
     expect(response.body.error).toBe("This email is already taken");
   });
+
   it("should return a 409 status error because the username is already taken", async () => {
     await User.create({ username: "test", email: "test@gmail.com", password: "test" });
     const response = await request(app).post("/api/auth/register").send({
@@ -70,6 +72,7 @@ describe("POST /api/auth/register", () => {
     expect(response.status).toBe(409);
     expect(response.body.error).toBe("This username is already taken");
   });
+
   it("should return a 422 status error because of missing fields", async () => {
     const response = await request(app).post("/api/auth/register").send({
       username: "test",
@@ -79,6 +82,7 @@ describe("POST /api/auth/register", () => {
     expect(response.status).toBe(422);
     expect(response.body.error).toBe("Missing fields");
   });
+
   it("should return a 500 status error because of an internal error", async () => {
     vitest.spyOn(User, "findOne").mockImplementationOnce(() => {
       throw new Error("Test error");

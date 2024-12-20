@@ -1,11 +1,12 @@
 import mongoose from "mongoose";
-import { describe, it, beforeAll, afterAll, expect, afterEach, vitest, vi } from "vitest";
+import { describe, it, beforeAll, afterAll, expect, afterEach, vitest, vi, beforeEach } from "vitest";
 import "dotenv/config";
 import request from "supertest";
 import User from "../src/models/userModel.js";
 
 //Import server and app
 import app from "../src/app.js";
+import { generateAccessToken } from "../src/utils/generateAccessToken.js";
 
 beforeAll(async () => {
   //Connect to database
@@ -23,19 +24,28 @@ describe("GET /api/users/list", () => {
   });
 
   it("should return a 201 status, create an account and stock the token into the cookies", async () => {
-    const user = await User.create({ username: "test", email: "test@gmail.com", password: "test" });
-    const response = await request(app).get("/api/users/list");
+    const user = await User.create({ username: "test", email: "test@gmail.com", password: "test", role: "admin" });
+
+    const response = await request(app)
+      .get("/api/users/list")
+      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
     expect(response.status).toBe(200);
     expect(response.body).toBeInstanceOf(Array);
     expect(response.body).toHaveLength(1);
     expect(response.body[0].username).toBe(user.username);
+    expect(response.body[0].password).toBe(undefined);
   });
 
   it("should return a 500 status if an error occurs", async () => {
+    const user = await User.create({ username: "test", email: "test@gmail.com", password: "test", role: "admin" });
+
     vitest.spyOn(User, "find").mockImplementationOnce(() => {
       throw new Error("Test error");
     });
-    const response = await request(app).get("/api/users/list");
+
+    const response = await request(app)
+      .get("/api/users/list")
+      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
     expect(response.status).toBe(500);
     expect(response.body.error).toBe("Test error");
   });
@@ -55,14 +65,20 @@ describe("GET /api/users/:id", () => {
   });
 
   it("should return an error if the user id is invalid", async () => {
+    const user = await User.create({ username: "test", email: "test@gmail.com", password: "test" });
+
     const response = await request(app).get("/api/users/8");
+
     expect(response.status).toBe(404);
     expect(response.body.error).toBe("The user ID is invalid");
   });
 
   it("should return an error if the user id is invalid", async () => {
+    const user = await User.create({ username: "test", email: "test@gmail.com", password: "test" });
+
     const falseId = new mongoose.Types.ObjectId();
     const response = await request(app).get(`/api/users/${falseId}`);
+
     expect(response.status).toBe(400);
     expect(response.body.error).toBe("No such user");
   });

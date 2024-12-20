@@ -8,15 +8,15 @@ const router = express.Router();
 router.get("/list", verifyToken({ role: "admin" }), getUsers);
 
 //Get a single user
-router.get("/:id", verifyToken({ role: "admin" }), getUser);
+router.get("/:id", getUser);
 
 //Create a new user
-router.post("/new", verifyToken({ role: "admin" }), createUser);
+router.post("/new", createUser);
 
 //Update a user
-router.put("/:id", verifyToken({ role: "admin" }), updateUser);
+router.put("/:id", updateUser);
 
 //Delete a user
-router.delete("/:id", verifyToken({ role: "admin" }), deleteUser);
+router.delete("/:id", deleteUser);
 
 export default router;
