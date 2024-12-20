@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { Constants } from "./Constants.js";
+import { Constants } from "./constants.js";
 
 import jwt from "jsonwebtoken";
 import { Constants } from "../utils/constants.js";
