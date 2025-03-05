@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@radix-ui/react-dropdown-menu": "^2.1.6",
+    "@radix-ui/react-slot": "^1.1.2",
     "@types/react-router-dom": "^5.3.3",
     "@types/redux": "^3.6.0",
     "axios": "^1.7.2",

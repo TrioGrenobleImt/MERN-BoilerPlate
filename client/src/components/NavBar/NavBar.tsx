@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../../contexts/authContext";
 import { LanguageChanger } from "./LanguageChanger";
+import { ThemeChanger } from "./ThemeChanger";
 
 export const NavBar = () => {
   const { authUser } = useAuthContext();
@@ -21,6 +22,7 @@ export const NavBar = () => {
         </>
       )}
       <LanguageChanger />
+      <ThemeChanger />
     </div>
   );
 };
