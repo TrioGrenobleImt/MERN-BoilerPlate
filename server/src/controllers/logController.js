@@ -4,7 +4,7 @@ import { logLevels } from "../utils/enums/logLevel.js";
 const getLogs = async (req, res) => {
   const { size } = req.body;
   try {
-    const query = Log.find().populate("user", "-password").sort({ createdAt: -1 });
+    const query = Log.find({}).populate("user", "-password").sort({ createdAt: -1 });
 
     if (size && !isNaN(size)) {
       query.limit(Number(size));
@@ -12,7 +12,7 @@ const getLogs = async (req, res) => {
 
     const logs = await query;
 
-    res.status(200).json(logs);
+    res.status(200).json({ logs, message: "Logs retrieved successfully" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
