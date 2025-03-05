@@ -2,6 +2,7 @@ import express from "express";
 import "dotenv/config";
 import UsersRoutes from "./routes/usersRoutes.js";
 import AuthenticationRoutes from "./routes/authenticationRoutes.js";
+import LogsRoutes from "./routes/logsRoutes.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
@@ -26,9 +27,9 @@ app.use((req, res, next) => {
 app.use(cors(corsOptions));
 app.use(cookieParser());
 
-// Order of routes is important
 app.use("/api/users", UsersRoutes);
 app.use("/api/auth", AuthenticationRoutes);
+app.use("/api/logs", LogsRoutes);
 
 /**
  * Healthcheck
