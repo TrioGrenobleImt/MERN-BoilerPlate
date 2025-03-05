@@ -9,7 +9,7 @@ const router = express.Router();
  * @description Retrieves a list of all users.
  * @middleware verifyToken({ role: "admin" }) - Ensures the user has an admin role to access this route.
  */
-router.get("/list", verifyToken({ role: "admin" }), getUsers);
+router.get("/", verifyToken({ role: "admin" }), getUsers);
 
 /**
  * @route GET /:id
@@ -21,7 +21,7 @@ router.get("/:id", verifyToken({ role: "admin" }), getUser);
  * @route POST /new
  * @description Creates a new user with the provided data.
  */
-router.post("/new", verifyToken({ role: "admin" }), createUser);
+router.post("/", verifyToken({ role: "admin" }), createUser);
 
 /**
  * @route PUT /:id

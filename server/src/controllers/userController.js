@@ -1,5 +1,4 @@
 import User from "../models/userModel.js";
-import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 
 /**
@@ -9,9 +8,6 @@ import bcrypt from "bcrypt";
  */
 const getUser = async (req, res) => {
   const { id } = req.params;
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "The user ID is invalid" });
-  }
   try {
     const user = await User.findById(id);
     if (!user) {
@@ -67,9 +63,6 @@ const createUser = async (req, res) => {
  */
 const updateUser = async (req, res) => {
   const { id } = req.params;
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "The ID user is invalid" });
-  }
   try {
     if (req.body.password) {
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -92,9 +85,6 @@ const updateUser = async (req, res) => {
  */
 const deleteUser = async (req, res) => {
   const { id } = req.params;
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "The ID user is invalid" });
-  }
   try {
     const user = await User.findOneAndDelete({ _id: id });
     if (!user) {
