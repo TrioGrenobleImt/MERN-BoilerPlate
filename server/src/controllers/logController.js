@@ -10,21 +10,21 @@ const getLogs = async (req, res) => {
   }
 };
 
-const createLog = async (req, res) => {
-  const { message, userId, level } = req.body;
+const createLog = async ({ message, userId, level }) => {
   if (!message || !userId || !level) {
-    return res.status(404).json({ error: "Missing fields" });
+    console.error("createLog: Missing parameters", { message, userId, level });
+    return;
   }
 
   if (!Object.values(logLevels).includes(level)) {
-    return res.status(404).json({ error: "Invalid log level" });
+    console.error("createLog: Invalid log level", { message, userId, level });
+    return;
   }
 
   try {
-    const log = await Log.create({ message, user: userId, level });
-    res.status(200).json({ log, message: "Log created successfully" });
+    await Log.create({ message, user: userId, level });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error("createLog: Error creating log", err);
   }
 };
 

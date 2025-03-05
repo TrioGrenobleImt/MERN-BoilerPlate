@@ -6,6 +6,4 @@ const router = express.Router();
 
 router.get("/list", verifyToken({ role: "admin" }), getLogs);
 
-router.post("/new", verifyToken({ role: "admin" }), createLog);
-
 export default router;

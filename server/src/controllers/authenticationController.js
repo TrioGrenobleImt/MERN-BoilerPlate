@@ -3,6 +3,8 @@ import { generateAccessToken } from "../utils/generateAccessToken.js";
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import { Constants } from "../utils/constants.js";
+import { createLog } from "./logController.js";
+import { logLevels } from "../utils/enums/logLevel.js";
 
 /**
  * Registers a new user.
@@ -41,6 +43,12 @@ const register = async (req, res) => {
       httpOnly: true,
     });
 
+    createLog({
+      message: `Utilisateur '${username}' enregistré avec succès`,
+      userId: user._id,
+      level: logLevels.INFO,
+    });
+
     res.status(201).json({ user: user, message: "Registered successfully" });
   } catch (err) {
     return res.status(500).json({ error: err.message });
@@ -71,6 +79,11 @@ const login = async (req, res) => {
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
+      createLog({
+        message: `Erreur d'authentification pour l'utilisateur '${username}'`,
+        userId: user._id,
+        level: logLevels.ERROR,
+      });
       return res.status(400).json({ error: "Invalid credentials" });
     }
 
