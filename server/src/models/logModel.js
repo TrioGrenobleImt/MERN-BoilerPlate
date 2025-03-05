@@ -12,10 +12,6 @@ const LogSchema = new mongoose.Schema(
       required: true,
       default: logLevels.INFO,
     },
-    timestamp: {
-      type: Date,
-      required: true,
-    },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

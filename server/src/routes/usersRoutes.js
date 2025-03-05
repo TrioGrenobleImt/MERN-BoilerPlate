@@ -15,26 +15,26 @@ router.get("/list", verifyToken({ role: "admin" }), getUsers);
  * @route GET /:id
  * @description Retrieves a single user by their ID.
  */
-router.get("/:id", getUser);
+router.get("/:id", verifyToken({ role: "admin" }), getUser);
 
 /**
  * @route POST /new
  * @description Creates a new user with the provided data.
  */
-router.post("/new", createUser);
+router.post("/new", verifyToken({ role: "admin" }), createUser);
 
 /**
  * @route PUT /:id
  * @description Updates an existing user by their ID.
  * @param {string} id - The ID of the user to update.
  */
-router.put("/:id", updateUser);
+router.put("/:id", verifyToken({ role: "admin" }), updateUser);
 
 /**
  * @route DELETE /:id
  * @description Deletes a user by their ID.
  * @param {string} id - The ID of the user to delete.
  */
-router.delete("/:id", deleteUser);
+router.delete("/:id", verifyToken({ role: "admin" }), deleteUser);
 
 export default router;
