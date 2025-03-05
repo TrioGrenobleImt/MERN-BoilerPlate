@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axiosConfig from "../config/axiosConfig";
 import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { useAuthContext } from "../contexts/authContext";
 
 export const useRegister = () => {
