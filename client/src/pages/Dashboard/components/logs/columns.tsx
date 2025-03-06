@@ -1,4 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
+import { format } from "date-fns";
+import { LevelBadge } from "./levelBadge";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -14,19 +16,30 @@ export type Log = {
 
 export const columns: ColumnDef<Log>[] = [
   {
-    header: "Level",
     accessorKey: "level",
+    header: () => <div>Level</div>,
+    cell: ({ row }) => {
+      const value = row.getValue("level");
+
+      return <LevelBadge level={value as any} />;
+    },
   },
   {
-    header: "Message",
     accessorKey: "message",
+    header: () => <div>Message</div>,
   },
   {
     header: "User",
     accessorKey: "user.username",
   },
   {
-    header: "Date",
     accessorKey: "createdAt",
+    header: () => <div>Date</div>,
+    cell: ({ row }) => {
+      const value = row.getValue("createdAt");
+      const formatted = format(new Date(value as Date), "dd/MM/yyyy HH:mm");
+
+      return <div>{formatted}</div>;
+    },
   },
 ];

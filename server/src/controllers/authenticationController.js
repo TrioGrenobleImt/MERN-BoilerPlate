@@ -95,6 +95,12 @@ const login = async (req, res) => {
 
     const { password: userPassword, ...userWithoutPassword } = user._doc;
 
+    createLog({
+      message: `Utilisateur '${username}' connecté avec succès`,
+      userId: user._id,
+      level: logLevels.INFO,
+    });
+
     res.status(201).json({ user: userWithoutPassword, message: "Logged in successfully" });
   } catch (err) {
     return res.status(500).json({ error: err.message });

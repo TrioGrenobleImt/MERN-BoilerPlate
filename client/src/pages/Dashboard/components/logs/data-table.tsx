@@ -38,20 +38,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
             table.getRowModel().rows.map((row) => (
               <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
                 {row.getVisibleCells().map((cell) => {
-                  const columnId = cell.column.id;
-                  const value = row.getValue(columnId);
-
-                  return (
-                    <TableCell key={cell.id} className={cn(columnId === "level" && "flex items-center gap-2")}>
-                      {columnId === "createdAt" ? (
-                        <span>{format(new Date(value as Date), "dd/MM/yyyy HH:mm")}</span>
-                      ) : columnId === "level" ? (
-                        <LevelBadge level={value as any} />
-                      ) : (
-                        flexRender(cell.column.columnDef.cell, cell.getContext())
-                      )}
-                    </TableCell>
-                  );
+                  return <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>;
                 })}
               </TableRow>
             ))
