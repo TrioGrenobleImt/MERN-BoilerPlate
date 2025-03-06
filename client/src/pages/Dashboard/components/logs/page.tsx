@@ -1,4 +1,3 @@
-import { Loading } from "@/components/Loading";
 import axiosConfig from "@/config/axiosConfig";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -16,7 +15,7 @@ export const Logs = () => {
       setLogs(response.data.logs);
       toast.success(response.data.message);
     } catch (error: any) {
-      toast.error(error.response.data.error);
+      toast.error(error.response?.data?.error);
     } finally {
       setLoading(false);
     }
@@ -28,9 +27,8 @@ export const Logs = () => {
 
   return (
     <div>
-      {loading && <Loading />}
       <div className="container py-10 mx-auto">
-        <DataTable columns={columns} data={logs} />
+        <DataTable columns={columns} data={logs} fetchLogs={fetchAllLogs} isLoading={loading} />
       </div>
     </div>
   );
