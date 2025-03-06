@@ -6,7 +6,7 @@ import { ProtectedRoute } from "./authRequired";
 import { Dashboard } from "../pages/Dashboard/components/Dashboard";
 import { Home } from "../pages/Home/Home";
 import { Users } from "@/pages/Dashboard/components/Users";
-import { Logs } from "@/pages/Dashboard/components/Logs";
+import { Logs } from "@/pages/Dashboard/components/logs/page";
 import { Index } from "@/pages/Dashboard/Index";
 import { NavbarDashboard } from "@/components/NavBar/NavbarDashboard";
 

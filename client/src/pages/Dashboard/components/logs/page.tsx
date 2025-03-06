@@ -2,6 +2,8 @@ import { Loading } from "@/components/Loading";
 import axiosConfig from "@/config/axiosConfig";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { DataTable } from "./data-table";
+import { columns } from "./columns";
 
 export const Logs = () => {
   const [logs, setLogs] = useState([]);
@@ -27,18 +29,9 @@ export const Logs = () => {
   return (
     <div>
       {loading && <Loading />}
-      <ul>
-        {logs.map((log: any, index) => (
-          <>
-            <span className="font-bold">Log #{index}</span>
-            <li key={log._id}>
-              <p>{log.message}</p>
-              <p>{log.createdAt}</p>
-            </li>
-            <br />
-          </>
-        ))}
-      </ul>
+      <div className="container py-10 mx-auto">
+        <DataTable columns={columns} data={logs} />
+      </div>
     </div>
   );
 };
