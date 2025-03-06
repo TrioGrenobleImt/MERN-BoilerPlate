@@ -52,7 +52,7 @@ export function DataTable<TData, TValue>({ columns, data, fetchLogs, isLoading, 
     onColumnVisibilityChange: setColumnVisibility,
     initialState: {
       pagination: {
-        pageSize: 10, // Valeur par défaut des lignes par page
+        pageSize: 10, // Default rows per page
       },
     },
     state: {
@@ -62,15 +62,13 @@ export function DataTable<TData, TValue>({ columns, data, fetchLogs, isLoading, 
     },
   });
 
-  columns;
-
   return (
     <div className="border rounded-md">
       <div className="flex items-center justify-between p-4 text-2xl">
         <div className="flex gap-4">
           <div className="flex items-center gap-2 ">
             <Input
-              placeholder="Filter events..."
+              placeholder="Filter messages"
               value={(table.getColumn("message")?.getFilterValue() as string) ?? ""}
               onChange={(event) => table.getColumn("message")?.setFilterValue(event.target.value)}
               className="max-w-sm"
@@ -112,7 +110,7 @@ export function DataTable<TData, TValue>({ columns, data, fetchLogs, isLoading, 
               <EllipsisVertical />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent align="start">
             <DropdownMenuItem className="flex gap-4 text-destructive hover:!text-destructive" onClick={() => deleteAllLogs()}>
               <Trash className="w-4 h-4 " />
               <span>Delete all logs</span>
@@ -162,22 +160,22 @@ export function DataTable<TData, TValue>({ columns, data, fetchLogs, isLoading, 
       <Separator />
       {/* Pagination */}
       <div className="flex items-center justify-between p-4">
-        {/* Infos pagination */}
+        {/* Pagination info */}
         <div className="text-sm text-gray-600">
-          Page <strong>{table.getState().pagination.pageIndex + 1}</strong> sur <strong>{table.getPageCount()}</strong> • {data.length} {""}
-          entrées au total
+          Page <strong>{table.getState().pagination.pageIndex + 1}</strong> of <strong>{table.getPageCount()}</strong> • {data.length} {""}
+          total entries
         </div>
 
-        {/* Contrôles de pagination */}
+        {/* Pagination controls */}
         <div className="flex items-center space-x-2">
           <Button variant="outline" size="sm" onClick={() => table.setPageIndex(0)} disabled={!table.getCanPreviousPage()}>
-            Première
+            First
           </Button>
           <Button variant="outline" size="sm" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
-            Précédente
+            Previous
           </Button>
           <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
-            Suivante
+            Next
           </Button>
           <Button
             variant="outline"
@@ -185,26 +183,26 @@ export function DataTable<TData, TValue>({ columns, data, fetchLogs, isLoading, 
             onClick={() => table.setPageIndex(table.getPageCount() - 1)}
             disabled={!table.getCanNextPage()}
           >
-            Dernière
+            Last
           </Button>
 
-          {/* Sélecteur du nombre de lignes par page */}
+          {/* Rows per page selector */}
           <Select
             value={String(table.getState().pagination.pageSize)}
             onValueChange={(value) => table.setPageSize(value === "Infinity" ? data.length : Number(value))}
           >
             <SelectTrigger className="w-36">
               <SelectValue placeholder="Rows">
-                {table.getState().pagination.pageSize === data.length ? "Tout" : `${table.getState().pagination.pageSize} par page`}
+                {table.getState().pagination.pageSize === data.length ? "All" : `${table.getState().pagination.pageSize} per page`}
               </SelectValue>
             </SelectTrigger>
             <SelectContent>
-              {[5, 10, 25].map((size) => (
+              {[10, 25, 50].map((size) => (
                 <SelectItem key={size} value={String(size)}>
-                  {size} par page
+                  {size} per page
                 </SelectItem>
               ))}
-              <SelectItem value="Infinity">Tout</SelectItem>
+              <SelectItem value="Infinity">All</SelectItem>
             </SelectContent>
           </Select>
         </div>
