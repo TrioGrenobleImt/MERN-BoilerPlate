@@ -2,6 +2,17 @@ import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { LevelBadge } from "./levelBadge";
 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { Copy, MoreHorizontal } from "lucide-react";
+
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Log = {
@@ -40,6 +51,29 @@ export const columns: ColumnDef<Log>[] = [
       const formatted = format(new Date(value as Date), "dd/MM/yyyy HH:mm");
 
       return <div>{formatted}</div>;
+    },
+  },
+  {
+    id: "actions",
+    enableHiding: false,
+    header: "Actions",
+    cell: ({ row }) => {
+      const log = row.original;
+
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="w-8 h-8 p-0">
+              <MoreHorizontal />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start">
+            <DropdownMenuItem className="flex gap-4" onClick={() => navigator.clipboard.writeText(log._id)}>
+              <Copy className="w-4 h-4" /> Copy log ID
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
     },
   },
 ];
