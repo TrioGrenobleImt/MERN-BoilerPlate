@@ -4,7 +4,7 @@ import { LevelBadge } from "./levelBadge";
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown, Copy, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, Copy, MoreHorizontal, Trash } from "lucide-react";
 
 export type Log = {
   _id: string;
@@ -16,7 +16,7 @@ export type Log = {
   createdAt: Date;
 };
 
-export const columns: ColumnDef<Log>[] = [
+export const getColumns = (deleteLog: (id: string) => void): ColumnDef<Log>[] => [
   {
     accessorKey: "level",
     header: () => <div>Level</div>,
@@ -67,6 +67,10 @@ export const columns: ColumnDef<Log>[] = [
           <DropdownMenuContent align="start">
             <DropdownMenuItem className="flex gap-4" onClick={() => navigator.clipboard.writeText(log._id)}>
               <Copy className="w-4 h-4" /> Copy log ID
+            </DropdownMenuItem>
+            <DropdownMenuItem className="flex gap-4 text-destructive hover:!text-destructive" onClick={() => deleteLog(log._id)}>
+              <Trash className="w-4 h-4 " />
+              <span>Delete this log</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

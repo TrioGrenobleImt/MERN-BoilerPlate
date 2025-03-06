@@ -12,12 +12,18 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { EllipsisVertical, RefreshCw } from "lucide-react";
+import { EllipsisVertical, RefreshCw, Trash } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 
@@ -25,10 +31,11 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   fetchLogs: () => void;
+  deleteAllLogs: () => void;
   isLoading: boolean;
 }
 
-export function DataTable<TData, TValue>({ columns, data, fetchLogs, isLoading }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data, fetchLogs, isLoading, deleteAllLogs }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -54,6 +61,8 @@ export function DataTable<TData, TValue>({ columns, data, fetchLogs, isLoading }
       columnVisibility,
     },
   });
+
+  columns;
 
   return (
     <div className="border rounded-md">
@@ -96,9 +105,20 @@ export function DataTable<TData, TValue>({ columns, data, fetchLogs, isLoading }
             </Button>
           </div>
         </div>
-        <Button variant={"outline"}>
-          <EllipsisVertical />
-        </Button>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant={"outline"}>
+              <EllipsisVertical />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem className="flex gap-4 text-destructive hover:!text-destructive" onClick={() => deleteAllLogs()}>
+              <Trash className="w-4 h-4 " />
+              <span>Delete all logs</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
       <Separator />
       <Table>
