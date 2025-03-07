@@ -1,5 +1,11 @@
 import { AlertCircle, CircleHelp, TriangleAlert, Bug, ShieldQuestion } from "lucide-react";
-import { logLevels } from "../../../../../../server/src/utils/enums/logLevel";
+
+const logLevels = {
+  info: "info",
+  warn: "warn",
+  error: "error",
+  debug: "debug",
+};
 
 const defaultIcons: Record<string, { icon: JSX.Element; color: string }> = {
   info: { icon: <CircleHelp size={16} />, color: "text-blue-500" },
