@@ -23,7 +23,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { EllipsisVertical, RefreshCw, Trash } from "lucide-react";
+import { EllipsisVertical, RefreshCw, Trash, UserPlus } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 
@@ -110,10 +110,10 @@ export function DataTable<TData, TValue>({ columns, data, fetchUsers, isLoading 
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start">
-            {/* <DropdownMenuItem className="flex gap-4 text-destructive hover:!text-destructive" onClick={() => deleteAllUsers()}>
-              <Trash className="w-4 h-4 " />
-              <span>Delete all users</span>
-            </DropdownMenuItem> */}
+            <DropdownMenuItem className="flex gap-4 " onClick={() => console.log("new user")}>
+              <UserPlus className="w-4 h-4 " />
+              <span>Create a user</span>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
