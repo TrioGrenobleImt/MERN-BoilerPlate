@@ -59,4 +59,8 @@ const deleteAllLogs = async (req, res) => {
   }
 };
 
-export { getLogs, createLog, deleteLog, deleteAllLogs };
+export const getLoglevels = (req, res) => {
+  res.status(200).json({ logLevels: Object.values(logLevels) });
+};
+
+export { getLogs, createLog, deleteLog, deleteAllLogs, getLoglevels };

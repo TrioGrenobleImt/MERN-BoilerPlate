@@ -5,6 +5,7 @@ import AuthenticationRoutes from "./routes/authenticationRoutes.js";
 import LogsRoutes from "./routes/logsRoutes.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import verifyToken from "./middlewares/verifyToken.js";
 
 //Cors configuration
 const corsOptions = {
@@ -29,7 +30,7 @@ app.use(cookieParser());
 
 app.use("/api/users", UsersRoutes);
 app.use("/api/auth", AuthenticationRoutes);
-app.use("/api/logs", LogsRoutes);
+app.use("/api/logs", verifyToken({ role: "admin" }), LogsRoutes);
 
 /**
  * Healthcheck
