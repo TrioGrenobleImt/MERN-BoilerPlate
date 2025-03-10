@@ -89,7 +89,7 @@ describe("GET /api/users/:id", () => {
   });
 });
 
-describe("POST /api/users/new", () => {
+describe("POST /api/users/", () => {
   afterEach(async () => {
     await User.deleteMany();
   });

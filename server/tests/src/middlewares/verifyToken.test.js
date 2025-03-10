@@ -1,26 +1,28 @@
 import mongoose from "mongoose";
-import { describe, it, beforeAll, afterAll, expect, vi } from "vitest";
+import { describe, it, beforeAll, afterAll, expect, vi, afterEach } from "vitest";
 import "dotenv/config";
 import request from "supertest";
-import jwt from "jsonwebtoken";
-
-// Import app, and mock User model
-import app from "../../../src/app";
 import User from "../../../src/models/userModel";
-
-vi.mock("../../../src/models/userModel.js"); // Mock le modèle User
+import jwt from "jsonwebtoken";
+import app from "../../../src/app";
+import { generateAccessToken } from "../../../src/utils/generateAccessToken";
 
 beforeAll(async () => {
-  // Connect to database
+  // Connexion à la base de données de test
   await mongoose.connect(process.env.MONG_URI_TEST);
 });
 
 afterAll(async () => {
-  // Disconnect from database
+  // Déconnexion de la base de données après les tests
   await mongoose.disconnect();
 });
 
 describe("verifyToken Middleware", () => {
+  afterEach(async () => {
+    // Nettoyage après chaque test
+    await User.deleteMany();
+  });
+
   it("should return 401 if no token is provided", async () => {
     const res = await request(app).get("/api/users/").send();
 
@@ -39,17 +41,36 @@ describe("verifyToken Middleware", () => {
     const user = { id: "userId123" };
     const token = jwt.sign(user, process.env.SECRET_ACCESS_TOKEN);
 
-    const res = await request(app).get("/api/users/").set("Cookie", `__access__token=${token}`).send();
+    const res = await request(app).get("/api/auth/me/").set("Cookie", `__access__token=${token}`).send();
+
+    expect(res.status).not.toBe(401);
+    expect(res.status).not.toBe(403);
+  });
+
+  it("should return 400 if the user does not exist", async () => {
+    const nonExistentUserId = { id: new mongoose.Types.ObjectId() };
+    const token = jwt.sign(nonExistentUserId, process.env.SECRET_ACCESS_TOKEN);
+
+    const res = await request(app).get("/api/users").set("Cookie", `__access__token=${token}`).send();
+
+    console.log(res);
 
     expect(res.status).toBe(400);
+    expect(res.body.message).toBe("No such user");
   });
 
   it("should return 403 if the user is not admin for admin routes", async () => {
-    User.findById.mockResolvedValue({ _id: "userId123", role: "user" });
+    const user = await User.create({
+      username: "test",
+      email: "test@gmail.com",
+      password: "test",
+    });
 
-    const validToken = jwt.sign({ id: "userId123" }, process.env.SECRET_ACCESS_TOKEN);
-    const res = await request(app).get("/api/users/list").set("Cookie", `__access__token=${validToken}`).send();
+    const res = await request(app)
+      .get("/api/users/")
+      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
 
+    // Vérifiez que l'accès est restreint
     expect(res.status).toBe(403);
     expect(res.body.message).toBe("Access restricted to administrators");
   });
@@ -58,12 +79,12 @@ describe("verifyToken Middleware", () => {
     const user = { id: "userId123" };
     const token = jwt.sign(user, process.env.SECRET_ACCESS_TOKEN);
 
-    const findByIdMock = vi.spyOn(User, "findById").mockRejectedValue(new Error("Database error"));
+    const findByIdMock = vi.spyOn(User, "findOne").mockRejectedValue(new Error("Database error"));
 
     const res = await request(app).get("/api/users/").set("Cookie", `__access__token=${token}`).send();
 
     expect(res.status).toBe(500);
-    expect(res.body.message).toBe("Internal server error");
+    expect(res.body.error).toBe("Database error");
 
     findByIdMock.mockRestore();
   });

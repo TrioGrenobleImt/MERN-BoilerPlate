@@ -21,14 +21,14 @@ const verifyToken = ({ role } = {}) => {
 
       if (role === userRoles.ADMIN) {
         try {
-          const user = await User.findById(payload.id);
+          const user = await User.findOne({ _id: payload.id });
 
           if (!user) return res.status(400).json({ message: "No such user" });
           if (user.role !== userRoles.ADMIN) {
             return res.status(403).json({ message: "Access restricted to administrators" });
           }
         } catch (error) {
-          return res.status(500).json({ message: "Internal server error" });
+          return res.status(500).json({ error: error.message });
         }
       }
 

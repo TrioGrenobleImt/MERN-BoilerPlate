@@ -5,18 +5,18 @@ import verifyToken from "../middlewares/verifyToken.js";
 const router = express.Router();
 
 /**
- * @route GET /
- * @description Retrieves a list of all users.
- * @middleware verifyToken({ role: "admin" }) - Ensures the user has an admin role to access this route.
- */
-router.get("/", verifyToken({ role: "admin" }), getUsers);
-
-/**
  * @route GET /:id
  * @description Retrieves a single user by their ID.
  * @middleware verifyToken({ role: "admin" }) - Ensures the user has an admin role to access this route.
  */
 router.get("/:id", verifyToken({ role: "admin" }), getUser);
+
+/**
+ * @route GET /
+ * @description Retrieves a list of all users.
+ * @middleware verifyToken({ role: "admin" }) - Ensures the user has an admin role to access this route.
+ */
+router.get("/", verifyToken({ role: "admin" }), getUsers);
 
 /**
  * @route POST /
