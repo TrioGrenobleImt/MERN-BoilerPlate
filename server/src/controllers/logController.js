@@ -59,7 +59,7 @@ const deleteAllLogs = async (req, res) => {
   }
 };
 
-export const getLoglevels = (req, res) => {
+const getLoglevels = (req, res) => {
   res.status(200).json({ logLevels: Object.values(logLevels) });
 };
 
