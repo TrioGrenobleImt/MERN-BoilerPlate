@@ -4,11 +4,11 @@ import "dotenv/config";
 import request from "supertest";
 import jwt from "jsonwebtoken";
 
-// Import server, app, and mock User model
-import app from "../src/app";
-import User from "../src/models/userModel.js";
+// Import app, and mock User model
+import app from "../../../src/app";
+import User from "../../../src/models/userModel";
 
-vi.mock("../src/models/userModel.js"); // Mock le modèle User
+vi.mock("../../../src/models/userModel.js"); // Mock le modèle User
 
 beforeAll(async () => {
   // Connect to database
@@ -22,14 +22,14 @@ afterAll(async () => {
 
 describe("verifyToken Middleware", () => {
   it("should return 401 if no token is provided", async () => {
-    const res = await request(app).get("/api/users/list").send();
+    const res = await request(app).get("/api/users/").send();
 
     expect(res.status).toBe(401);
     expect(res.body.message).toBe("Not Authenticated");
   });
 
   it("should return 403 if the token is invalid", async () => {
-    const res = await request(app).get("/api/users/list").set("Cookie", "__access__token=invalidtoken").send();
+    const res = await request(app).get("/api/users/").set("Cookie", "__access__token=invalidtoken").send();
 
     expect(res.status).toBe(403);
     expect(res.body.message).toBe("Access Token is invalid");
@@ -39,7 +39,7 @@ describe("verifyToken Middleware", () => {
     const user = { id: "userId123" };
     const token = jwt.sign(user, process.env.SECRET_ACCESS_TOKEN);
 
-    const res = await request(app).get("/api/users/list").set("Cookie", `__access__token=${token}`).send();
+    const res = await request(app).get("/api/users/").set("Cookie", `__access__token=${token}`).send();
 
     expect(res.status).toBe(400);
   });
@@ -60,7 +60,7 @@ describe("verifyToken Middleware", () => {
 
     const findByIdMock = vi.spyOn(User, "findById").mockRejectedValue(new Error("Database error"));
 
-    const res = await request(app).get("/api/users/list").set("Cookie", `__access__token=${token}`).send();
+    const res = await request(app).get("/api/users/").set("Cookie", `__access__token=${token}`).send();
 
     expect(res.status).toBe(500);
     expect(res.body.message).toBe("Internal server error");

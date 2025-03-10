@@ -1,7 +1,7 @@
 import { describe, it, beforeEach, afterEach, expect, vi } from "vitest";
 import sinon from "sinon";
 import mongoose from "mongoose";
-import { connectToDatabase } from "../src/database/connectToDB";
+import { connectToDatabase } from "../../../src/database/connectToDB";
 
 describe("connectToDatabase", () => {
   let connectStub;
@@ -38,7 +38,7 @@ describe("connectToDatabase", () => {
 
     expect(connectStub.calledOnce).toBe(true);
     expect(connectStub.calledWith(process.env.MONG_URI)).toBe(true);
-    expect(consoleErrorSpy).toHaveBeenCalledWith(error);
+    expect(consoleErrorSpy).toHaveBeenCalledWith("Error connecting to the database: ", error);
 
     consoleErrorSpy.mockRestore();
   });
