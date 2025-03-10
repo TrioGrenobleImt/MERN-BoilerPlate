@@ -1,14 +1,15 @@
 import express from "express";
 import { deleteAllLogs, deleteLog, getLogs, getLoglevels } from "../controllers/logController.js";
+import verifyToken from "../middlewares/verifyToken.js";
 
 const router = express.Router();
 
-router.get("/", getLogs);
+router.get("/", verifyToken({ role: "admin" }), getLogs);
 
-router.get("/log-levels", getLoglevels);
+router.get("/log-levels", verifyToken({ role: "admin" }), getLoglevels);
 
-router.delete("/:id", deleteLog);
+router.delete("/:id", verifyToken({ role: "admin" }), deleteLog);
 
-router.delete("/", deleteAllLogs);
+router.delete("/", verifyToken({ role: "admin" }), deleteAllLogs);
 
 export default router;
