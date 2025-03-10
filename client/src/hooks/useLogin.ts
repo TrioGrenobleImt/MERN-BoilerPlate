@@ -7,7 +7,7 @@ import { useAuthContext } from "../contexts/authContext";
 export const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { authUser, setAuthUser } = useAuthContext();
+  const { setAuthUser } = useAuthContext();
 
   const login = async ({ username, password }: { username: string; password: string }) => {
     const success = handleInputsError(username, password);
