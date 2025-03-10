@@ -14,7 +14,6 @@ import { NavbarDashboard } from "@/components/NavBar/NavbarDashboard";
 export const Router = () => {
   return (
     <Routes>
-      {/* Routes sans layout */}
       <Route element={<LayoutWrapper withLayout={false} />}>
         <Route
           path="/login"
@@ -47,7 +46,6 @@ export const Router = () => {
         </Route>
       </Route>
 
-      {/* Routes avec layout */}
       <Route element={<LayoutWrapper withLayout={true} />}>
         <Route path="/" element={<Home />} />
         <Route
