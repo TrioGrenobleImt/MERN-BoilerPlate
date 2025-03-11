@@ -53,8 +53,6 @@ describe("verifyToken Middleware", () => {
 
     const res = await request(app).get("/api/users").set("Cookie", `__access__token=${token}`).send();
 
-    console.log(res);
-
     expect(res.status).toBe(400);
     expect(res.body.message).toBe("No such user");
   });
