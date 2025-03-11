@@ -3,6 +3,7 @@ import { describe, it, beforeAll, afterAll, expect, afterEach, vitest, vi } from
 import "dotenv/config";
 import request from "supertest";
 import User from "../../../src/models/userModel.js";
+import Log from "../../../src/models/logModel.js";
 import { generateAccessToken } from "../../../src/utils/generateAccessToken.js";
 
 //Import server and app
@@ -15,6 +16,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
   //Disconnect from database
+  await Log.deleteMany();
   await mongoose.disconnect();
 });
 

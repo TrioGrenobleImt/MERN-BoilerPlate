@@ -5,6 +5,7 @@ import request from "supertest";
 import User from "../../../src/models/userModel.js";
 import { logout } from "../../../src/controllers/authenticationController.js";
 import { generateAccessToken } from "../../../src/utils/generateAccessToken.js";
+import Log from "../../../src/models/logModel.js";
 
 //Import server and app
 import app from "../../../src/app.js";
@@ -16,6 +17,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
   //Disconnect from database
+  await Log.deleteMany();
   await mongoose.disconnect();
 });
 
