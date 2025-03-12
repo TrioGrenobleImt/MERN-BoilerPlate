@@ -3,17 +3,10 @@ import { format } from "date-fns";
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown, Copy, MoreHorizontal, Trash } from "lucide-react";
+import { ArrowUpDown, Copy, MoreHorizontal, Pencil, Trash } from "lucide-react";
+import { User } from "./page";
 
-export type User = {
-  _id: string;
-  username: string;
-  email: string;
-  role: string;
-  createdAt: Date;
-};
-
-export const getColumns = (deleteUser: (id: string) => void): ColumnDef<User>[] => [
+export const getColumns = (deleteUser: (id: string) => void, callback: (action: string, data: any) => void): ColumnDef<User>[] => [
   {
     accessorKey: "role",
     header: ({ column }) => (
@@ -70,8 +63,11 @@ export const getColumns = (deleteUser: (id: string) => void): ColumnDef<User>[] 
             <DropdownMenuItem className="flex gap-4" onClick={() => navigator.clipboard.writeText(user._id)}>
               <Copy className="w-4 h-4" /> Copy user ID
             </DropdownMenuItem>
+            <DropdownMenuItem className="flex gap-4" onClick={() => callback("update", user._id)}>
+              <Pencil className="w-4 h-4" /> Update this user
+            </DropdownMenuItem>
             <DropdownMenuItem className="flex gap-4 text-destructive hover:!text-destructive" onClick={() => deleteUser(user._id)}>
-              <Trash className="w-4 h-4" /> Delete user
+              <Trash className="w-4 h-4" /> Delete this user
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

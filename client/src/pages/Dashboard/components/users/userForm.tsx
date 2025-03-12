@@ -1,41 +1,66 @@
-import { createPlayerSchema } from "@/lib/zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-
-import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
 import axiosConfig from "@/config/axiosConfig";
 import { toast } from "sonner";
+import { User } from "./page";
+import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { createPlayerSchema, updatePlayerSchema } from "@/lib/zod";
 
 interface UserFormProps {
   dialog: (isOpen: boolean) => void;
   refresh: () => void;
+  action: string;
+  user?: User;
 }
 
-export const UserForm = ({ dialog, refresh }: UserFormProps) => {
+export const UserForm = ({ dialog, refresh, action, user }: UserFormProps) => {
   const [loading, setLoading] = useState(false);
 
-  const form = useForm<z.infer<typeof createPlayerSchema>>({
-    resolver: zodResolver(createPlayerSchema),
+  const form = useForm<z.infer<typeof createPlayerSchema> | z.infer<typeof updatePlayerSchema>>({
+    resolver: zodResolver(action === "create" ? createPlayerSchema : updatePlayerSchema),
     defaultValues: {
-      username: "",
-      email: "",
+      username: user?.username || "",
+      email: user?.email || "",
       password: "",
       confirmPassword: "",
-      role: "user",
+      role: user?.role || "user",
     },
   });
 
-  async function onSubmit(values: z.infer<typeof createPlayerSchema>) {
+  const onSubmit: SubmitHandler<z.infer<typeof createPlayerSchema> | z.infer<typeof updatePlayerSchema>> = async (values) => {
+    if (action === "create") {
+      await createUser(values as z.infer<typeof createPlayerSchema>);
+    } else if (action === "update") {
+      await updateUser(values as z.infer<typeof updatePlayerSchema>);
+    }
+  };
+
+  async function createUser(values: z.infer<typeof createPlayerSchema>) {
     const { confirmPassword, ...payload } = values;
 
     try {
       setLoading(true);
       const response = await axiosConfig.post("/users", payload);
+      toast.success(response.data.message);
+      form.reset();
+      dialog(false);
+      refresh();
+    } catch (error: any) {
+      toast.error(error.response.data.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function updateUser(values: z.infer<typeof updatePlayerSchema>) {
+    try {
+      setLoading(true);
+      const response = await axiosConfig.put(`/users/${user?._id}`, values);
       toast.success(response.data.message);
       form.reset();
       dialog(false);
@@ -63,7 +88,6 @@ export const UserForm = ({ dialog, refresh }: UserFormProps) => {
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="email"
@@ -77,35 +101,36 @@ export const UserForm = ({ dialog, refresh }: UserFormProps) => {
             </FormItem>
           )}
         />
-
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input type="password" placeholder="********" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="confirmPassword"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Confirm Password</FormLabel>
-              <FormControl>
-                <Input type="password" placeholder="********" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
+        {action === "create" && (
+          <>
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input type="password" placeholder="********" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Confirm Password</FormLabel>
+                  <FormControl>
+                    <Input type="password" placeholder="********" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </>
+        )}
         <FormField
           control={form.control}
           name="role"
@@ -113,7 +138,7 @@ export const UserForm = ({ dialog, refresh }: UserFormProps) => {
             <FormItem>
               <FormLabel>Role</FormLabel>
               <FormControl>
-                <Select defaultValue="user" onValueChange={field.onChange}>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a role for the new user" />
                   </SelectTrigger>
@@ -127,9 +152,8 @@ export const UserForm = ({ dialog, refresh }: UserFormProps) => {
             </FormItem>
           )}
         />
-
         <Button type="submit" disabled={loading}>
-          Submit
+          {action === "create" ? "Save" : "Update"}
         </Button>
       </form>
     </Form>

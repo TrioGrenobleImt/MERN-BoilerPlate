@@ -26,22 +26,19 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { EllipsisVertical, RefreshCw, UserPlus } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { Dialog, DialogFooter, DialogHeader, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { UserForm } from "./userForm";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   fetchUsers: () => void;
   isLoading: boolean;
+  callback: (action: string, data: any) => void;
 }
 
-export function DataTable<TData, TValue>({ columns, data, fetchUsers, isLoading }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data, fetchUsers, isLoading, callback }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [openDialog, setOpenDialog] = useState(false);
-  const [selectedUser, setSelectedUser] = useState("");
 
   const table = useReactTable({
     data,
@@ -114,7 +111,7 @@ export function DataTable<TData, TValue>({ columns, data, fetchUsers, isLoading 
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start">
-            <DropdownMenuItem className="flex gap-4 " onClick={() => setOpenDialog(true)}>
+            <DropdownMenuItem className="flex gap-4 " onClick={() => callback("create", null)}>
               <UserPlus className="w-4 h-4 " />
               <span>Create a user</span>
             </DropdownMenuItem>
@@ -204,17 +201,6 @@ export function DataTable<TData, TValue>({ columns, data, fetchUsers, isLoading 
           </Select>
         </div>
       </div>
-      {openDialog && (
-        <Dialog open={openDialog} onOpenChange={() => setOpenDialog(false)}>
-          <DialogContent className="sm:max-w-[625px]">
-            <DialogHeader>
-              <DialogTitle>Create a new user</DialogTitle>
-              <DialogDescription>Here you can give life to a new user</DialogDescription>
-            </DialogHeader>
-            <UserForm dialog={setOpenDialog} refresh={fetchUsers} />
-          </DialogContent>
-        </Dialog>
-      )}
     </div>
   );
 }
