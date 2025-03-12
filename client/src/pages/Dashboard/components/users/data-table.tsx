@@ -23,9 +23,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { EllipsisVertical, RefreshCw, Trash, UserPlus } from "lucide-react";
+import { EllipsisVertical, RefreshCw, UserPlus } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import { Dialog, DialogFooter, DialogHeader, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { UserForm } from "./userForm";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -38,6 +40,8 @@ export function DataTable<TData, TValue>({ columns, data, fetchUsers, isLoading 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedUser, setSelectedUser] = useState("");
 
   const table = useReactTable({
     data,
@@ -110,7 +114,7 @@ export function DataTable<TData, TValue>({ columns, data, fetchUsers, isLoading 
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start">
-            <DropdownMenuItem className="flex gap-4 " onClick={() => console.log("new user")}>
+            <DropdownMenuItem className="flex gap-4 " onClick={() => setOpenDialog(true)}>
               <UserPlus className="w-4 h-4 " />
               <span>Create a user</span>
             </DropdownMenuItem>
@@ -157,15 +161,11 @@ export function DataTable<TData, TValue>({ columns, data, fetchUsers, isLoading 
         </TableBody>
       </Table>
       <Separator />
-      {/* Pagination */}
       <div className="flex items-center justify-between p-4">
-        {/* Pagination info */}
         <div className="text-sm text-gray-600">
           Page <strong>{table.getState().pagination.pageIndex + 1}</strong> of <strong>{table.getPageCount()}</strong> • {data.length} {""}
           total entries
         </div>
-
-        {/* Pagination controls */}
         <div className="flex items-center space-x-2">
           <Button variant="outline" size="sm" onClick={() => table.setPageIndex(0)} disabled={!table.getCanPreviousPage()}>
             First
@@ -184,8 +184,6 @@ export function DataTable<TData, TValue>({ columns, data, fetchUsers, isLoading 
           >
             Last
           </Button>
-
-          {/* Rows per page selector */}
           <Select
             value={String(table.getState().pagination.pageSize)}
             onValueChange={(value) => table.setPageSize(value === "Infinity" ? data.length : Number(value))}
@@ -206,6 +204,17 @@ export function DataTable<TData, TValue>({ columns, data, fetchUsers, isLoading 
           </Select>
         </div>
       </div>
+      {openDialog && (
+        <Dialog open={openDialog} onOpenChange={() => setOpenDialog(false)}>
+          <DialogContent className="sm:max-w-[625px]">
+            <DialogHeader>
+              <DialogTitle>Create a new user</DialogTitle>
+              <DialogDescription>Here you can give life to a new user</DialogDescription>
+            </DialogHeader>
+            <UserForm dialog={setOpenDialog} refresh={fetchUsers} />
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 }

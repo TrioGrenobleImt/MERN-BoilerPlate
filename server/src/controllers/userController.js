@@ -1,5 +1,6 @@
 import User from "../models/userModel.js";
 import bcrypt from "bcrypt";
+import { userRoles } from "../utils/enums/userRoles.js";
 
 /**
  * Retrieves a single user by ID.
@@ -40,14 +41,19 @@ const getUsers = async (req, res) => {
  * @param {Object} res - The response object for sending results or errors.
  */
 const createUser = async (req, res) => {
-  const { email, username, password } = req.body;
+  const { email, username, password, role } = req.body;
   if (!email || !username || !password) {
     return res.status(404).json({ error: "Missing fields" });
   }
+
+  if (!Object.values(userRoles).includes(role)) {
+    return res.status(404).json({ error: "Invalid role" });
+  }
+
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await User.create({ email: email, username: username, password: hashedPassword });
+    const user = await User.create({ email, username, password: hashedPassword, role });
 
     const { password: userPassword, ...userWithoutPassword } = user._doc;
 
