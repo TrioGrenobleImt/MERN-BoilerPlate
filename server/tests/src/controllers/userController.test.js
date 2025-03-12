@@ -116,6 +116,23 @@ describe("POST /api/users/", () => {
     expect(response.body.message).toBe("User created successfully");
   });
 
+  it("should return an error if the role isnt valid", async () => {
+    const user = await User.create({ username: "test", email: "test@gmail.com", password: "testmdp", role: "admin" });
+
+    const response = await request(app)
+      .post("/api/users/")
+      .send({
+        username: "testuser",
+        email: "testuser@example.com",
+        password: "testpassword123",
+        role: "bouffonduroi",
+      })
+      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+    // Vérification du statut de la réponse et des données de l'utilisateur créé
+    expect(response.status).toBe(404);
+    expect(response.body.error).toBe("Invalid role");
+  });
+
   it("should return an error if required fields are missing", async () => {
     const user = await User.create({ username: "test", email: "test@gmail.com", password: "testmdp", role: "admin" });
 

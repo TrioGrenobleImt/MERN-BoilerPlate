@@ -46,7 +46,7 @@ const createUser = async (req, res) => {
     return res.status(404).json({ error: "Missing fields" });
   }
 
-  if (!Object.values(userRoles).includes(role)) {
+  if (role && !Object.values(userRoles).includes(role)) {
     return res.status(404).json({ error: "Invalid role" });
   }
 
