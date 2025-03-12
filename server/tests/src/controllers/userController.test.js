@@ -12,6 +12,7 @@ import app from "../../../src/app.js";
 beforeAll(async () => {
   //Connect to database
   await mongoose.connect(process.env.MONG_URI_TEST);
+  await User.deleteMany();
 });
 
 afterAll(async () => {
