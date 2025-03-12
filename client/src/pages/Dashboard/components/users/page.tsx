@@ -56,6 +56,10 @@ export const Users = () => {
         setAction("update");
         setOpenDialog(true);
         break;
+      case "delete":
+        setSelectedUser(users.find((user) => user._id === data));
+        setAction("delete");
+        setOpenDialog(true);
       default:
         break;
     }
@@ -68,13 +72,7 @@ export const Users = () => {
   return (
     <div>
       <div className="container py-10 mx-auto">
-        <DataTable
-          columns={getColumns(deleteUser, callback)}
-          data={users}
-          fetchUsers={fetchUsers}
-          isLoading={loading}
-          callback={callback}
-        />
+        <DataTable columns={getColumns(callback)} data={users} fetchUsers={fetchUsers} isLoading={loading} callback={callback} />
       </div>
       {openDialog && (
         <Dialog open={openDialog} onOpenChange={() => setOpenDialog(false)}>

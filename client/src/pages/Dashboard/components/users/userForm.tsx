@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { createPlayerSchema, updatePlayerSchema } from "@/lib/zod";
+import { createPlayerSchema, updatePlayerSchema, deletePlayerSchema } from "@/lib/zod";
 
 interface UserFormProps {
   dialog: (isOpen: boolean) => void;
@@ -21,141 +21,250 @@ interface UserFormProps {
 export const UserForm = ({ dialog, refresh, action, user }: UserFormProps) => {
   const [loading, setLoading] = useState(false);
 
-  const form = useForm<z.infer<typeof createPlayerSchema> | z.infer<typeof updatePlayerSchema>>({
-    resolver: zodResolver(action === "create" ? createPlayerSchema : updatePlayerSchema),
+  const createForm = useForm<z.infer<typeof createPlayerSchema>>({
+    resolver: zodResolver(createPlayerSchema),
+    defaultValues: {
+      username: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      role: "user",
+    },
+  });
+
+  const updateForm = useForm<z.infer<typeof updatePlayerSchema>>({
+    resolver: zodResolver(updatePlayerSchema),
     defaultValues: {
       username: user?.username || "",
       email: user?.email || "",
-      password: "",
-      confirmPassword: "",
       role: user?.role || "user",
     },
   });
 
-  const onSubmit: SubmitHandler<z.infer<typeof createPlayerSchema> | z.infer<typeof updatePlayerSchema>> = async (values) => {
-    if (action === "create") {
-      await createUser(values as z.infer<typeof createPlayerSchema>);
-    } else if (action === "update") {
-      await updateUser(values as z.infer<typeof updatePlayerSchema>);
-    }
-  };
+  const deleteForm = useForm<z.infer<typeof deletePlayerSchema>>({
+    resolver: zodResolver(deletePlayerSchema),
+    defaultValues: {
+      confirmDelete: "",
+    },
+  });
 
-  async function createUser(values: z.infer<typeof createPlayerSchema>) {
+  const onCreateSubmit: SubmitHandler<z.infer<typeof createPlayerSchema>> = async (values) => {
     const { confirmPassword, ...payload } = values;
-
     try {
       setLoading(true);
       const response = await axiosConfig.post("/users", payload);
       toast.success(response.data.message);
-      form.reset();
+      createForm.reset();
       dialog(false);
       refresh();
     } catch (error: any) {
-      toast.error(error.response.data.message);
+      toast.error(error.response.data.error);
     } finally {
       setLoading(false);
     }
-  }
+  };
 
-  async function updateUser(values: z.infer<typeof updatePlayerSchema>) {
+  const onUpdateSubmit: SubmitHandler<z.infer<typeof updatePlayerSchema>> = async (values) => {
     try {
       setLoading(true);
       const response = await axiosConfig.put(`/users/${user?._id}`, values);
       toast.success(response.data.message);
-      form.reset();
+      updateForm.reset();
       dialog(false);
       refresh();
     } catch (error: any) {
-      toast.error(error.response.data.message);
+      toast.error(error.response.data.error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const onDeleteSubmit: SubmitHandler<z.infer<typeof deletePlayerSchema>> = async (values) => {
+    if (values.confirmDelete.toLowerCase() === "delete") {
+      try {
+        setLoading(true);
+        const response = await axiosConfig.delete(`/users/${user?._id}`);
+        toast.success(response.data.message);
+        dialog(false);
+        refresh();
+      } catch (error: any) {
+        toast.error(error.response.data.error);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      toast.error("Confirmation text is incorrect");
+    }
+  };
+
+  if (action === "create") {
+    return (
+      <Form {...createForm}>
+        <form onSubmit={createForm.handleSubmit(onCreateSubmit)} className="space-y-8">
+          <FormField
+            control={createForm.control}
+            name="username"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Username</FormLabel>
+                <FormControl>
+                  <Input placeholder="john_doe" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={createForm.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input placeholder="john.doe@gmail.com" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={createForm.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input type="password" placeholder="********" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={createForm.control}
+            name="confirmPassword"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Confirm Password</FormLabel>
+                <FormControl>
+                  <Input type="password" placeholder="********" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={createForm.control}
+            name="role"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Role</FormLabel>
+                <FormControl>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a role for the new user" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="user">Utilisateur</SelectItem>
+                      <SelectItem value="admin">Administrateur</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit" disabled={loading}>
+            Save
+          </Button>
+        </form>
+      </Form>
+    );
   }
 
-  return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input placeholder="john_doe" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input placeholder="john.doe@gmail.com" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        {action === "create" && (
-          <>
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input type="password" placeholder="********" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="confirmPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Confirm Password</FormLabel>
-                  <FormControl>
-                    <Input type="password" placeholder="********" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </>
-        )}
-        <FormField
-          control={form.control}
-          name="role"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Role</FormLabel>
-              <FormControl>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a role for the new user" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="user">Utilisateur</SelectItem>
-                    <SelectItem value="admin">Administrateur</SelectItem>
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit" disabled={loading}>
-          {action === "create" ? "Save" : "Update"}
-        </Button>
-      </form>
-    </Form>
-  );
+  if (action === "update") {
+    return (
+      <Form {...updateForm}>
+        <form onSubmit={updateForm.handleSubmit(onUpdateSubmit)} className="space-y-8">
+          <FormField
+            control={updateForm.control}
+            name="username"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Username</FormLabel>
+                <FormControl>
+                  <Input placeholder="john_doe" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={updateForm.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input placeholder="john.doe@gmail.com" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={updateForm.control}
+            name="role"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Role</FormLabel>
+                <FormControl>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a role for the new user" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="user">Utilisateur</SelectItem>
+                      <SelectItem value="admin">Administrateur</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit" disabled={loading}>
+            Update
+          </Button>
+        </form>
+      </Form>
+    );
+  }
+
+  if (action === "delete") {
+    return (
+      <Form {...deleteForm}>
+        <form onSubmit={deleteForm.handleSubmit(onDeleteSubmit)} className="space-y-8">
+          <FormField
+            control={deleteForm.control}
+            name="confirmDelete"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Type "DELETE" to confirm</FormLabel>
+                <FormControl>
+                  <Input placeholder="DELETE" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit" disabled={loading}>
+            Delete
+          </Button>
+        </form>
+      </Form>
+    );
+  }
+
+  return null;
 };

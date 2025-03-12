@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowUpDown, Copy, MoreHorizontal, Pencil, Trash } from "lucide-react";
 import { User } from "./page";
 
-export const getColumns = (deleteUser: (id: string) => void, callback: (action: string, data: any) => void): ColumnDef<User>[] => [
+export const getColumns = (callback: (action: string, data: any) => void): ColumnDef<User>[] => [
   {
     accessorKey: "role",
     header: ({ column }) => (
@@ -66,7 +66,7 @@ export const getColumns = (deleteUser: (id: string) => void, callback: (action: 
             <DropdownMenuItem className="flex gap-4" onClick={() => callback("update", user._id)}>
               <Pencil className="w-4 h-4" /> Update this user
             </DropdownMenuItem>
-            <DropdownMenuItem className="flex gap-4 text-destructive hover:!text-destructive" onClick={() => deleteUser(user._id)}>
+            <DropdownMenuItem className="flex gap-4 text-destructive hover:!text-destructive" onClick={() => callback("delete", user._id)}>
               <Trash className="w-4 h-4" /> Delete this user
             </DropdownMenuItem>
           </DropdownMenuContent>

@@ -42,24 +42,42 @@ const getUsers = async (req, res) => {
  */
 const createUser = async (req, res) => {
   const { email, username, password, role } = req.body;
-  if (!email || !username || !password) {
-    return res.status(404).json({ error: "Missing fields" });
-  }
 
-  if (role && !Object.values(userRoles).includes(role)) {
-    return res.status(404).json({ error: "Invalid role" });
+  // Check for missing fields
+  if (!email || !username || !password) {
+    return res.status(400).json({ error: "Missing fields" });
   }
 
   try {
+    // Check if email or username is already taken
+    const existingUserByEmail = await User.findOne({ email });
+    const existingUserByUsername = await User.findOne({ username });
+
+    if (existingUserByEmail) {
+      return res.status(409).json({ error: "Email already taken" });
+    }
+
+    if (existingUserByUsername) {
+      return res.status(409).json({ error: "Username already taken" });
+    }
+
+    // Validate role
+    if (role && !Object.values(userRoles).includes(role)) {
+      return res.status(400).json({ error: "Invalid role" });
+    }
+
+    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Create the user
     const user = await User.create({ email, username, password: hashedPassword, role });
 
+    // Remove password from the response
     const { password: userPassword, ...userWithoutPassword } = user._doc;
 
-    res.status(200).json({ user: userWithoutPassword, message: "User created successfully" });
+    res.status(201).json({ user: userWithoutPassword, message: "User created successfully" });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -70,18 +88,47 @@ const createUser = async (req, res) => {
  */
 const updateUser = async (req, res) => {
   const { id } = req.params;
+  const { email, username, password, role } = req.body;
+
   try {
-    if (req.body.password) {
-      const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    // Check if email or username is already taken by another user
+    if (email) {
+      const existingUserByEmail = await User.findOne({ email, _id: { $ne: id } });
+      if (existingUserByEmail) {
+        return res.status(409).json({ error: "Email already taken" });
+      }
+    }
+
+    if (username) {
+      const existingUserByUsername = await User.findOne({ username, _id: { $ne: id } });
+      if (existingUserByUsername) {
+        return res.status(409).json({ error: "Username already taken" });
+      }
+    }
+
+    // Validate role
+    if (role && !Object.values(userRoles).includes(role)) {
+      return res.status(400).json({ error: "Invalid role" });
+    }
+
+    // Hash the password if it's being updated
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
       req.body.password = hashedPassword;
     }
+
+    // Update the user
     const user = await User.findOneAndUpdate({ _id: id }, { ...req.body }, { new: true });
     if (!user) {
-      return res.status(400).json({ error: "No such user" });
+      return res.status(404).json({ error: "No such user" });
     }
-    res.status(200).json({ user, message: "User updated successfully" });
+
+    // Remove password from the response
+    const { password: userPassword, ...userWithoutPassword } = user._doc;
+
+    res.status(200).json({ user: userWithoutPassword, message: "User updated successfully" });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 

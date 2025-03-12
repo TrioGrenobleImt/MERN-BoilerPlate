@@ -31,3 +31,7 @@ export const updatePlayerSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
   role: z.string(),
 });
+
+export const deletePlayerSchema = z.object({
+  confirmDelete: z.string(),
+});
