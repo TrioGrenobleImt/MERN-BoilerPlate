@@ -42,8 +42,14 @@ Créez un fichier **.env** contenant les variables d'environnements du frontend.
 Exemple ci-dessous:
 
 ```env
-NEXT_PUBLIC_API_URL=
+VITE_API_URL=
 ```
+
+VITE_API_URL -> Adresse de connection à votre serveur backend
+
+Exemple: `http://localhost:5000/api`
+
+**(Le `/api` est important pour que les requêtes soient bien dirigées vers le serveur)**
 
 Installez les **packages** requis pour faire tourner votre client.
 
