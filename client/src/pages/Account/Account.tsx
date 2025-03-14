@@ -1,4 +1,3 @@
-import React from "react";
 import { useLogout } from "../../hooks/useLogout";
 import { useAuthContext } from "../../contexts/authContext";
 
