@@ -3,10 +3,11 @@ import User from "../models/userModel.js"; // Assurez-vous que le modèle User e
 import { userRoles } from "../utils/enums/userRoles.js";
 
 /**
- * Middleware pour vérifier le token JWT et, si spécifié, vérifier le rôle de l'utilisateur.
+ * Middleware to verify JWT token and, if specified, check the user's role.
  *
- * @param {Object} options - Options pour le middleware.
- * @param {string} [options.role] - Rôle requis pour accéder à la route (ex. "admin").
+ * @param {Object} options - Options for the middleware.
+ * @param {string} [options.role] - Required role to access the route (e.g., "admin").
+ * @returns {Function} Express middleware function.
  */
 const verifyToken = ({ role } = {}) => {
   return async (req, res, next) => {

@@ -27,6 +27,7 @@ app.use((req, res, next) => {
 app.use(cors(corsOptions));
 app.use(cookieParser());
 
+//routes
 app.use("/api/users", UsersRoutes);
 app.use("/api/auth", AuthenticationRoutes);
 app.use("/api/logs", LogsRoutes);

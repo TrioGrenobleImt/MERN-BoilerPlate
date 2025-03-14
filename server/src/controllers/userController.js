@@ -4,8 +4,12 @@ import { userRoles } from "../utils/enums/userRoles.js";
 
 /**
  * Retrieves a single user by ID.
+ *
  * @param {Object} req - The request object containing user ID in params.
+ * @param {Object} req.params - Route parameters.
+ * @param {string} req.params.id - The ID of the user to retrieve.
  * @param {Object} res - The response object for sending results or errors.
+ * @returns {Object} JSON response with user details or error message.
  */
 const getUser = async (req, res) => {
   const { id } = req.params;
@@ -23,8 +27,10 @@ const getUser = async (req, res) => {
 
 /**
  * Retrieves all users sorted by creation date.
+ *
  * @param {Object} req - The request object.
  * @param {Object} res - The response object for sending results or errors.
+ * @returns {Object} JSON response with a list of users or error message.
  */
 const getUsers = async (req, res) => {
   try {
@@ -37,8 +43,15 @@ const getUsers = async (req, res) => {
 
 /**
  * Creates a new user with the provided details.
+ *
  * @param {Object} req - The request object containing user data in body.
+ * @param {Object} req.body - Request body containing user details.
+ * @param {string} req.body.email - User's email address.
+ * @param {string} req.body.username - User's username.
+ * @param {string} req.body.password - User's password.
+ * @param {string} [req.body.role] - Optional. User's role.
  * @param {Object} res - The response object for sending results or errors.
+ * @returns {Object} JSON response with user details or error message.
  */
 const createUser = async (req, res) => {
   const { email, username, password, role } = req.body;
@@ -83,8 +96,17 @@ const createUser = async (req, res) => {
 
 /**
  * Updates a user's details by ID.
+ *
  * @param {Object} req - The request object containing user ID in params and updated data in body.
+ * @param {Object} req.params - Route parameters.
+ * @param {string} req.params.id - The ID of the user to update.
+ * @param {Object} req.body - Request body containing updated user details.
+ * @param {string} [req.body.email] - Updated email address.
+ * @param {string} [req.body.username] - Updated username.
+ * @param {string} [req.body.password] - Updated password.
+ * @param {string} [req.body.role] - Updated role.
  * @param {Object} res - The response object for sending results or errors.
+ * @returns {Object} JSON response with updated user details or error message.
  */
 const updateUser = async (req, res) => {
   const { id } = req.params;
@@ -134,8 +156,12 @@ const updateUser = async (req, res) => {
 
 /**
  * Deletes a user by ID.
+ *
  * @param {Object} req - The request object containing user ID in params.
+ * @param {Object} req.params - Route parameters.
+ * @param {string} req.params.id - The ID of the user to delete.
  * @param {Object} res - The response object for sending results or errors.
+ * @returns {Object} JSON response with success message or error message.
  */
 const deleteUser = async (req, res) => {
   const { id } = req.params;

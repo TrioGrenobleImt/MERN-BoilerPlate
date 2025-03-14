@@ -18,6 +18,7 @@ router.post("/register", register);
 
 /**
  * @route GET /logout
+ * @description Logs out the currently authenticated user.
  */
 router.get("/logout", logout);
 
