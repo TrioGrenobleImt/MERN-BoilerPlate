@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useRegister } from "../../hooks/useRegister";
+import { Link } from "react-router-dom";
 
 const Register = () => {
   const { loading, register } = useRegister();
@@ -28,6 +29,7 @@ const Register = () => {
         <button type="submit" onClick={handleSubmit} disabled={loading}>
           Register
         </button>
+        <Link to="/login">Login</Link>
       </form>
     </>
   );

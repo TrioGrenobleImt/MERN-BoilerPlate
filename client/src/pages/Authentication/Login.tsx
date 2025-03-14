@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useLogin } from "../../hooks/useLogin";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -20,7 +21,7 @@ const Login = () => {
         <button type="submit" onClick={handleLogin} disabled={loading}>
           Login
         </button>
-        {/* SE CONNECTER AVEC GOOGLE/ Apple ... */}
+        <Link to="/register">Register</Link>
       </form>
     </>
   );
