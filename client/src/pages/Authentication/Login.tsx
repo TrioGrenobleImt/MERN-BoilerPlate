@@ -56,7 +56,6 @@ export default function LoginPage() {
         <Card>
           <CardHeader className="text-center">
             <CardTitle className="text-xl">Welcome back</CardTitle>
-            <CardDescription>Login to your app with your username and password</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col items-center gap-6">
             <Form {...loginForm}>

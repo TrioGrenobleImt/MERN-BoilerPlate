@@ -109,11 +109,47 @@ describe("POST /api/users/", () => {
       })
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
     // Vérification du statut de la réponse et des données de l'utilisateur créé
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(201);
     expect(response.body.user.username).toBe("testuser");
     expect(response.body.user.email).toBe("testuser@example.com");
     expect(response.body.user.password).toBe(undefined);
     expect(response.body.message).toBe("User created successfully");
+  });
+
+  it("should return an error if required fields are missing", async () => {
+    const user = await User.create({ username: "test", email: "test@gmail.com", password: "testmdp", role: "admin" });
+
+    const response = await request(app)
+      .post("/api/users/")
+      .send({ username: "invaliduser", email: "invaliduser@example.com" })
+      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+
+    expect(response.status).toBe(400);
+    expect(response.body.error).toBe("Missing fields");
+  });
+
+  it("should return an error if the email already exist", async () => {
+    const user = await User.create({ username: "test", email: "test@gmail.com", password: "testmdp", role: "admin" });
+
+    const response = await request(app)
+      .post("/api/users/")
+      .send({ username: "userTes", email: "test@gmail.com", password: "testpassword123", role: "bouffonduroi" })
+      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+
+    expect(response.status).toBe(409);
+    expect(response.body.error).toBe("Email already taken");
+  });
+
+  it("should return an error if the username already exist", async () => {
+    const user = await User.create({ username: "test", email: "test@gmail.com", password: "testmdp", role: "admin" });
+
+    const response = await request(app)
+      .post("/api/users/")
+      .send({ username: "test", email: "testuser@example.com", password: "testpassword123", role: "bouffonduroi" })
+      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+
+    expect(response.status).toBe(409);
+    expect(response.body.error).toBe("Username already taken");
   });
 
   it("should return an error if the role isnt valid", async () => {
@@ -128,27 +164,14 @@ describe("POST /api/users/", () => {
         role: "bouffonduroi",
       })
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
-    // Vérification du statut de la réponse et des données de l'utilisateur créé
-    expect(response.status).toBe(404);
+
+    expect(response.status).toBe(400);
     expect(response.body.error).toBe("Invalid role");
-  });
-
-  it("should return an error if required fields are missing", async () => {
-    const user = await User.create({ username: "test", email: "test@gmail.com", password: "testmdp", role: "admin" });
-
-    const response = await request(app)
-      .post("/api/users/")
-      .send({ username: "invaliduser", email: "invaliduser@example.com" })
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
-    // Vérification que la réponse indique une erreur pour les champs manquants
-    expect(response.status).toBe(404); // Code d'erreur si des champs sont manquants
-    expect(response.body.error).toBe("Missing fields");
   });
 
   it("should return a 500 status if there is an error during user creation", async () => {
     const user = await User.create({ username: "test", email: "test@gmail.com", password: "testmdp", role: "admin" });
 
-    // Mock d'erreur lors de la création de l'utilisateur
     vi.spyOn(User, "create").mockImplementationOnce(() => {
       throw new Error("Test error");
     });
@@ -157,7 +180,7 @@ describe("POST /api/users/", () => {
       .post("/api/users/")
       .send({ username: "erroruser", email: "erroruser@example.com", password: "errorpassword123" })
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
-    // Vérification que l'erreur est bien gérée
+
     expect(response.status).toBe(500);
     expect(response.body.error).toBe("Test error");
   });
@@ -189,7 +212,31 @@ describe("PUT /api/users/:id", () => {
 
     expect(response.status).toBe(200);
     const updatedUser = await User.findById(user._id);
-    expect(updatedUser.password).not.toBe(user.password); // Vérifie que le mot de passe a été mis à jour
+    expect(updatedUser.password).not.toBe(user.password);
+  });
+
+  it("should return an error if the email already exists", async () => {
+    const user = await User.create({ username: "test", email: "test@gmail.com", password: "testPassword", role: "admin" });
+    const user2 = await User.create({ username: "test2", email: "test2@gmail.com", password: "testPassword" });
+
+    const response = await request(app)
+      .put(`/api/users/${user._id}`)
+      .send({ email: "test2@gmail.com" })
+      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+    expect(response.status).toBe(409);
+    expect(response.body.error).toBe("Email already taken");
+  });
+
+  it("should return an error if the username already exists", async () => {
+    const user = await User.create({ username: "test", email: "test@gmail.com", password: "testPassword", role: "admin" });
+    const user2 = await User.create({ username: "test2", email: "test2@gmail.com", password: "testPassword" });
+
+    const response = await request(app)
+      .put(`/api/users/${user._id}`)
+      .send({ username: "test2" })
+      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+    expect(response.status).toBe(409);
+    expect(response.body.error).toBe("Username already taken");
   });
 
   it("should return an error if the user doesn't exist", async () => {
@@ -200,8 +247,19 @@ describe("PUT /api/users/:id", () => {
       .put(`/api/users/${newUserId}`)
       .send({ username: "newUsername" })
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(404);
     expect(response.body.error).toBe("No such user");
+  });
+
+  it("should return an error if the role is invalid", async () => {
+    const user = await User.create({ username: "test", email: "test@gmail.com", password: "testPassword", role: "admin" });
+
+    const response = await request(app)
+      .put(`/api/users/${user._id}`)
+      .send({ role: "roleInexistant" })
+      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+    expect(response.status).toBe(400);
+    expect(response.body.error).toBe("Invalid role");
   });
 
   it("should return a 500 status if an error occurs", async () => {
