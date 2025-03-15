@@ -1,5 +1,16 @@
 # MERN-APP BOILERPLATE README
 
+Bienvenue dans le boilerplate MERN-APP, une solution complète pour démarrer rapidement avec une application full-stack moderne et sécurisée. Ce projet est conçu pour vous aider à créer des applications robustes avec une authentification sécurisée, une gestion des rôles, et bien plus encore.
+
+## Table des matières
+
+- [Backend](#backend)
+- [Frontend](#frontend)
+- [Tests unitaires](#tests-unitaires)
+- [Fonctionnalités](#fonctionnalités)
+- [Technologies utilisées](#technologies-utilisées)
+- [Auteur](#auteur)
+
 ## Backend
 
 Placez vous dans le répertoire server.
@@ -68,7 +79,7 @@ Et voila vous possédez une application d'authentification sécurisée.
 
 ## Tests unitaires
 
-Placez vous dans le répertoire server et lancez la commande suivante:
+Placez vous dans le répertoire server, vérifiez que votre serveur est éteint et lancez la commande suivante:
 
 ```shell
 $ npm run test
@@ -86,14 +97,21 @@ N'oubliez pas de relancer votre backend apèrs utilisation.
 
 ## Fonctionnalités
 
-- **CRUD Utilisateurs** : Créez, lisez, mettez à jour et supprimez des utilisateurs.
-- **Authentification sécurisée avec JWT** : Connexion et déconnexion avec JWT pour garantir la sécurité des données.
-- **Gestion des rôles** : Accès différencié aux utilisateurs selon leur rôle (Admin, User).
-- **Routes protégées** : Accès conditionnel à certaines pages selon les droits d'accès (Dashboard Admin, etc.).
-- **Routage conditionnel** : Possibilité de bloquer certaines routes selon l'état de connexion.
-- **Traduction avec I18n** : Support multilingue avec des fichiers de traduction JSON (`client/src/locales/**.json`).
-- **Interface moderne** : Utilisation de **ShadCN** et **TailwindCSS** pour un design réactif et élégant.
-- **Tests unitaires** : Tests unitaires mis en place pour assurer la stabilité de l'application.
+- 📜 **Gestion des logs** : Suivi de l'utilisation de l'application pour une meilleure maintenance et analyse.
+- 👥 **CRUD Utilisateurs** : Gérez les utilisateurs avec des opérations de création, lecture, mise à jour et suppression.
+- 🔒 **Authentification sécurisée avec JWT** : Connexion et déconnexion sécurisées avec des tokens JWT pour protéger les données.
+- 🏢 **Gestion des rôles** : Accès différencié selon les rôles des utilisateurs (Admin, User).
+- ✅ **Tests unitaires** : Tests unitaires pour assurer la stabilité de l'application.
+- 📝 **Backend commenté** : Tout le code backend est commenté pour une meilleure compréhension et maintenance.
+- 🔗 **Axios pour les requêtes API** : Utilisation d'Axios pour des requêtes HTTP simplifiées et efficaces.
+- 📊 **Dashboard Admin** : Interface dédiée pour la gestion des utilisateurs et le suivi des logs d'utilisation de l'application.
+- 🔐 **Routes protégées** : Accès conditionnel à certaines pages en fonction des droits d'accès (Dashboard Admin, etc.).
+- 🚧 **Routage conditionnel** : Bloquez certaines routes en fonction de l'état de connexion.
+- 🌙 **Gestion du thème** : Possibilité de basculer entre les thèmes "light" et "dark" pour une expérience utilisateur personnalisée.
+- 🌍 **Traduction avec I18n** : Support multilingue avec des fichiers de traduction JSON (`client/src/locales/**.json`).
+- 🎨 **Interface moderne** : Utilisation de **TailwindCSS** et **ShadCN** pour un design réactif et élégant.
+- 📋 **Formulaire de connexion** : Formulaire de connexion préconfiguré pour une intégration rapide.
+- 🔄 **Configuration Prettier** : Formattage du code intégré avec Prettier pour un style cohérent.
 
 ## Technologies utilisées
 
