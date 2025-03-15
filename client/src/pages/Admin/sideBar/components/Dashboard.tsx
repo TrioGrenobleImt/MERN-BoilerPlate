@@ -23,13 +23,13 @@ export const Dashboard = () => {
 
   useEffect(() => {
     fetchUsers();
-  });
+  }, []);
   return (
     <>
       {loading ? (
         <Loading />
       ) : (
-        <div className="flex flex-col p-4 space-y-4 md:space-y-6 md:p-8">
+        <div className="flex flex-col px-4 space-y-4 md:space-y-6 md:px-8">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">

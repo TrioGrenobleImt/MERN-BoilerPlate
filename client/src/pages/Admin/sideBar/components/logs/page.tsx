@@ -46,7 +46,7 @@ export const Logs = () => {
 
   return (
     <div>
-      <div className="container py-10 mx-auto">
+      <div className="container px-4 mx-auto">
         <DataTable columns={getColumns(deleteLog)} data={logs} fetchLogs={fetchAllLogs} isLoading={loading} deleteAllLogs={deleteAllLogs} />
       </div>
     </div>

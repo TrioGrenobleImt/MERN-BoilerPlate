@@ -52,7 +52,7 @@ export const Navbar = () => {
                 </Button>
               )}
               {authUser?.role === "admin" && (
-                <Button onClick={() => navigate("/admin")} variant="link">
+                <Button onClick={() => navigate("/admin/dashboard")} variant="link">
                   {t("navbar.dashboard")}
                 </Button>
               )}
@@ -93,7 +93,11 @@ export const Navbar = () => {
               {t("navbar.account")}
             </Button>
             {authUser?.role === "admin" && (
-              <Button onClick={() => closeDialogAndNavigate("/admin")} variant="link" className="flex items-center justify-start gap-4">
+              <Button
+                onClick={() => closeDialogAndNavigate("/admin/dashboard")}
+                variant="link"
+                className="flex items-center justify-start gap-4"
+              >
                 <Wrench className="w-4 h-4" />
                 {t("navbar.dashboard")}
               </Button>
