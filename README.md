@@ -1,22 +1,29 @@
 # MERN-APP BOILERPLATE README
 
-Bienvenue dans le boilerplate MERN-APP, une solution complète pour démarrer rapidement avec une application full-stack moderne et sécurisée. Ce projet est conçu pour vous aider à créer des applications robustes avec une authentification sécurisée, une gestion des rôles, et bien plus encore.
+Welcome to the MERN-APP boilerplate, a complete solution to quickly start a modern and secure full-stack application. This project is designed to help you create robust applications with secure authentication, role management, and much more.
 
-## Table des matières
+## Table of Contents
 
+- [Technologies Used](#technologies-used)
 - [Backend](#backend)
 - [Frontend](#frontend)
-- [Tests unitaires](#tests-unitaires)
-- [Fonctionnalités](#fonctionnalités)
-- [Technologies utilisées](#technologies-utilisées)
-- [Auteur](#auteur)
+- [Unit Tests](#unit-tests)
+- [Features](#features)
+- [Author](#author)
+
+## Technologies Used
+
+![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
+![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
 
 ## Backend
 
-Placez vous dans le répertoire server.
-Vous devez d'abord créer un fichier **.env** contenant les variables d'environnements du backend.
+Navigate to the `server` directory.
+You first need to create a **.env** file containing the backend environment variables.
 
-Exemple ci-dessous:
+Example below:
 
 ```env
 PORT=
@@ -25,101 +32,94 @@ MONG_URI_TEST=
 SECRET_ACCESS_TOKEN=
 ```
 
-PORT -> Quel est le port que votre serveur va utiliser.  
-MONG_URI -> Adresse de connection à une base de données MongoDB (N'oubliez pas de mettre votre adresse IP dans **Network Access**).  
-MONG_URI_TEST -> Adresse de connection à une base de données pour les tests unitaires (Il est possible d'utiliser la meme que celle de l'appli mais les données seront vidées pendant les tests, **très peu conseillé**).  
-SECRET_ACCESS_TOKEN -> Token **secret** utilisé pour générer des tokens d'accès aux utilisateurs.
+PORT -> The port your server will use.  
+MONG_URI -> Connection address to a MongoDB database (Don't forget to add your IP address in **Network Access**).  
+MONG_URI_TEST -> Connection address to a test database (You can use the same as the main app, but the data will be wiped during tests, **not recommended**).  
+SECRET_ACCESS_TOKEN -> **Secret** token used to generate user access tokens.
 
-Ensuite, installez les **packages** requis pour faire tourner votre serveur
+Then, install the required **packages** to run your server:
 
 ```shell
 $ npm i
 ```
 
-Lancez maintenant le serveur avec la commande ci-dessous
+Now start the server with the command below:
 
 ```shell
 $ npm run dev
 ```
 
-Une fois cela fait, vous devriez voir un message dans votre console affichant que le server et lancé et est connecté à la base de données.
+Once done, you should see a message in your console indicating that the server is running and connected to the database.
 
 ## Frontend
 
-Pour le Frontend, rien de plus simple, placez vous dans le dossier client et suivez la procédure ci dessous:
+For the frontend, it's even simpler. Navigate to the `client` directory and follow the procedure below:
 
-Créez un fichier **.env** contenant les variables d'environnements du frontend.
+Create a **.env** file containing the frontend environment variables.
 
-Exemple ci-dessous:
+Example below:
 
 ```env
 VITE_API_URL=
 ```
 
-VITE_API_URL -> Adresse de connection à votre serveur backend
+VITE_API_URL -> Connection address to your backend server
 
-Exemple: `http://localhost:5000/api`
+Example: `http://localhost:5000/api`
 
-**(Le `/api` est important pour que les requêtes soient bien dirigées vers le serveur)**
+**(The `/api` is important to correctly route requests to the server)**
 
-Installez les **packages** requis pour faire tourner votre client.
+Install the required **packages** to run your client:
 
 ```shell
 $ npm i
 ```
 
-Lancez maintenant le frontend avec la commande suivante
+Now start the frontend with the following command:
 
 ```shell
 $ npm run dev
 ```
 
-Rendez vous sur l'URL écrite dans votre console.
-Et voila vous possédez une application d'authentification sécurisée.
+Go to the URL displayed in your console.
+And there you have it, a secure authentication application.
 
-## Tests unitaires
+## Unit Tests
 
-Placez vous dans le répertoire server, vérifiez que votre serveur est éteint et lancez la commande suivante:
+Navigate to the `server` directory, make sure your server is turned off, and run the following command:
 
 ```shell
 $ npm run test
 ```
 
-Les tests unitaires devraient se lancer un par un.
-Si vous souhaitez avoir le coverage totale lancez la commande suivante :
+Unit tests should run one by one.
+If you want full coverage, run the following command:
 
 ```shell
 $ npm run coverage
 ```
 
-Et votre coverage devrait se trouver dans le répertoire `coverage` du server.
-N'oubliez pas de relancer votre backend apèrs utilisation.
+Your coverage report should be located in the `coverage` directory of the server.
+Don't forget to restart your backend after running tests.
 
-## Fonctionnalités
+## Features
 
-- 📜 **Gestion des logs** : Suivi de l'utilisation de l'application pour une meilleure maintenance et analyse.
-- 👥 **CRUD Utilisateurs** : Gérez les utilisateurs avec des opérations de création, lecture, mise à jour et suppression.
-- 🔒 **Authentification sécurisée avec JWT** : Connexion et déconnexion sécurisées avec des tokens JWT pour protéger les données.
-- 🏢 **Gestion des rôles** : Accès différencié selon les rôles des utilisateurs (Admin, User).
-- ✅ **Tests unitaires** : Tests unitaires pour assurer la stabilité de l'application.
-- 📝 **Backend commenté** : Tout le code backend est commenté pour une meilleure compréhension et maintenance.
-- 🔗 **Axios pour les requêtes API** : Utilisation d'Axios pour des requêtes HTTP simplifiées et efficaces.
-- 📊 **Dashboard Admin** : Interface dédiée pour la gestion des utilisateurs et le suivi des logs d'utilisation de l'application.
-- 🔐 **Routes protégées** : Accès conditionnel à certaines pages en fonction des droits d'accès (Dashboard Admin, etc.).
-- 🚧 **Routage conditionnel** : Bloquez certaines routes en fonction de l'état de connexion.
-- 🌙 **Gestion du thème** : Possibilité de basculer entre les thèmes "light" et "dark" pour une expérience utilisateur personnalisée.
-- 🌍 **Traduction avec I18n** : Support multilingue avec des fichiers de traduction JSON (`client/src/locales/**.json`).
-- 🎨 **Interface moderne** : Utilisation de **TailwindCSS** et **ShadCN** pour un design réactif et élégant.
-- 📋 **Formulaire de connexion** : Formulaire de connexion préconfiguré pour une intégration rapide.
-- 🔄 **Configuration Prettier** : Formattage du code intégré avec Prettier pour un style cohérent.
+- 📜 **Log Management**: Track app usage for better maintenance and analysis.
+- 👥 **User CRUD**: Manage users with create, read, update, and delete operations.
+- 🔒 **Secure Authentication with JWT**: Secure login and logout with JWT tokens to protect data.
+- 🏢 **Role Management**: Differentiated access based on user roles (Admin, User).
+- ✅ **Unit Testing**: Unit tests to ensure application stability.
+- 📝 **Commented Backend**: All backend code is commented for better understanding and maintenance.
+- 🔗 **Axios for API Requests**: Uses Axios for simplified and efficient HTTP requests.
+- 📊 **Admin Dashboard**: Dedicated interface for user management and tracking application usage logs.
+- 🔐 **Protected Routes**: Conditional access to specific pages based on user rights (Admin Dashboard, etc.).
+- 🚧 **Conditional Routing**: Block certain routes based on login state.
+- 🌙 **Theme Management**: Toggle between "light" and "dark" themes for a customized user experience.
+- 🌍 **Internationalization with I18n**: Multi-language support with JSON translation files (`client/src/locales/**.json`).
+- 🎨 **Modern UI**: Uses **TailwindCSS** and **ShadCN** for a responsive and elegant design.
+- 📋 **Login Form**: Preconfigured login form for quick integration.
+- 🔄 **Prettier Configuration**: Integrated code formatting with Prettier for consistent styling.
 
-## Technologies utilisées
+## Author
 
-- [MongoDB](https://www.mongodb.com/)
-- [Express.js](https://expressjs.com/)
-- [React.js](https://reactjs.org/)
-- [Node.js](https://nodejs.org/en/)
-
-## Auteur
-
-- [Téo Villet](https://teovlt.github.io) - Développeur Web
+- [Téo Villet](https://teovlt.github.io) - Web Developer
