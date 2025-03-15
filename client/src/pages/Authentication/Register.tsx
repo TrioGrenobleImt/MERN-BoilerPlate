@@ -1,17 +1,17 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from "@/components/ui/form";
 import { registerSchema } from "@/lib/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FileJson } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { Link, redirect, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useAuthContext } from "@/contexts/authContext";
 import axiosConfig from "@/config/axiosConfig";
 import { useState } from "react";
+import TermsAndConditions from "./TermsAndConditions";
 
 export default function RegisterPage() {
   const registerForm = useForm<z.infer<typeof registerSchema>>({
@@ -27,6 +27,7 @@ export default function RegisterPage() {
   const { setAuthUser } = useAuthContext();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
 
   async function register(values: z.infer<typeof registerSchema>) {
     try {
@@ -50,12 +51,7 @@ export default function RegisterPage() {
   return (
     <div className="flex flex-col items-center justify-center gap-6 p-6 min-h-svh bg-muted md:p-10">
       <div className="flex flex-col w-full max-w-sm gap-6">
-        <div className="flex items-center self-center gap-2 font-medium">
-          <div className="flex items-center justify-center w-6 h-6 rounded-md bg-primary text-primary-foreground">
-            <FileJson className="size-4" />
-          </div>
-          MERN-Boilerplate
-        </div>
+        <div className="flex items-center self-center gap-2 text-xl font-medium">MERN-Boilerplate</div>
         <Card>
           <CardHeader className="text-center">
             <CardTitle className="text-xl">Create an account</CardTitle>
@@ -136,10 +132,15 @@ export default function RegisterPage() {
             </div>
           </CardContent>
         </Card>
-        <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary  ">
-          By clicking continue, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+        <div
+          onClick={() => setOpen(true)}
+          className="cursor-pointer text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary  "
+        >
+          By clicking register, you agree to our <span className="font-bold">Terms of Service</span> and{" "}
+          <span className="font-bold">Privacy Policy</span>.
         </div>
       </div>
+      {open && <TermsAndConditions open={open} setOpen={setOpen} />}
     </div>
   );
 }
