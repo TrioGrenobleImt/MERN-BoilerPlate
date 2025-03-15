@@ -10,3 +10,16 @@ i18n.use(initReactI18next).init({
   },
   lng: localStorage.getItem("i18nextLng") || "fr",
 });
+
+export const listOfLocales = ["en", "fr"];
+
+export const getFullNamesOfLocales = (locale: string) => {
+  switch (locale) {
+    case "en":
+      return "English";
+    case "fr":
+      return "Français";
+    default:
+      return "";
+  }
+};
