@@ -1,5 +1,3 @@
-"use client";
-
 import { type LucideIcon } from "lucide-react";
 import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
 import { useLocation, useNavigate } from "react-router-dom";

@@ -1,10 +1,8 @@
-"use client";
-
 import * as React from "react";
 import { Home, LogsIcon, Presentation, UsersIcon } from "lucide-react";
 import { NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail, useSidebar } from "@/components/ui/sidebar";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, useSidebar } from "@/components/ui/sidebar";
 import { useAuthContext } from "@/contexts/authContext";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";

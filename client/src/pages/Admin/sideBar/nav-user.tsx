@@ -1,11 +1,9 @@
-"use client";
-
-import { ChevronRight, ChevronsUpDown, LogOut, Plus } from "lucide-react";
-
+import { ChevronRight, LogOut, User } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -13,10 +11,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
 import { useLogout } from "@/hooks/useLogout";
+import { useNavigate } from "react-router-dom";
 
 export function NavUser({ user }: { user: { username: string; email: string; avatar: string } }) {
   const { logout, loading } = useLogout();
   const { isMobile } = useSidebar();
+  const navigate = useNavigate();
 
   return (
     <SidebarMenu>
@@ -54,7 +54,11 @@ export function NavUser({ user }: { user: { username: string; email: string; ava
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem disabled={loading} onClick={() => logout()}>
+            <DropdownMenuItem onClick={() => navigate("/account")} className="hover:cursor-pointer hover:underline">
+              <User />
+              My account
+            </DropdownMenuItem>
+            <DropdownMenuItem disabled={loading} onClick={() => logout()} className="hover:cursor-pointer">
               <LogOut />
               Log out
             </DropdownMenuItem>
