@@ -1,3 +1,16 @@
 {
-  "home": "Home"
+  "navbar": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "account": "My account",
+    "login": "Login"
+  },
+  "pages": {
+    "home": {
+      "welcome_message": "Welcome to this boilerplate!"
+    },
+    "account": {
+      "logout": "Logout"
+    }
+  }
 }

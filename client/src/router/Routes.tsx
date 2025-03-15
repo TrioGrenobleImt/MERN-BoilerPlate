@@ -9,7 +9,7 @@ import { Home } from "@/pages/Home/Home";
 import { Users } from "@/pages/Dashboard/components/users/page";
 import { Logs } from "@/pages/Dashboard/components/logs/page";
 import { Index } from "@/pages/Dashboard/Index";
-import { NavbarDashboard } from "@/components/NavBar/NavbarDashboard";
+import { NavbarDashboard } from "@/components/Navbar/NavbarDashboard";
 
 export const Router = () => {
   return (

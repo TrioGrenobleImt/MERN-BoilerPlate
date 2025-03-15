@@ -5,7 +5,7 @@ export const Home = () => {
 
   return (
     <div>
-      <h1>{t("home")}</h1>
+      <h1>{t("pages.home.welcome_message")}</h1>
     </div>
   );
 };

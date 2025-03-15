@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
-import { NavBar } from "@/components/NavBar/NavBar";
 import { Footer } from "@/components/Footer";
+import { Navbar } from "@/components/Navbar";
 
 interface LayoutWrapperProps {
   withLayout?: boolean;
@@ -9,7 +9,7 @@ interface LayoutWrapperProps {
 export const LayoutWrapper = ({ withLayout = true }: LayoutWrapperProps) => {
   return (
     <>
-      {withLayout && <NavBar />}
+      {withLayout && <Navbar />}
       <Outlet /> {/* Affiche les enfants des routes */}
       {withLayout && <Footer />}
     </>

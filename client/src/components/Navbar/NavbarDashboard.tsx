@@ -60,10 +60,7 @@ export const NavbarDashboard = () => {
             <Link to={`/admin/users`} className="hover:text-foreground">
               Utilisateurs
             </Link>
-            <Link
-              to={`/admin/logs`}
-              className={`text-foreground transition-colors ${isActive(`/admin/logs`, true) ? styleActive : styleDefault}`}
-            >
+            <Link to={`/admin/logs`} className="hover:text-foreground">
               Journal
             </Link>
           </nav>

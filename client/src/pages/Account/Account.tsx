@@ -1,9 +1,12 @@
 import { useLogout } from "../../hooks/useLogout";
 import { useAuthContext } from "../../contexts/authContext";
+import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
 
 const Account = () => {
   const { logout, loading } = useLogout();
   const { authUser } = useAuthContext();
+  const { t } = useTranslation();
 
   const handleClick = async (e: any) => {
     e.preventDefault();
@@ -11,16 +14,12 @@ const Account = () => {
   };
 
   return (
-    <div>
-      <h1>User informations</h1>
-
-      <p>Username: {authUser.username}</p>
-      <p>Email: {authUser.email}</p>
-
-      <button onClick={handleClick} disabled={loading}>
-        Logout
-      </button>
-    </div>
+    <>
+      <h1>Username : {authUser.username}</h1>
+      <Button onClick={handleClick} variant="outline" disabled={loading}>
+        {t("pages.account.logout")}
+      </Button>
+    </>
   );
 };
 
