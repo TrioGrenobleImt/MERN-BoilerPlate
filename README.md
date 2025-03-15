@@ -4,12 +4,16 @@ Welcome to the MERN-APP boilerplate, a complete solution to quickly start a mode
 
 ## Table of Contents
 
+- [Author](#author)
 - [Technologies Used](#technologies-used)
 - [Backend](#backend)
 - [Frontend](#frontend)
 - [Unit Tests](#unit-tests)
 - [Features](#features)
-- [Author](#author)
+
+## Author
+
+- [Téo Villet](https://github.com/teovlt) - Web Developer
 
 ## Technologies Used
 
@@ -119,7 +123,3 @@ Don't forget to restart your backend after running tests.
 - 🎨 **Modern UI**: Uses **TailwindCSS** and **ShadCN** for a responsive and elegant design.
 - 📋 **Login Form**: Preconfigured login form for quick integration.
 - 🔄 **Prettier Configuration**: Integrated code formatting with Prettier for consistent styling.
-
-## Author
-
-- [Téo Villet](https://teovlt.github.io) - Web Developer
