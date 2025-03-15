@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -25,7 +26,7 @@ import { Separator } from "@/components/ui/separator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { EllipsisVertical, RefreshCw, Trash } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { DialogHeader, DialogFooter, Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -39,6 +40,7 @@ export function DataTable<TData, TValue>({ columns, data, fetchLogs, isLoading, 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [openModal, setOpenModal] = useState(false);
 
   const table = useReactTable({
     data,
@@ -111,7 +113,7 @@ export function DataTable<TData, TValue>({ columns, data, fetchLogs, isLoading, 
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start">
-            <DropdownMenuItem className="flex gap-4 text-destructive hover:!text-destructive" onClick={() => deleteAllLogs()}>
+            <DropdownMenuItem className="flex gap-4 text-destructive hover:!text-destructive" onClick={() => setOpenModal(true)}>
               <Trash className="w-4 h-4 " />
               <span>Delete all logs</span>
             </DropdownMenuItem>
@@ -207,6 +209,29 @@ export function DataTable<TData, TValue>({ columns, data, fetchLogs, isLoading, 
           </Select>
         </div>
       </div>
+      {openModal && (
+        <Dialog open={openModal} onOpenChange={setOpenModal}>
+          <DialogContent className="sm:max-w-[450px]">
+            <DialogHeader>
+              <DialogTitle>Delete all logs</DialogTitle>
+              <DialogDescription>Are you sure you want to delete all logs? There is no going back</DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setOpenModal(false)}>
+                Cancel
+              </Button>
+              <Button
+                onClick={() => {
+                  deleteAllLogs();
+                  setOpenModal(false);
+                }}
+              >
+                Delete
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 }

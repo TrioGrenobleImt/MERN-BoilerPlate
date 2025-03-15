@@ -4,7 +4,7 @@ import { LevelBadge } from "./levelBadge";
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown, Copy, MoreHorizontal, Trash } from "lucide-react";
+import { ArrowUpDown, Copy, EllipsisVertical, Trash } from "lucide-react";
 
 export type Log = {
   _id: string;
@@ -61,7 +61,7 @@ export const getColumns = (deleteLog: (id: string) => void): ColumnDef<Log>[] =>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="w-8 h-8 p-0">
-              <MoreHorizontal />
+              <EllipsisVertical />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start">
