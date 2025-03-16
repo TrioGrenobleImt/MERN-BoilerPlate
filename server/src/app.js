@@ -32,6 +32,8 @@ app.use("/api/users", UsersRoutes);
 app.use("/api/auth", AuthenticationRoutes);
 app.use("/api/logs", LogsRoutes);
 
+app.use("/uploads", express.static("uploads"));
+
 /**
  * Healthcheck
  * @route GET /api/ping
