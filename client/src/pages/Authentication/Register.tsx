@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from "@/components/ui/form";
-import { registerSchema } from "@/lib/zod";
+import { getRegisterSchema } from "@/lib/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
@@ -11,9 +11,17 @@ import { toast } from "sonner";
 import { useAuthContext } from "@/contexts/authContext";
 import axiosConfig from "@/config/axiosConfig";
 import { useState } from "react";
-import TermsAndConditions from "./TermsAndConditions";
+import { useTranslation } from "react-i18next";
 
 export default function RegisterPage() {
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const navigate = useNavigate();
+  const { setAuthUser } = useAuthContext();
+  const { t } = useTranslation();
+
+  const registerSchema = getRegisterSchema(t);
   const registerForm = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -25,11 +33,6 @@ export default function RegisterPage() {
       confirmPassword: "",
     },
   });
-
-  const { setAuthUser } = useAuthContext();
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
 
   async function register(values: z.infer<typeof registerSchema>) {
     try {
@@ -56,7 +59,7 @@ export default function RegisterPage() {
         <div className="flex items-center self-center gap-2 text-xl font-medium">MERN-Boilerplate</div>
         <Card className="w-[650px] md:w-[500px]">
           <CardHeader className="text-center">
-            <CardTitle className="text-xl">Create an account</CardTitle>
+            <CardTitle className="text-xl">{t("pages.register.title")}</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col items-center gap-6">
             <Form {...registerForm}>
@@ -67,7 +70,7 @@ export default function RegisterPage() {
                     name="forename"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Forename</FormLabel>
+                        <FormLabel>{t("pages.register.forename")}</FormLabel>
                         <FormControl>
                           <Input {...field} />
                         </FormControl>
@@ -80,7 +83,7 @@ export default function RegisterPage() {
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Name</FormLabel>
+                        <FormLabel>{t("pages.register.name")}</FormLabel>
                         <FormControl>
                           <Input {...field} />
                         </FormControl>
@@ -94,11 +97,11 @@ export default function RegisterPage() {
                   name="username"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Username</FormLabel>
+                      <FormLabel>{t("pages.register.username")}</FormLabel>
                       <FormControl>
                         <Input {...field} />
                       </FormControl>
-                      <FormDescription>Enter your username</FormDescription>
+                      <FormDescription>{t("pages.register.username_description")}</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -109,11 +112,11 @@ export default function RegisterPage() {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel>{t("pages.register.email")}</FormLabel>
                       <FormControl>
                         <Input {...field} />
                       </FormControl>
-                      <FormDescription>Enter your email</FormDescription>
+                      <FormDescription>{t("pages.register.email_description")}</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -124,11 +127,11 @@ export default function RegisterPage() {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Password</FormLabel>
+                      <FormLabel>{t("pages.register.password")}</FormLabel>
                       <FormControl>
                         <Input type="password" {...field} />
                       </FormControl>
-                      <FormDescription>Enter your password</FormDescription>
+                      <FormDescription>{t("pages.register.password_description")}</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -139,38 +142,30 @@ export default function RegisterPage() {
                   name="confirmPassword"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Confirm password</FormLabel>
+                      <FormLabel>{t("pages.register.confirm_password")}</FormLabel>
                       <FormControl>
                         <Input type="password" {...field} />
                       </FormControl>
-                      <FormDescription>Enter your password again for verification</FormDescription>
+                      <FormDescription>{t("pages.register.confirm_password_description")}</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
 
                 <Button type="submit" className="w-full" disabled={loading}>
-                  Register
+                  {t("pages.register.register")}
                 </Button>
               </form>
             </Form>
             <div className="text-sm text-center">
-              Already have an account?{" "}
+              {t("pages.register.already_have_account")}{" "}
               <Link to="/login" className="underline underline-offset-4">
-                Login
+                {t("pages.register.login")}
               </Link>
             </div>
           </CardContent>
         </Card>
-        <div
-          onClick={() => setOpen(true)}
-          className="cursor-pointer text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary  "
-        >
-          By clicking register, you agree to our <span className="font-bold">Terms of Service</span> and{" "}
-          <span className="font-bold">Conditions</span>.
-        </div>
       </div>
-      {open && <TermsAndConditions open={open} setOpen={setOpen} />}
     </div>
   );
 }

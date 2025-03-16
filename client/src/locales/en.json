@@ -11,6 +11,52 @@
     },
     "account": {
       "logout": "Logout"
+    },
+    "login": {
+      "welcome_back": "Welcome Back",
+      "username": "Username",
+      "username_description": "Enter your username",
+      "password": "Password",
+      "password_description": "Enter your password",
+      "login_button": "Login",
+      "no_account": "Don't have an account?",
+      "sign_up": "Sign up",
+      "agree_terms": "By clicking login, you agree to our Terms of Service and Conditions.",
+      "errors": {
+        "username_min": "Username must be at least 2 characters long",
+        "username_max": "Username must be at most 25 characters long",
+        "password_min": "Password must be at least 6 characters long",
+        "password_max": "Password must be at most 255 characters long"
+      }
+    },
+    "register": {
+      "title": "Create an account",
+      "forename": "Forename",
+      "name": "Name",
+      "username": "Username",
+      "username_description": "Enter your username",
+      "email": "Email",
+      "email_description": "Enter your email",
+      "password": "Password",
+      "password_description": "Enter your password",
+      "confirm_password": "Confirm password",
+      "confirm_password_description": "Enter your password again for verification",
+      "register": "Register",
+      "already_have_account": "Already have an account?",
+      "login": "Login",
+      "terms_and_conditions": "By clicking register, you agree to our Terms of Service and Conditions.",
+      "errors": {
+        "name_min": "Name must be at least 2 characters long.",
+        "name_max": "Name must be at most 25 characters long.",
+        "forename_min": "Forename must be at least 2 characters long.",
+        "forename_max": "Forename must be at most 25 characters long.",
+        "username_min": "Username must be at least 2 characters long.",
+        "username_max": "Username must be at most 25 characters long.",
+        "invalid_email": "Please enter a valid email address.",
+        "password_min": "Password must be at least 6 characters long.",
+        "password_max": "Password must be at most 255 characters long.",
+        "passwords_mismatch": "The passwords do not match."
+      }
     }
   }
 }

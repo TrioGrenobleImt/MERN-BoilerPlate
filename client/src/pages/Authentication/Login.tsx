@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { loginSchema } from "@/lib/zod";
+import { getLoginSchema } from "@/lib/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
@@ -11,9 +11,17 @@ import { useAuthContext } from "@/contexts/authContext";
 import axiosConfig from "@/config/axiosConfig";
 import { toast } from "sonner";
 import { useState } from "react";
-import TermsAndConditions from "@/pages/Authentication/TermsAndConditions";
+import { useTranslation } from "react-i18next";
 
 export default function LoginPage() {
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const navigate = useNavigate();
+  const { setAuthUser } = useAuthContext();
+  const { t } = useTranslation();
+
+  const loginSchema = getLoginSchema(t);
   const loginForm = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -21,11 +29,6 @@ export default function LoginPage() {
       password: "",
     },
   });
-
-  const { setAuthUser } = useAuthContext();
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
 
   async function login(values: z.infer<typeof loginSchema>) {
     try {
@@ -47,11 +50,11 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col items-center justify-center gap-6 p-6 min-h-svh bg-muted md:p-10">
-      <div className="flex flex-col w-full max-w-sm gap-6">
-        <div className="flex items-center self-center gap-2 text-xl font-medium">MERN-BoilerPlate</div>
+      <div className="flex flex-col w-full max-w-md gap-6">
+        <div className="flex items-center self-center gap-2 text-xl font-medium">MERN_BoilerPlate</div>
         <Card>
           <CardHeader className="text-center">
-            <CardTitle className="text-xl">Welcome back</CardTitle>
+            <CardTitle className="text-xl">{t("pages.login.welcome_back")}</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col items-center gap-6">
             <Form {...loginForm}>
@@ -61,11 +64,11 @@ export default function LoginPage() {
                   name="username"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Username</FormLabel>
+                      <FormLabel>{t("pages.login.username")}</FormLabel>
                       <FormControl>
                         <Input {...field} />
                       </FormControl>
-                      <FormDescription>Enter your username</FormDescription>
+                      <FormDescription>{t("pages.login.username_description")}</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -76,39 +79,31 @@ export default function LoginPage() {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Password</FormLabel>
+                      <FormLabel>{t("pages.login.password")}</FormLabel>
                       <FormControl>
                         <Input type="password" {...field} />
                       </FormControl>
-                      <FormDescription>Enter your password</FormDescription>
+                      <FormDescription>{t("pages.login.password_description")}</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
 
                 <Button type="submit" className="w-full" disabled={loading}>
-                  Login
+                  {t("pages.login.login_button")}
                 </Button>
               </form>
             </Form>
 
             <div className="text-sm text-center">
-              Don&apos;t have an account?{" "}
+              {t("pages.login.no_account")}{" "}
               <Link to="/register" className="underline underline-offset-4">
-                Sign up
+                {t("pages.login.sign_up")}
               </Link>
             </div>
           </CardContent>
         </Card>
-        <div
-          onClick={() => setOpen(true)}
-          className="cursor-pointer text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary  "
-        >
-          By clicking login, you agree to our <span className="font-bold">Terms of Service</span> and{" "}
-          <span className="font-bold">Conditions</span>.
-        </div>
       </div>
-      {open && <TermsAndConditions open={open} setOpen={setOpen} />}
     </div>
   );
 }

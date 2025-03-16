@@ -11,6 +11,52 @@
     },
     "account": {
       "logout": "Se déconnecter"
+    },
+    "login": {
+      "welcome_back": "Content de vous revoir",
+      "username": "Nom d'utilisateur",
+      "username_description": "Entrez votre nom d'utilisateur",
+      "password": "Mot de passe",
+      "password_description": "Entrez votre mot de passe",
+      "login_button": "Connexion",
+      "no_account": "Vous n'avez pas de compte ?",
+      "sign_up": "S'inscrire",
+      "agree_terms": "En cliquant sur Connexion, vous acceptez nos Conditions Générales de Service.",
+      "errors": {
+        "username_min": "Le nom d'utilisateur doit comporter au moins 2 caractères",
+        "username_max": "Le nom d'utilisateur doit comporter au plus 25 caractères",
+        "password_min": "Le mot de passe doit comporter au moins 6 caractères",
+        "password_max": "Le mot de passe doit comporter au plus 255 caractères"
+      }
+    },
+    "register": {
+      "title": "Créer un compte",
+      "forename": "Prénom",
+      "name": "Nom",
+      "username": "Nom d'utilisateur",
+      "username_description": "Entrez votre nom d'utilisateur",
+      "email": "Email",
+      "email_description": "Entrez votre email",
+      "password": "Mot de passe",
+      "password_description": "Entrez votre mot de passe",
+      "confirm_password": "Confirmer le mot de passe",
+      "confirm_password_description": "Entrez à nouveau votre mot de passe pour vérification",
+      "register": "S'inscrire",
+      "already_have_account": "Vous avez déjà un compte ?",
+      "login": "Connexion",
+      "terms_and_conditions": "En cliquant sur s'inscrire, vous acceptez nos Conditions d'utilisation et Conditions.",
+      "errors": {
+        "name_min": "Le nom doit comporter au moins 2 caractères.",
+        "name_max": "Le nom doit comporter au maximum 25 caractères.",
+        "forename_min": "Le prénom doit comporter au moins 2 caractères.",
+        "forename_max": "Le prénom doit comporter au maximum 25 caractères.",
+        "username_min": "Le nom d'utilisateur doit comporter au moins 2 caractères.",
+        "username_max": "Le nom d'utilisateur doit comporter au maximum 25 caractères.",
+        "invalid_email": "Veuillez entrer une adresse email valide.",
+        "password_min": "Le mot de passe doit comporter au moins 6 caractères.",
+        "password_max": "Le mot de passe doit comporter au maximum 255 caractères.",
+        "passwords_mismatch": "Les mots de passe ne correspondent pas."
+      }
     }
   }
 }
