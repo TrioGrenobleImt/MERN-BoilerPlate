@@ -1,6 +1,8 @@
 import express from "express";
-import { getUsers, getUser, createUser, updateUser, deleteUser } from "../controllers/userController.js";
+import { getUsers, getUser, createUser, updateUser, deleteUser, uploadProfilePicture } from "../controllers/userController.js";
 import verifyToken from "../middlewares/verifyToken.js";
+import { configurationStorage } from "../configurations/storage.js";
+const upload = configurationStorage();
 
 const router = express.Router();
 
@@ -40,5 +42,7 @@ router.put("/:id", verifyToken({ role: "admin" }), updateUser);
  * @middleware verifyToken({ role: "admin" }) - Ensures the user has an admin role to access this route.
  */
 router.delete("/:id", verifyToken({ role: "admin" }), deleteUser);
+
+router.post("/upload", upload.single("avatar"), uploadProfilePicture);
 
 export default router;

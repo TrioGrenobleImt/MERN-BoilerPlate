@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import { userRoles } from "../utils/enums/userRoles.js";
 import { createLog } from "./logController.js";
 import { logLevels } from "../utils/enums/logLevel.js";
+import multer from "multer";
 
 /**
  * Retrieves a single user by ID.
@@ -188,4 +189,22 @@ const deleteUser = async (req, res) => {
   }
 };
 
-export { createUser, getUsers, getUser, updateUser, deleteUser };
+const storage = multer.diskStorage({
+  destination: (_, __, callback) => {
+    callback(null, "uploads");
+  },
+  filename: (_, file, callback) => {
+    const extArray = file.mimetype.split("/");
+    const extension = extArray[extArray.length - 1];
+    callback(null, `${uuid()}.${extension}`);
+  },
+});
+
+const uploadProfilePicture = async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: "No file uploaded" });
+  }
+  res.status(200).json({ message: "File uploaded successfully", file: req.file });
+};
+
+export { createUser, getUsers, getUser, updateUser, deleteUser, uploadProfilePicture };
