@@ -20,7 +20,6 @@ const getUser = async (req, res) => {
     }
     res.status(200).json(user);
   } catch (err) {
-    console.log("zebni");
     res.status(500).json({ error: err.message });
   }
 };
