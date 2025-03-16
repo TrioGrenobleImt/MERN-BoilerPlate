@@ -1,4 +1,4 @@
-import { Router } from "./router/Routes.js";
+import { Router } from "./router/routes.js";
 import "./styles/index.css";
 import { useAuthContext } from "./contexts/authContext.js";
 import { Loading } from "./components/Loading.js";

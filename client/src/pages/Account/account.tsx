@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 
 const Account = () => {
   const { logout, loading } = useLogout();
-  const { authUser } = useAuthContext();
   const { t } = useTranslation();
 
   const handleClick = async (e: any) => {
@@ -15,7 +14,6 @@ const Account = () => {
 
   return (
     <>
-      <h1>Username : {authUser.username}</h1>
       <Button onClick={handleClick} variant="outline" disabled={loading}>
         {t("pages.account.logout")}
       </Button>

@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, Copy, EllipsisVertical, Pencil, Trash } from "lucide-react";
-import { User } from "./page";
+import { User } from ".";
 import { toast } from "sonner";
 
 export const getColumns = (callback: (action: string, data: any) => void): ColumnDef<User>[] => [

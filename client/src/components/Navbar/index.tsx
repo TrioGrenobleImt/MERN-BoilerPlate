@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
-import { ThemeChanger } from "./ThemeChanger";
-import { LanguageChanger } from "./LanguageChanger";
+import { ThemeChanger } from "./themeChanger";
+import { LanguageChanger } from "./languageChanger";
 import { useTranslation } from "react-i18next";
 import { Separator } from "../ui/separator";
 import { House, Menu, User, Wrench, X } from "lucide-react";

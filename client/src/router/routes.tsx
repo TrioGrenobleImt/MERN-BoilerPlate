@@ -1,14 +1,14 @@
 import { Routes, Route } from "react-router-dom";
-import { LayoutWrapper } from "./LayoutWrapper";
-import Login from "@/pages/Authentication/Login";
-import Register from "@/pages/Authentication/Register";
-import Account from "@/pages/Account/Account";
-import { ProtectedRoute } from "@/router/ProtectedRoute";
-import { Home } from "@/pages/Home/Home";
-import { Index } from "@/pages/Admin/Index";
-import { Logs } from "@/pages/Admin/components/logs/page";
-import { Users } from "@/pages/Admin/components/users/page";
-import { Dashboard } from "@/pages/Admin/components/Dashboard";
+import { LayoutWrapper } from "./layoutWrapper";
+import Login from "@/pages/Authentication/login";
+import Register from "@/pages/Authentication/register";
+import Account from "@/pages/Account/account";
+import { ProtectedRoute } from "@/router/protectedRoute";
+import { Home } from "@/pages/Home/home";
+import { Index } from "@/pages/Admin";
+import { Logs } from "@/pages/Admin/components/logs";
+import { Users } from "@/pages/Admin/components/users";
+import { Dashboard } from "@/pages/Admin/components/dashboard";
 
 export const Router = () => {
   return (
