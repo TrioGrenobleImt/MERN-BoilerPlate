@@ -3,7 +3,9 @@
     "home": "Home",
     "dashboard": "Dashboard",
     "account": "My account",
-    "login": "Login"
+    "login": "Login",
+    "language": "Language",
+    "languageChanged": "Language changed to English."
   },
   "pages": {
     "home": {

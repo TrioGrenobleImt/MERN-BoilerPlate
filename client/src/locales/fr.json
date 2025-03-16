@@ -3,7 +3,9 @@
     "home": "Accueil",
     "dashboard": "Tableau de bord",
     "account": "Mon compte",
-    "login": "Se connecter"
+    "login": "Se connecter",
+    "language": "Langage",
+    "languageChanged": "Langage changé en français."
   },
   "pages": {
     "home": {

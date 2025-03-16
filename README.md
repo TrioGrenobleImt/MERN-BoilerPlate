@@ -119,7 +119,7 @@ Don't forget to restart your backend after running tests.
 - 🔐 **Protected Routes**: Conditional access to specific pages based on user rights (Admin Dashboard, etc.).
 - 🚧 **Conditional Routing**: Block certain routes based on login state.
 - 🌙 **Theme Management**: Toggle between "light" and "dark" themes for a customized user experience.
-- 🌍 **Internationalization with I18n**: Multi-language support with JSON translation files (`client/src/locales/**.json`).
+- 🌍 **Internationalization with I18n**: Multi-language support with JSON translation files.
 - 🎨 **Modern UI**: Uses **TailwindCSS** and **ShadCN** for a responsive and elegant design.
 - 📋 **Login Form**: Preconfigured login form for quick integration.
 - 🔄 **Prettier Configuration**: Integrated code formatting with Prettier for consistent styling.

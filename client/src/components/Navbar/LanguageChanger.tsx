@@ -1,34 +1,52 @@
 import { useTranslation } from "react-i18next";
+import { ES, FR, GB } from "country-flag-icons/react/3x2";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { Globe } from "lucide-react";
+import { getFullNamesOfLocales, listOfLocales } from "@/lib/i18n";
 import { Button } from "../ui/button";
-import { useState } from "react";
-import { FR, GB } from "country-flag-icons/react/3x2";
+import { toast } from "sonner";
 
 export const LanguageChanger = () => {
   const {
-    i18n: { changeLanguage, language },
+    i18n: { changeLanguage, language, t },
   } = useTranslation();
 
-  const [currentLanguage, setCurrentLanguage] = useState(language);
-
-  const handleChangeLanguage = () => {
-    const newLanguage = currentLanguage === "fr" ? "en" : "fr";
-    localStorage.setItem("i18nextLng", newLanguage);
-    setCurrentLanguage(newLanguage);
-    changeLanguage(newLanguage);
+  const handleChangeLanguage = (l: string) => {
+    localStorage.setItem("i18nextLng", l);
+    changeLanguage(l);
+    toast.success(t("navbar.languageChanged"));
   };
 
   return (
-    <Button variant="outline" size="sm" onClick={handleChangeLanguage}>
-      <FR
-        className={`h-[1.2rem] w-[1.2rem] transition-all duration-300 ${
-          currentLanguage === "fr" ? "rotate-0 scale-100" : "rotate-90 scale-0"
-        }`}
-      />
-      <GB
-        className={`absolute h-[1.2rem] w-[1.2rem] transition-all duration-300 ${
-          currentLanguage === "en" ? "rotate-0 scale-100" : "rotate-90 scale-0"
-        }`}
-      />
-    </Button>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild className="cursor-pointer">
+        <Button variant="outline" size="sm">
+          <Globe className="w-5 h-5 text-primary" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-40">
+        <DropdownMenuLabel>{t("navbar.language")}</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        {listOfLocales.map((l) => (
+          <DropdownMenuItem
+            key={l}
+            onClick={() => handleChangeLanguage(l)}
+            className={` cursor-pointer flex items-center ${language === l ? "bg-accent" : ""}`}
+          >
+            {l === "fr" && <FR />}
+            {l === "en" && <GB />}
+
+            {getFullNamesOfLocales(l)}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };

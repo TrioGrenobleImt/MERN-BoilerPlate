@@ -13,13 +13,12 @@ i18n.use(initReactI18next).init({
 
 export const listOfLocales = ["en", "fr"];
 
+const localeNames: { [key: string]: string } = {
+  en: "English",
+  fr: "Français",
+  // ...
+};
+
 export const getFullNamesOfLocales = (locale: string) => {
-  switch (locale) {
-    case "en":
-      return "English";
-    case "fr":
-      return "Français";
-    default:
-      return "";
-  }
+  return localeNames[locale] || "";
 };
