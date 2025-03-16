@@ -33,6 +33,8 @@ describe("GET api/logs/", () => {
       email: "test@gmail.com",
       password: "testmdp",
       role: "admin",
+      name: "test",
+      forename: "Test",
     });
 
     await Log.create({
@@ -58,6 +60,8 @@ describe("GET api/logs/", () => {
       email: "test@gmail.com",
       password: "testmdp",
       role: "admin",
+      name: "test",
+      forename: "Test",
     });
 
     await Log.create([
@@ -76,7 +80,14 @@ describe("GET api/logs/", () => {
   });
 
   it("should return a 500 status if an error occurs", async () => {
-    const user = await User.create({ username: "test", email: "test@gmail.com", password: "test", role: "admin" });
+    const user = await User.create({
+      username: "test",
+      email: "test@gmail.com",
+      password: "test",
+      role: "admin",
+      name: "test",
+      forename: "Test",
+    });
 
     vitest.spyOn(Log, "find").mockImplementationOnce(() => {
       throw new Error("Test error");
@@ -158,6 +169,8 @@ describe("DELETE api/logs/", () => {
       email: "test@gmail.com",
       password: "testmdp",
       role: "admin",
+      name: "test",
+      forename: "Test",
     });
 
     await Log.create({
@@ -177,7 +190,14 @@ describe("DELETE api/logs/", () => {
   });
 
   it("should return a 500 status if an error occurs", async () => {
-    const user = await User.create({ username: "test", email: "test@gmail.com", password: "test", role: "admin" });
+    const user = await User.create({
+      username: "test",
+      email: "test@gmail.com",
+      password: "test",
+      role: "admin",
+      name: "test",
+      forename: "Test",
+    });
 
     vitest.spyOn(Log, "deleteMany").mockImplementationOnce(() => {
       throw new Error("Test error");
@@ -203,6 +223,8 @@ describe("DELETE api/logs/:id", () => {
       email: "test@gmail.com",
       password: "testmdp",
       role: "admin",
+      name: "test",
+      forename: "Test",
     });
 
     const log = await Log.create({
@@ -227,6 +249,8 @@ describe("DELETE api/logs/:id", () => {
       email: "test@gmail.com",
       password: "testmdp",
       role: "admin",
+      name: "test",
+      forename: "Test",
     });
 
     const res = await request(app)
@@ -240,7 +264,14 @@ describe("DELETE api/logs/:id", () => {
   });
 
   it("should return a 500 status if an error occurs", async () => {
-    const user = await User.create({ username: "test", email: "test@gmail.com", password: "test", role: "admin" });
+    const user = await User.create({
+      username: "test",
+      email: "test@gmail.com",
+      password: "test",
+      role: "admin",
+      name: "test",
+      forename: "Test",
+    });
 
     vitest.spyOn(Log, "findByIdAndDelete").mockImplementationOnce(() => {
       throw new Error("Test error");
@@ -272,6 +303,8 @@ describe("GET api/logs/log-levels/", () => {
       email: "test@gmail.com",
       password: "testmdp",
       role: "admin",
+      name: "test",
+      forename: "Test",
     });
 
     const res = await request(app)

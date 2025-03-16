@@ -62,6 +62,8 @@ describe("verifyToken Middleware", () => {
       username: "test",
       email: "test@gmail.com",
       password: "test",
+      forename: "test",
+      name: "test",
     });
 
     const res = await request(app)

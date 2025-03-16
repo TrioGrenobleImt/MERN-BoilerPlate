@@ -1,0 +1,36 @@
+import mongoose from "mongoose";
+import { describe, it, beforeAll, afterAll, expect, test } from "vitest";
+import "dotenv/config";
+import User from "../../../src/models/userModel.js";
+import Log from "../../../src/models/logModel.js";
+
+beforeAll(async () => {
+  //Connect to database
+  await mongoose.connect(process.env.MONG_URI_TEST);
+  await User.deleteMany();
+});
+
+afterAll(async () => {
+  await Log.deleteMany();
+  await mongoose.disconnect();
+});
+
+describe("TEST fullname generation", () => {
+  test("should handle lowercase forename correctly", () => {
+    const user = new User({ name: "MARTIN", forename: "pierre" });
+
+    expect(user.fullname).toBe("MARTIN Pierre");
+  });
+
+  test("should handle already formatted forename correctly", () => {
+    const user = new User({ name: "LAMBERT", forename: "Élodie" });
+
+    expect(user.fullname).toBe("LAMBERT Élodie");
+  });
+
+  test("should handle uppercase forename", () => {
+    const user = new User({ name: "GIRAUD", forename: "ALAIN" });
+
+    expect(user.fullname).toBe("GIRAUD Alain");
+  });
+});

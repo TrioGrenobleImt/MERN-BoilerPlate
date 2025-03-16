@@ -32,6 +32,8 @@ describe("POST /api/auth/register", () => {
       email: "test@gmail.com",
       password: "test",
       confirmPassword: "test",
+      name: "test",
+      forename: "Test",
     });
     expect(response.status).toBe(201);
     expect(response.headers["set-cookie"][0].startsWith("__access__token=")).toBe(true);
@@ -46,30 +48,36 @@ describe("POST /api/auth/register", () => {
       email: "test@gmail.com",
       password: "test",
       confirmPassword: "test2",
+      name: "test",
+      forename: "Test",
     });
     expect(response.status).toBe(400);
     expect(response.body.error).toBe("Passwords do not match");
   });
 
   it("should return a 409 status error because the email is already taken", async () => {
-    await User.create({ username: "test", email: "test@gmail.com", password: "test" });
+    await User.create({ username: "test", email: "test@gmail.com", password: "test", name: "test", forename: "Test" });
     const response = await request(app).post("/api/auth/register").send({
       username: "test2",
       email: "test@gmail.com",
       password: "test",
       confirmPassword: "test",
+      name: "test",
+      forename: "Test",
     });
     expect(response.status).toBe(409);
     expect(response.body.error).toBe("This email is already taken");
   });
 
   it("should return a 409 status error because the username is already taken", async () => {
-    await User.create({ username: "test", email: "test@gmail.com", password: "test" });
+    await User.create({ username: "test", email: "test@gmail.com", password: "test", name: "test", forename: "Test" });
     const response = await request(app).post("/api/auth/register").send({
       username: "test",
       email: "test2@gmail.com",
       password: "test",
       confirmPassword: "test",
+      name: "test",
+      forename: "Test",
     });
     expect(response.status).toBe(409);
     expect(response.body.error).toBe("This username is already taken");
@@ -80,6 +88,8 @@ describe("POST /api/auth/register", () => {
       username: "test",
       password: "test",
       confirmPassword: "test",
+      name: "test",
+      forename: "Test",
     });
     expect(response.status).toBe(422);
     expect(response.body.error).toBe("Missing fields");
@@ -95,6 +105,8 @@ describe("POST /api/auth/register", () => {
       email: "test@gmail.com",
       password: "test",
       confirmPassword: "test",
+      name: "test",
+      forename: "Test",
     });
 
     expect(response.status).toBe(500);
@@ -113,6 +125,8 @@ describe("POST /api/auth/login", () => {
       email: "test@gmail.com",
       password: "test",
       confirmPassword: "test",
+      name: "test",
+      forename: "Test",
     });
     const response = await request(app).post("/api/auth/login").send({
       username: "test",
@@ -126,7 +140,7 @@ describe("POST /api/auth/login", () => {
     expect(response.body.password).toBe(undefined);
   });
   it("should return a 422 error status because one of the fields is missing", async () => {
-    const user = new User({ username: "test", email: "test@gmail.com", password: "testPassword" });
+    const user = new User({ username: "test", email: "test@gmail.com", password: "testPassword", name: "test", forename: "Test" });
     await user.save();
     const response = await request(app).post("/api/auth/login").send({
       username: "test",
@@ -135,7 +149,7 @@ describe("POST /api/auth/login", () => {
     expect(response.body.error).toBe("Missing fields");
   });
   it("should return a 400 error status because there is no user with this username", async () => {
-    const user = new User({ username: "test", email: "test@gmail.com", password: "testPassword" });
+    const user = new User({ username: "test", email: "test@gmail.com", password: "testPassword", name: "test", forename: "Test" });
     await user.save();
     const response = await request(app).post("/api/auth/login").send({
       username: "testFALSE",
@@ -146,7 +160,7 @@ describe("POST /api/auth/login", () => {
     expect(response.body.error).toBe("No such user");
   });
   it("should return a 400 error status because the password is wrong", async () => {
-    const user = new User({ username: "test", email: "test@gmail.com", password: "testPassword" });
+    const user = new User({ username: "test", email: "test@gmail.com", password: "testPassword", name: "test", forename: "Test" });
     await user.save();
     const response = await request(app).post("/api/auth/login").send({
       username: "test",
@@ -197,7 +211,7 @@ describe("GET /api/auth/logout", () => {
 describe("GET /api/auth/me", () => {
   let user;
   beforeEach(async () => {
-    user = new User({ username: "test", email: "test@gmail.com", password: "testPassword" });
+    user = new User({ username: "test", email: "test@gmail.com", password: "testPassword", name: "test", forename: "Test" });
     await user.save();
   });
   afterEach(async () => {

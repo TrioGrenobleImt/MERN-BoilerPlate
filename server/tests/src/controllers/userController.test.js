@@ -27,7 +27,14 @@ describe("GET /api/users/", () => {
   });
 
   it("should return a 200 status and list all the users, ", async () => {
-    const user = await User.create({ username: "test", email: "test@gmail.com", password: "test", role: "admin" });
+    const user = await User.create({
+      username: "test",
+      email: "test@gmail.com",
+      password: "test",
+      role: "admin",
+      name: "test",
+      forename: "test",
+    });
 
     const response = await request(app)
       .get("/api/users/")
@@ -38,7 +45,14 @@ describe("GET /api/users/", () => {
   });
 
   it("should return a 500 status if an error occurs", async () => {
-    const user = await User.create({ username: "test", email: "test@gmail.com", password: "test", role: "admin" });
+    const user = await User.create({
+      username: "test",
+      email: "test@gmail.com",
+      password: "test",
+      role: "admin",
+      name: "test",
+      forename: "test",
+    });
 
     vitest.spyOn(User, "find").mockImplementationOnce(() => {
       throw new Error("Test error");
@@ -58,7 +72,14 @@ describe("GET /api/users/:id", () => {
   });
 
   it("should return the user with the given id", async () => {
-    const user = await User.create({ username: "test", email: "test@gmail.com", password: "test", role: "admin" });
+    const user = await User.create({
+      username: "test",
+      email: "test@gmail.com",
+      password: "test",
+      role: "admin",
+      name: "test",
+      forename: "test",
+    });
     const response = await request(app)
       .get(`/api/users/${user._id}`)
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
@@ -67,7 +88,14 @@ describe("GET /api/users/:id", () => {
   });
 
   it("should return an error if the user id is invalid", async () => {
-    const user = await User.create({ username: "test", email: "test@gmail.com", password: "test", role: "admin" });
+    const user = await User.create({
+      username: "test",
+      email: "test@gmail.com",
+      password: "test",
+      role: "admin",
+      name: "test",
+      forename: "test",
+    });
 
     const falseId = new mongoose.Types.ObjectId();
     const response = await request(app)
@@ -78,7 +106,14 @@ describe("GET /api/users/:id", () => {
   });
 
   it("should return a 500 status if an error occurs", async () => {
-    const user = await User.create({ username: "test", email: "test@gmail.com", password: "test", role: "admin" });
+    const user = await User.create({
+      username: "test",
+      email: "test@gmail.com",
+      password: "test",
+      role: "admin",
+      name: "test",
+      forename: "test",
+    });
 
     vi.spyOn(User, "findById").mockImplementationOnce(() => {
       throw new Error("Test error");
@@ -98,7 +133,14 @@ describe("POST /api/users/", () => {
   });
 
   it("should create a new user with valid data", async () => {
-    const user = await User.create({ username: "test", email: "test@gmail.com", password: "testmdp", role: "admin" });
+    const user = await User.create({
+      username: "test",
+      email: "test@gmail.com",
+      password: "testmdp",
+      role: "admin",
+      name: "test",
+      forename: "test",
+    });
 
     const response = await request(app)
       .post("/api/users/")
@@ -106,6 +148,8 @@ describe("POST /api/users/", () => {
         username: "testuser",
         email: "testuser@example.com",
         password: "testpassword123",
+        name: "test",
+        forename: "test",
       })
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
     // Vérification du statut de la réponse et des données de l'utilisateur créé
@@ -117,7 +161,14 @@ describe("POST /api/users/", () => {
   });
 
   it("should return an error if required fields are missing", async () => {
-    const user = await User.create({ username: "test", email: "test@gmail.com", password: "testmdp", role: "admin" });
+    const user = await User.create({
+      username: "test",
+      email: "test@gmail.com",
+      password: "testmdp",
+      role: "admin",
+      name: "test",
+      forename: "test",
+    });
 
     const response = await request(app)
       .post("/api/users/")
@@ -129,11 +180,25 @@ describe("POST /api/users/", () => {
   });
 
   it("should return an error if the email already exist", async () => {
-    const user = await User.create({ username: "test", email: "test@gmail.com", password: "testmdp", role: "admin" });
+    const user = await User.create({
+      username: "test",
+      email: "test@gmail.com",
+      password: "testmdp",
+      role: "admin",
+      name: "test",
+      forename: "test",
+    });
 
     const response = await request(app)
       .post("/api/users/")
-      .send({ username: "userTes", email: "test@gmail.com", password: "testpassword123", role: "bouffonduroi" })
+      .send({
+        username: "userTes",
+        email: "test@gmail.com",
+        password: "testpassword123",
+        role: "bouffonduroi",
+        name: "test",
+        forename: "test",
+      })
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(409);
@@ -141,11 +206,25 @@ describe("POST /api/users/", () => {
   });
 
   it("should return an error if the username already exist", async () => {
-    const user = await User.create({ username: "test", email: "test@gmail.com", password: "testmdp", role: "admin" });
+    const user = await User.create({
+      username: "test",
+      email: "test@gmail.com",
+      password: "testmdp",
+      role: "admin",
+      name: "test",
+      forename: "test",
+    });
 
     const response = await request(app)
       .post("/api/users/")
-      .send({ username: "test", email: "testuser@example.com", password: "testpassword123", role: "bouffonduroi" })
+      .send({
+        username: "test",
+        email: "testuser@example.com",
+        password: "testpassword123",
+        role: "bouffonduroi",
+        name: "test",
+        forename: "test",
+      })
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(409);
@@ -153,7 +232,14 @@ describe("POST /api/users/", () => {
   });
 
   it("should return an error if the role isnt valid", async () => {
-    const user = await User.create({ username: "test", email: "test@gmail.com", password: "testmdp", role: "admin" });
+    const user = await User.create({
+      username: "test",
+      email: "test@gmail.com",
+      password: "testmdp",
+      role: "admin",
+      name: "test",
+      forename: "test",
+    });
 
     const response = await request(app)
       .post("/api/users/")
@@ -162,6 +248,8 @@ describe("POST /api/users/", () => {
         email: "testuser@example.com",
         password: "testpassword123",
         role: "bouffonduroi",
+        name: "test",
+        forename: "test",
       })
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
 
@@ -170,7 +258,14 @@ describe("POST /api/users/", () => {
   });
 
   it("should return a 500 status if there is an error during user creation", async () => {
-    const user = await User.create({ username: "test", email: "test@gmail.com", password: "testmdp", role: "admin" });
+    const user = await User.create({
+      username: "test",
+      email: "test@gmail.com",
+      password: "testmdp",
+      role: "admin",
+      name: "test",
+      forename: "test",
+    });
 
     vi.spyOn(User, "create").mockImplementationOnce(() => {
       throw new Error("Test error");
@@ -178,7 +273,7 @@ describe("POST /api/users/", () => {
 
     const response = await request(app)
       .post("/api/users/")
-      .send({ username: "erroruser", email: "erroruser@example.com", password: "errorpassword123" })
+      .send({ username: "erroruser", email: "erroruser@example.com", password: "errorpassword123", name: "test", forename: "test" })
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(500);
@@ -192,7 +287,14 @@ describe("PUT /api/users/:id", () => {
   });
 
   it("should update a user's username", async () => {
-    const user = await User.create({ username: "test", email: "test@gmail.com", password: "testPassword", role: "admin" });
+    const user = await User.create({
+      username: "test",
+      email: "test@gmail.com",
+      password: "testPassword",
+      role: "admin",
+      name: "test",
+      forename: "test",
+    });
     const response = await request(app)
       .put(`/api/users/${user._id}`)
       .send({ username: "newUsername" })
@@ -204,7 +306,14 @@ describe("PUT /api/users/:id", () => {
   });
 
   it("should update a user's password", async () => {
-    const user = await User.create({ username: "test", email: "test@gmail.com", password: "testPassword", role: "admin" });
+    const user = await User.create({
+      username: "test",
+      email: "test@gmail.com",
+      password: "testPassword",
+      role: "admin",
+      name: "test",
+      forename: "test",
+    });
     const response = await request(app)
       .put(`/api/users/${user._id}`)
       .send({ password: "newPassword" })
@@ -216,8 +325,21 @@ describe("PUT /api/users/:id", () => {
   });
 
   it("should return an error if the email already exists", async () => {
-    const user = await User.create({ username: "test", email: "test@gmail.com", password: "testPassword", role: "admin" });
-    const user2 = await User.create({ username: "test2", email: "test2@gmail.com", password: "testPassword" });
+    const user = await User.create({
+      username: "test",
+      email: "test@gmail.com",
+      password: "testPassword",
+      role: "admin",
+      name: "test",
+      forename: "test",
+    });
+    const user2 = await User.create({
+      username: "test2",
+      email: "test2@gmail.com",
+      password: "testPassword",
+      name: "test",
+      forename: "test",
+    });
 
     const response = await request(app)
       .put(`/api/users/${user._id}`)
@@ -228,8 +350,21 @@ describe("PUT /api/users/:id", () => {
   });
 
   it("should return an error if the username already exists", async () => {
-    const user = await User.create({ username: "test", email: "test@gmail.com", password: "testPassword", role: "admin" });
-    const user2 = await User.create({ username: "test2", email: "test2@gmail.com", password: "testPassword" });
+    const user = await User.create({
+      username: "test",
+      email: "test@gmail.com",
+      password: "testPassword",
+      role: "admin",
+      name: "test",
+      forename: "test",
+    });
+    const user2 = await User.create({
+      username: "test2",
+      email: "test2@gmail.com",
+      password: "testPassword",
+      name: "test",
+      forename: "test",
+    });
 
     const response = await request(app)
       .put(`/api/users/${user._id}`)
@@ -240,7 +375,14 @@ describe("PUT /api/users/:id", () => {
   });
 
   it("should return an error if the user doesn't exist", async () => {
-    const user = await User.create({ username: "test", email: "test@gmail.com", password: "testPassword", role: "admin" });
+    const user = await User.create({
+      username: "test",
+      email: "test@gmail.com",
+      password: "testPassword",
+      role: "admin",
+      name: "test",
+      forename: "test",
+    });
 
     const newUserId = new mongoose.Types.ObjectId();
     const response = await request(app)
@@ -252,7 +394,14 @@ describe("PUT /api/users/:id", () => {
   });
 
   it("should return an error if the role is invalid", async () => {
-    const user = await User.create({ username: "test", email: "test@gmail.com", password: "testPassword", role: "admin" });
+    const user = await User.create({
+      username: "test",
+      email: "test@gmail.com",
+      password: "testPassword",
+      role: "admin",
+      name: "test",
+      forename: "test",
+    });
 
     const response = await request(app)
       .put(`/api/users/${user._id}`)
@@ -263,7 +412,14 @@ describe("PUT /api/users/:id", () => {
   });
 
   it("should return a 500 status if an error occurs", async () => {
-    const user = await User.create({ username: "test", email: "test@gmail.com", password: "testPassword", role: "admin" });
+    const user = await User.create({
+      username: "test",
+      email: "test@gmail.com",
+      password: "testPassword",
+      role: "admin",
+      name: "test",
+      forename: "test",
+    });
     vi.spyOn(User, "findOneAndUpdate").mockImplementationOnce(() => {
       throw new Error("Test error");
     });
@@ -284,7 +440,14 @@ describe("DELETE /api/users/:id", () => {
   });
 
   it("should delete a user", async () => {
-    const user = await User.create({ username: "test", email: "test@gmail.com", password: "testPassword", role: "admin" });
+    const user = await User.create({
+      username: "test",
+      email: "test@gmail.com",
+      password: "testPassword",
+      role: "admin",
+      name: "test",
+      forename: "test",
+    });
     const response = await request(app)
       .delete(`/api/users/${user._id}`)
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
@@ -297,7 +460,14 @@ describe("DELETE /api/users/:id", () => {
   });
 
   it("should return an error if the user doesn't exist", async () => {
-    const user = await User.create({ username: "test", email: "test@gmail.com", password: "testPassword", role: "admin" });
+    const user = await User.create({
+      username: "test",
+      email: "test@gmail.com",
+      password: "testPassword",
+      role: "admin",
+      name: "test",
+      forename: "test",
+    });
 
     const newUserId = new mongoose.Types.ObjectId();
     const response = await request(app)
@@ -308,7 +478,14 @@ describe("DELETE /api/users/:id", () => {
   });
 
   it("should return a 500 status if an error occurs", async () => {
-    const user = await User.create({ username: "test", email: "test@gmail.com", password: "testPassword", role: "admin" });
+    const user = await User.create({
+      username: "test",
+      email: "test@gmail.com",
+      password: "testPassword",
+      role: "admin",
+      name: "test",
+      forename: "test",
+    });
 
     vi.spyOn(User, "findOneAndDelete").mockImplementationOnce(() => {
       throw new Error("Test error");
