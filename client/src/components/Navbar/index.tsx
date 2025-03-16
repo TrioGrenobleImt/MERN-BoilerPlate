@@ -10,13 +10,15 @@ import { Button } from "../ui/button";
 import { useAuthContext } from "@/contexts/authContext";
 
 export const Navbar = () => {
-  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
+
   const menuRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+
+  const { t } = useTranslation();
   const { authUser } = useAuthContext();
 
-  // Handle clicks outside of the menu
+  // Handle clicks outside of the hamburger menu
   useEffect(() => {
     const handleClickOutside = (event: { target: any }) => {
       if (menuRef.current && !menuRef.current.contains(event.target) && isOpen) {

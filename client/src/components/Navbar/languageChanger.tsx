@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { ES, FR, GB } from "country-flag-icons/react/3x2";
+import { FR, GB } from "country-flag-icons/react/3x2";
 import {
   DropdownMenu,
   DropdownMenuContent,

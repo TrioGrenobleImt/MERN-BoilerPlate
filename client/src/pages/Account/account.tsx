@@ -1,5 +1,4 @@
 import { useLogout } from "../../hooks/useLogout";
-import { useAuthContext } from "../../contexts/authContext";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
 

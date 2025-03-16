@@ -6,8 +6,9 @@ import { useNavigate } from "react-router-dom";
 
 export const useLogout = () => {
   const [loading, setLoading] = useState(false);
-  const { setAuthUser } = useAuthContext();
+
   const navigate = useNavigate();
+  const { setAuthUser } = useAuthContext();
 
   const logout = async () => {
     setLoading(true);

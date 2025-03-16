@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { createContext, useContext, useEffect, useState } from "react";
 import axiosConfig from "../config/axiosConfig";
 
@@ -14,8 +15,6 @@ const AuthContext = createContext<{
 export const useAuthContext = () => {
   return useContext(AuthContext);
 };
-
-import { ReactNode } from "react";
 
 export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [authUser, setAuthUser] = useState(null);
