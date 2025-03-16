@@ -5,6 +5,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, Copy, EllipsisVertical, Pencil, Trash } from "lucide-react";
 import { User } from "./page";
+import { toast } from "sonner";
 
 export const getColumns = (callback: (action: string, data: any) => void): ColumnDef<User>[] => [
   {
@@ -19,6 +20,16 @@ export const getColumns = (callback: (action: string, data: any) => void): Colum
       const value = row.getValue("role");
       return <div>{(value as string).charAt(0).toUpperCase() + (value as string).slice(1)}</div>;
     },
+  },
+  {
+    accessorKey: "name",
+    header: "Name",
+    cell: ({ row }) => <div>{row.getValue("name")}</div>,
+  },
+  {
+    accessorKey: "forename",
+    header: "Forename",
+    cell: ({ row }) => <div>{row.getValue("forename")}</div>,
   },
   {
     accessorKey: "username",
@@ -60,7 +71,13 @@ export const getColumns = (callback: (action: string, data: any) => void): Colum
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start">
-            <DropdownMenuItem className="flex gap-4" onClick={() => navigator.clipboard.writeText(user._id)}>
+            <DropdownMenuItem
+              className="flex gap-4"
+              onClick={() => {
+                navigator.clipboard.writeText(user._id);
+                toast.success("User ID copied to clipboard");
+              }}
+            >
               <Copy className="w-4 h-4" /> Copy user ID
             </DropdownMenuItem>
             <DropdownMenuItem className="flex gap-4" onClick={() => callback("update", user._id)}>

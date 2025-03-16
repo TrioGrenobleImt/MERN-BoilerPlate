@@ -19,8 +19,8 @@ import { logLevels } from "../utils/enums/logLevel.js";
  * @returns {Object} JSON response with user details or error message.
  */
 const register = async (req, res) => {
-  const { email, username, password, confirmPassword } = req.body;
-  if (!username || !email || !password || !confirmPassword) {
+  const { name, forename, email, username, password, confirmPassword } = req.body;
+  if (!username || !email || !password || !confirmPassword || !name || !forename) {
     return res.status(422).json({ error: "Missing fields" });
   }
 
@@ -35,7 +35,7 @@ const register = async (req, res) => {
       return res.status(409).json({ error: "This username is already taken" });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await User.create({ email, username, password: hashedPassword });
+    const user = await User.create({ email, username, password: hashedPassword, name, forename });
     const accessToken = generateAccessToken(user._id);
 
     res.cookie("__access__token", accessToken, {
@@ -44,7 +44,7 @@ const register = async (req, res) => {
     });
 
     createLog({
-      message: `Utilisateur '${username}' enregistré avec succès`,
+      message: `User '${username}' registered successfully`,
       userId: user._id,
       level: logLevels.INFO,
     });
@@ -80,7 +80,7 @@ const login = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       createLog({
-        message: `Erreur d'authentification pour l'utilisateur '${username}'`,
+        message: `Invalid credentials while trying to login for user '${username}'`,
         userId: user._id,
         level: logLevels.ERROR,
       });
@@ -96,7 +96,7 @@ const login = async (req, res) => {
     const { password: userPassword, ...userWithoutPassword } = user._doc;
 
     createLog({
-      message: `Utilisateur '${username}' connecté avec succès`,
+      message: `User '${username}' logged in successfully`,
       userId: user._id,
       level: logLevels.INFO,
     });

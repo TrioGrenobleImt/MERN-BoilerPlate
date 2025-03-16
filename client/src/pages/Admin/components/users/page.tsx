@@ -9,6 +9,9 @@ import { UserForm } from "./userForm";
 
 export type User = {
   _id: string;
+  name: string;
+  forename: string;
+  fullname: string;
   username: string;
   email: string;
   role: string;
@@ -31,16 +34,6 @@ export const Users = () => {
       toast.error(error.response?.data?.error);
     } finally {
       setLoading(false);
-    }
-  }
-
-  async function deleteUser(userId: string) {
-    try {
-      const response = await axiosConfig.delete(`/users/${userId}`);
-      toast.success(response.data.message);
-      fetchUsers();
-    } catch (error: any) {
-      toast.error(error.response);
     }
   }
 

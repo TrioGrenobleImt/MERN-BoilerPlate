@@ -1,6 +1,8 @@
 import User from "../models/userModel.js";
 import bcrypt from "bcrypt";
 import { userRoles } from "../utils/enums/userRoles.js";
+import { createLog } from "./logController.js";
+import { logLevels } from "../utils/enums/logLevel.js";
 
 /**
  * Retrieves a single user by ID.
@@ -46,6 +48,8 @@ const getUsers = async (req, res) => {
  * @param {Object} req - The request object containing user data in body.
  * @param {Object} req.body - Request body containing user details.
  * @param {string} req.body.email - User's email address.
+ * @param {string} req.body.name - User's name.
+ * @param {string} req.body.forename - User's forename.
  * @param {string} req.body.username - User's username.
  * @param {string} req.body.password - User's password.
  * @param {string} [req.body.role] - Optional. User's role.
@@ -53,10 +57,11 @@ const getUsers = async (req, res) => {
  * @returns {Object} JSON response with user details or error message.
  */
 const createUser = async (req, res) => {
-  const { email, username, password, role } = req.body;
+  const { name, forename, email, username, password, role } = req.body;
+  const userId = req.userId;
 
   // Check for missing fields
-  if (!email || !username || !password) {
+  if (!email || !username || !password || !name || !forename) {
     return res.status(400).json({ error: "Missing fields" });
   }
 
@@ -82,10 +87,16 @@ const createUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create the user
-    const user = await User.create({ email, username, password: hashedPassword, role });
+    const user = await User.create({ email, username, password: hashedPassword, role, name, forename });
 
     // Remove password from the response
     const { password: userPassword, ...userWithoutPassword } = user._doc;
+
+    createLog({
+      message: `User '${username}' created successfully`,
+      userId: userId,
+      level: logLevels.INFO,
+    });
 
     res.status(201).json({ user: userWithoutPassword, message: "User created successfully" });
   } catch (err) {
@@ -101,6 +112,8 @@ const createUser = async (req, res) => {
  * @param {string} req.params.id - The ID of the user to update.
  * @param {Object} req.body - Request body containing updated user details.
  * @param {string} [req.body.email] - Updated email address.
+ * @param {string} [req.body.name] - Updated name.
+ * @param {string} [req.body.forename] - Updated forename.
  * @param {string} [req.body.username] - Updated username.
  * @param {string} [req.body.password] - Updated password.
  * @param {string} [req.body.role] - Updated role.
@@ -109,7 +122,7 @@ const createUser = async (req, res) => {
  */
 const updateUser = async (req, res) => {
   const { id } = req.params;
-  const { email, username, password, role } = req.body;
+  const { name, forename, email, username, password, role } = req.body;
 
   try {
     // Check if email or username is already taken by another user

@@ -105,7 +105,7 @@ export default function LoginPage() {
           className="cursor-pointer text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary  "
         >
           By clicking login, you agree to our <span className="font-bold">Terms of Service</span> and{" "}
-          <span className="font-bold">Privacy Policy</span>.
+          <span className="font-bold">Conditions</span>.
         </div>
       </div>
       {open && <TermsAndConditions open={open} setOpen={setOpen} />}

@@ -6,9 +6,9 @@ import Account from "@/pages/Account/Account";
 import { ProtectedRoute } from "@/router/ProtectedRoute";
 import { Home } from "@/pages/Home/Home";
 import { Index } from "@/pages/Admin/Index";
-import { Logs } from "@/pages/Admin/sideBar/components/logs/page";
-import { Users } from "@/pages/Admin/sideBar/components/users/page";
-import { Dashboard } from "@/pages/Admin/sideBar/components/Dashboard";
+import { Logs } from "@/pages/Admin/components/logs/page";
+import { Users } from "@/pages/Admin/components/users/page";
+import { Dashboard } from "@/pages/Admin/components/Dashboard";
 
 export const Router = () => {
   return (

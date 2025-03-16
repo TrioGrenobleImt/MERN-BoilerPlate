@@ -17,6 +17,8 @@ export default function RegisterPage() {
   const registerForm = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
+      name: "",
+      forename: "",
       username: "",
       email: "",
       password: "",
@@ -50,15 +52,43 @@ export default function RegisterPage() {
 
   return (
     <div className="flex flex-col items-center justify-center gap-6 p-6 min-h-svh bg-muted md:p-10">
-      <div className="flex flex-col w-full max-w-sm gap-6">
+      <div className="flex flex-col gap-6">
         <div className="flex items-center self-center gap-2 text-xl font-medium">MERN-Boilerplate</div>
-        <Card>
+        <Card className="w-[650px] md:w-[500px]">
           <CardHeader className="text-center">
             <CardTitle className="text-xl">Create an account</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col items-center gap-6">
             <Form {...registerForm}>
-              <form onSubmit={registerForm.handleSubmit(register)} className="w-full space-y-4">
+              <form onSubmit={registerForm.handleSubmit(register)} className="space-y-4">
+                <div className="flex items-center gap-6">
+                  <FormField
+                    control={registerForm.control}
+                    name="forename"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Forename</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={registerForm.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Name</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
                 <FormField
                   control={registerForm.control}
                   name="username"
@@ -137,7 +167,7 @@ export default function RegisterPage() {
           className="cursor-pointer text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary  "
         >
           By clicking register, you agree to our <span className="font-bold">Terms of Service</span> and{" "}
-          <span className="font-bold">Privacy Policy</span>.
+          <span className="font-bold">Conditions</span>.
         </div>
       </div>
       {open && <TermsAndConditions open={open} setOpen={setOpen} />}

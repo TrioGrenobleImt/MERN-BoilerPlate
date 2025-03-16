@@ -24,10 +24,11 @@ export const UserForm = ({ dialog, refresh, action, user }: UserFormProps) => {
   const createForm = useForm<z.infer<typeof createPlayerSchema>>({
     resolver: zodResolver(createPlayerSchema),
     defaultValues: {
+      name: "",
+      forename: "",
       username: "",
       email: "",
       password: "",
-      confirmPassword: "",
       role: "user",
     },
   });
@@ -35,9 +36,11 @@ export const UserForm = ({ dialog, refresh, action, user }: UserFormProps) => {
   const updateForm = useForm<z.infer<typeof updatePlayerSchema>>({
     resolver: zodResolver(updatePlayerSchema),
     defaultValues: {
-      username: user?.username || "",
-      email: user?.email || "",
-      role: user?.role || "user",
+      name: user?.name,
+      forename: user?.forename,
+      username: user?.username,
+      email: user?.email,
+      role: user?.role,
     },
   });
 
@@ -49,10 +52,9 @@ export const UserForm = ({ dialog, refresh, action, user }: UserFormProps) => {
   });
 
   const onCreateSubmit: SubmitHandler<z.infer<typeof createPlayerSchema>> = async (values) => {
-    const { confirmPassword, ...payload } = values;
     try {
       setLoading(true);
-      const response = await axiosConfig.post("/users", payload);
+      const response = await axiosConfig.post("/users", values);
       toast.success(response.data.message);
       createForm.reset();
       dialog(false);
@@ -101,6 +103,34 @@ export const UserForm = ({ dialog, refresh, action, user }: UserFormProps) => {
     return (
       <Form {...createForm}>
         <form onSubmit={createForm.handleSubmit(onCreateSubmit)} className="space-y-8">
+          <div className="flex items-center justify-center gap-6">
+            <FormField
+              control={createForm.control}
+              name="forename"
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormLabel>Forename</FormLabel>
+                  <FormControl>
+                    <Input placeholder="John" {...field} className="w-full" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={createForm.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Doe" {...field} className="w-full" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <FormField
             control={createForm.control}
             name="username"
@@ -142,19 +172,6 @@ export const UserForm = ({ dialog, refresh, action, user }: UserFormProps) => {
           />
           <FormField
             control={createForm.control}
-            name="confirmPassword"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Confirm Password</FormLabel>
-                <FormControl>
-                  <Input type="password" placeholder="********" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={createForm.control}
             name="role"
             render={({ field }) => (
               <FormItem>
@@ -186,6 +203,34 @@ export const UserForm = ({ dialog, refresh, action, user }: UserFormProps) => {
     return (
       <Form {...updateForm}>
         <form onSubmit={updateForm.handleSubmit(onUpdateSubmit)} className="space-y-8">
+          <div className="flex items-center justify-center gap-6">
+            <FormField
+              control={updateForm.control}
+              name="forename"
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormLabel>Forename</FormLabel>
+                  <FormControl>
+                    <Input placeholder="John" {...field} className="w-full" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={updateForm.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Doe" {...field} className="w-full" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <FormField
             control={updateForm.control}
             name="username"

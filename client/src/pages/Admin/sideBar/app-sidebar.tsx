@@ -38,7 +38,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader onClick={() => navigate("/")}>
         <Button variant="outline" className="p-4">
           <Home className="w-6 h-6" />
-          {state === "expanded" ? <span>Retour à l'application</span> : null}
+          {state === "expanded" ? <span>Back to the application</span> : null}
         </Button>
       </SidebarHeader>
       <SidebarContent>
