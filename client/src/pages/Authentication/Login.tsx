@@ -15,7 +15,6 @@ import { useTranslation } from "react-i18next";
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
 
   const navigate = useNavigate();
   const { setAuthUser } = useAuthContext();
@@ -50,11 +49,11 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col items-center justify-center gap-6 p-6 min-h-svh bg-muted md:p-10">
-      <div className="flex flex-col w-full max-w-md gap-6">
-        <div className="flex items-center self-center gap-2 text-xl font-medium">MERN_BoilerPlate</div>
-        <Card>
+      <div className="flex flex-col w-full max-w-md gap-6 px-4 md:px-0">
+        <div className="flex items-center self-center gap-2 text-xl font-medium">MERN-Boilerplate</div>
+        <Card className="w-full">
           <CardHeader className="text-center">
-            <CardTitle className="text-xl">{t("pages.login.welcome_back")}</CardTitle>
+            <CardTitle className="text-xl md:text-2xl">{t("pages.login.welcome_back")}</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col items-center gap-6">
             <Form {...loginForm}>
@@ -95,7 +94,7 @@ export default function LoginPage() {
               </form>
             </Form>
 
-            <div className="text-sm text-center">
+            <div className="text-sm text-center md:text-base">
               {t("pages.login.no_account")}{" "}
               <Link to="/register" className="underline underline-offset-4">
                 {t("pages.login.sign_up")}

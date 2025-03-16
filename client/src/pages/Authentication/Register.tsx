@@ -15,7 +15,6 @@ import { useTranslation } from "react-i18next";
 
 export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
 
   const navigate = useNavigate();
   const { setAuthUser } = useAuthContext();
@@ -55,21 +54,21 @@ export default function RegisterPage() {
 
   return (
     <div className="flex flex-col items-center justify-center gap-6 p-6 min-h-svh bg-muted md:p-10">
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col w-full max-w-2xl gap-6 px-4 md:px-0">
         <div className="flex items-center self-center gap-2 text-xl font-medium">MERN-Boilerplate</div>
-        <Card className="w-[650px] md:w-[500px]">
+        <Card className="w-full">
           <CardHeader className="text-center">
-            <CardTitle className="text-xl">{t("pages.register.title")}</CardTitle>
+            <CardTitle className="text-xl md:text-2xl">{t("pages.register.title")}</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col items-center gap-6">
             <Form {...registerForm}>
-              <form onSubmit={registerForm.handleSubmit(register)} className="space-y-4">
-                <div className="flex items-center gap-6">
+              <form onSubmit={registerForm.handleSubmit(register)} className="w-full space-y-4">
+                <div className="flex flex-col gap-4 md:flex-row md:items-center">
                   <FormField
                     control={registerForm.control}
                     name="forename"
                     render={({ field }) => (
-                      <FormItem>
+                      <FormItem className="w-full">
                         <FormLabel>{t("pages.register.forename")}</FormLabel>
                         <FormControl>
                           <Input {...field} />
@@ -82,7 +81,7 @@ export default function RegisterPage() {
                     control={registerForm.control}
                     name="name"
                     render={({ field }) => (
-                      <FormItem>
+                      <FormItem className="w-full">
                         <FormLabel>{t("pages.register.name")}</FormLabel>
                         <FormControl>
                           <Input {...field} />
@@ -157,7 +156,7 @@ export default function RegisterPage() {
                 </Button>
               </form>
             </Form>
-            <div className="text-sm text-center">
+            <div className="text-sm text-center md:text-base">
               {t("pages.register.already_have_account")}{" "}
               <Link to="/login" className="underline underline-offset-4">
                 {t("pages.register.login")}
