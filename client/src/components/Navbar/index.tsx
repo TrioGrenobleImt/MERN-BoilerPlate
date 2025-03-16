@@ -3,7 +3,7 @@ import { ThemeChanger } from "./themeChanger";
 import { LanguageChanger } from "./languageChanger";
 import { useTranslation } from "react-i18next";
 import { Separator } from "../ui/separator";
-import { House, Menu, User, Wrench, X } from "lucide-react";
+import { House, LogIn, Menu, User, Wrench, X } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
@@ -90,10 +90,17 @@ export const Navbar = () => {
               {t("navbar.home")}
             </Button>
 
-            <Button onClick={() => closeDialogAndNavigate("/account")} variant="link" className="flex items-center justify-start gap-4">
-              <User className="w-4 h-4" />
-              {t("navbar.account")}
-            </Button>
+            {authUser ? (
+              <Button onClick={() => closeDialogAndNavigate("/account")} variant="link" className="flex items-center justify-start gap-4">
+                <User className="w-4 h-4" />
+                {t("navbar.account")}
+              </Button>
+            ) : (
+              <Button onClick={() => closeDialogAndNavigate("/login")} variant="link" className="flex items-center justify-start gap-4">
+                <LogIn className="w-4 h-4" />
+                {t("navbar.login")}
+              </Button>
+            )}
             {authUser?.role === "admin" && (
               <Button
                 onClick={() => closeDialogAndNavigate("/admin/dashboard")}

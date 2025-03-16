@@ -61,38 +61,34 @@ export function DataTable<TData, TValue>({ columns, data, fetchUsers, isLoading,
   });
 
   return (
-    <div className="border rounded-md">
-      <div className="flex items-center justify-between p-4 text-2xl">
-        <div className="flex gap-4">
-          <div className="flex items-center gap-2 ">
-            <Input
-              placeholder="Filter username"
-              value={(table.getColumn("username")?.getFilterValue() as string) ?? ""}
-              onChange={(event) => table.getColumn("username")?.setFilterValue(event.target.value)}
-              className="max-w-sm"
-            />
+    <div className="overflow-hidden border rounded-md">
+      <div className="flex flex-col items-center justify-between gap-4 p-4 text-2xl md:flex-row">
+        <div className="flex flex-col w-full gap-4 md:flex-row">
+          <Input
+            placeholder="Filter username"
+            value={(table.getColumn("username")?.getFilterValue() as string) ?? ""}
+            onChange={(event) => table.getColumn("username")?.setFilterValue(event.target.value)}
+            className="w-full md:w-auto"
+          />
+          <div className="flex items-center gap-2">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="ml-auto">
-                  Columns
-                </Button>
+                <Button variant="outline">Columns</Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 {table
                   .getAllColumns()
                   .filter((column) => column.getCanHide())
-                  .map((column) => {
-                    return (
-                      <DropdownMenuCheckboxItem
-                        key={column.id}
-                        className="capitalize"
-                        checked={column.getIsVisible()}
-                        onCheckedChange={(value) => column.toggleVisibility(!!value)}
-                      >
-                        {(column.columnDef.meta as any)?.label ?? column.id}
-                      </DropdownMenuCheckboxItem>
-                    );
-                  })}
+                  .map((column) => (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                    >
+                      {(column.columnDef.meta as any)?.label ?? column.id}
+                    </DropdownMenuCheckboxItem>
+                  ))}
               </DropdownMenuContent>
             </DropdownMenu>
 
@@ -104,62 +100,64 @@ export function DataTable<TData, TValue>({ columns, data, fetchUsers, isLoading,
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant={"outline"}>
+            <Button variant="outline">
               <EllipsisVertical />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start">
-            <DropdownMenuItem className="flex gap-4 " onClick={() => callback("create", null)}>
-              <UserPlus className="w-4 h-4 " />
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem className="flex gap-4" onClick={() => callback("create", null)}>
+              <UserPlus className="w-4 h-4" />
               <span>Create a user</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
       <Separator />
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <TableHead key={header.id} className="font-extrabold ">
-                  {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-                </TableHead>
-              ))}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {isLoading ? (
-            <TableRow className="relative">
-              <TableCell colSpan={columns.length} className="relative h-0 p-0 overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-[2px] bg-gray-300 dark:bg-gray-700 overflow-hidden">
-                  <div className="w-full h-full bg-black dark:bg-gray-900 animate-marquee"></div>
-                </div>
-              </TableCell>
-            </TableRow>
-          ) : table.getRowModel().rows.length > 0 ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id}>
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+      <div className="overflow-x-auto">
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id} className="font-extrabold">
+                    {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                  </TableHead>
                 ))}
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No users found.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {isLoading ? (
+              <TableRow className="relative">
+                <TableCell colSpan={columns.length} className="relative h-0 p-0 overflow-hidden">
+                  <div className="absolute top-0 left-0 w-full h-[2px] bg-gray-300 dark:bg-gray-700 overflow-hidden">
+                    <div className="w-full h-full bg-black dark:bg-gray-900 animate-marquee"></div>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ) : table.getRowModel().rows.length > 0 ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow key={row.id}>
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={columns.length} className="h-24 text-center">
+                  No users found.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
       <Separator />
-      <div className="flex items-center justify-between p-4">
+      <div className="flex flex-col items-center justify-between gap-4 p-4 md:flex-row">
         <div className="text-sm text-gray-600">
-          Page <strong>{table.getState().pagination.pageIndex + 1}</strong> of <strong>{table.getPageCount()}</strong> • {data.length} {""}
-          total entries
+          Page <strong>{table.getState().pagination.pageIndex + 1}</strong> of <strong>{table.getPageCount()}</strong> • {data.length} total
+          entries
         </div>
         <div className="flex items-center space-x-2">
           <Button variant="outline" size="sm" onClick={() => table.setPageIndex(0)} disabled={!table.getCanPreviousPage()}>

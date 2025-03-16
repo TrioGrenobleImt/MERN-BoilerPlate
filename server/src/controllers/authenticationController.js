@@ -44,7 +44,7 @@ const register = async (req, res) => {
     });
 
     createLog({
-      message: `User '${username}' registered successfully`,
+      message: `New user registered successfully`,
       userId: user._id,
       level: logLevels.INFO,
     });
@@ -80,7 +80,7 @@ const login = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       createLog({
-        message: `Invalid credentials while trying to login for user '${username}'`,
+        message: `Invalid credentials while trying to login`,
         userId: user._id,
         level: logLevels.ERROR,
       });
@@ -96,7 +96,7 @@ const login = async (req, res) => {
     const { password: userPassword, ...userWithoutPassword } = user._doc;
 
     createLog({
-      message: `User '${username}' logged in successfully`,
+      message: `User logged in successfully`,
       userId: user._id,
       level: logLevels.INFO,
     });
