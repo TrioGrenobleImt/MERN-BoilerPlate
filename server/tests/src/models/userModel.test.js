@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { describe, it, beforeAll, afterAll, expect, test } from "vitest";
+import { describe, beforeAll, afterAll, expect, test } from "vitest";
 import "dotenv/config";
 import User from "../../../src/models/userModel.js";
 import Log from "../../../src/models/logModel.js";

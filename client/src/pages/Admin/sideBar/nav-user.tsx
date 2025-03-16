@@ -13,7 +13,11 @@ import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/c
 import { useLogout } from "@/hooks/useLogout";
 import { useNavigate } from "react-router-dom";
 
-export function NavUser({ user }: { user: { username: string; email: string; avatar: string } }) {
+export function NavUser({
+  user,
+}: {
+  user: { username: string; email: string; avatar: string; name: string; forename: string; fullname: string };
+}) {
   const { logout, loading } = useLogout();
   const { isMobile } = useSidebar();
   const navigate = useNavigate();
@@ -25,8 +29,10 @@ export function NavUser({ user }: { user: { username: string; email: string; ava
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
               <Avatar className="w-8 h-8 rounded-lg">
-                <AvatarImage src={user.avatar} alt={user.username} />
-                <AvatarFallback className="rounded-lg">{user.username.slice(0, 2).toUpperCase()}</AvatarFallback>
+                <AvatarFallback className="rounded-lg">
+                  {user.forename.charAt(0).toUpperCase()}
+                  {user.name.charAt(0).toUpperCase()}
+                </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-sm leading-tight text-left">
                 <span className="font-semibold truncate">{user.username}</span>
@@ -44,8 +50,10 @@ export function NavUser({ user }: { user: { username: string; email: string; ava
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="w-8 h-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.username} />
-                  <AvatarFallback className="rounded-lg">{user.username.slice(0, 2).toUpperCase()}</AvatarFallback>
+                  <AvatarFallback className="rounded-lg">
+                    {user.forename.charAt(0).toUpperCase()}
+                    {user.name.charAt(0).toUpperCase()}
+                  </AvatarFallback>{" "}
                 </Avatar>
                 <div className="grid flex-1 text-sm leading-tight text-left">
                   <span className="font-semibold truncate">{user.username}</span>
