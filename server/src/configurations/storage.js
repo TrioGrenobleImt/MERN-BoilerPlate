@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
 
 // File type filter
 const fileFilter = (_, file, callback) => {
-  if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+  if (!file.originalname.match(/\.(jpg|jpeg|png|svg)$/)) {
     return callback(new multer.MulterError("LIMIT_UNEXPECTED_FILE", "Only image files are allowed"), false);
   }
   callback(null, true);
