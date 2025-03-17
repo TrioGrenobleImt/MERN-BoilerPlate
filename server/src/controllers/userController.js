@@ -189,22 +189,24 @@ const deleteUser = async (req, res) => {
   }
 };
 
-const storage = multer.diskStorage({
-  destination: (_, __, callback) => {
-    callback(null, "uploads");
-  },
-  filename: (_, file, callback) => {
-    const extArray = file.mimetype.split("/");
-    const extension = extArray[extArray.length - 1];
-    callback(null, `${uuid()}.${extension}`);
-  },
-});
-
 const uploadProfilePicture = async (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ error: "No file uploaded" });
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: "No file uploaded. Please select an image." });
+    }
+
+    res.status(200).json({
+      message: "File uploaded successfully",
+      file: {
+        filename: req.file.filename,
+        path: req.file.path,
+        mimetype: req.file.mimetype,
+        size: req.file.size,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ error: "An unexpected error occurred during file upload." });
   }
-  res.status(200).json({ message: "File uploaded successfully", file: req.file });
 };
 
 export { createUser, getUsers, getUser, updateUser, deleteUser, uploadProfilePicture };

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import axiosConfig from "@/config/axiosConfig";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
+import { toast } from "sonner";
 
 const BASE_URL = "http://localhost:3000"; // Remplace par l'URL de ton serveur si nécessaire
 
@@ -40,8 +41,8 @@ const Account = () => {
       if (response.data.file?.path) {
         setUploadedFilePath(`${BASE_URL}/${response.data.file.path}`);
       }
-    } catch (error) {
-      console.error("Erreur lors de l'upload :", error);
+    } catch (error: any) {
+      toast.error(error.response.data.error);
     } finally {
       setUploading(false);
     }

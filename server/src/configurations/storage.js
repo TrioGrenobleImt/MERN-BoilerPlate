@@ -1,20 +1,32 @@
 import multer from "multer";
-import { v4 as uuid } from "uuid";
 
+// Storage configuration
 const storage = multer.diskStorage({
   destination: (_, file, callback) => {
     callback(null, "uploads/users/avatars");
   },
-  filename: (_, file, callback) => {
+  filename: (req, file, callback) => {
     const extArray = file.mimetype.split("/");
     const extension = extArray[extArray.length - 1];
-    callback(null, `${uuid()}.${extension}`);
+    const id = req.userId;
+
+    const fileName = `${id}_avatar.${extension}`;
+    callback(null, fileName);
   },
 });
 
+// File type filter
 const fileFilter = (_, file, callback) => {
-  if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) return callback(new UnauthorizedError("Only image files are allowed"), false);
+  if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+    return callback(new multer.MulterError("LIMIT_UNEXPECTED_FILE", "Only image files are allowed"), false);
+  }
   callback(null, true);
 };
 
-export const configurationStorage = () => multer({ storage, fileFilter });
+// Multer instance
+export const configurationStorage = () =>
+  multer({
+    storage,
+    fileFilter,
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5 Mo max
+  });
