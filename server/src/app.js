@@ -1,10 +1,13 @@
 import express from "express";
+
 import "dotenv/config";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+
 import UsersRoutes from "./routes/usersRoutes.js";
 import AuthenticationRoutes from "./routes/authenticationRoutes.js";
 import LogsRoutes from "./routes/logsRoutes.js";
-import cors from "cors";
-import cookieParser from "cookie-parser";
+import UploadsRoutes from "./routes/uploadsRoutes.js";
 
 //Cors configuration
 const corsOptions = {
@@ -31,8 +34,7 @@ app.use(cookieParser());
 app.use("/api/users", UsersRoutes);
 app.use("/api/auth", AuthenticationRoutes);
 app.use("/api/logs", LogsRoutes);
-
-app.use("/uploads", express.static("uploads"));
+app.use("/api/uploads", express.static("uploads"), UploadsRoutes);
 
 /**
  * Healthcheck
