@@ -3,7 +3,6 @@ import bcrypt from "bcrypt";
 import { userRoles } from "../utils/enums/userRoles.js";
 import { createLog } from "./logController.js";
 import { logLevels } from "../utils/enums/logLevel.js";
-import multer from "multer";
 
 /**
  * Retrieves a single user by ID.
@@ -189,24 +188,4 @@ const deleteUser = async (req, res) => {
   }
 };
 
-const uploadProfilePicture = async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ error: "No file uploaded. Please select an image." });
-    }
-
-    res.status(200).json({
-      message: "File uploaded successfully",
-      file: {
-        filename: req.file.filename,
-        path: req.file.path,
-        mimetype: req.file.mimetype,
-        size: req.file.size,
-      },
-    });
-  } catch (error) {
-    res.status(500).json({ error: "An unexpected error occurred during file upload." });
-  }
-};
-
-export { createUser, getUsers, getUser, updateUser, deleteUser, uploadProfilePicture };
+export { createUser, getUsers, getUser, updateUser, deleteUser };
