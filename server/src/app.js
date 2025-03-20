@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import UsersRoutes from "./routes/usersRoutes.js";
 import AuthenticationRoutes from "./routes/authenticationRoutes.js";
 import LogsRoutes from "./routes/logsRoutes.js";
+import UploadRoutes from "./routes/uploadRoutes.js";
 
 //Cors configuration
 const corsOptions = {
@@ -33,7 +34,7 @@ app.use(cookieParser());
 app.use("/api/users", UsersRoutes);
 app.use("/api/auth", AuthenticationRoutes);
 app.use("/api/logs", LogsRoutes);
-app.use("/api/uploads", express.static("uploads"));
+app.use("/api/uploads", express.static("uploads"), UploadRoutes);
 /**
  * Healthcheck
  * @route GET /api/ping

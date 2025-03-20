@@ -1,5 +1,11 @@
 import mongoose from "mongoose";
 import { userRoles } from "../utils/enums/userRoles.js";
+import { getRandomColor } from "../utils/getRandomColors.js";
+
+function defaultAvatarUrl() {
+  const color = getRandomColor();
+  return `http://localhost:3000/api/uploads/avatar/default?color=${encodeURIComponent(color)}`;
+}
 
 const UserSchema = new mongoose.Schema(
   {
@@ -36,7 +42,7 @@ const UserSchema = new mongoose.Schema(
     },
     avatar: {
       type: String,
-      default: `/uploads/users/avatars/defaultAvatar.svg`,
+      default: defaultAvatarUrl(),
     },
   },
   {
