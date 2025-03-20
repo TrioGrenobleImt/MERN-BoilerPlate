@@ -122,6 +122,7 @@ const createUser = async (req, res) => {
  */
 const updateUser = async (req, res) => {
   const { id } = req.params;
+  const userId = req.userId;
   const { name, forename, email, username, password, role } = req.body;
 
   try {
@@ -140,15 +141,23 @@ const updateUser = async (req, res) => {
       }
     }
 
-    // Validate role
-    if (role && !Object.values(userRoles).includes(role)) {
-      return res.status(400).json({ error: "Invalid role" });
-    }
+    const actionUser = await User.findById(userId);
+    //SI actionUser n'est pas admin
 
-    // Hash the password if it's being updated
-    if (password) {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      req.body.password = hashedPassword;
+    if (actionUser.role == userRoles.ADMIN) {
+      // Validate role
+      if (role && !Object.values(userRoles).includes(role)) {
+        return res.status(400).json({ error: "Invalid role" });
+      }
+
+      // Hash the password if it's being updated
+      if (password) {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        req.body.password = hashedPassword;
+      }
+    } else {
+      delete req.body.role;
+      delete req.body.password;
     }
 
     // Update the user

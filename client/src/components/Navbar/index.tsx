@@ -19,6 +19,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { useLogout } from "@/hooks/useLogout";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,6 +29,8 @@ export const Navbar = () => {
 
   const { t } = useTranslation();
   const { authUser } = useAuthContext();
+
+  const { logout, loading } = useLogout();
 
   // Handle clicks outside of the hamburger menu
   useEffect(() => {
@@ -54,7 +57,12 @@ export const Navbar = () => {
             <Link to="/">MERN-Boilerplate</Link>
           </div>
           <div className="flex items-center gap-4">
-            <div className="flex gap-2">
+            <div className="flex items-center gap-2">
+              {authUser?.role === "admin" && (
+                <Button onClick={() => navigate("/admin/dashboard")} variant="link">
+                  {t("navbar.dashboard")}
+                </Button>
+              )}
               {authUser ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild className="hover:cursor-pointer">
@@ -63,18 +71,17 @@ export const Navbar = () => {
                     </Avatar>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-40">
-                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuLabel>{t("navbar.account")}</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
                       <DropdownMenuItem className="flex items-center gap-2" onClick={() => navigate("/account")}>
-                        {/* <User className="w-4 h-4" /> */}
-                        Profile
+                        {t("navbar.profile")}
                       </DropdownMenuItem>
                     </DropdownMenuGroup>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
-                      <DropdownMenuItem>
-                        Logout
+                      <DropdownMenuItem onClick={() => logout()} disabled={loading}>
+                        {t("navbar.logout")}
                         <DropdownMenuShortcut>
                           <LogOut className="w-4 h-4" />
                         </DropdownMenuShortcut>
@@ -85,11 +92,6 @@ export const Navbar = () => {
               ) : (
                 <Button onClick={() => navigate("/login")} variant="link">
                   {t("navbar.login")}
-                </Button>
-              )}
-              {authUser?.role === "admin" && (
-                <Button onClick={() => navigate("/admin/dashboard")} variant="link">
-                  {t("navbar.dashboard")}
                 </Button>
               )}
             </div>
@@ -146,6 +148,15 @@ export const Navbar = () => {
               </Button>
             )}
             <Separator />
+            {authUser && (
+              <>
+                <Button onClick={() => logout()} variant="link" disabled={loading} className="flex items-center justify-start gap-4">
+                  <LogOut className="w-4 h-4" />
+                  {t("navbar.logout")}
+                </Button>
+                <Separator />
+              </>
+            )}
             <div className="flex items-center justify-center gap-4 ">
               <LanguageChanger />
               <ThemeChanger />

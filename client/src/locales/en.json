@@ -5,7 +5,9 @@
     "account": "My account",
     "login": "Login",
     "language": "Language",
-    "languageChanged": "Language changed to English."
+    "languageChanged": "Language changed to English.",
+    "logout": "Logout",
+    "profile": "Profile"
   },
   "pages": {
     "home": {
