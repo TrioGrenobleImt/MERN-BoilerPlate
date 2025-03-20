@@ -3,11 +3,22 @@ import { ThemeChanger } from "./themeChanger";
 import { LanguageChanger } from "./languageChanger";
 import { useTranslation } from "react-i18next";
 import { Separator } from "../ui/separator";
-import { House, LogIn, Menu, User, Wrench, X } from "lucide-react";
+import { House, Link2, LogIn, LogOut, Menu, User, Wrench, X } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { useAuthContext } from "@/contexts/authContext";
+import { Avatar, AvatarImage } from "../ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -45,9 +56,32 @@ export const Navbar = () => {
           <div className="flex items-center gap-4">
             <div className="flex gap-2">
               {authUser ? (
-                <Button onClick={() => navigate("/account")} variant="link">
-                  {t("navbar.account")}
-                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild className="hover:cursor-pointer">
+                    <Avatar>
+                      <AvatarImage src={`${authUser.avatar}`} alt="User Avatar" />
+                    </Avatar>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-40">
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuGroup>
+                      <DropdownMenuItem className="flex items-center gap-2" onClick={() => navigate("/account")}>
+                        {/* <User className="w-4 h-4" /> */}
+                        Profile
+                      </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuGroup>
+                      <DropdownMenuItem>
+                        Logout
+                        <DropdownMenuShortcut>
+                          <LogOut className="w-4 h-4" />
+                        </DropdownMenuShortcut>
+                      </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               ) : (
                 <Button onClick={() => navigate("/login")} variant="link">
                   {t("navbar.login")}

@@ -2,7 +2,7 @@ import User from "../models/userModel.js";
 import { generateAccessToken } from "../utils/generateAccessToken.js";
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
-import { Constants } from "../utils/constants.js";
+import { Constants } from "../../constants/constants.js";
 import { createLog } from "./logController.js";
 import { logLevels } from "../utils/enums/logLevel.js";
 

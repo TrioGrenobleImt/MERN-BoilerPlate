@@ -12,12 +12,13 @@ const Account = () => {
     <Loading />
   ) : (
     <div className="flex flex-col items-center justify-center space-y-2">
-      <Avatar className="relative w-20 h-20 transition-shadow duration-300 ease-in-out border-2 border-gray-300 shadow-lg hover:shadow-xl">
+      {/* <Avatar className="relative w-20 h-20 transition-shadow duration-300 ease-in-out border-2 border-gray-300 shadow-lg hover:shadow-xl">
         <AvatarImage src={`${authUser.avatar}`} className="object-cover rounded-full" alt="User Avatar" />
       </Avatar>
       <Button onClick={logout} className="w-full" variant={"outline"}>
         Logout
-      </Button>
+      </Button> */}
+      Bienvenu sur ton compte
     </div>
   );
 };
