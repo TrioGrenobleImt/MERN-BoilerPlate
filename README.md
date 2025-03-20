@@ -44,13 +44,13 @@ SECRET_ACCESS_TOKEN -> **Secret** token used to generate user access tokens.
 Then, install the required **packages** to run your server:
 
 ```shell
-$ npm i
+$ pnpm i
 ```
 
 Now start the server with the command below:
 
 ```shell
-$ npm run dev
+$ pnpm run dev
 ```
 
 Once done, you should see a message in your console indicating that the server is running and connected to the database.
@@ -79,13 +79,13 @@ UPLOAD_AVATARS_URL -> Connection address to upload user avatars (Replace the \*\
 Install the required **packages** to run your client:
 
 ```shell
-$ npm i
+$ pnpm i
 ```
 
 Now start the frontend with the following command:
 
 ```shell
-$ npm run dev
+$ pnpm run dev
 ```
 
 Go to the URL displayed in your console.
@@ -96,14 +96,14 @@ And there you have it, a secure authentication application.
 Navigate to the `server` directory, make sure your server is turned off, and run the following command:
 
 ```shell
-$ npm run test
+$ pnpm run test
 ```
 
 Unit tests should run one by one.
 If you want full coverage, run the following command:
 
 ```shell
-$ npm run coverage
+$ pnpm run coverage
 ```
 
 Your coverage report should be located in the `coverage` directory of the server.
