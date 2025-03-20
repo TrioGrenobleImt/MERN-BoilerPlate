@@ -5,7 +5,9 @@
     "account": "Mon compte",
     "login": "Se connecter",
     "language": "Langage",
-    "languageChanged": "Langage changé en français."
+    "languageChanged": "Langage changé en français.",
+    "logout": "Se déconnecter",
+    "profile": "Profil"
   },
   "pages": {
     "home": {

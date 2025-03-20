@@ -31,7 +31,7 @@ router.post("/", verifyToken({ role: "admin" }), createUser);
  * @param {string} id - The ID of the user to update.
  * @middleware verifyToken({ role: "admin" }) - Ensures the user has an admin role to access this route.
  */
-router.put("/:id", verifyToken({ role: "admin" }), updateUser);
+router.put("/:id", verifyToken(), updateUser);
 
 /**
  * @route DELETE /:id
