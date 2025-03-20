@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { Constants } from "./constants.js";
+import { Constants } from "../../constants/constants.js";
 
 /**
  * @function generateAccessToken
