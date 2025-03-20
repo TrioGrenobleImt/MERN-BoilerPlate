@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { createPlayerSchema, updatePlayerSchema, deletePlayerSchema } from "@/lib/zod";
+import { createPlayerSchema, deletePlayerSchema, updatePlayerSchema } from "@/lib/zod/admin/zod";
 
 interface UserFormProps {
   dialog: (isOpen: boolean) => void;
