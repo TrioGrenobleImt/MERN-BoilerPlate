@@ -12,9 +12,27 @@ const getDefaultAvatar = async (req, res) => {
 };
 
 const updateUserAvatar = async (req, res) => {
-  return res.status(200).json({
-    message: "User avatar updated successfuly",
-  });
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: "No file uploaded. Please select an image." });
+    }
+
+    res.status(200).json({
+      message: "File uploaded successfully",
+
+      //   file: {
+      //     filename: req.file.filename,
+
+      //     path: req.file.path,
+
+      //     mimetype: req.file.mimetype,
+
+      //     size: req.file.size,
+      //   },
+    });
+  } catch (error) {
+    res.status(500).json({ error: "An unexpected error occurred during file upload." });
+  }
 };
 
 export { getDefaultAvatar, updateUserAvatar };
