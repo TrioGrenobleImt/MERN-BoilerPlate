@@ -65,7 +65,6 @@ Example below:
 
 ```env
 VITE_API_URL=
-UPLOAD_AVATARS_URL= **/uploads/users/avatars
 ```
 
 VITE_API_URL -> Connection address to your backend server
@@ -73,8 +72,6 @@ VITE_API_URL -> Connection address to your backend server
 Example: `http://localhost:5000/api`
 
 **(The `/api` is important to correctly route requests to the server)**
-
-UPLOAD_AVATARS_URL -> Connection address to upload user avatars (Replace the \*\* by the server url)
 
 Install the required **packages** to run your client:
 
