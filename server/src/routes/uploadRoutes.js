@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.get("/avatar/default", getDefaultAvatar);
 
-router.post("/avatar/:id", verifyToken(), updateUserAvatar);
+router.put("/avatar/:id", verifyToken(), updateUserAvatar);
 
 export default router;

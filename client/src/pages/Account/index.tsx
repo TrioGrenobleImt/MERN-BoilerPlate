@@ -12,6 +12,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import axiosConfig from "@/config/axiosConfig";
 import { Avatar } from "@/components/ui/avatar";
+import { Label } from "@/components/ui/label";
 
 const Account = () => {
   const { authUser, setAuthUser, loading } = useAuthContext();
@@ -39,6 +40,24 @@ const Account = () => {
       setUpdateLoading(false);
     }
   };
+  const updateProfilePic = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Si tu veux l'envoyer ensuite :
+    const formData = new FormData();
+    formData.append("avatar", file);
+
+    try {
+      const response = await axiosConfig.put(`/uploads/avatar/${authUser?._id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      setAuthUser(response.data.user);
+      toast.success("Avatar updated successfully!");
+    } catch (error: any) {
+      toast.error(error.response?.data?.error || "Upload failed");
+    }
+  };
 
   return loading ? (
     <Loading />
@@ -52,7 +71,7 @@ const Account = () => {
         <CardContent>
           <div className="flex items-center gap-6 mb-8">
             <div className="relative">
-              <Avatar className="w-24 h-24 ">
+              <Avatar className="w-24 h-24">
                 <img src={authUser?.avatar} alt="avatar" />
               </Avatar>
             </div>
@@ -61,9 +80,7 @@ const Account = () => {
                 {authUser?.forename} {authUser?.name}
               </h2>
               <p className="text-muted-foreground">{authUser?.email}</p>
-              <Button variant="outline" size="sm" className="mt-2">
-                Change picture
-              </Button>
+              <Input type="file" className="cursor-pointer" onChange={updateProfilePic} />
             </div>
           </div>
           <Form {...updateForm}>
