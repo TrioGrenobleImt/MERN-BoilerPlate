@@ -6,19 +6,12 @@ import { logLevels } from "../utils/enums/logLevel.js";
  *
  * @param {Object} req - Express request object.
  * @param {Object} req.body - Request body containing log retrieval details.
- * @param {number} req.body.size - Optional. The number of logs to retrieve.
  * @param {Object} res - Express response object.
  * @returns {Object} JSON response with logs or error message.
  */
 const getLogs = async (req, res) => {
-  const { size } = req.body;
   try {
     const query = Log.find({}).populate("user", "-password").sort({ createdAt: -1 });
-
-    if (size && !isNaN(size)) {
-      query.limit(Number(size));
-    }
-
     const logs = await query;
 
     res.status(200).json({ logs, message: "Logs retrieved successfully" });
