@@ -29,10 +29,7 @@ export function NavUser({
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
               <Avatar className="w-8 h-8 rounded-lg">
-                <AvatarFallback className="rounded-lg">
-                  {user.forename.charAt(0).toUpperCase()}
-                  {user.name.charAt(0).toUpperCase()}
-                </AvatarFallback>
+                <AvatarImage src={user.avatar} alt="User Avatar" className="object-cover object-center w-full h-full rounded-full" />
               </Avatar>
               <div className="grid flex-1 text-sm leading-tight text-left">
                 <span className="font-semibold truncate">{user.username}</span>
@@ -50,10 +47,7 @@ export function NavUser({
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="w-8 h-8 rounded-lg">
-                  <AvatarFallback className="rounded-lg">
-                    {user.forename.charAt(0).toUpperCase()}
-                    {user.name.charAt(0).toUpperCase()}
-                  </AvatarFallback>{" "}
+                  <AvatarImage src={user.avatar} alt="User Avatar" className="object-cover object-center w-full h-full rounded-full" />
                 </Avatar>
                 <div className="grid flex-1 text-sm leading-tight text-left">
                   <span className="font-semibold truncate">{user.username}</span>

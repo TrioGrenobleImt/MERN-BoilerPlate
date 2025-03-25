@@ -6,8 +6,21 @@ import { Button } from "@/components/ui/button";
 import { ArrowUpDown, Copy, EllipsisVertical, Pencil, Trash } from "lucide-react";
 import { User } from ".";
 import { toast } from "sonner";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
 export const getColumns = (callback: (action: string, data: any) => void): ColumnDef<User>[] => [
+  {
+    accessorKey: "avatar",
+    header: "Avatar",
+    cell: ({ row }) => {
+      const avatar = row.getValue("avatar");
+      return (
+        <Avatar className="w-10 h-10">
+          <AvatarImage src={avatar as string} alt="User Avatar" className="object-cover object-center w-full h-full rounded-full" />
+        </Avatar>
+      );
+    },
+  },
   {
     accessorKey: "role",
     header: ({ column }) => (
