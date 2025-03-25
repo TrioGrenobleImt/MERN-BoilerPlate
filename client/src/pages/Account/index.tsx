@@ -76,22 +76,6 @@ const Account = () => {
           <CardDescription>Update your personal information and account details.</CardDescription>
         </CardHeader>
         <CardContent>
-          {/* <div className="flex items-center gap-6 mb-8">
-            <div className="relative">
-              <Avatar className="w-28 h-28 ">
-                <AvatarImage src={authUser.avatar} alt="User Avatar" className="object-cover object-center w-full h-full rounded-full" />{" "}
-              </Avatar>
-            </div>
-            <div>
-              <InputFile
-                label="Photo de profil"
-                buttonText="Sélectionner une image"
-                id="profile-picture"
-                disabled={loading}
-                onChange={updateProfilePic}
-              />
-            </div>
-          </div> */}
           <div className="flex flex-col items-center gap-4 mb-8">
             <div className="relative">
               <Avatar className="w-28 h-28 ">
