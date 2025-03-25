@@ -1,11 +1,10 @@
 import mongoose from "mongoose";
 import { userRoles } from "../utils/enums/userRoles.js";
-import { getRandomColor } from "../utils/getRandomColors.js";
 
-function defaultAvatarUrl() {
-  const color = getRandomColor();
-  return `http://localhost:3000/api/uploads/avatar/default?color=${encodeURIComponent(color)}`;
-}
+// Function to generate the default avatar URL
+const getDefaultAvatar = (username) => {
+  return `https://api.dicebear.com/9.x/identicon/svg?seed=${username}`;
+};
 
 const UserSchema = new mongoose.Schema(
   {
@@ -42,7 +41,7 @@ const UserSchema = new mongoose.Schema(
     },
     avatar: {
       type: String,
-      default: defaultAvatarUrl(),
+      default: "", // Set an empty string initially
     },
   },
   {
@@ -53,6 +52,13 @@ const UserSchema = new mongoose.Schema(
 UserSchema.virtual("fullname").get(function () {
   const formattedforename = this.forename.charAt(0).toUpperCase() + this.forename.slice(1).toLowerCase();
   return `${this.name} ${formattedforename}`;
+});
+
+UserSchema.pre("save", function (next) {
+  if (!this.avatar && this.username) {
+    this.avatar = getDefaultAvatar(this.username); // Set avatar based on username
+  }
+  next();
 });
 
 export default mongoose.model("User", UserSchema);
