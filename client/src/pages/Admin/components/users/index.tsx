@@ -16,6 +16,7 @@ export type User = {
   email: string;
   role: string;
   createdAt: Date;
+  avatar?: string;
 };
 
 export const Users = () => {

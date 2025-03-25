@@ -12,7 +12,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import axiosConfig from "@/config/axiosConfig";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { InputFile } from "@/components/ui/inputFile";
+import { InputFile } from "@/components/ui/customs/inputFile";
 
 const Account = () => {
   const { authUser, setAuthUser, loading } = useAuthContext();
