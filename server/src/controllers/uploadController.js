@@ -1,3 +1,8 @@
+import User from "../models/userModel.js";
+
+import fs from "fs";
+import path from "path";
+
 const getDefaultAvatar = async (req, res) => {
   const color = decodeURIComponent(req.query.color);
   const svg = `
@@ -13,22 +18,34 @@ const getDefaultAvatar = async (req, res) => {
 
 const updateUserAvatar = async (req, res) => {
   try {
+    const userId = req.params.id;
     if (!req.file) {
-      return res.status(400).json({ error: "No file uploaded. Please select an image." });
+      return res.status(400).json({ error: "No file uploaded" });
     }
 
+    // On récupère l'utilisateur
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Supprimer l'ancienne image si elle existe
+    if (user.avatar) {
+      const oldAvatarPath = path.join(process.cwd(), "uploads", "users", "avatars", path.basename(user.avatar));
+      if (fs.existsSync(oldAvatarPath)) {
+        fs.unlinkSync(oldAvatarPath);
+      }
+    }
+
+    // On enregistre la nouvelle URL de l'avatar
+    const newAvatarUrl = `${req.protocol}://${req.get("host")}/uploads/users/avatars/${req.file.filename}`;
+
+    user.avatar = newAvatarUrl;
+    await user.save();
+
     res.status(200).json({
-      message: "File uploaded successfully",
-
-      //   file: {
-      //     filename: req.file.filename,
-
-      //     path: req.file.path,
-
-      //     mimetype: req.file.mimetype,
-
-      //     size: req.file.size,
-      //   },
+      message: "Avatar updated successfully",
+      user,
     });
   } catch (error) {
     res.status(500).json({ error: "An unexpected error occurred during file upload." });
