@@ -9,6 +9,11 @@ import AuthenticationRoutes from "./routes/authenticationRoutes.js";
 import LogsRoutes from "./routes/logsRoutes.js";
 import UploadRoutes from "./routes/uploadRoutes.js";
 
+import path from "path";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 //Cors configuration
 const corsOptions = {
   origin: "http://localhost:5173",
@@ -34,7 +39,10 @@ app.use(cookieParser());
 app.use("/api/users", UsersRoutes);
 app.use("/api/auth", AuthenticationRoutes);
 app.use("/api/logs", LogsRoutes);
-app.use("/api/uploads", express.static("uploads"), UploadRoutes);
+
+//Upload routes
+app.use("/api/uploads", UploadRoutes);
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 /**
  * Healthcheck
  * @route GET /api/ping
