@@ -45,8 +45,15 @@ const Account = () => {
 
     const file = e.target.files?.[0];
 
+    if (!file?.type.includes("image")) {
+      toast.error("File must be an image or a gif");
+      setUpdateLoading(false);
+      return;
+    }
+
     if (!file) {
       toast.error("No file selected");
+      setUpdateLoading(false);
       return;
     }
 
