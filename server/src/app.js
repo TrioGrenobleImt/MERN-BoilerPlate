@@ -16,7 +16,7 @@ const __dirname = path.dirname(__filename);
 
 //Cors configuration
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: process.env.CORS_ORIGIN,
   credentials: true,
   methods: "GET, POST, PUT, PATCH, DELETE",
   preflightContinue: true,

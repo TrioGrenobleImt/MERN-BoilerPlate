@@ -34,12 +34,14 @@ PORT=
 MONG_URI=
 MONG_URI_TEST=
 SECRET_ACCESS_TOKEN=
+CORS_ORIGIN=
 ```
 
 PORT -> The port your server will use.  
 MONG_URI -> Connection address to a MongoDB database (Don't forget to add your IP address in **Network Access**).  
 MONG_URI_TEST -> Connection address to a test database (You can use the same as the main app, but the data will be wiped during tests, **not recommended**).  
 SECRET_ACCESS_TOKEN -> **Secret** token used to generate user access tokens.
+CORS_ORIGIN -> The origin address of your frontend application.
 
 Then, install the required **packages** to run your server:
 
