@@ -43,6 +43,8 @@ MONG_URI_TEST -> Connection address to a test database (You can use the same as 
 SECRET_ACCESS_TOKEN -> **Secret** token used to generate user access tokens.
 CORS_ORIGIN -> The origin address of your frontend application.
 
+For a clear example, please refer to the **.env.example** file in the server directory.
+
 Then, install the required **packages** to run your server:
 
 ```shell
@@ -72,8 +74,9 @@ VITE_API_URL=
 VITE_API_URL -> Connection address to your backend server
 
 Example: `http://localhost:5000/api`
-
 **(The `/api` is important to correctly route requests to the server)**
+
+For a clear example, please refer to the **.env.example** file in the client directory.
 
 Install the required **packages** to run your client:
 
