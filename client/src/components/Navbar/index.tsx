@@ -78,13 +78,13 @@ export const Navbar = () => {
                     <DropdownMenuLabel>{t("navbar.account")}</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
-                      <DropdownMenuItem className="flex items-center gap-2" onClick={() => navigate("/account")}>
+                      <DropdownMenuItem className="flex items-center gap-2 hover:cursor-pointer" onClick={() => navigate("/account")}>
                         {t("navbar.profile")}
                       </DropdownMenuItem>
                     </DropdownMenuGroup>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
-                      <DropdownMenuItem onClick={() => logout()} disabled={loading}>
+                      <DropdownMenuItem className="hover:cursor-pointer" onClick={() => logout()} disabled={loading}>
                         {t("navbar.logout")}
                         <DropdownMenuShortcut>
                           <LogOut className="w-4 h-4" />
