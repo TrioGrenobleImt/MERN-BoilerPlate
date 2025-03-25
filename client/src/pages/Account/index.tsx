@@ -11,7 +11,8 @@ import { updateAccountSchema } from "@/lib/zod/schemas/account/zod";
 import { useState } from "react";
 import { toast } from "sonner";
 import axiosConfig from "@/config/axiosConfig";
-import { Avatar } from "@/components/ui/avatar";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { InputFile } from "@/components/ui/inputFile";
 
 const Account = () => {
   const { authUser, setAuthUser, loading } = useAuthContext();
@@ -75,18 +76,30 @@ const Account = () => {
           <CardDescription>Update your personal information and account details.</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center gap-6 mb-8">
+          {/* <div className="flex items-center gap-6 mb-8">
             <div className="relative">
-              <Avatar className="w-24 h-24">
-                <img src={authUser?.avatar} alt="avatar" />
+              <Avatar className="w-28 h-28 ">
+                <AvatarImage src={authUser.avatar} alt="User Avatar" className="object-cover object-center w-full h-full rounded-full" />{" "}
               </Avatar>
             </div>
             <div>
-              <h2 className="text-xl font-semibold text-gray-800">
-                {authUser?.forename} {authUser?.name}
-              </h2>
-              <p className="text-muted-foreground">{authUser?.email}</p>
-              <Input type="file" className="cursor-pointer" name="avatar" disabled={loading} onChange={updateProfilePic} />
+              <InputFile
+                label="Photo de profil"
+                buttonText="Sélectionner une image"
+                id="profile-picture"
+                disabled={loading}
+                onChange={updateProfilePic}
+              />
+            </div>
+          </div> */}
+          <div className="flex flex-col items-center gap-4 mb-8">
+            <div className="relative">
+              <Avatar className="w-28 h-28 ">
+                <AvatarImage src={authUser.avatar} alt="User Avatar" className="object-cover object-center w-full h-full rounded-full" />{" "}
+              </Avatar>
+            </div>
+            <div>
+              <InputFile buttonText="Sélectionner une image" id="profile-picture" disabled={loading} onChange={updateProfilePic} />
             </div>
           </div>
           <Form {...updateForm}>

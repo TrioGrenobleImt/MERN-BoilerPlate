@@ -67,7 +67,11 @@ export const Navbar = () => {
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild className="hover:cursor-pointer">
                     <Avatar>
-                      <AvatarImage src={`${authUser.avatar}`} alt="User Avatar" />
+                      <AvatarImage
+                        src={authUser.avatar}
+                        alt="User Avatar"
+                        className="object-cover object-center w-full h-full rounded-full"
+                      />
                     </Avatar>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-40">
