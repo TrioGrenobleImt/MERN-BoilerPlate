@@ -1,10 +1,6 @@
 import mongoose from "mongoose";
 import { userRoles } from "../utils/enums/userRoles.js";
-
-// Function to generate the default avatar URL
-const getDefaultAvatar = (username) => {
-  return `https://api.dicebear.com/9.x/identicon/svg?seed=${username}`;
-};
+import { generateRandomAvatar } from "../utils/generateRandomAvatar.js";
 
 const UserSchema = new mongoose.Schema(
   {
@@ -41,7 +37,7 @@ const UserSchema = new mongoose.Schema(
     },
     avatar: {
       type: String,
-      default: "", // Set an empty string initially
+      default: "",
     },
   },
   {
@@ -56,7 +52,7 @@ UserSchema.virtual("fullname").get(function () {
 
 UserSchema.pre("save", function (next) {
   if (!this.avatar && this.username) {
-    this.avatar = getDefaultAvatar(this.username); // Set avatar based on username
+    this.avatar = generateRandomAvatar(this.username);
   }
   next();
 });
