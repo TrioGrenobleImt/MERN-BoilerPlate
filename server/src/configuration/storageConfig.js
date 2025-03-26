@@ -1,4 +1,5 @@
 import multer from "multer";
+import { Constants } from "../../constants/constants.js";
 
 // Configuration de stockage
 const storageConfig = multer.diskStorage({
@@ -26,7 +27,7 @@ const fileFilter = (req, file, cb) => {
 const uploadConfig = multer({
   storage: storageConfig,
   fileFilter: fileFilter,
-  limits: { fileSize: 3 * 1024 * 1024 }, // Limite à 3 Mo
+  limits: { fileSize: Constants.AVATAR_MAX_SIZE },
 });
 
 export default uploadConfig;
