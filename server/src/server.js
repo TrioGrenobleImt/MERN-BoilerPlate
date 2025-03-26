@@ -21,21 +21,19 @@ const io = new SocketIOServer(httpServer, {
 const userSocketMap = {};
 
 io.on("connection", (socket) => {
-  console.log("a user connected", socket.id);
-
   const userId = socket.handshake.query.userId;
-  if (userId !== undefined) {
+
+  if (userId) {
     userSocketMap[userId] = socket.id;
+    console.log(userSocketMap);
+    io.emit("getOnlineUsers", Object.keys(userSocketMap));
   }
 
-  //Send events to all the connected clients
-  io.emit("getOnlineUsers", Object.keys(userSocketMap));
-
-  //used to listen to the events,can be used both on the server and client side
   socket.on("disconnect", () => {
-    console.log("user disconnected", socket.id);
-    delete userSocketMap[userId];
-    io.emit("getOnlineUsers", Object.keys(userSocketMap));
+    if (userId) {
+      delete userSocketMap[userId];
+      io.emit("getOnlineUsers", Object.keys(userSocketMap));
+    }
   });
 });
 

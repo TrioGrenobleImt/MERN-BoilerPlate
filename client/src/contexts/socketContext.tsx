@@ -1,62 +1,32 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { useAuthContext } from "./authContext";
+import { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 
-// Typage de l'utilisateur connecté
-type AuthUser = {
-  _id: string;
-};
+let socket: Socket | null = null; // Singleton pour éviter plusieurs connexions
 
-// Typage du contexte socket
-interface SocketContextType {
-  socket: Socket | null;
-  onlineUsers: AuthUser[];
-}
-
-// Contexte avec valeur initiale
-const SocketContext = createContext<SocketContextType>({
-  socket: null,
-  onlineUsers: [],
-});
-
-export const useSocketContext = () => {
-  return useContext(SocketContext);
-};
-
-// Props du provider
-interface SocketProviderProps {
-  children: ReactNode;
-}
-
-export const SocketContextProvider = ({ children }: SocketProviderProps) => {
-  const [socket, setSocket] = useState<Socket | null>(null);
-  const [onlineUsers, setOnlineUsers] = useState<AuthUser[]>([]);
-  const { authUser } = useAuthContext();
+export const useSocket = (userId: string) => {
+  const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
 
   useEffect(() => {
-    if (authUser) {
-      const newSocket = io("http://localhost:3000", {
-        query: {
-          userId: authUser.id,
-        },
+    if (!socket && userId) {
+      socket = io("http://localhost:3000", {
+        query: { userId },
+        withCredentials: true,
       });
 
-      setSocket(newSocket);
-
-      newSocket.on("getOnlineUsers", (users: AuthUser[]) => {
+      socket.on("getOnlineUsers", (users: string[]) => {
         setOnlineUsers(users);
       });
 
-      return () => {
-        newSocket.close();
-      };
-    } else {
-      if (socket) {
-        socket.close();
-        setSocket(null);
-      }
+      socket.on("disconnect", () => {
+        setOnlineUsers([]);
+      });
     }
-  }, [authUser]);
 
-  return <SocketContext.Provider value={{ socket, onlineUsers }}>{children}</SocketContext.Provider>;
+    return () => {
+      socket?.disconnect();
+      socket = null;
+    };
+  }, [userId]);
+
+  return { onlineUsers };
 };
