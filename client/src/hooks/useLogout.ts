@@ -22,7 +22,7 @@ export const useLogout = () => {
 
       toast.success(data.message);
       setAuthUser(null);
-      navigate("/");
+      navigate("/login");
     } catch (error: any) {
       toast.error(error.message);
     } finally {

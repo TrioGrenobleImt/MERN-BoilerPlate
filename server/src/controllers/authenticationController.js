@@ -49,7 +49,9 @@ const register = async (req, res) => {
       level: logLevels.INFO,
     });
 
-    res.status(201).json({ user: user, message: "Registered successfully" });
+    const { password: userPassword, ...userWithoutPassword } = user._doc;
+
+    res.status(201).json({ user: userWithoutPassword, message: "Registered successfully" });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
