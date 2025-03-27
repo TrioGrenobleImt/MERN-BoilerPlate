@@ -7,6 +7,6 @@
  * @property {number} AVATAR_MAX_SIZE - The maximum size (in bytes) for an avatar file, set to 3 MB.
  */
 export const Constants = {
-  MAX_AGE: 30 * 24 * 60 * 60 * 1000,
+  MAX_AGE: 30 * 24 * 60 * 60,
   AVATAR_MAX_SIZE: 3 * 1024 * 1024,
 };
