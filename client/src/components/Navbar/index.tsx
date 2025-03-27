@@ -8,7 +8,6 @@ import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { useAuthContext } from "@/contexts/authContext";
-import { Avatar, AvatarImage } from "../ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,6 +19,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { useLogout } from "@/hooks/useLogout";
+import { AvatarWithStatusCell } from "@/pages/Admin/components/users/avatarStatusCell";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -66,13 +66,9 @@ export const Navbar = () => {
               {authUser ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild className="hover:cursor-pointer">
-                    <Avatar>
-                      <AvatarImage
-                        src={authUser.avatar}
-                        alt="User Avatar"
-                        className="object-cover object-center w-full h-full rounded-full"
-                      />
-                    </Avatar>
+                    <span className="hover:cursor-pointer">
+                      <AvatarWithStatusCell user={authUser} />
+                    </span>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-40">
                     <DropdownMenuLabel>{t("navbar.account")}</DropdownMenuLabel>

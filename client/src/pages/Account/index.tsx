@@ -86,7 +86,7 @@ const Account = () => {
           <div className="flex flex-col items-center gap-4 mb-8">
             <div className="relative">
               <Avatar className="w-28 h-28 ">
-                <AvatarImage src={authUser.avatar} alt="User Avatar" className="object-cover object-center w-full h-full rounded-full" />{" "}
+                <AvatarImage src={authUser.avatar} alt="User Avatar" className="object-cover object-center w-full h-full rounded-full" />
               </Avatar>
             </div>
             <div>
