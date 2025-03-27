@@ -1,5 +1,5 @@
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { useSocket } from "@/contexts/socketContext";
+import { useSocketContext } from "@/contexts/socketContext";
 import { User } from ".";
 
 interface AvatarWithStatusCellProps {
@@ -7,7 +7,7 @@ interface AvatarWithStatusCellProps {
 }
 
 export const AvatarWithStatusCell = ({ user }: AvatarWithStatusCellProps) => {
-  const { onlineUsers } = useSocket(user._id);
+  const { onlineUsers } = useSocketContext();
   const isOnline = onlineUsers.includes(user._id);
 
   return (

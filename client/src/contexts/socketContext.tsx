@@ -1,32 +1,52 @@
-import { useEffect, useState } from "react";
-import { io, Socket } from "socket.io-client";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { useAuthContext } from "./authContext";
+import io, { Socket } from "socket.io-client";
 
-let socket: Socket | null = null; // Singleton pour éviter plusieurs connexions
+interface SocketContextType {
+  socket: Socket | null;
+  onlineUsers: string[];
+  isOnline: boolean;
+}
 
-export const useSocket = (userId: string) => {
+const socketContext = createContext<SocketContextType | undefined>(undefined);
+
+export const useSocketContext = (): SocketContextType => {
+  const context = useContext(socketContext);
+  if (!context) {
+    throw new Error("useSocketContext must be used within a SocketContextProvider");
+  }
+  return context;
+};
+
+interface SocketContextProviderProps {
+  children: React.ReactNode;
+}
+
+export const SocketContextProvider: React.FC<SocketContextProviderProps> = ({ children }) => {
+  const [socket, setSocket] = useState<Socket | null>(null);
   const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
+  const { authUser } = useAuthContext();
+  const [isOnline, setIsOnline] = useState(false);
 
   useEffect(() => {
-    if (!socket && userId) {
-      socket = io("http://localhost:3000", {
-        query: { userId },
+    if (authUser?._id) {
+      const newSocket = io("http://localhost:3000", {
+        query: { userId: authUser._id },
         withCredentials: true,
       });
 
-      socket.on("getOnlineUsers", (users: string[]) => {
+      setSocket(newSocket);
+
+      newSocket.on("getOnlineUsers", (users: string[]) => {
         setOnlineUsers(users);
+        setIsOnline(users.includes(authUser._id));
       });
 
-      socket.on("disconnect", () => {
-        setOnlineUsers([]);
-      });
+      return () => {
+        newSocket.disconnect();
+      };
     }
+  }, [authUser?._id]);
 
-    return () => {
-      socket?.disconnect();
-      socket = null;
-    };
-  }, [userId]);
-
-  return { onlineUsers };
+  return <socketContext.Provider value={{ socket, onlineUsers, isOnline }}>{children}</socketContext.Provider>;
 };
