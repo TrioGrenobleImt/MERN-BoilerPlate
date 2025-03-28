@@ -11,7 +11,7 @@ export const generateAccessToken = (userId) => {
   if (!process.env.SECRET_ACCESS_TOKEN) {
     console.error("Please specify the access token secret in the .env file.");
     process.exit(1);
+  } else {
+    return jwt.sign({ id: userId }, process.env.SECRET_ACCESS_TOKEN, { expiresIn: Constants.MAX_AGE });
   }
-
-  return jwt.sign({ id: userId }, process.env.SECRET_ACCESS_TOKEN, { expiresIn: Constants.MAX_AGE });
 };
