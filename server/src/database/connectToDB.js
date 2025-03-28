@@ -5,6 +5,11 @@ import mongoose from "mongoose";
  * @returns {Promise<void>} A promise that resolves when the connection is established.
  */
 export const connectToDatabase = async () => {
+  if (!process.env.MONG_URI) {
+    console.error("Please specify the MongoDB URI in the .env file.");
+    process.exit(1);
+  }
+
   try {
     await mongoose.connect(process.env.MONG_URI);
     console.log("Connected to the database 🧰");
