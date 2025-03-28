@@ -39,9 +39,6 @@ export default function RegisterPage() {
       const response = await axiosConfig.post("/auth/register", values);
       const data = await response.data;
 
-      if (data.error) {
-        throw new Error(data.error);
-      }
       toast.success(data.message);
       setAuthUser(data.user);
       navigate("/");
