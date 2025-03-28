@@ -34,9 +34,7 @@ export default function LoginPage() {
       setLoading(true);
       const response = await axiosConfig.post("/auth/login", values);
       const data = await response.data;
-      if (data.error) {
-        throw new Error(data.error);
-      }
+
       toast.success(data.message);
       setAuthUser(data.user);
       navigate("/");
