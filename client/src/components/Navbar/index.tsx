@@ -76,6 +76,9 @@ export const Navbar = () => {
                     <DropdownMenuGroup>
                       <DropdownMenuItem className="flex items-center gap-2 hover:cursor-pointer" onClick={() => navigate("/account")}>
                         {t("navbar.profile")}
+                        <DropdownMenuShortcut>
+                          <User className="w-4 h-4" />
+                        </DropdownMenuShortcut>
                       </DropdownMenuItem>
                     </DropdownMenuGroup>
                     <DropdownMenuSeparator />

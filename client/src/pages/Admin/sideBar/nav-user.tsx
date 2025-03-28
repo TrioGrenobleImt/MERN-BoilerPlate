@@ -3,20 +3,24 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
 import { useLogout } from "@/hooks/useLogout";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export function NavUser({
   user,
 }: {
   user: { username: string; email: string; avatar: string; name: string; forename: string; fullname: string };
 }) {
+  const [isDropdownOpen, setDropdownOpen] = useState(false);
   const { logout, loading } = useLogout();
   const { isMobile } = useSidebar();
   const navigate = useNavigate();
@@ -24,9 +28,13 @@ export function NavUser({
   return (
     <SidebarMenu>
       <SidebarMenuItem>
-        <DropdownMenu>
+        <DropdownMenu open={isDropdownOpen}>
           <DropdownMenuTrigger asChild>
-            <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
+            <SidebarMenuButton
+              size="lg"
+              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              onClick={() => setDropdownOpen((prev: boolean) => !prev)}
+            >
               <Avatar className="w-8 h-8 rounded-lg">
                 <AvatarImage src={user.avatar} alt="User Avatar" className="object-cover object-center w-full h-full rounded-full" />
               </Avatar>
@@ -55,14 +63,23 @@ export function NavUser({
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => navigate("/account")} className="hover:cursor-pointer hover:underline">
-              <User />
-              My account
-            </DropdownMenuItem>
-            <DropdownMenuItem disabled={loading} onClick={() => logout()} className="hover:cursor-pointer">
-              <LogOut />
-              Log out
-            </DropdownMenuItem>
+            <DropdownMenuGroup>
+              <DropdownMenuItem className="flex items-center gap-2 hover:cursor-pointer" onClick={() => navigate("/account")}>
+                My account
+                <DropdownMenuShortcut>
+                  <User className="w-4 h-4" />
+                </DropdownMenuShortcut>
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuItem className="hover:cursor-pointer" onClick={() => logout()} disabled={loading}>
+                Logout
+                <DropdownMenuShortcut>
+                  <LogOut className="w-4 h-4" />
+                </DropdownMenuShortcut>
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
