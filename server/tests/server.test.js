@@ -18,7 +18,7 @@ describe("Server Tests", () => {
 
   afterEach(() => {
     vi.clearAllMocks();
-    delete process.env.PORT; // Clean up the PORT after each test
+    delete process.env.PORT;
     httpServer.close();
   });
 
