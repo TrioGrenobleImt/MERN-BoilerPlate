@@ -145,7 +145,6 @@ const updateUser = async (req, res) => {
     }
 
     const actionUser = await User.findById(userId);
-    //SI actionUser n'est pas admin
 
     if (actionUser.role == userRoles.ADMIN) {
       // Validate role

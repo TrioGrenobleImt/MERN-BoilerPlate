@@ -5,6 +5,7 @@ import request from "supertest";
 import User from "../../../src/models/userModel.js";
 import Log from "../../../src/models/logModel.js";
 import { generateAccessToken } from "../../../src/utils/generateAccessToken.js";
+import fs from "fs";
 
 //Import server and app
 import app from "../../../src/app.js";
@@ -291,7 +292,7 @@ describe("PUT /api/users/:id", () => {
       username: "test",
       email: "test@gmail.com",
       password: "testPassword",
-      role: "admin",
+      role: "user",
       name: "test",
       forename: "test",
     });
@@ -299,6 +300,7 @@ describe("PUT /api/users/:id", () => {
       .put(`/api/users/${user._id}`)
       .send({ username: "newUsername" })
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+
     expect(response.status).toBe(200);
     expect(response.body.user.username).toBe("newUsername");
     expect(response.body.user.password).toBe(undefined);
@@ -320,8 +322,44 @@ describe("PUT /api/users/:id", () => {
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(200);
+    expect(response.body.message).toBe("User updated successfully");
     const updatedUser = await User.findById(user._id);
     expect(updatedUser.password).not.toBe(user.password);
+  });
+
+  it("should delete password and role from body if the user isn't admin", async () => {
+    // Créer un utilisateur avec le rôle 'user'
+    const user = await User.create({
+      username: "test",
+      email: "test@gmail.com",
+      password: "testPassword",
+      role: "user",
+      name: "test",
+      forename: "test",
+    });
+
+    // Créer un token d'accès pour l'utilisateur
+    const token = generateAccessToken(user._id);
+
+    // Effectuer la requête PUT avec un mot de passe et un rôle 'admin'
+    const response = await request(app)
+      .put(`/api/users/${user._id}`)
+      .send({ password: "newPassword", role: "admin" })
+      .set("Cookie", `__access__token=${token}`);
+
+    // Vérifier que la réponse a un code HTTP 200 (succès)
+    expect(response.status).toBe(200);
+
+    // Récupérer l'utilisateur mis à jour depuis la base de données
+    const updatedUser = await User.findById(user._id);
+
+    // Vérifier que le mot de passe et le rôle ont été supprimés du corps de la requête
+    expect(updatedUser.password).not.toBe("newPassword"); // Le mot de passe ne doit pas avoir été modifié
+    expect(updatedUser.role).toBe("user"); // Le rôle doit être resté 'user' et non pas changé en 'admin'
+
+    // Vérifier que le mot de passe et le rôle n'ont pas été envoyés dans la réponse du corps de la requête
+    expect(response.body.password).toBeUndefined(); // Assurer que le mot de passe n'est pas dans la réponse
+    expect(response.body.role).toBeUndefined(); // Assurer que le rôle n'est pas dans la réponse
   });
 
   it("should return an error if the email already exists", async () => {
@@ -440,6 +478,9 @@ describe("DELETE /api/users/:id", () => {
   });
 
   it("should delete a user", async () => {
+    const pathAvatarOld = "./uploads/users/avatars/hello-world.png";
+    fs.writeFileSync(pathAvatarOld, "Hello, world!");
+
     const user = await User.create({
       username: "test",
       email: "test@gmail.com",
@@ -447,10 +488,14 @@ describe("DELETE /api/users/:id", () => {
       role: "admin",
       name: "test",
       forename: "test",
+      avatar: pathAvatarOld,
     });
+
     const response = await request(app)
       .delete(`/api/users/${user._id}`)
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+
+    expect(fs.existsSync(pathAvatarOld)).toBe(false);
     expect(response.status).toBe(200);
     expect(response.body.message).toBe("User deleted successfully");
     expect(response.body.user.username).toBe(user.username);
