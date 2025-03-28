@@ -15,9 +15,9 @@ export function initServer() {
   const io = new SocketIOServer(httpServer, {
     cors: corsOptions,
   });
+  const userSocketMap = {};
 
   io.on("connection", (socket) => {
-    const userSocketMap = {};
     const userId = socket.handshake.query.userId;
 
     if (userId) {
