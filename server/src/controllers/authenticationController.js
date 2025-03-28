@@ -30,7 +30,7 @@ const register = async (req, res) => {
   if (!regex.test(password)) {
     return res.status(400).json({
       error:
-        "Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, one number, and one special character.",
+        "Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, one number, and one special character",
     });
   }
 

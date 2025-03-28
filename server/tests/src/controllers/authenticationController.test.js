@@ -42,6 +42,21 @@ describe("POST /api/auth/register", () => {
     expect(response.body.password).toBe(undefined);
   });
 
+  it("should return a 400 status error because the password isnt strong enough", async () => {
+    const response = await request(app).post("/api/auth/register").send({
+      username: "test",
+      email: "test@gmail.com",
+      password: "test",
+      confirmPassword: "test",
+      name: "test",
+      forename: "Test",
+    });
+    expect(response.status).toBe(400);
+    expect(response.body.error).toBe(
+      "Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, one number, and one special character",
+    );
+  });
+
   it("should return a 400 status error because the passwords do not match", async () => {
     const response = await request(app).post("/api/auth/register").send({
       username: "test",
