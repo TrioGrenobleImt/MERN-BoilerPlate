@@ -4,16 +4,22 @@ Welcome to the MERN-APP boilerplate, a complete solution to quickly start a mode
 
 ## Table of Contents
 
-- [Author](#author)
-- [Technologies Used](#technologies-used)
-- [Backend](#backend)
-- [Frontend](#frontend)
-- [Unit Tests](#unit-tests)
-- [Features](#features)
+<details>
+  <summary>📑 Table of Contents</summary>
+  
+  - [Author](#author)
+  - [Technologies Used](#technologies-used)
+  - [Backend](#backend)
+  - [Frontend](#frontend)
+  - [Unit Tests](#unit-tests)
+  - [Features](#features)
+  
+</details>
 
 ## Author
 
-- [Téo Villet](https://github.com/teovlt) - Web Developer
+👨‍💻 **Téo Villet** - Web Developer  
+[GitHub Profile](https://github.com/teovlt)
 
 ## Technologies Used
 
@@ -24,7 +30,7 @@ Welcome to the MERN-APP boilerplate, a complete solution to quickly start a mode
 
 ## Backend
 
-Navigate to the `server` directory.
+🔙 Navigate to the `server` directory.  
 You first need to create a **.env** file containing the backend environment variables.
 
 Example below:
@@ -37,11 +43,11 @@ SECRET_ACCESS_TOKEN=
 CORS_ORIGIN=
 ```
 
-PORT -> The port your server will use.  
-MONG_URI -> Connection address to a MongoDB database (Don't forget to add your IP address in **Network Access**).  
-MONG_URI_TEST -> Connection address to a test database (You can use the same as the main app, but the data will be wiped during tests, **not recommended**).  
-SECRET_ACCESS_TOKEN -> **Secret** token used to generate user access tokens.
-CORS_ORIGIN -> The origin address of your frontend application.
+- **PORT** -> The port your server will use.
+- **MONG_URI** -> Connection address to a MongoDB database (Don't forget to add your IP address in **Network Access**).
+- **MONG_URI_TEST** -> Connection address to a test database (You can use the same as the main app, but the data will be wiped during tests, **not recommended**).
+- **SECRET_ACCESS_TOKEN** -> **Secret** token used to generate user access tokens.
+- **CORS_ORIGIN** -> The origin address of your frontend application.
 
 For a clear example, please refer to the **.env.example** file in the server directory.
 
@@ -61,7 +67,7 @@ Once done, you should see a message in your console indicating that the server i
 
 ## Frontend
 
-For the frontend, it's even simpler. Navigate to the `client` directory and follow the procedure below:
+🎨 For the frontend, it's even simpler. Navigate to the `client` directory and follow the procedure below:
 
 Create a **.env** file containing the frontend environment variables.
 
@@ -71,7 +77,7 @@ Example below:
 VITE_API_URL=
 ```
 
-VITE_API_URL -> Connection address to your backend server
+- **VITE_API_URL** -> Connection address to your backend server
 
 Example: `http://localhost:5000`. For a clear example, please refer to the **.env.example** file in the client directory.
 
@@ -87,28 +93,30 @@ Now start the frontend with the following command:
 $ pnpm run dev
 ```
 
-Go to the URL displayed in your console.
+Go to the URL displayed in your console.  
 And there you have it, a secure authentication application.
 
 ## Unit Tests
 
-Navigate to the `server` directory, make sure your server is turned off, and run the following command:
+🧪 Navigate to the `server` directory, make sure your server is turned off, and run the following command:
 
 ```shell
 $ pnpm run test
 ```
 
-Unit tests should run one by one.
+Unit tests should run one by one.  
 If you want full coverage, run the following command:
 
 ```shell
 $ pnpm run coverage
 ```
 
-Your coverage report should be located in the `coverage` directory of the server.
+Your coverage report should be located in the `coverage` directory of the server.  
 Don't forget to restart your backend after running tests.
 
 ## Features
+
+🚀 **Features:**
 
 - 📜 **Log Management**: Track app usage for better maintenance and analysis.
 - 👥 **User CRUD**: Manage users with create, read, update, and delete operations.
