@@ -6,7 +6,7 @@ export default defineConfig({
     maxConcurrency: 1,
     fileParallelism: false,
     coverage: {
-      exclude: ["index.js", "vitest.config.ts"],
+      exclude: ["index.js", "vitest.config.ts", "**/tests/**", "**/uploads/**"],
     },
   },
 });
