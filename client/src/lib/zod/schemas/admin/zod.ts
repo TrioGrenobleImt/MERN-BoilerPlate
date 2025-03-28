@@ -16,8 +16,11 @@ export const createPlayerSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
   password: z
     .string()
-    .min(6, { message: "Password must be at least 6 characters long" })
-    .max(255, { message: "Password must be at most 255 characters long" }),
+    .max(255, { message: "Password must be at most 255 characters long" })
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, {
+      message:
+        "Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, one number, and one special character.",
+    }),
   role: z.string(),
 });
 

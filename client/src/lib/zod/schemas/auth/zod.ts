@@ -30,8 +30,10 @@ export const getRegisterSchema = (t: (key: string) => string) =>
       email: z.string().email({ message: t("pages.register.errors.invalid_email") }),
       password: z
         .string()
-        .min(6, { message: t("pages.register.errors.password_min") })
-        .max(255, { message: t("pages.register.errors.password_max") }),
+        .max(255, { message: t("pages.register.errors.password_max") })
+        .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, {
+          message: t("pages.register.errors.password_invalid"),
+        }), // Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character
       confirmPassword: z.string(),
     })
     .refine((data) => data.password === data.confirmPassword, {
