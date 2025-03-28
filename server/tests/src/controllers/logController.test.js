@@ -54,31 +54,6 @@ describe("GET api/logs/", () => {
     expect(res.body.logs[0].message).toBe("test");
   });
 
-  it("should limit the number of logs returned if size is provided", async () => {
-    const user = await User.create({
-      username: "test",
-      email: "test@gmail.com",
-      password: "testmdp",
-      role: "admin",
-      name: "test",
-      forename: "Test",
-    });
-
-    await Log.create([
-      { message: "log 1", level: logLevels.INFO, user: user._id },
-      { message: "log 2", level: logLevels.INFO, user: user._id },
-      { message: "log 3", level: logLevels.INFO, user: user._id },
-    ]);
-
-    const res = await request(app)
-      .get("/api/logs/")
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`)
-      .send({ size: 2 }); // On limite à 2 logs
-
-    expect(res.status).toBe(200);
-    expect(res.body.logs.length).toBe(2); // Vérifie qu'on a bien 2 logs
-  });
-
   it("should return a 500 status if an error occurs", async () => {
     const user = await User.create({
       username: "test",

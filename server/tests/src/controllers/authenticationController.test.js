@@ -30,8 +30,8 @@ describe("POST /api/auth/register", () => {
     const response = await request(app).post("/api/auth/register").send({
       username: "test",
       email: "test@gmail.com",
-      password: "test",
-      confirmPassword: "test",
+      password: "Abcdef1@",
+      confirmPassword: "Abcdef1@",
       name: "test",
       forename: "Test",
     });
@@ -46,7 +46,7 @@ describe("POST /api/auth/register", () => {
     const response = await request(app).post("/api/auth/register").send({
       username: "test",
       email: "test@gmail.com",
-      password: "test",
+      password: "Abcdef1@",
       confirmPassword: "test2",
       name: "test",
       forename: "Test",
@@ -60,8 +60,8 @@ describe("POST /api/auth/register", () => {
     const response = await request(app).post("/api/auth/register").send({
       username: "test2",
       email: "test@gmail.com",
-      password: "test",
-      confirmPassword: "test",
+      password: "Abcdef1@",
+      confirmPassword: "Abcdef1@",
       name: "test",
       forename: "Test",
     });
@@ -74,8 +74,8 @@ describe("POST /api/auth/register", () => {
     const response = await request(app).post("/api/auth/register").send({
       username: "test",
       email: "test2@gmail.com",
-      password: "test",
-      confirmPassword: "test",
+      password: "Abcdef1@",
+      confirmPassword: "Abcdef1@",
       name: "test",
       forename: "Test",
     });
@@ -103,8 +103,8 @@ describe("POST /api/auth/register", () => {
     const response = await request(app).post("/api/auth/register").send({
       username: "test",
       email: "test@gmail.com",
-      password: "test",
-      confirmPassword: "test",
+      password: "Abcdef1@",
+      confirmPassword: "Abcdef1@",
       name: "test",
       forename: "Test",
     });
@@ -123,14 +123,14 @@ describe("POST /api/auth/login", () => {
     await request(app).post("/api/auth/register").send({
       username: "test",
       email: "test@gmail.com",
-      password: "test",
-      confirmPassword: "test",
+      password: "Abcdef1@",
+      confirmPassword: "Abcdef1@",
       name: "test",
       forename: "Test",
     });
     const response = await request(app).post("/api/auth/login").send({
       username: "test",
-      password: "test",
+      password: "Abcdef1@",
     });
 
     expect(response.status).toBe(201);
@@ -140,7 +140,7 @@ describe("POST /api/auth/login", () => {
     expect(response.body.password).toBe(undefined);
   });
   it("should return a 422 error status because one of the fields is missing", async () => {
-    const user = new User({ username: "test", email: "test@gmail.com", password: "testPassword", name: "test", forename: "Test" });
+    const user = new User({ username: "test", email: "test@gmail.com", password: "Abcdef1@", name: "test", forename: "Test" });
     await user.save();
     const response = await request(app).post("/api/auth/login").send({
       username: "test",
@@ -149,22 +149,22 @@ describe("POST /api/auth/login", () => {
     expect(response.body.error).toBe("Missing fields");
   });
   it("should return a 400 error status because there is no user with this username", async () => {
-    const user = new User({ username: "test", email: "test@gmail.com", password: "testPassword", name: "test", forename: "Test" });
+    const user = new User({ username: "test", email: "test@gmail.com", password: "Abcdef1@", name: "test", forename: "Test" });
     await user.save();
     const response = await request(app).post("/api/auth/login").send({
       username: "testFALSE",
-      password: "testPassword",
+      password: "Abcdef1@",
     });
 
     expect(response.status).toBe(400);
     expect(response.body.error).toBe("No such user");
   });
   it("should return a 400 error status because the password is wrong", async () => {
-    const user = new User({ username: "test", email: "test@gmail.com", password: "testPassword", name: "test", forename: "Test" });
+    const user = new User({ username: "test", email: "test@gmail.com", password: "Abcdef1@", name: "test", forename: "Test" });
     await user.save();
     const response = await request(app).post("/api/auth/login").send({
       username: "test",
-      password: "testPasswordFalse",
+      password: "Abcdef1@FALSE",
     });
 
     expect(response.status).toBe(400);

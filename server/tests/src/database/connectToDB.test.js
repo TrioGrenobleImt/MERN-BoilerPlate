@@ -14,7 +14,22 @@ describe("connectToDatabase", () => {
     connectStub.restore();
   });
 
+  it("should log an error and exit if MONG_URI is not specified", () => {
+    delete process.env.MONG_URI;
+    const exitSpy = vi.spyOn(process, "exit").mockImplementation(() => {});
+    const consoleErrorSpy = vi.spyOn(console, "error");
+
+    connectToDatabase();
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith("Please specify the MongoDB URI in the .env file.");
+    expect(exitSpy).toHaveBeenCalledWith(1);
+
+    exitSpy.mockRestore();
+    consoleErrorSpy.mockRestore();
+  });
+
   it("should call mongoose.connect and log success message on successful connection", async () => {
+    process.env.MONG_URI = "mongodb://testuri";
     connectStub.resolves();
 
     const consoleLogSpy = vi.spyOn(console, "log");
@@ -29,6 +44,7 @@ describe("connectToDatabase", () => {
   });
 
   it("should call mongoose.connect and log error message on connection failure", async () => {
+    process.env.MONG_URI = "mongodb://testuri";
     const error = new Error("Connection error");
     connectStub.rejects(error);
 
