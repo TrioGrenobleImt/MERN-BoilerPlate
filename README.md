@@ -73,10 +73,7 @@ VITE_API_URL=
 
 VITE_API_URL -> Connection address to your backend server
 
-Example: `http://localhost:5000/api`
-**(The `/api` is important to correctly route requests to the server)**
-
-For a clear example, please refer to the **.env.example** file in the client directory.
+Example: `http://localhost:5000`. For a clear example, please refer to the **.env.example** file in the client directory.
 
 Install the required **packages** to run your client:
 
@@ -126,5 +123,5 @@ Don't forget to restart your backend after running tests.
 - 🌙 **Theme Management**: Toggle between "light" and "dark" themes for a customized user experience.
 - 🌍 **Internationalization with I18n**: Multi-language support with JSON translation files.
 - 🎨 **Modern UI**: Uses **TailwindCSS** and **ShadCN** for a responsive and elegant design.
-- 📋 **Login Form**: Preconfigured login form for quick integration.
+- 📋 **Auth Forms**: Preconfigured login and register form for quick integration
 - 🔄 **Prettier Configuration**: Integrated code formatting with Prettier for consistent styling.

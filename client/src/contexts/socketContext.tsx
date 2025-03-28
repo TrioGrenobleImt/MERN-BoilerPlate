@@ -30,7 +30,7 @@ export const SocketContextProvider: React.FC<SocketContextProviderProps> = ({ ch
 
   useEffect(() => {
     if (authUser?._id) {
-      const newSocket = io("http://localhost:3000", {
+      const newSocket = io(import.meta.env.VITE_API_URL, {
         query: { userId: authUser._id },
         withCredentials: true,
       });
