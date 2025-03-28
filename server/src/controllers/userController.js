@@ -192,14 +192,15 @@ const deleteUser = async (req, res) => {
   try {
     const user = await User.findOneAndDelete({ _id: id });
     //Delete avatar if exists
+    if (!user) {
+      return res.status(400).json({ error: "No such user" });
+    }
+
     if (user.avatar) {
       const oldAvatarPath = path.join(process.cwd(), "uploads", "users", "avatars", path.basename(user.avatar));
       if (fs.existsSync(oldAvatarPath)) {
         fs.unlinkSync(oldAvatarPath);
       }
-    }
-    if (!user) {
-      return res.status(400).json({ error: "No such user" });
     }
 
     res.status(200).json({ user, message: "User deleted successfully" });

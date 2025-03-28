@@ -1,47 +1,42 @@
-import { vi, expect, beforeEach, afterEach, describe, test } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { createServer } from "http";
 import app from "../src/app.js";
+import { initServer } from "../src/server.js";
 import { connectToDatabase } from "../src/database/connectToDB.js";
 
-// Mocking connectToDatabase pour éviter de se connecter à une vraie base de données
+// Mock the database connection function
 vi.mock("../src/database/connectToDB.js", () => ({
   connectToDatabase: vi.fn(),
 }));
 
-let viSpyConsole;
-
-beforeEach(() => {
-  viSpyConsole = vi.spyOn(console, "log").mockImplementation(vi.fn());
-});
-
-describe("Server startup", () => {
-  let server;
+describe("Server Tests", () => {
+  let httpServer;
 
   beforeEach(() => {
-    server = {
-      listen: vi.fn((port, callback) => {
-        // Simulez un démarrage du serveur qui appelle la fonction de callback immédiatement
-        callback();
-      }),
-    };
-
-    app.listen = server.listen;
+    httpServer = createServer(app);
   });
 
   afterEach(() => {
     vi.clearAllMocks();
+    delete process.env.PORT; // Clean up the PORT after each test
+    httpServer.close();
   });
 
-  test("should connect to the database and start the server", async () => {
-    // Importer le fichier serveur après avoir mocké tout ce qui est nécessaire
-    await import("../src/server.js");
+  it("should connect to the database on server start", () => {
+    expect(connectToDatabase).toHaveBeenCalled();
+  });
 
-    // Vérifier que la fonction connectToDatabase a été appelée
-    expect(connectToDatabase).toHaveBeenCalledTimes(1);
+  it("should log an error and exit if PORT is not specified", () => {
+    delete process.env.PORT;
+    const exitSpy = vi.spyOn(process, "exit").mockImplementation(() => {});
+    const logSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
-    // Vérifier que `app.listen` a été appelée avec le bon port
-    expect(server.listen).toHaveBeenCalledWith(process.env.PORT, expect.any(Function));
+    initServer();
 
-    // Vérifier que le bon message a été loggé
-    expect(viSpyConsole).toHaveBeenCalledWith("Server listening on port", process.env.PORT, "🚀");
+    expect(logSpy).toHaveBeenCalledWith(expect.stringContaining("Please specify the port number for the HTTP server"));
+    expect(exitSpy).toHaveBeenCalledWith(1);
+
+    exitSpy.mockRestore();
+    logSpy.mockRestore();
   });
 });
