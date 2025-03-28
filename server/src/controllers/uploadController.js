@@ -2,6 +2,7 @@ import User from "../models/userModel.js";
 
 import fs from "fs";
 import path from "path";
+import { Constants } from "../../constants/constants.js";
 
 const updateUserAvatar = async (req, res) => {
   try {
@@ -16,6 +17,10 @@ const updateUserAvatar = async (req, res) => {
     const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/svg+xml"];
     if (!allowedTypes.includes(req.file.mimetype)) {
       return res.status(400).json({ error: "Invalid file type. Only jpg, jpeg, png, gif, and svg are allowed" });
+    }
+
+    if (req.file.size > Constants.AVATAR_MAX_SIZE) {
+      return res.status(400).json({ error: `File size exceeds the limit of ${Constants.AVATAR_MAX_SIZE / 1024 / 1024} MB` });
     }
 
     // Supprimer l'ancienne image si elle existe
