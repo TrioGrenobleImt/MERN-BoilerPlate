@@ -1,4 +1,5 @@
 import app from "./app.js";
+import { corsOptions } from "./configuration/corsOptions.js";
 import { connectToDatabase } from "./database/connectToDB.js";
 import { createServer } from "http";
 import { Server as SocketIOServer } from "socket.io";
@@ -11,11 +12,7 @@ const httpServer = createServer(app);
 
 // Initialise Socket.io sur ce serveur
 const io = new SocketIOServer(httpServer, {
-  cors: {
-    origin: process.env.CORS_ORIGIN,
-    methods: ["GET", "POST"],
-    credentials: true,
-  },
+  cors: corsOptions,
 });
 
 const userSocketMap = {};

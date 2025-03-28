@@ -5,14 +5,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 
 import router from "./routes/router.js";
-
-//Cors configuration
-const corsOptions = {
-  origin: process.env.CORS_ORIGIN,
-  credentials: true,
-  methods: "GET, POST, PUT, PATCH, DELETE",
-  preflightContinue: true,
-};
+import { corsOptions } from "./configuration/corsOptions.js";
 
 //express app
 const app = express();
