@@ -9,6 +9,8 @@ export function initSockets(httpServer) {
     cors: corsOptions,
   });
 
+  console.log("Socket server started 📡");
+
   io.on("connection", (socket) => {
     const userId = socket.handshake.query.userId;
 
