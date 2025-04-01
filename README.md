@@ -133,4 +133,4 @@ Don't forget to restart your backend after running tests.
 - 📋 **Auth Forms**: Preconfigured login and register form for quick integration
 - 🔄 **Prettier Configuration**: Integrated code formatting with Prettier for consistent styling.
 - 🖼 **Avatar Upload with GIF Support**: Users can upload profile pictures, including animated GIFs.
-- 📡 **Real-Time Online Status with WebSockets**: See which users are online in real-time through WebSockets.
+- 📡 **Real-Time Online Status**: See which users are online in real-time through WebSockets.
