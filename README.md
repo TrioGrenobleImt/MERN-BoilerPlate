@@ -18,8 +18,7 @@ Welcome to the MERN-APP boilerplate, a complete solution to quickly start a mode
 
 ## Author
 
-👨‍💻 **Téo Villet** - Web Developer  
-[GitHub Profile](https://github.com/teovlt)
+👨‍💻 **[Téo Villet](https://github.com/teovlt)** - Web Developer
 
 ## Technologies Used
 
