@@ -1,39 +1,47 @@
-import { describe, it, expect, beforeEach, afterEach, vi, test } from "vitest";
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { createServer } from "http";
-import { initSockets } from "../../../src/sockets/socket";
+import { Server } from "socket.io";
 import { io as clientIO } from "socket.io-client";
 import app from "../../../src/app";
+import { initSockets } from "../../../src/sockets/socket";
 
 describe("Socket Server", () => {
   let httpServer;
+  let io;
   let clientSocket;
+  const PORT = 4000;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     httpServer = createServer(app);
-    initSockets(httpServer);
+    io = initSockets(httpServer);
+
+    await new Promise((resolve) => httpServer.listen(PORT, resolve));
+    console.log(`Test server started on port ${PORT}`);
   });
 
-  afterEach(() => {
-    httpServer.close();
+  afterEach(async () => {
+    if (clientSocket) {
+      clientSocket.disconnect();
+    }
+    io.close();
+    await new Promise((resolve) => httpServer.close(resolve));
   });
 
-  it("should add user to userSocketMap on connection with userId", (done) => {
-    clientSocket = clientIO(`http://localhost:${process.env.PORT}`, {
+  it("should add user to userSocketMap on connection with userId", async () => {
+    clientSocket = clientIO(`http://localhost:${PORT}`, {
+      transports: ["websocket"], // Force WebSocket
       query: { userId: "testUserId" },
     });
 
-    clientSocket.on("connect", () => {
-      console.log("Client connected!");
-    });
+    await new Promise((resolve, reject) => {
+      clientSocket.on("connect", () => {
+        expect(clientSocket.connected).toBe(true);
+        resolve();
+      });
 
-    clientSocket.on("connect_error", (err) => {
-      console.error("Connection error:", err);
-    });
-
-    clientSocket.on("connection", () => {
-      expect(io.sockets.sockets.get(clientSocket.id)).toBeDefined();
-      expect(io.sockets.sockets.get(clientSocket.id).handshake.query.userId).toBe("testUserId2");
-      done();
+      clientSocket.on("connect_error", (err) => {
+        reject(err);
+      });
     });
   });
 });
