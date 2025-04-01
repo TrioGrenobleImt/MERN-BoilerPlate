@@ -26,6 +26,5 @@ export function initSockets(httpServer) {
       }
     });
   });
+  return io;
 }
-
-export { io };
