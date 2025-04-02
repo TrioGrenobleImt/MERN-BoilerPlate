@@ -6,6 +6,7 @@ import { logLevels } from "../utils/enums/logLevel.js";
 
 import fs from "fs";
 import path from "path";
+import { generateRandomPassword } from "../utils/generateRandomPassword.js";
 
 /**
  * Retrieves a single user by ID.
@@ -208,4 +209,8 @@ const deleteUser = async (req, res) => {
   }
 };
 
-export { createUser, getUsers, getUser, updateUser, deleteUser };
+const generateUserPassword = async (req, res) => {
+  res.status(200).json({ message: "Password generated successfully", password: generateRandomPassword() });
+};
+
+export { createUser, getUsers, getUser, updateUser, deleteUser, generateUserPassword };

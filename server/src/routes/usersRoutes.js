@@ -1,5 +1,5 @@
 import express from "express";
-import { getUsers, getUser, createUser, updateUser, deleteUser } from "../controllers/userController.js";
+import { getUsers, getUser, createUser, updateUser, deleteUser, generateUserPassword } from "../controllers/userController.js";
 import verifyToken from "../middlewares/verifyToken.js";
 
 const router = express.Router();
@@ -40,5 +40,7 @@ router.put("/:id", verifyToken(), updateUser);
  * @middleware verifyToken({ role: "admin" }) - Ensures the user has an admin role to access this route.
  */
 router.delete("/:id", verifyToken({ role: "admin" }), deleteUser);
+
+router.get("/utils/generatePassword", verifyToken({ role: "admin" }), generateUserPassword);
 
 export default router;

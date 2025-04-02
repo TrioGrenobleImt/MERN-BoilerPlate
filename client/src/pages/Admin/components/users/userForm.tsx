@@ -6,10 +6,11 @@ import axiosConfig from "@/config/axiosConfig";
 import { toast } from "sonner";
 import { User } from ".";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { createPlayerSchema, deletePlayerSchema, updatePlayerSchema } from "@/lib/zod/schemas/admin/zod";
+import { Copy } from "lucide-react";
 
 interface UserFormProps {
   dialog: (isOpen: boolean) => void;
@@ -41,6 +42,7 @@ export const UserForm = ({ dialog, refresh, action, user }: UserFormProps) => {
       username: user?.username,
       email: user?.email,
       role: user?.role,
+      password: user?.password ?? "",
     },
   });
 
@@ -97,6 +99,30 @@ export const UserForm = ({ dialog, refresh, action, user }: UserFormProps) => {
     } else {
       toast.error("Confirmation text is incorrect");
     }
+  };
+
+  const getRandomPassword = async () => {
+    try {
+      setLoading(true);
+      const response = await axiosConfig.get(`/users/utils/generatePassword`);
+      toast.success(response.data.message);
+      if (action === "update") updateForm.setValue("password", response.data.password);
+      if (action === "create") createForm.setValue("password", response.data.password);
+    } catch (error: any) {
+      toast.error(error.response.data.error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const copyGeneratedPassword = () => {
+    if (!updateForm.getValues("password") && !createForm.getValues("password")) {
+      toast.error("No password generated yet");
+      return;
+    }
+
+    navigator.clipboard.writeText(action === "update" ? updateForm.getValues("password") ?? "" : createForm.getValues("password") ?? "");
+    toast.success("Password copied to clipboard");
   };
 
   if (action === "create") {
@@ -157,19 +183,29 @@ export const UserForm = ({ dialog, refresh, action, user }: UserFormProps) => {
               </FormItem>
             )}
           />
-          <FormField
-            control={createForm.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input type="password" placeholder="********" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="flex items-end w-full gap-4">
+            <FormField
+              control={createForm.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input type="password" placeholder="************" {...field} disabled />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="flex gap-2">
+              <Button type="button" variant="outline" onClick={copyGeneratedPassword} disabled={loading} aria-label="Copy password">
+                <Copy className="w-4 h-4" />
+              </Button>
+              <Button type="button" variant="outline" onClick={getRandomPassword} disabled={loading}>
+                Generate
+              </Button>
+            </div>
+          </div>
           <FormField
             control={createForm.control}
             name="role"
@@ -278,6 +314,29 @@ export const UserForm = ({ dialog, refresh, action, user }: UserFormProps) => {
               </FormItem>
             )}
           />
+          <div className="flex items-end w-full gap-4">
+            <FormField
+              control={updateForm.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input type="password" placeholder="************" {...field} disabled />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="flex gap-2">
+              <Button type="button" variant="outline" onClick={copyGeneratedPassword} disabled={loading} aria-label="Copy password">
+                <Copy className="w-4 h-4" />
+              </Button>
+              <Button variant="outline" onClick={getRandomPassword} disabled={loading} type="button">
+                Generate
+              </Button>
+            </div>
+          </div>
           <Button type="submit" disabled={loading}>
             Update
           </Button>
@@ -311,5 +370,9 @@ export const UserForm = ({ dialog, refresh, action, user }: UserFormProps) => {
     );
   }
 
-  return null;
+  return (
+    <>
+      <p>Invalid action</p>
+    </>
+  );
 };
