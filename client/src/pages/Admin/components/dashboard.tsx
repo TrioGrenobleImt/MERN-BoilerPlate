@@ -1,6 +1,7 @@
 import { Loading } from "@/components/Loading";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import axiosConfig from "@/config/axiosConfig";
+import { useSocketContext } from "@/contexts/socketContext";
 import { Users } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -8,6 +9,8 @@ import { toast } from "sonner";
 export const Dashboard = () => {
   const [loading, setLoading] = useState(false);
   const [userCount, setUserCount] = useState(0);
+
+  const { onlineUsers } = useSocketContext();
 
   async function fetchUsers() {
     setLoading(true);
@@ -38,6 +41,15 @@ export const Dashboard = () => {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold"> + {userCount}</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                <CardTitle className="text-sm font-medium">Active users</CardTitle>
+                <Users className="w-4 h-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold"> + {onlineUsers.length}</div>
               </CardContent>
             </Card>
           </div>
