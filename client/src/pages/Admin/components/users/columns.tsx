@@ -10,14 +10,28 @@ import { AvatarWithStatusCell } from "./avatarStatusCell";
 
 export const getColumns = (callback: (action: string, data: any) => void): ColumnDef<User>[] => [
   {
-    accessorKey: "avatar",
-    header: "Avatar",
-    cell: ({ row }) => <AvatarWithStatusCell user={row.original} />,
+    accessorKey: "Identity",
+    header: "User",
+    cell: ({ row }) => {
+      const user = row.original;
+      return (
+        <div className="flex items-center gap-4">
+          <AvatarWithStatusCell user={user} />
+          <div className="flex flex-col">
+            <span className="font-medium">
+              {user.name} {user.forename}
+            </span>
+            <span className="text-sm text-muted-foreground">{user.username}</span>
+          </div>
+        </div>
+      );
+    },
   },
+
   {
     accessorKey: "role",
     header: ({ column }) => (
-      <Button variant="ghost" className="font-extrabold" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+      <Button variant="ghost" className="font-bold" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
         Role
         <ArrowUpDown className="w-4 h-4 ml-2" />
       </Button>
@@ -28,29 +42,29 @@ export const getColumns = (callback: (action: string, data: any) => void): Colum
     },
   },
   {
-    accessorKey: "name",
-    header: "Name",
-    cell: ({ row }) => <div>{row.getValue("name")}</div>,
-  },
-  {
-    accessorKey: "forename",
-    header: "Forename",
-    cell: ({ row }) => <div>{row.getValue("forename")}</div>,
-  },
-  {
     accessorKey: "username",
-    header: "Username",
+    header: ({ column }) => (
+      <Button variant="ghost" className="font-bold" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+        Username
+        <ArrowUpDown className="w-4 h-4 ml-2" />
+      </Button>
+    ),
     cell: ({ row }) => <div>{row.getValue("username")}</div>,
   },
   {
     accessorKey: "email",
-    header: "Email",
+    header: ({ column }) => (
+      <Button variant="ghost" className="font-bold" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+        Email
+        <ArrowUpDown className="w-4 h-4 ml-2" />
+      </Button>
+    ),
     cell: ({ row }) => <div>{row.getValue("email")}</div>,
   },
   {
     accessorKey: "createdAt",
     header: ({ column }) => (
-      <Button variant="ghost" className="font-extrabold" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+      <Button variant="ghost" className="font-bold" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
         Joined
         <ArrowUpDown className="w-4 h-4 ml-2" />
       </Button>
