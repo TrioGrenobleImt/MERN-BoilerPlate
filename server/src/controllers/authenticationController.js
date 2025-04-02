@@ -75,13 +75,13 @@ const register = async (req, res) => {
  * @returns {Object} JSON response with user details or error message.
  */
 const login = async (req, res) => {
-  const { username, password } = req.body;
-  if (!username || !password) {
-    return res.status(422).json({ error: "Missing fields" });
+  const { username, password, email } = req.body;
+  if (!password || (!username && !email)) {
+    return res.status(422).json({ error: "Password is required, and either username or email must be provided." });
   }
 
   try {
-    const user = await User.findOne({ username }).select("+password");
+    const user = await User.findOne({ $or: [{ username }, { email }] }).select("+password");
     if (!user) {
       return res.status(400).json({ error: "No such user" });
     }

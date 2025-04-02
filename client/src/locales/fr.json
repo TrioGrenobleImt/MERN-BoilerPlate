@@ -27,8 +27,7 @@
       "sign_up": "S'inscrire",
       "agree_terms": "En cliquant sur Connexion, vous acceptez nos Conditions Générales de Service.",
       "errors": {
-        "username_min": "Le nom d'utilisateur doit comporter au moins 2 caractères",
-        "username_max": "Le nom d'utilisateur doit comporter au plus 25 caractères",
+        "login_name_max": "Nom d'utilisateur ou email doit comporter au moins 2 caractères",
         "password_min": "Le mot de passe doit comporter au moins 6 caractères",
         "password_max": "Le mot de passe doit comporter au plus 255 caractères"
       }

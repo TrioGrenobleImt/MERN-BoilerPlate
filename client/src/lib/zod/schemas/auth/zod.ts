@@ -2,10 +2,7 @@ import { z } from "zod";
 
 export const getLoginSchema = (t: (key: string) => string) =>
   z.object({
-    username: z
-      .string()
-      .min(2, { message: t("pages.login.errors.username_min") })
-      .max(25, { message: t("pages.login.errors.username_max") }),
+    loginName: z.string().min(2, { message: t("pages.login.errors.login_name_min") }),
     password: z
       .string()
       .min(6, { message: t("pages.login.errors.password_min") })

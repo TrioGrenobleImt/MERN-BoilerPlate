@@ -24,7 +24,7 @@ export default function LoginPage() {
   const loginForm = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      username: "",
+      loginName: "",
       password: "",
     },
   });
@@ -32,7 +32,13 @@ export default function LoginPage() {
   async function login(values: z.infer<typeof loginSchema>) {
     try {
       setLoading(true);
-      const response = await axiosConfig.post("/auth/login", values);
+
+      const isEmail = /\S+@\S+\.\S+/.test(values.loginName);
+      const payload = {
+        password: values.password,
+        ...(isEmail ? { email: values.loginName } : { username: values.loginName }),
+      };
+      const response = await axiosConfig.post("/auth/login", payload);
       const data = await response.data;
 
       toast.success(data.message);
@@ -58,7 +64,7 @@ export default function LoginPage() {
               <form onSubmit={loginForm.handleSubmit(login)} className="w-full space-y-4">
                 <FormField
                   control={loginForm.control}
-                  name="username"
+                  name="loginName"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>{t("pages.login.username")}</FormLabel>

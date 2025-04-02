@@ -27,8 +27,7 @@
       "sign_up": "Sign up",
       "agree_terms": "By clicking login, you agree to our Terms of Service and Conditions.",
       "errors": {
-        "username_min": "Username must be at least 2 characters long",
-        "username_max": "Username must be at most 25 characters long",
+        "login_name_min": "Username or email must be at least 2 characters long",
         "password_min": "Password must be at least 6 characters long",
         "password_max": "Password must be at most 255 characters long"
       }
@@ -56,6 +55,7 @@
         "forename_max": "Forename must be at most 25 characters long.",
         "username_min": "Username must be at least 2 characters long.",
         "username_max": "Username must be at most 25 characters long.",
+
         "invalid_email": "Please enter a valid email address.",
         "password_max": "Password must be at most 255 characters long.",
         "passwords_mismatch": "The passwords do not match.",
