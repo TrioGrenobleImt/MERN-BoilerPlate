@@ -6,13 +6,23 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, Copy, EllipsisVertical, Trash } from "lucide-react";
 import { toast } from "sonner";
+import { AvatarWithStatusCell } from "../users/avatarStatusCell";
 
 export type Log = {
   _id: string;
   level: string;
   message: string;
   user: {
+    _id: string;
+    name: string;
+    forename: string;
+    fullname: string;
     username: string;
+    email: string;
+    role: string;
+    createdAt: Date;
+    avatar?: string;
+    password?: string;
   };
   createdAt: Date;
 };
@@ -20,26 +30,53 @@ export type Log = {
 export const getColumns = (deleteLog: (id: string) => void): ColumnDef<Log>[] => [
   {
     accessorKey: "level",
-    header: () => <div>Level</div>,
+    header: ({ column }) => (
+      <Button variant="ghost" className="font-bold" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+        Level
+        <ArrowUpDown className="w-4 h-4 ml-2" />
+      </Button>
+    ),
     cell: ({ row }) => {
       const value = row.getValue("level");
       return <LevelBadge level={value as any} />;
     },
   },
   {
-    accessorKey: "message",
-    header: "Message",
-    cell: ({ row }) => <div>{row.getValue("message")}</div>,
+    accessorKey: "user",
+    header: "User",
+    meta: { label: "User" },
+    cell: ({ row }) => {
+      const user = row.original.user;
+      if (!user) {
+        return <span className="italic text-gray-500">Unknown User</span>;
+      }
+      return (
+        <div className="flex items-center gap-4">
+          <AvatarWithStatusCell user={user} />
+          <div className="flex flex-col">
+            <span className="font-medium">
+              {user.name} {user.forename}
+            </span>
+            <span className="text-sm text-muted-foreground">{user.username}</span>
+          </div>
+        </div>
+      );
+    },
   },
   {
-    header: "User",
-    accessorKey: "user.username",
-    meta: { label: "User" },
+    accessorKey: "message",
+    header: ({ column }) => (
+      <Button variant="ghost" className="font-bold" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+        Messsage
+        <ArrowUpDown className="w-4 h-4 ml-2" />
+      </Button>
+    ),
+    cell: ({ row }) => <div>{row.getValue("message")}</div>,
   },
   {
     accessorKey: "createdAt",
     header: ({ column }) => (
-      <Button variant="ghost" className="font-extrabold" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+      <Button variant="ghost" className="font-bold" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
         Date
         <ArrowUpDown className="w-4 h-4 ml-2" />
       </Button>
