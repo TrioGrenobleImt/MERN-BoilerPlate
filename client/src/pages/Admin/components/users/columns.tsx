@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowUpDown, Copy, EllipsisVertical, Pencil, Trash } from "lucide-react";
 import { User } from ".";
 import { toast } from "sonner";
-import { AvatarWithStatusCell } from "./avatarStatusCell";
+import { AvatarWithStatusCell } from "../../../../components/ui/customs/avatarStatusCell";
 
 export const getColumns = (callback: (action: string, data: any) => void): ColumnDef<User>[] => [
   {

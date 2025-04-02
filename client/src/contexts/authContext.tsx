@@ -1,9 +1,10 @@
 import { ReactNode } from "react";
 import { createContext, useContext, useEffect, useState } from "react";
 import axiosConfig from "../config/axiosConfig";
+import { UserInterface } from "@/interfaces/User";
 
 const AuthContext = createContext<{
-  authUser: any;
+  authUser: UserInterface | null;
   setAuthUser: React.Dispatch<React.SetStateAction<any>>;
   loading: boolean;
 }>({

@@ -6,7 +6,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, Copy, EllipsisVertical, Trash } from "lucide-react";
 import { toast } from "sonner";
-import { AvatarWithStatusCell } from "../users/avatarStatusCell";
+import { AvatarWithStatusCell } from "../../../../components/ui/customs/avatarStatusCell";
 
 export type Log = {
   _id: string;

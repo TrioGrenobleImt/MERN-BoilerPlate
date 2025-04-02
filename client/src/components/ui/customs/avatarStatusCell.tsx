@@ -1,9 +1,9 @@
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { useSocketContext } from "@/contexts/socketContext";
-import { User } from ".";
+import type { UserInterface } from "@/interfaces/User";
 
 interface AvatarWithStatusCellProps {
-  user: User;
+  user: UserInterface;
 }
 
 export const AvatarWithStatusCell = ({ user }: AvatarWithStatusCellProps) => {

@@ -19,7 +19,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { useLogout } from "@/hooks/useLogout";
-import { AvatarWithStatusCell } from "@/pages/Admin/components/users/avatarStatusCell";
+import { AvatarWithStatusCell } from "@/components/ui/customs/avatarStatusCell";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);

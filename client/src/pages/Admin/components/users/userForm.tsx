@@ -11,12 +11,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { createPlayerSchema, deletePlayerSchema, updatePlayerSchema } from "@/lib/zod/schemas/admin/zod";
 import { Copy } from "lucide-react";
+import { UserInterface } from "@/interfaces/User";
 
 interface UserFormProps {
   dialog: (isOpen: boolean) => void;
   refresh: () => void;
   action: string;
-  user?: User;
+  user?: UserInterface;
 }
 
 export const UserForm = ({ dialog, refresh, action, user }: UserFormProps) => {
