@@ -1,11 +1,12 @@
 import mongoose from "mongoose";
-import { describe, it, beforeAll, afterAll, expect, afterEach, vitest, vi } from "vitest";
+import { describe, it, beforeAll, afterAll, expect, afterEach, vitest, vi, beforeEach } from "vitest";
 import "dotenv/config";
 import request from "supertest";
 import { User } from "../../../src/models/userModel.js";
 import { Log } from "../../../src/models/logModel.js";
 import { generateAccessToken } from "../../../src/utils/generateAccessToken.js";
 import fs from "fs";
+import bcrypt from "bcryptjs";
 
 //Import server and app
 import { app } from "../../../src/app.js";
@@ -539,6 +540,162 @@ describe("DELETE /api/users/:id", () => {
     const response = await request(app)
       .delete(`/api/users/${user._id}`)
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+    expect(response.status).toBe(500);
+    expect(response.body.error).toBe("Test error");
+  });
+});
+
+describe("GET /api/users/generatePassword", () => {
+  afterEach(async () => {
+    await User.deleteMany();
+  });
+
+  it("should return a 200 status and a generated password", async () => {
+    const user = await User.create({
+      username: "test",
+      email: "test@gmail.com",
+      password: "testPassword",
+      role: "admin",
+      name: "test",
+      forename: "test",
+    });
+
+    const response = await request(app)
+      .get(`/api/users/utils/generatePassword`)
+      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe("Password generated successfully");
+    expect(response.body.password).toBeDefined();
+  });
+});
+
+describe("PUT /api/users/:id/password", () => {
+  let user;
+
+  beforeEach(async () => {
+    user = new User({
+      username: "test",
+      email: "test@gmail.com",
+      password: await bcrypt.hash("Abcdef1@", 10),
+      name: "test",
+      forename: "Test",
+    });
+    await user.save();
+  });
+
+  afterEach(async () => {
+    await User.deleteMany();
+  });
+
+  it("should return a 200 status and update the password successfully", async () => {
+    const response = await request(app)
+      .put(`/api/users/${user._id}/password`)
+      .send({
+        currentPassword: "Abcdef1@",
+        newPassword: "NewPass1@",
+        newPasswordConfirm: "NewPass1@",
+      })
+      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe("Password updated successfully");
+
+    const updatedUser = await User.findById(user._id).select("+password");
+    const isMatch = await bcrypt.compare("NewPass1@", updatedUser.password);
+    expect(isMatch).toBe(true);
+  });
+
+  it("should return a 400 status error for missing fields", async () => {
+    const response = await request(app)
+      .put(`/api/users/${user._id}/password`)
+      .send({
+        currentPassword: "Abcdef1@",
+        newPassword: "NewPass1@",
+        // Missing newPasswordConfirm
+      })
+      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+
+    expect(response.status).toBe(400);
+    expect(response.body.error).toBe("Missing fields");
+  });
+
+  it("should return a 400 status error for incorrect current password", async () => {
+    const response = await request(app)
+      .put(`/api/users/${user._id}/password`)
+      .send({
+        currentPassword: "WrongPassword", // Incorrect password
+        newPassword: "NewPass1@",
+        newPasswordConfirm: "NewPass1@",
+      })
+      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+
+    expect(response.status).toBe(400);
+    expect(response.body.error).toBe("Actual password is incorrect");
+  });
+
+  it("should return a 400 status error for weak new password", async () => {
+    const response = await request(app)
+      .put(`/api/users/${user._id}/password`)
+      .send({
+        currentPassword: "Abcdef1@",
+        newPassword: "weakpass", // Does not meet regex
+        newPasswordConfirm: "weakpass",
+      })
+      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+
+    expect(response.status).toBe(400);
+    expect(response.body.error).toBe(
+      "Password must contain at least 8 characters, including uppercase, lowercase letters, numbers, and special characters.",
+    );
+  });
+
+  it("should return a 400 status error for passwords that do not match", async () => {
+    const response = await request(app)
+      .put(`/api/users/${user._id}/password`)
+      .send({
+        currentPassword: "Abcdef1@",
+        newPassword: "NewPass1@",
+        newPasswordConfirm: "DifferentPass1@",
+      })
+      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+
+    expect(response.status).toBe(400);
+    expect(response.body.error).toBe("Passwords do not match");
+  });
+
+  it("should return a 400 status error if user does not exist", async () => {
+    const falseId = new mongoose.Types.ObjectId();
+
+    const response = await request(app)
+      .put(`/api/users/${falseId}/password`)
+      .send({
+        currentPassword: "Abcdef1@",
+        newPassword: "NewPass1@",
+        newPasswordConfirm: "NewPass1@",
+      })
+      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+
+    console.log(response.body);
+
+    expect(response.status).toBe(400);
+    expect(response.body.error).toBe("No such user");
+  });
+
+  it("should return a 500 status error due to internal server error", async () => {
+    vitest.spyOn(User, "findById").mockImplementationOnce(() => {
+      throw new Error("Test error");
+    });
+
+    const response = await request(app)
+      .put(`/api/users/${user._id}/password`)
+      .send({
+        currentPassword: "Abcdef1@",
+        newPassword: "NewPass1@",
+        newPasswordConfirm: "NewPass1@",
+      })
+      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+
     expect(response.status).toBe(500);
     expect(response.body.error).toBe("Test error");
   });

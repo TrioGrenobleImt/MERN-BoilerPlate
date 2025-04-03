@@ -163,6 +163,15 @@ describe("POST /api/auth/login", () => {
     expect(response.status).toBe(422);
     expect(response.body.error).toBe("Password is required, and either username or email must be provided.");
   });
+  it("should return a 422 error status because one of the fields is missing", async () => {
+    const user = new User({ username: "test", email: "test@gmail.com", password: "Abcdef1@", name: "test", forename: "Test" });
+    await user.save();
+    const response = await request(app).post("/api/auth/login").send({
+      password: "test",
+    });
+    expect(response.status).toBe(422);
+    expect(response.body.error).toBe("Password is required, and either username or email must be provided.");
+  });
   it("should return a 400 error status because there is no user with this username", async () => {
     const user = new User({ username: "test", email: "test@gmail.com", password: "Abcdef1@", name: "test", forename: "Test" });
     await user.save();
@@ -248,7 +257,7 @@ describe("GET /api/auth/me", () => {
     expect(response.body).toHaveProperty("_id" && "username" && "email");
   });
   it("should return a 500 status in case of an internal error", async () => {
-    vitest.spyOn(User, "findOne").mockImplementationOnce(() => {
+    vitest.spyOn(User, "findById").mockImplementationOnce(async () => {
       throw new Error("Test error");
     });
 

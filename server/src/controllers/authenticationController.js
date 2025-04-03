@@ -1,6 +1,5 @@
 import { User } from "../models/userModel.js";
 import { generateAccessToken } from "../utils/generateAccessToken.js";
-import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import { Constants } from "../../constants/constants.js";
 import { createLog } from "./logController.js";
@@ -144,7 +143,7 @@ const getConnectedUser = async (req, res) => {
   const id = req.userId;
 
   try {
-    const user = await User.findOne({ _id: id });
+    const user = await User.findById(id);
     res.status(200).json(user);
   } catch (err) {
     return res.status(500).json({ error: err.message });

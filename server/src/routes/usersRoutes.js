@@ -51,4 +51,4 @@ userRouter.delete("/:id", verifyToken({ role: "admin" }), deleteUser);
 
 userRouter.get("/utils/generatePassword", verifyToken({ role: "admin" }), generateUserPassword);
 
-userRouter.put("/:id/password", verifyToken({}), updatePassword);
+userRouter.put("/:id/password", verifyToken(), updatePassword);

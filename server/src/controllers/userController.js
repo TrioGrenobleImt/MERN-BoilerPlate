@@ -220,6 +220,7 @@ const updatePassword = async (req, res) => {
   const { currentPassword, newPassword, newPasswordConfirm } = req.body;
 
   try {
+    console.log(id);
     const user = await User.findById(id).select("+password");
     if (!user) {
       return res.status(400).json({ error: "No such user" });
