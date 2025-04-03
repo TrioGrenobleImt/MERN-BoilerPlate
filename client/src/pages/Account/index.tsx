@@ -13,10 +13,13 @@ import { toast } from "sonner";
 import axiosConfig from "@/config/axiosConfig";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { InputFile } from "@/components/ui/customs/inputFile";
+import { UpdatePasswordForm } from "./components/updatePasswordForm";
+import { Dialog, DialogContent, DialogTrigger } from "@radix-ui/react-dialog";
 
 const Account = () => {
   const { authUser, setAuthUser, loading } = useAuthContext();
   const [updateLoading, setUpdateLoading] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const updateForm = useForm<z.infer<typeof updateAccountSchema>>({
     resolver: zodResolver(updateAccountSchema),
@@ -76,7 +79,7 @@ const Account = () => {
   return loading ? (
     <Loading />
   ) : (
-    <div className="flex justify-center mt-10">
+    <div className="flex justify-center m-5">
       <Card className="w-full max-w-2xl p-4 shadow-xl rounded-2xl">
         <CardHeader>
           <CardTitle>Account Settings</CardTitle>
@@ -86,7 +89,7 @@ const Account = () => {
           <div className="flex flex-col items-center gap-4 mb-8">
             <div className="relative">
               <Avatar className="w-28 h-28 ">
-                <AvatarImage src={authUser.avatar} alt="User Avatar" className="object-cover object-center w-full h-full rounded-full" />
+                <AvatarImage src={authUser?.avatar} alt="User Avatar" className="object-cover object-center w-full h-full rounded-full" />
               </Avatar>
             </div>
             <div>
@@ -149,6 +152,19 @@ const Account = () => {
                   </FormItem>
                 )}
               />
+
+              <FormItem className="flex items-end justify-between gap-4 pb-4 ">
+                <div className="w-full">
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input type="password" placeholder="***********" disabled />
+                  </FormControl>
+                </div>
+                <Button type="button" variant="outline" onClick={() => setOpen(true)} disabled={updateLoading}>
+                  Change Password
+                </Button>
+              </FormItem>
+
               <CardFooter className="px-0">
                 <Button type="submit" disabled={updateLoading} className="w-full">
                   Update
@@ -158,6 +174,10 @@ const Account = () => {
           </Form>
         </CardContent>
       </Card>
+
+      <Dialog open={open} onOpenChange={setOpen}>
+        <UpdatePasswordForm setOpen={setOpen} />
+      </Dialog>
     </div>
   );
 };

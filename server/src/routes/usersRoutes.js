@@ -1,5 +1,13 @@
 import express from "express";
-import { getUsers, getUser, createUser, updateUser, deleteUser, generateUserPassword } from "../controllers/userController.js";
+import {
+  getUsers,
+  getUser,
+  createUser,
+  updateUser,
+  deleteUser,
+  generateUserPassword,
+  updatePassword,
+} from "../controllers/userController.js";
 import verifyToken from "../middlewares/verifyToken.js";
 
 const router = express.Router();
@@ -42,5 +50,7 @@ router.put("/:id", verifyToken(), updateUser);
 router.delete("/:id", verifyToken({ role: "admin" }), deleteUser);
 
 router.get("/utils/generatePassword", verifyToken({ role: "admin" }), generateUserPassword);
+
+router.put("/:id/password", verifyToken({}), updatePassword);
 
 export default router;

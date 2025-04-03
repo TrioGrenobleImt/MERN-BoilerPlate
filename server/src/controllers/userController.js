@@ -7,6 +7,7 @@ import { logLevels } from "../utils/enums/logLevel.js";
 import fs from "fs";
 import path from "path";
 import { generateRandomPassword } from "../utils/generateRandomPassword.js";
+import { Constants } from "../../constants/constants.js";
 
 /**
  * Retrieves a single user by ID.
@@ -213,4 +214,42 @@ const generateUserPassword = async (req, res) => {
   res.status(200).json({ message: "Password generated successfully", password: generateRandomPassword() });
 };
 
-export { createUser, getUsers, getUser, updateUser, deleteUser, generateUserPassword };
+const updatePassword = async (req, res) => {
+  const { id } = req.params;
+
+  const { currentPassword, newPassword, newPasswordConfirm } = req.body;
+
+  try {
+    const user = await User.findById(id).select("+password");
+    if (!user) {
+      return res.status(400).json({ error: "No such user" });
+    }
+
+    if (!currentPassword || !newPassword || !newPasswordConfirm) {
+      return res.status(400).json({ error: "Missing fields" });
+    }
+
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ error: "Actual password is incorrect" });
+    }
+
+    if (!Constants.REGEX_PASSWORD.test(newPassword)) {
+      return res.status(400).json({
+        error: "Password must contain at least 8 characters, including uppercase, lowercase letters, numbers, and special characters.",
+      });
+    }
+
+    if (newPassword !== newPasswordConfirm) {
+      return res.status(400).json({ error: "Passwords do not match" });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await User.updateOne({ _id: id }, { password: hashedPassword });
+    res.status(200).json({ message: "Password updated successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export { createUser, getUsers, getUser, updateUser, deleteUser, generateUserPassword, updatePassword };
