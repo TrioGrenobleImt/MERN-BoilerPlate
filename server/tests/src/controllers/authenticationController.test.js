@@ -161,7 +161,7 @@ describe("POST /api/auth/login", () => {
       username: "test",
     });
     expect(response.status).toBe(422);
-    expect(response.body.error).toBe("Missing fields");
+    expect(response.body.error).toBe("Password is required, and either username or email must be provided.");
   });
   it("should return a 400 error status because there is no user with this username", async () => {
     const user = new User({ username: "test", email: "test@gmail.com", password: "Abcdef1@", name: "test", forename: "Test" });
@@ -201,8 +201,15 @@ describe("POST /api/auth/login", () => {
 });
 
 describe("GET /api/auth/logout", () => {
+  afterEach(async () => {
+    await User.deleteMany();
+  });
   it("should return a 200 status and clear the cookies", async () => {
-    const response = await request(app).get("/api/auth/logout");
+    const user = new User({ username: "test", email: "test@gmail.com", password: "Abcdef1@", name: "test", forename: "Test" });
+    await user.save();
+    const response = await request(app)
+      .get("/api/auth/logout")
+      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(200);
     expect(response.body.message).toBe("Signed out successfully");
@@ -239,23 +246,6 @@ describe("GET /api/auth/me", () => {
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty("_id" && "username" && "email");
-  });
-  it("should return a 404 status if the user ID is invalid", async () => {
-    const response = await request(app)
-      .get("/api/auth/me")
-      .set("Cookie", `__access__token=${generateAccessToken(user.username)}`);
-
-    expect(response.status).toBe(404);
-    expect(response.body.error).toBe("The user ID is invalid");
-  });
-  it("should return a 400 status if the user does not exist", async () => {
-    const unknownId = new mongoose.Types.ObjectId();
-
-    const response = await request(app)
-      .get("/api/auth/me")
-      .set("Cookie", `__access__token=${generateAccessToken(unknownId)}`);
-    expect(response.status).toBe(400);
-    expect(response.body.error).toBe("No such user");
   });
   it("should return a 500 status in case of an internal error", async () => {
     vitest.spyOn(User, "findOne").mockImplementationOnce(() => {

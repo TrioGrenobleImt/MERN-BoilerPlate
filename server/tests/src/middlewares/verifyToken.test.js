@@ -27,14 +27,14 @@ describe("verifyToken Middleware", () => {
     const res = await request(app).get("/api/users/").send();
 
     expect(res.status).toBe(401);
-    expect(res.body.message).toBe("Not Authenticated");
+    expect(res.body.error).toBe("Not Authenticated");
   });
 
   it("should return 403 if the token is invalid", async () => {
     const res = await request(app).get("/api/users/").set("Cookie", "__access__token=invalidtoken").send();
 
     expect(res.status).toBe(403);
-    expect(res.body.message).toBe("Access Token is invalid");
+    expect(res.body.error).toBe("Access Token is invalid");
   });
 
   it("should call next middleware if the token is valid and no role is required", async () => {
@@ -44,6 +44,7 @@ describe("verifyToken Middleware", () => {
     const res = await request(app).get("/api/auth/me/").set("Cookie", `__access__token=${token}`).send();
 
     expect(res.status).not.toBe(401);
+    expect(res.status).not.toBe(400);
     expect(res.status).not.toBe(403);
   });
 
@@ -54,7 +55,7 @@ describe("verifyToken Middleware", () => {
     const res = await request(app).get("/api/users").set("Cookie", `__access__token=${token}`).send();
 
     expect(res.status).toBe(400);
-    expect(res.body.message).toBe("No such user");
+    expect(res.body.error).toBe("No such user");
   });
 
   it("should return 403 if the user is not admin for admin routes", async () => {
@@ -72,7 +73,7 @@ describe("verifyToken Middleware", () => {
 
     // Vérifiez que l'accès est restreint
     expect(res.status).toBe(403);
-    expect(res.body.message).toBe("Access restricted to administrators");
+    expect(res.body.error).toBe("Access restricted");
   });
 
   it("should return a 500 status error when there is a database error", async () => {
