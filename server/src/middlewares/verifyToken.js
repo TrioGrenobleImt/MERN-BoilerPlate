@@ -9,31 +9,25 @@ import { userRoles } from "../utils/enums/userRoles.js";
  * @param {string} [options.role] - Required role to access the route (e.g., "admin").
  * @returns {Function} Express middleware function.
  */
-export const verifyToken = ({ role } = {}) => {
-  return async (req, res, next) => {
-    const token = req.cookies["__access__token"];
+export const verifyToken =
+  ({ role } = {}) =>
+  async (req, res, next) => {
+    try {
+      const token = req.cookies["__access__token"];
+      if (!token) return res.status(401).json({ message: "Not Authenticated" });
 
-    if (!token) return res.status(401).json({ message: "Not Authenticated" });
-
-    jwt.verify(token, process.env.SECRET_ACCESS_TOKEN, async (err, payload) => {
-      if (err) return res.status(403).json({ message: "Access Token is invalid" });
-
+      const payload = jwt.verify(token, process.env.SECRET_ACCESS_TOKEN);
       req.userId = payload.id;
 
-      if (role === userRoles.ADMIN) {
-        try {
-          const user = await User.findOne({ _id: payload.id });
+      const user = await User.findById(payload.id);
+      if (!user) return res.status(400).json({ message: "No such user" });
 
-          if (!user) return res.status(400).json({ message: "No such user" });
-          if (user.role !== userRoles.ADMIN) {
-            return res.status(403).json({ message: "Access restricted to administrators" });
-          }
-        } catch (error) {
-          return res.status(500).json({ error: error.message });
-        }
+      if (role && user.role !== role) {
+        return res.status(403).json({ message: "Access restricted" });
       }
 
-      next();
-    });
+      return next();
+    } catch (error) {
+      return res.status(error.name === "JsonWebTokenError" ? 403 : 500).json({ message: error.message });
+    }
   };
-};
