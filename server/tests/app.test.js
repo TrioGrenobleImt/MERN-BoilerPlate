@@ -1,5 +1,5 @@
 import request from "supertest";
-import app from "../src/app.js";
+import { app } from "../src/app";
 import { describe, expect, it } from "vitest";
 
 describe("GET /api/ping", () => {

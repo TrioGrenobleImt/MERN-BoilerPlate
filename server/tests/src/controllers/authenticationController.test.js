@@ -2,13 +2,13 @@ import mongoose from "mongoose";
 import { describe, it, beforeAll, afterAll, expect, afterEach, vitest, beforeEach } from "vitest";
 import "dotenv/config";
 import request from "supertest";
-import User from "../../../src/models/userModel.js";
+import { User } from "../../../src/models/userModel.js";
 import { logout } from "../../../src/controllers/authenticationController.js";
 import { generateAccessToken } from "../../../src/utils/generateAccessToken.js";
-import Log from "../../../src/models/logModel.js";
+import { Log } from "../../../src/models/logModel.js";
 
 //Import server and app
-import app from "../../../src/app.js";
+import { app } from "../../../src/app.js";
 
 beforeAll(async () => {
   //Connect to database

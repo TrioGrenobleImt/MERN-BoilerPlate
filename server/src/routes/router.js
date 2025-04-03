@@ -1,23 +1,23 @@
 import express from "express";
-import UsersRoutes from "./usersRoutes.js";
-import AuthenticationRoutes from "./authenticationRoutes.js";
-import LogsRoutes from "./logsRoutes.js";
-import UploadRoutes from "./uploadRoutes.js";
+import { authRouter } from "./authenticationRoutes.js";
+import { logRouter } from "./logsRoutes.js";
+import { userRouter } from "./usersRoutes.js";
+import { uploadRouter } from "./uploadRoutes.js";
 
 import path from "path";
 import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const router = express.Router();
+export const router = new express.Router();
 
 //API routes
-router.use("/api/users", UsersRoutes);
-router.use("/api/auth", AuthenticationRoutes);
-router.use("/api/logs", LogsRoutes);
+router.use("/api/users", userRouter);
+router.use("/api/auth", authRouter);
+router.use("/api/logs", logRouter);
 
 //UPLOADS routes
-router.use("/api/uploads", UploadRoutes);
+router.use("/api/uploads", uploadRouter);
 router.use("/uploads", express.static(path.join(__dirname, "../../uploads")));
 
 /**
@@ -41,5 +41,3 @@ router.get("/api/ping", (req, res) => {
 router.use("/", (req, res) => {
   return res.status(404).json({ error: `The requested route ${req.originalUrl} was not found` });
 });
-
-export default router;

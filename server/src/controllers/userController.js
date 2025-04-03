@@ -1,4 +1,4 @@
-import User from "../models/userModel.js";
+import { User } from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import { userRoles } from "../utils/enums/userRoles.js";
 import { createLog } from "./logController.js";

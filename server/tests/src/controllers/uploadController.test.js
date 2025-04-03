@@ -3,12 +3,12 @@ import { beforeAll, afterAll, describe, it, expect, afterEach, vi } from "vitest
 import "dotenv/config";
 import request from "supertest";
 import fs from "fs";
-import User from "../../../src/models/userModel.js";
-import Log from "../../../src/models/logModel.js";
+import { User } from "../../../src/models/userModel.js";
+import { Log } from "../../../src/models/logModel.js";
 import { generateAccessToken } from "../../../src/utils/generateAccessToken.js";
 
 //Import server and app
-import app from "../../../src/app.js";
+import { app } from "../../../src/app.js";
 import { Constants } from "../../../constants/constants.js";
 
 beforeAll(async () => {

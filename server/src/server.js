@@ -1,4 +1,4 @@
-import app from "./app.js";
+import { app } from "./app.js";
 import { connectToDatabase } from "./database/connectToDB.js";
 import { createServer } from "http";
 import { initSockets } from "./sockets/socket.js";

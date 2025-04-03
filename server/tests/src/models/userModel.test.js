@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 import { describe, beforeAll, afterAll, expect, test } from "vitest";
 import "dotenv/config";
-import User from "../../../src/models/userModel.js";
-import Log from "../../../src/models/logModel.js";
+import { User } from "../../../src/models/userModel.js";
+import { Log } from "../../../src/models/logModel.js";
 
 beforeAll(async () => {
   //Connect to database

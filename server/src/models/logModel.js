@@ -22,4 +22,4 @@ const LogSchema = new mongoose.Schema(
   },
 );
 
-export default mongoose.model("Log", LogSchema);
+export const Log = mongoose.model("Log", LogSchema);

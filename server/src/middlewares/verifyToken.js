@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import User from "../models/userModel.js"; // Assurez-vous que le modèle User est importé
+import { User } from "../models/userModel.js";
 import { userRoles } from "../utils/enums/userRoles.js";
 
 /**
@@ -9,7 +9,7 @@ import { userRoles } from "../utils/enums/userRoles.js";
  * @param {string} [options.role] - Required role to access the route (e.g., "admin").
  * @returns {Function} Express middleware function.
  */
-const verifyToken = ({ role } = {}) => {
+export const verifyToken = ({ role } = {}) => {
   return async (req, res, next) => {
     const token = req.cookies["__access__token"];
 
@@ -37,5 +37,3 @@ const verifyToken = ({ role } = {}) => {
     });
   };
 };
-
-export default verifyToken;

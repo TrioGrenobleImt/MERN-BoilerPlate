@@ -1,4 +1,4 @@
-import User from "../models/userModel.js";
+import { User } from "../models/userModel.js";
 import { generateAccessToken } from "../utils/generateAccessToken.js";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";

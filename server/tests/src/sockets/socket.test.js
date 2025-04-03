@@ -1,8 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { createServer } from "http";
-import { Server } from "socket.io";
 import { io as clientIO } from "socket.io-client";
-import app from "../../../src/app";
+import { app } from "../../../src/app";
 import { initSockets } from "../../../src/sockets/socket";
 
 describe("Socket Server", () => {

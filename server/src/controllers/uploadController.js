@@ -1,5 +1,4 @@
-import User from "../models/userModel.js";
-
+import { User } from "../models/userModel.js";
 import fs from "fs";
 import path from "path";
 import { Constants } from "../../constants/constants.js";

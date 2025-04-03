@@ -1,4 +1,4 @@
-import Log from "../models/logModel.js";
+import { Log } from "../models/logModel.js";
 import { logLevels } from "../utils/enums/logLevel.js";
 
 /**

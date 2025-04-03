@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { createServer } from "http";
-import app from "../src/app.js";
+import { app } from "../src/app.js";
 import { initServer } from "../src/server.js";
 import { connectToDatabase } from "../src/database/connectToDB.js";
 

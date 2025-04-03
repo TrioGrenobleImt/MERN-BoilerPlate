@@ -8,30 +8,30 @@ import {
   generateUserPassword,
   updatePassword,
 } from "../controllers/userController.js";
-import verifyToken from "../middlewares/verifyToken.js";
+import { verifyToken } from "../middlewares/verifyToken.js";
 
-const router = express.Router();
+export const userRouter = new express.Router();
 
 /**
  * @route GET /:id
  * @description Retrieves a single user by their ID.
  * @middleware verifyToken({ role: "admin" }) - Ensures the user has an admin role to access this route.
  */
-router.get("/:id", verifyToken({ role: "admin" }), getUser);
+userRouter.get("/:id", verifyToken({ role: "admin" }), getUser);
 
 /**
  * @route GET /
  * @description Retrieves a list of all users.
  * @middleware verifyToken({ role: "admin" }) - Ensures the user has an admin role to access this route.
  */
-router.get("/", verifyToken({ role: "admin" }), getUsers);
+userRouter.get("/", verifyToken({ role: "admin" }), getUsers);
 
 /**
  * @route POST /
  * @description Creates a new user with the provided data.
  * @middleware verifyToken({ role: "admin" }) - Ensures the user has an admin role to access this route.
  */
-router.post("/", verifyToken({ role: "admin" }), createUser);
+userRouter.post("/", verifyToken({ role: "admin" }), createUser);
 
 /**
  * @route PUT /:id
@@ -39,7 +39,7 @@ router.post("/", verifyToken({ role: "admin" }), createUser);
  * @param {string} id - The ID of the user to update.
  * @middleware verifyToken({ role: "admin" }) - Ensures the user has an admin role to access this route.
  */
-router.put("/:id", verifyToken(), updateUser);
+userRouter.put("/:id", verifyToken(), updateUser);
 
 /**
  * @route DELETE /:id
@@ -47,10 +47,8 @@ router.put("/:id", verifyToken(), updateUser);
  * @param {string} id - The ID of the user to delete.
  * @middleware verifyToken({ role: "admin" }) - Ensures the user has an admin role to access this route.
  */
-router.delete("/:id", verifyToken({ role: "admin" }), deleteUser);
+userRouter.delete("/:id", verifyToken({ role: "admin" }), deleteUser);
 
-router.get("/utils/generatePassword", verifyToken({ role: "admin" }), generateUserPassword);
+userRouter.get("/utils/generatePassword", verifyToken({ role: "admin" }), generateUserPassword);
 
-router.put("/:id/password", verifyToken({}), updatePassword);
-
-export default router;
+userRouter.put("/:id/password", verifyToken({}), updatePassword);

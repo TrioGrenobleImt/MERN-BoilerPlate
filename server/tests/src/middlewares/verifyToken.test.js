@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 import { describe, it, beforeAll, afterAll, expect, vi, afterEach } from "vitest";
 import "dotenv/config";
 import request from "supertest";
-import User from "../../../src/models/userModel";
+import { User } from "../../../src/models/userModel";
 import jwt from "jsonwebtoken";
-import app from "../../../src/app";
+import { app } from "../../../src/app";
 import { generateAccessToken } from "../../../src/utils/generateAccessToken";
 
 beforeAll(async () => {
