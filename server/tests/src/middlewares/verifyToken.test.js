@@ -6,6 +6,7 @@ import { User } from "../../../src/models/userModel";
 import jwt from "jsonwebtoken";
 import { app } from "../../../src/app";
 import { generateAccessToken } from "../../../src/utils/generateAccessToken";
+import { regularUser } from "../../fixtures/users";
 
 beforeAll(async () => {
   // Connexion à la base de données de test
@@ -59,13 +60,7 @@ describe("verifyToken Middleware", () => {
   });
 
   it("should return 403 if the user is not admin for admin routes", async () => {
-    const user = await User.create({
-      username: "test",
-      email: "test@gmail.com",
-      password: "test",
-      forename: "test",
-      name: "test",
-    });
+    const user = await User.create(regularUser);
 
     const res = await request(app)
       .get("/api/users/")

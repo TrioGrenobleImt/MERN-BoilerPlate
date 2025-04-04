@@ -10,6 +10,7 @@ import { generateAccessToken } from "../../../src/utils/generateAccessToken.js";
 //Import server and app
 import { app } from "../../../src/app.js";
 import { Constants } from "../../../constants/constants.js";
+import { adminUser, pathAvatarOldTest, userAdminWithAvatar } from "../../fixtures/users.js";
 
 beforeAll(async () => {
   //Connect to database
@@ -38,14 +39,7 @@ describe("Tests uploads files", () => {
   });
 
   it("should return an error if no file is provided", async () => {
-    const user = await User.create({
-      username: "test",
-      email: "test@gmail.com",
-      password: "test",
-      role: "admin",
-      name: "test",
-      forename: "test",
-    });
+    const user = await User.create(adminUser);
 
     const response = await request(app)
       .post(`/api/uploads/avatar/${user._id}`)
@@ -56,14 +50,7 @@ describe("Tests uploads files", () => {
   });
 
   it("should send an error if the file type isn't allowed", async () => {
-    const user = await User.create({
-      username: "test",
-      email: "test@gmail.com",
-      password: "test",
-      role: "admin",
-      name: "test",
-      forename: "test",
-    });
+    const user = await User.create(adminUser);
 
     const path = "./tests/src/controllers/hello-world.txt";
     fs.writeFileSync(path, "Hello, world!");
@@ -82,18 +69,7 @@ describe("Tests uploads files", () => {
   });
 
   it("should return a 500 error if there is a server problem", async () => {
-    const pathAvatarOld = "./uploads/users/avatars/hello-world.png";
-    fs.writeFileSync(pathAvatarOld, "Hello, world!");
-
-    const user = await User.create({
-      username: "test",
-      email: "test@gmail.com",
-      password: "test",
-      role: "admin",
-      name: "test",
-      forename: "test",
-      avatar: pathAvatarOld,
-    });
+    const user = await User.create(userAdminWithAvatar);
 
     vi.spyOn(User, "findById").mockImplementationOnce(() => {
       throw new Error("Test error");
@@ -117,18 +93,7 @@ describe("Tests uploads files", () => {
   });
 
   it("should delete old profilePic if there is one and update the current", async () => {
-    const pathAvatarOld = "./uploads/users/avatars/hello-world.png";
-    fs.writeFileSync(pathAvatarOld, "Hello, world!");
-
-    const user = await User.create({
-      username: "test",
-      email: "test@gmail.com",
-      password: "test",
-      role: "admin",
-      name: "test",
-      forename: "test",
-      avatar: pathAvatarOld,
-    });
+    const user = await User.create(userAdminWithAvatar);
 
     const pathNewAvatar = "./tests/src/controllers/hello-world.png";
     fs.writeFileSync(pathNewAvatar, "Hello, world!");
@@ -139,7 +104,7 @@ describe("Tests uploads files", () => {
       .attach("avatar", pathNewAvatar, "hello-world.png");
 
     // Vérifie si l'ancien avatar a bien été supprimé
-    expect(fs.existsSync(pathAvatarOld)).toBe(false);
+    expect(fs.existsSync(pathAvatarOldTest)).toBe(false);
     expect(fs.existsSync(pathNewAvatar)).toBe(true);
     expect(response.body.message).toBe("Avatar updated successfully");
     expect(response.statusCode).toBe(200);
@@ -151,18 +116,7 @@ describe("Tests uploads files", () => {
   });
 
   it("should return an error if the file is too large", async () => {
-    const pathAvatarOld = "./uploads/users/avatars/hello-world.png";
-    fs.writeFileSync(pathAvatarOld, "Hello, world!");
-
-    const user = await User.create({
-      username: "test",
-      email: "test@gmail.com",
-      password: "test",
-      role: "admin",
-      name: "test",
-      forename: "test",
-      avatar: pathAvatarOld,
-    });
+    const user = await User.create(userAdminWithAvatar);
 
     const pathNewAvatar = "./tests/src/controllers/hello-world.png";
     const fileSizeInBytes = 10 * 1024 * 1024;
