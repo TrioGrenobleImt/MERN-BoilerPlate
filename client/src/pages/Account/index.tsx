@@ -1,4 +1,4 @@
-import { Loading } from "@/components/Loading";
+import { Loading } from "@/components/ui/customs/Loading";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useAuthContext } from "@/contexts/authContext";
