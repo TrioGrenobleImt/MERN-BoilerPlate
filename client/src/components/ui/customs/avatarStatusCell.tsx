@@ -15,9 +15,7 @@ export const AvatarWithStatusCell = ({ user }: AvatarWithStatusCellProps) => {
       <Avatar>
         <AvatarImage src={user.avatar} alt="User Avatar" className="object-cover object-center w-full h-full rounded-full" />
       </Avatar>
-      <div
-        className={`absolute bottom-0 right-0 w-3 h-3 border-2 border-white rounded-full ${isOnline ? "bg-green-500" : "bg-gray-400"}`}
-      />
+      <div className={`absolute bottom-0 right-0 w-3 h-3 border-2 border-white rounded-full ${isOnline ? "bg-success" : "bg-gray-400"}`} />
     </div>
   );
 };
