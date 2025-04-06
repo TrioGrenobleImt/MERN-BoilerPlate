@@ -253,4 +253,26 @@ const updatePassword = async (req, res) => {
   }
 };
 
-export { createUser, getUsers, getUser, updateUser, deleteUser, generateUserPassword, updatePassword };
+const deleteAccount = async (req, res) => {
+  const userId = req.userId;
+
+  try {
+    const user = await User.findById(userId);
+
+    await User.findByIdAndDelete(userId);
+
+    //Delete avatar if exists
+    if (user.avatar) {
+      const oldAvatarPath = path.join(process.cwd(), "uploads", "users", "avatars", path.basename(user.avatar));
+      if (fs.existsSync(oldAvatarPath)) {
+        fs.unlinkSync(oldAvatarPath);
+      }
+    }
+
+    res.status(200).json({ message: "Account deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export { createUser, getUsers, getUser, updateUser, deleteUser, generateUserPassword, updatePassword, deleteAccount };
