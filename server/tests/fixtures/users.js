@@ -56,6 +56,15 @@ export const userAdminWithAvatar = {
   avatar: pathAvatarOldTest,
 };
 
+export const userWithAvatarAndHashPassword = {
+  username: "test",
+  email: "test@gmail.com",
+  password: await bcrypt.hash("Abcdef1@", 10),
+  name: "test",
+  forename: "Test",
+  avatar: pathAvatarOldTest,
+};
+
 export const userWithHashPassword = {
   username: "test",
   email: "test@gmail.com",

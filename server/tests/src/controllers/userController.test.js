@@ -13,8 +13,10 @@ import { app } from "../../../src/app.js";
 import {
   adminUser,
   invalidRoleUser,
+  pathAvatarOldTest,
   regularUser,
   userAdminWithAvatar,
+  userWithAvatarAndHashPassword,
   userWithHashPassword,
   userWithSameEmail,
   userWithSameUsername,
@@ -316,16 +318,13 @@ describe("DELETE /api/users/:id", () => {
   });
 
   it("should delete a user", async () => {
-    const pathAvatarOld = "./uploads/users/avatars/hello-world.png";
-    fs.writeFileSync(pathAvatarOld, "Hello, world!");
-
     const user = await User.create(userAdminWithAvatar);
 
     const response = await request(app)
       .delete(`/api/users/${user._id}`)
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
 
-    expect(fs.existsSync(pathAvatarOld)).toBe(false);
+    expect(fs.existsSync(pathAvatarOldTest)).toBe(false);
     expect(response.status).toBe(200);
     expect(response.body.message).toBe("User deleted successfully");
     expect(response.body.user.username).toBe(user.username);
@@ -500,5 +499,74 @@ describe("PUT /api/users/:id/password", () => {
 
     expect(response.status).toBe(500);
     expect(response.body.error).toBe("Test error");
+  });
+});
+
+describe("DELETE /api/users/delete/account", () => {
+  afterEach(async () => {
+    await User.deleteMany();
+  });
+
+  it("should delete the current user's account", async () => {
+    const user = await User.create(userWithAvatarAndHashPassword);
+
+    const response = await request(app)
+      .delete("/api/users/delete/account")
+      .send({
+        password: "Abcdef1@",
+      })
+      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+
+    expect(fs.existsSync(pathAvatarOldTest)).toBe(false);
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe("Account deleted successfully");
+    expect(response.body.user).toBe(undefined);
+    const deletedUser = await User.findById(user._id);
+    expect(deletedUser).toBeNull();
+  });
+
+  it("should return a 500 status if an error occurs", async () => {
+    const user = await User.create(userWithHashPassword);
+
+    vi.spyOn(User, "findByIdAndDelete").mockImplementationOnce(() => {
+      throw new Error("Test error");
+    });
+
+    const response = await request(app)
+      .delete("/api/users/delete/account")
+      .send({
+        password: "Abcdef1@",
+      })
+      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+    expect(response.status).toBe(500);
+    expect(response.body.error).toBe("Test error");
+  });
+
+  it("should return a 400 status if password is missing", async () => {
+    const user = await User.create(userWithHashPassword);
+
+    const response = await request(app)
+      .delete("/api/users/delete/account")
+      .send({
+        password: "",
+      })
+      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+
+    expect(response.status).toBe(400);
+    expect(response.body.error).toBe("Missing fields");
+  });
+
+  it("should return a 400 status if password is incorrect", async () => {
+    const user = await User.create(userWithHashPassword);
+
+    const response = await request(app)
+      .delete("/api/users/delete/account")
+      .send({
+        password: "wrongPassword",
+      })
+      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+
+    expect(response.status).toBe(400);
+    expect(response.body.error).toBe("Password is incorrect");
   });
 });

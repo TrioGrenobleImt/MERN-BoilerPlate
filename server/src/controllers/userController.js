@@ -269,15 +269,14 @@ const deleteAccount = async (req, res) => {
       return res.status(400).json({ error: "Password is incorrect" });
     }
 
-    await User.findByIdAndDelete(userId);
-
-    //Delete avatar if exists
     if (user.avatar) {
       const oldAvatarPath = path.join(process.cwd(), "uploads", "users", "avatars", path.basename(user.avatar));
       if (fs.existsSync(oldAvatarPath)) {
         fs.unlinkSync(oldAvatarPath);
       }
     }
+
+    await User.findByIdAndDelete(userId);
 
     res.clearCookie("__access__token");
 
