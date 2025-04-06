@@ -14,12 +14,23 @@ import axiosConfig from "@/config/axiosConfig";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { InputFile } from "@/components/ui/customs/inputFile";
 import { UpdatePasswordForm } from "./components/updatePasswordForm";
-import { Dialog, DialogContent, DialogTrigger } from "@radix-ui/react-dialog";
+import { Dialog } from "@radix-ui/react-dialog";
+import { EllipsisVertical, Trash } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { DeleteAccountForm } from "./components/deleteAccountForm";
 
 const Account = () => {
   const { authUser, setAuthUser, loading } = useAuthContext();
   const [updateLoading, setUpdateLoading] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [openUpdatePasswordDialog, setOpenUpdatePasswordDialog] = useState(false);
+  const [openDeleteAccountDialog, setOpenDeleteAccountDialog] = useState(false);
 
   const updateForm = useForm<z.infer<typeof updateAccountSchema>>({
     resolver: zodResolver(updateAccountSchema),
@@ -43,6 +54,7 @@ const Account = () => {
       setUpdateLoading(false);
     }
   };
+
   const updateProfilePic = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setUpdateLoading(true);
 
@@ -79,11 +91,28 @@ const Account = () => {
   return loading ? (
     <Loading />
   ) : (
-    <div className="flex justify-center m-5">
-      <Card className="w-full max-w-2xl p-4 shadow-xl rounded-2xl">
-        <CardHeader>
-          <CardTitle>Account Settings</CardTitle>
-          <CardDescription>Update your personal information and account details.</CardDescription>
+    <div className="flex justify-center p-8">
+      <Card className="w-full max-w-4xl p-4 shadow-xl rounded-2xl">
+        <CardHeader className="flex flex-row items-center justify-between ">
+          <div>
+            <CardTitle>Account Settings</CardTitle>
+            <CardDescription>Update your personal information and account details.</CardDescription>
+          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild className="cursor-pointer">
+              <Button variant="outline" size="sm">
+                <EllipsisVertical className="w-5 h-5 text-primary" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-40">
+              <DropdownMenuLabel>Account actions</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="cursor-pointer" onClick={() => setOpenDeleteAccountDialog(true)}>
+                <Trash className="w-4 h-4 text-destructive" />
+                <span className="text-destructive ">Delete account</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col items-center gap-4 mb-8">
@@ -98,7 +127,7 @@ const Account = () => {
           </div>
           <Form {...updateForm}>
             <form onSubmit={updateForm.handleSubmit(onUpdateSubmit)} className="space-y-6">
-              <div className="flex flex-col gap-4 md:flex-row">
+              <div className="flex flex-col gap-4 md:flex-row ">
                 <FormField
                   control={updateForm.control}
                   name="forename"
@@ -153,14 +182,14 @@ const Account = () => {
                 )}
               />
 
-              <FormItem className="flex items-end justify-between gap-4 pb-4 ">
+              <FormItem className="flex items-end justify-between gap-4">
                 <div className="w-full">
                   <FormLabel>Password</FormLabel>
                   <FormControl>
                     <Input type="password" placeholder="***********" disabled />
                   </FormControl>
                 </div>
-                <Button type="button" variant="outline" onClick={() => setOpen(true)} disabled={updateLoading}>
+                <Button type="button" variant="outline" onClick={() => setOpenUpdatePasswordDialog(true)} disabled={updateLoading}>
                   Change Password
                 </Button>
               </FormItem>
@@ -175,8 +204,12 @@ const Account = () => {
         </CardContent>
       </Card>
 
-      <Dialog open={open} onOpenChange={setOpen}>
-        <UpdatePasswordForm setOpen={setOpen} />
+      <Dialog open={openUpdatePasswordDialog} onOpenChange={setOpenUpdatePasswordDialog}>
+        <UpdatePasswordForm setOpen={setOpenUpdatePasswordDialog} />
+      </Dialog>
+
+      <Dialog open={openDeleteAccountDialog} onOpenChange={setOpenDeleteAccountDialog}>
+        <DeleteAccountForm setOpen={setOpenDeleteAccountDialog} />
       </Dialog>
     </div>
   );
