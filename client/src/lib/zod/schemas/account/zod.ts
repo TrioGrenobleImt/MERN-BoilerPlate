@@ -29,3 +29,10 @@ export const updatePasswordSchema = z
     message: "Passwords do not match",
     path: ["newPasswordConfirm"],
   });
+
+export const deleteAccountSchema = z.object({
+  checkApproval: z.boolean().refine((val) => val === true, {
+    message: "You must check the box to confirm account deletion",
+  }),
+  password: z.string().min(6, { message: "You must enter your password" }),
+});
