@@ -7,6 +7,7 @@ import {
   deleteUser,
   generateUserPassword,
   updatePassword,
+  deleteAccount,
 } from "../controllers/userController.js";
 import { verifyToken } from "../middlewares/verifyToken.js";
 
@@ -52,3 +53,5 @@ userRouter.delete("/:id", verifyToken({ role: "admin" }), deleteUser);
 userRouter.get("/utils/generatePassword", verifyToken({ role: "admin" }), generateUserPassword);
 
 userRouter.put("/:id/password", verifyToken(), updatePassword);
+
+userRouter.delete("/deleteAccount", verifyToken(), deleteAccount);
