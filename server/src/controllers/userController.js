@@ -255,9 +255,19 @@ const updatePassword = async (req, res) => {
 
 const deleteAccount = async (req, res) => {
   const userId = req.userId;
+  const { password } = req.body;
 
   try {
-    const user = await User.findById(userId);
+    if (!password) {
+      return res.status(400).json({ error: "Missing fields" });
+    }
+
+    const user = await User.findById(userId).select("+password");
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ error: "Password is incorrect" });
+    }
 
     await User.findByIdAndDelete(userId);
 
@@ -268,6 +278,8 @@ const deleteAccount = async (req, res) => {
         fs.unlinkSync(oldAvatarPath);
       }
     }
+
+    res.clearCookie("__access__token");
 
     res.status(200).json({ message: "Account deleted successfully" });
   } catch (err) {
