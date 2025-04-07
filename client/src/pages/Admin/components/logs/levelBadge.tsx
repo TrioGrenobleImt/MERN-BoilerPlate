@@ -1,4 +1,4 @@
-import { AlertCircle, CircleHelp, TriangleAlert, Bug, ShieldQuestion } from "lucide-react";
+import { Bug, ShieldQuestion, Info, AlertTriangle, XCircle } from "lucide-react";
 
 const logLevels = {
   info: "info",
@@ -8,9 +8,9 @@ const logLevels = {
 };
 
 const defaultIcons: Record<string, { icon: JSX.Element; color: string }> = {
-  info: { icon: <CircleHelp size={16} />, color: "text-blue-500" },
-  warn: { icon: <TriangleAlert size={16} />, color: "text-yellow-500" },
-  error: { icon: <AlertCircle size={16} />, color: "text-red-500" },
+  info: { icon: <Info size={16} />, color: "text-blue-500" },
+  warn: { icon: <AlertTriangle size={16} />, color: "text-yellow-500" },
+  error: { icon: <XCircle size={16} />, color: "text-red-500" },
   debug: { icon: <Bug size={16} />, color: "text-green-500" },
 };
 
