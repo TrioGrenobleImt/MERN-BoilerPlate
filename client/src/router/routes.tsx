@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { LayoutWrapper } from "./layoutWrapper";
 
 import { Account } from "@/pages/Account";
@@ -31,6 +31,7 @@ export const Router = () => {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/admin"
           element={
@@ -39,6 +40,7 @@ export const Router = () => {
             </ProtectedRoute>
           }
         >
+          <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="users" element={<Users />} />
           <Route path="logs" element={<Logs />} />
