@@ -67,11 +67,11 @@ export const Login = () => {
                   name="loginName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t("pages.login.username")}</FormLabel>
+                      <FormLabel>{t("pages.login.field")}</FormLabel>
                       <FormControl>
                         <Input {...field} />
                       </FormControl>
-                      <FormDescription>{t("pages.login.username_description")}</FormDescription>
+                      <FormDescription>{t("pages.login.field_description")}</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}

@@ -18,8 +18,8 @@
     },
     "login": {
       "welcome_back": "Welcome Back",
-      "username": "Username",
-      "username_description": "Enter your username",
+      "field": "Username or email",
+      "field_description": "Enter your username or email",
       "password": "Password",
       "password_description": "Enter your password",
       "login_button": "Login",

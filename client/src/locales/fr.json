@@ -18,8 +18,8 @@
     },
     "login": {
       "welcome_back": "Content de vous revoir",
-      "username": "Nom d'utilisateur",
-      "username_description": "Entrez votre nom d'utilisateur",
+      "field": "Nom d'utilisateur ou email",
+      "field_description": "Entrez votre nom d'utilisateur ou email",
       "password": "Mot de passe",
       "password_description": "Entrez votre mot de passe",
       "login_button": "Connexion",
