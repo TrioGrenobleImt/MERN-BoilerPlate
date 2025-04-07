@@ -4,11 +4,11 @@ import { axiosConfig } from "../config/axiosConfig";
 import { UserInterface } from "@/interfaces/User";
 
 const AuthContext = createContext<{
-  authUser: UserInterface;
+  authUser: UserInterface | null;
   setAuthUser: React.Dispatch<React.SetStateAction<any>>;
   loading: boolean;
 }>({
-  authUser: {} as UserInterface,
+  authUser: null,
   setAuthUser: () => {},
   loading: true,
 });
@@ -18,7 +18,7 @@ export const useAuthContext = () => {
 };
 
 export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
-  const [authUser, setAuthUser] = useState<UserInterface>({} as UserInterface);
+  const [authUser, setAuthUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         const userData = userResponse.data;
         setAuthUser(userData);
       } catch (error) {
-        setAuthUser({} as UserInterface);
+        setAuthUser(null);
       } finally {
         setLoading(false);
       }

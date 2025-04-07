@@ -16,7 +16,8 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { UserInterface } from "@/interfaces/User";
 
-export function NavUser({ user }: { user: UserInterface }) {
+export function NavUser({ user }: { user: UserInterface | null }) {
+  if (!user) return null;
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const { logout, loading } = useLogout();
   const { isMobile } = useSidebar();
