@@ -14,12 +14,9 @@ import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/c
 import { useLogout } from "@/hooks/useLogout";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { UserInterface } from "@/interfaces/User";
 
-export function NavUser({
-  user,
-}: {
-  user: { username: string; email: string; avatar: string; name: string; forename: string; fullname: string };
-}) {
+export function NavUser({ user }: { user: UserInterface }) {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const { logout, loading } = useLogout();
   const { isMobile } = useSidebar();
