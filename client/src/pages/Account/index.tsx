@@ -10,7 +10,7 @@ import { z } from "zod";
 import { updateAccountSchema } from "@/lib/zod/schemas/account/zod";
 import { useState } from "react";
 import { toast } from "sonner";
-import axiosConfig from "@/config/axiosConfig";
+import { axiosConfig } from "@/config/axiosConfig";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { InputFile } from "@/components/ui/customs/inputFile";
 import { UpdatePasswordForm } from "./components/updatePasswordForm";
@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { DeleteAccountForm } from "./components/deleteAccountForm";
 
-const Account = () => {
+export const Account = () => {
   const { authUser, setAuthUser, loading } = useAuthContext();
   const [updateLoading, setUpdateLoading] = useState(false);
   const [openUpdatePasswordDialog, setOpenUpdatePasswordDialog] = useState(false);
@@ -214,5 +214,3 @@ const Account = () => {
     </div>
   );
 };
-
-export default Account;

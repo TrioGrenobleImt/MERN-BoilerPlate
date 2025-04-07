@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { createContext, useContext, useEffect, useState } from "react";
-import axiosConfig from "../config/axiosConfig";
+import { axiosConfig } from "../config/axiosConfig";
 import { UserInterface } from "@/interfaces/User";
 
 const AuthContext = createContext<{

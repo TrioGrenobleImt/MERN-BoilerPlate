@@ -1,4 +1,4 @@
-import axiosConfig from "@/config/axiosConfig";
+import { axiosConfig } from "@/config/axiosConfig";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { DataTable } from "./data-table";

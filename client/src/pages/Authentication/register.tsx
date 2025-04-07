@@ -9,11 +9,11 @@ import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useAuthContext } from "@/contexts/authContext";
-import axiosConfig from "@/config/axiosConfig";
+import { axiosConfig } from "@/config/axiosConfig";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-export default function RegisterPage() {
+export const Register = () => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -164,4 +164,4 @@ export default function RegisterPage() {
       </div>
     </div>
   );
-}
+};

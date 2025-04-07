@@ -1,14 +1,15 @@
 import { Routes, Route } from "react-router-dom";
 import { LayoutWrapper } from "./layoutWrapper";
-import Login from "@/pages/Authentication/login";
-import Register from "@/pages/Authentication/register";
-import Account from "@/pages/Account";
+
+import { Account } from "@/pages/Account";
 import { ProtectedRoute } from "@/router/protectedRoute";
 import { Home } from "@/pages/Home";
 import { Index } from "@/pages/Admin";
 import { Logs } from "@/pages/Admin/components/logs";
 import { Users } from "@/pages/Admin/components/users";
 import { Dashboard } from "@/pages/Admin/components/dashboard";
+import { Login } from "@/pages/Authentication/login";
+import { Register } from "@/pages/Authentication/register";
 
 export const Router = () => {
   return (

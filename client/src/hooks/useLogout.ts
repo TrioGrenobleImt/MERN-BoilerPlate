@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axiosConfig from "../config/axiosConfig";
+import { axiosConfig } from "../config/axiosConfig";
 import { useAuthContext } from "../contexts/authContext";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";

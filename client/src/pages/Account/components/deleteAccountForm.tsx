@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import axiosConfig from "@/config/axiosConfig";
+import { axiosConfig } from "@/config/axiosConfig";
 import { useAuthContext } from "@/contexts/authContext";
 import { deleteAccountSchema } from "@/lib/zod/schemas/account/zod";
 import { zodResolver } from "@hookform/resolvers/zod";

@@ -8,12 +8,12 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { useAuthContext } from "@/contexts/authContext";
-import axiosConfig from "@/config/axiosConfig";
+import { axiosConfig } from "@/config/axiosConfig";
 import { toast } from "sonner";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-export default function LoginPage() {
+export const Login = () => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -109,4 +109,4 @@ export default function LoginPage() {
       </div>
     </div>
   );
-}
+};
