@@ -7,27 +7,9 @@ import { Button } from "@/components/ui/button";
 import { ArrowUpDown, Copy, EllipsisVertical, Trash } from "lucide-react";
 import { toast } from "sonner";
 import { AvatarWithStatusCell } from "../../../../components/ui/customs/avatarStatusCell";
+import { LogInterface } from "@/interfaces/Log";
 
-export type Log = {
-  _id: string;
-  level: string;
-  message: string;
-  user: {
-    _id: string;
-    name: string;
-    forename: string;
-    fullname: string;
-    username: string;
-    email: string;
-    role: string;
-    createdAt: Date;
-    avatar?: string;
-    password?: string;
-  };
-  createdAt: Date;
-};
-
-export const getColumns = (deleteLog: (id: string) => void): ColumnDef<Log>[] => [
+export const getColumns = (deleteLog: (id: string) => void): ColumnDef<LogInterface>[] => [
   {
     accessorKey: "level",
     header: ({ column }) => (
