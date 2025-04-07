@@ -21,6 +21,7 @@ import {
   userWithSameEmail,
   userWithSameUsername,
 } from "../../fixtures/users.js";
+import path from "path";
 
 beforeAll(async () => {
   //Connect to database
@@ -508,7 +509,13 @@ describe("DELETE /api/users/delete/account", () => {
   });
 
   it("should delete the current user's account", async () => {
-    const user = await User.create(userWithAvatarAndHashPassword);
+    fs.mkdirSync(path.dirname(pathAvatarOldTest), { recursive: true });
+    fs.writeFileSync(pathAvatarOldTest, "fake image content");
+
+    const user = await User.create({
+      ...userWithAvatarAndHashPassword,
+      avatar: `/uploads/users/avatars/${path.basename(pathAvatarOldTest)}`,
+    });
 
     const response = await request(app)
       .delete("/api/users/delete/account")
