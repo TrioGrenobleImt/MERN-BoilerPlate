@@ -6,26 +6,14 @@ import { getColumns } from "./columns";
 
 import { Dialog, DialogHeader, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { UserForm } from "./userForm";
-
-export type User = {
-  _id: string;
-  name: string;
-  forename: string;
-  fullname: string;
-  username: string;
-  email: string;
-  role: string;
-  createdAt: Date;
-  avatar?: string;
-  password?: string;
-};
+import { UserInterface } from "@/interfaces/User";
 
 export const Users = () => {
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<UserInterface[]>([]);
   const [loading, setLoading] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [action, setAction] = useState("");
-  const [selectedUser, setSelectedUser] = useState<User | undefined>(undefined);
+  const [selectedUser, setSelectedUser] = useState<UserInterface | undefined>(undefined);
 
   async function fetchUsers() {
     setLoading(true);
