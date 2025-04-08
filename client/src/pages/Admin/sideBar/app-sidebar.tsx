@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Home, LogsIcon, Presentation, UsersIcon } from "lucide-react";
+import { Home, NotebookText, Presentation, UsersIcon } from "lucide-react";
 import { NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, useSidebar } from "@/components/ui/sidebar";
@@ -22,7 +22,7 @@ const adminMenus = {
     },
     {
       title: "Logs",
-      icon: LogsIcon,
+      icon: NotebookText,
       url: "/admin/logs",
     },
   ],

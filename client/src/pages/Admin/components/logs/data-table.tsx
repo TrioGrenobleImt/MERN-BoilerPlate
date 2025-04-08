@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -29,16 +29,25 @@ import { DialogHeader, DialogFooter, Dialog, DialogContent, DialogDescription, D
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  fetchLogs: () => void;
+  fetchLogs: (pageIndex: number, pageSize: number) => void;
   deleteAllLogs: () => void;
   isLoading: boolean;
+  logCount: number;
 }
 
-export function DataTable<TData, TValue>({ columns, data, fetchLogs, isLoading, deleteAllLogs }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data, fetchLogs, isLoading, deleteAllLogs, logCount }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [openModal, setOpenModal] = useState(false);
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+
+  useEffect(() => {
+    fetchLogs(pagination.pageIndex, pagination.pageSize);
+  }, [pagination.pageIndex, pagination.pageSize]);
 
   const table = useReactTable({
     data,
@@ -50,16 +59,14 @@ export function DataTable<TData, TValue>({ columns, data, fetchLogs, isLoading, 
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
-    initialState: {
-      pagination: {
-        pageSize: 10, // Default rows per page
-      },
-    },
     state: {
       sorting,
       columnFilters,
       columnVisibility,
+      pagination,
     },
+    manualPagination: true,
+    pageCount: Math.ceil(logCount / pagination.pageSize),
   });
 
   return (
@@ -94,7 +101,7 @@ export function DataTable<TData, TValue>({ columns, data, fetchLogs, isLoading, 
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <Button variant="outline" onClick={fetchLogs} disabled={isLoading}>
+            <Button variant="outline" onClick={() => fetchLogs(pagination.pageIndex, pagination.pageSize)} disabled={isLoading}>
               {isLoading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
             </Button>
           </div>
@@ -158,34 +165,68 @@ export function DataTable<TData, TValue>({ columns, data, fetchLogs, isLoading, 
       <Separator />
       <div className="flex flex-col items-center justify-between gap-4 p-4 md:flex-row">
         <div className="text-sm text-gray-600">
-          Page <strong>{table.getState().pagination.pageIndex + 1}</strong> of <strong>{table.getPageCount()}</strong> • {data.length} total
+          Page <strong>{table.getState().pagination.pageIndex + 1}</strong> of <strong>{table.getPageCount()}</strong> • {logCount} total
           entries
         </div>
         <div className="flex items-center space-x-2">
-          <Button variant="outline" size="sm" onClick={() => table.setPageIndex(0)} disabled={!table.getCanPreviousPage()}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setPagination((prev) => ({ ...prev, pageIndex: 0 }))}
+            disabled={pagination.pageIndex === 0}
+          >
             First
           </Button>
-          <Button variant="outline" size="sm" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setPagination((prev) => ({ ...prev, pageIndex: prev.pageIndex - 1 }))}
+            disabled={pagination.pageIndex === 0}
+          >
             Previous
           </Button>
-          <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setPagination((prev) => ({ ...prev, pageIndex: prev.pageIndex + 1 }))}
+            disabled={(pagination.pageIndex + 1) * pagination.pageSize >= logCount}
+          >
             Next
           </Button>
           <Button
             variant="outline"
             size="sm"
-            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-            disabled={!table.getCanNextPage()}
+            onClick={() =>
+              setPagination((prev) => ({
+                ...prev,
+                pageIndex: Math.floor((logCount - 1) / pagination.pageSize),
+              }))
+            }
+            disabled={(pagination.pageIndex + 1) * pagination.pageSize >= logCount}
           >
             Last
           </Button>
           <Select
             value={String(table.getState().pagination.pageSize)}
-            onValueChange={(value) => table.setPageSize(value === "Infinity" ? data.length : Number(value))}
+            onValueChange={(value) => {
+              if (value === "all") {
+                setPagination((prev) => ({
+                  ...prev,
+                  pageSize: logCount,
+                  pageIndex: 0,
+                }));
+              } else {
+                setPagination((prev) => ({
+                  ...prev,
+                  pageSize: Number(value),
+                  pageIndex: 0,
+                }));
+              }
+            }}
           >
             <SelectTrigger className="w-36">
               <SelectValue placeholder="Rows">
-                {table.getState().pagination.pageSize === data.length ? "All" : `${table.getState().pagination.pageSize} per page`}
+                {table.getState().pagination.pageSize === logCount ? "All" : `${table.getState().pagination.pageSize} per page`}
               </SelectValue>
             </SelectTrigger>
             <SelectContent>
@@ -194,7 +235,7 @@ export function DataTable<TData, TValue>({ columns, data, fetchLogs, isLoading, 
                   {size} per page
                 </SelectItem>
               ))}
-              <SelectItem value="Infinity">All</SelectItem>
+              <SelectItem value="all">All</SelectItem>
             </SelectContent>
           </Select>
         </div>

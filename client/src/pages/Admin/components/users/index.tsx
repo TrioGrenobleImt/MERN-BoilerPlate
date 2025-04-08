@@ -1,5 +1,5 @@
 import { axiosConfig } from "@/config/axiosConfig";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { DataTable } from "./data-table";
 import { getColumns } from "./columns";
@@ -16,10 +16,10 @@ export const Users = () => {
   const [selectedUser, setSelectedUser] = useState<UserInterface | undefined>(undefined);
   const [userCount, setUserCount] = useState(0);
 
-  async function fetchUsers(pageIndex: number = 0, pageSize: number = 10) {
+  async function fetchUsers(page: number = 0, size: number = 10) {
     setLoading(true);
     try {
-      const response = await axiosConfig.get("/users?page=" + pageIndex + "&size=" + pageSize);
+      const response = await axiosConfig.get("/users?page=" + page + "&size=" + size);
       setUsers(response.data.users);
       setUserCount(response.data.count);
     } catch (error: any) {
@@ -54,8 +54,8 @@ export const Users = () => {
     <div>
       <div className="container px-4 mx-auto">
         <DataTable
-          columns={getColumns(callback)}
           userCount={userCount}
+          columns={getColumns(callback)}
           data={users}
           fetchUsers={fetchUsers}
           isLoading={loading}
