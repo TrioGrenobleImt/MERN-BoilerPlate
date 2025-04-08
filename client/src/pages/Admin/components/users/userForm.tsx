@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { axiosConfig } from "@/config/axiosConfig";
 import { toast } from "sonner";
-import { User } from ".";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -184,29 +183,29 @@ export const UserForm = ({ dialog, refresh, action, user }: UserFormProps) => {
               </FormItem>
             )}
           />
-          <div className="flex items-end w-full gap-4">
-            <FormField
-              control={createForm.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
+          <FormField
+            control={createForm.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <div className="flex items-end justify-end w-full gap-4">
                     <Input type="password" placeholder="************" {...field} disabled />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex gap-2">
-              <Button type="button" variant="outline" onClick={copyGeneratedPassword} disabled={loading} aria-label="Copy password">
-                <Copy className="w-4 h-4" />
-              </Button>
-              <Button type="button" variant="outline" onClick={getRandomPassword} disabled={loading}>
-                Generate
-              </Button>
-            </div>
-          </div>
+                    <div className="flex gap-2">
+                      <Button type="button" variant="outline" onClick={copyGeneratedPassword} disabled={loading} aria-label="Copy password">
+                        <Copy className="w-4 h-4" />
+                      </Button>
+                      <Button type="button" variant="outline" onClick={getRandomPassword} disabled={loading}>
+                        Generate
+                      </Button>
+                    </div>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={createForm.control}
             name="role"
