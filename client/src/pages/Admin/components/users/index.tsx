@@ -13,7 +13,7 @@ export const Users = () => {
   const [loading, setLoading] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [action, setAction] = useState("");
-  const [selectedUser, setSelectedUser] = useState<UserInterface | undefined>(undefined);
+  const [selectedUser, setSelectedUser] = useState<UserInterface>();
   const [userCount, setUserCount] = useState(0);
 
   async function fetchUsers(page: number = 0, size: number = 10) {
