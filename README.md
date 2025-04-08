@@ -40,6 +40,7 @@ MONG_URI=
 MONG_URI_TEST=
 SECRET_ACCESS_TOKEN=
 CORS_ORIGIN=
+RESEND_API_KEY=
 ```
 
 - **PORT** -> The port your server will use.
@@ -47,6 +48,7 @@ CORS_ORIGIN=
 - **MONG_URI_TEST** -> Connection address to a test database (You can use the same as the main app, but the data will be wiped during tests, **not recommended**).
 - **SECRET_ACCESS_TOKEN** -> **Secret** token used to generate user access tokens.
 - **CORS_ORIGIN** -> The origin address of your frontend application.
+- **RESEND_API_KEY** -> Your Resend API key for sending emails (optional).
 
 For a clear example, please refer to the **.env.example** file in the server directory.
 
