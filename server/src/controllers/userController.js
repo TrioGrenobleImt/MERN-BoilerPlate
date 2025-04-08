@@ -39,9 +39,18 @@ const getUser = async (req, res) => {
  * @returns {Object} JSON response with a list of users or error message.
  */
 const getUsers = async (req, res) => {
+  const size = parseInt(req.query.size);
+  const page = parseInt(req.query.page);
+
   try {
-    const users = await User.find({}).sort({ createdAt: -1 });
-    res.status(200).json({ users });
+    const users = await User.find({})
+      .sort({ createdAt: -1 })
+      .skip(page * size)
+      .limit(size);
+
+    const count = await User.countDocuments();
+
+    res.status(200).json({ users, count });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
