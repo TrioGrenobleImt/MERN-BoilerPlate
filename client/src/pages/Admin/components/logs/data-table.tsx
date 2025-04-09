@@ -137,13 +137,20 @@ export function DataTable<TData, TValue>({ columns, data, fetchLogs, isLoading, 
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableRow className="relative">
-                <TableCell colSpan={columns.length} className="relative h-0 p-0 overflow-hidden">
-                  <div className="absolute top-0 left-0 w-full h-[2px] bg-gray-300 dark:bg-gray-700 overflow-hidden">
-                    <div className="w-full h-full bg-black dark:bg-gray-900 animate-marquee"></div>
-                  </div>
-                </TableCell>
-              </TableRow>
+              <>
+                <div className="absolute top-0 left-0 z-10 w-full h-0.5 overflow-hidden">
+                  <div className="w-full h-full bg-gradient-to-r from-primary animate-loading" />
+                </div>
+                {Array.from({ length: table.getState().pagination.pageSize }).map((_, idx) => (
+                  <TableRow key={`loading-row-${idx}`} className="animate-pulse">
+                    {table.getAllLeafColumns().map((column) => (
+                      <TableCell key={column.id}>
+                        <div className="w-3/4 h-10 rounded bg-muted" />
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+              </>
             ) : table.getRowModel().rows.length > 0 ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id}>

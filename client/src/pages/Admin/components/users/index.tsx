@@ -19,7 +19,7 @@ export const Users = () => {
   async function fetchUsers(page: number = 0, size: number = 10) {
     setLoading(true);
     try {
-      const response = await axiosConfig.get("/users?page=" + page + "&size=" + size);
+      const response = await axiosConfig.get(`/users?page=${page}&size=${size}`);
       setUsers(response.data.users);
       setUserCount(response.data.count);
     } catch (error: any) {
