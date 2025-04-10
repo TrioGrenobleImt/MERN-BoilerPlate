@@ -1,5 +1,4 @@
 import { describe, expect, it, vi } from "vitest";
-import "dotenv/config";
 import { generateAccessToken } from "../../../src/utils/generateAccessToken";
 
 describe("Generate access token method", () => {
