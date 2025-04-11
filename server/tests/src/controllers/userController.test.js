@@ -24,15 +24,11 @@ import {
 import path from "path";
 
 beforeAll(async () => {
-  //Connect to database
-  await mongoose.connect(process.env.MONG_URI_TEST);
   await User.deleteMany();
 });
 
 afterAll(async () => {
-  //Disconnect from database
   await Log.deleteMany();
-  await mongoose.disconnect();
 });
 
 describe("GET /api/users/", () => {

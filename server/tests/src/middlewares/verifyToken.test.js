@@ -8,16 +8,6 @@ import { app } from "../../../src/app";
 import { generateAccessToken } from "../../../src/utils/generateAccessToken";
 import { regularUser } from "../../fixtures/users";
 
-beforeAll(async () => {
-  // Connexion à la base de données de test
-  await mongoose.connect(process.env.MONG_URI_TEST);
-});
-
-afterAll(async () => {
-  // Déconnexion de la base de données après les tests
-  await mongoose.disconnect();
-});
-
 describe("verifyToken Middleware", () => {
   afterEach(async () => {
     // Nettoyage après chaque test

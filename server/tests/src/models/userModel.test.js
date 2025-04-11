@@ -5,14 +5,11 @@ import { User } from "../../../src/models/userModel.js";
 import { Log } from "../../../src/models/logModel.js";
 
 beforeAll(async () => {
-  //Connect to database
-  await mongoose.connect(process.env.MONG_URI_TEST);
   await User.deleteMany();
 });
 
 afterAll(async () => {
   await Log.deleteMany();
-  await mongoose.disconnect();
 });
 
 describe("TEST fullname generation", () => {
