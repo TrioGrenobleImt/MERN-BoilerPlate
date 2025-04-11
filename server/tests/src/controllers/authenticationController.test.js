@@ -18,15 +18,8 @@ import {
   userWithSameUsername,
 } from "../../fixtures/users.js";
 
-beforeAll(async () => {
-  //Connect to database
-  await mongoose.connect(process.env.MONG_URI_TEST);
-});
-
 afterAll(async () => {
-  //Disconnect from database
   await Log.deleteMany();
-  await mongoose.disconnect();
 });
 
 describe("POST /api/auth/register", () => {

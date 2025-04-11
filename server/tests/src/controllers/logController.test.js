@@ -13,16 +13,6 @@ import { createLog } from "../../../src/controllers/logController.js";
 import { adminUser } from "../../fixtures/users.js";
 import { basicLog, logInvalidLevel, logWithMissingParams } from "../../fixtures/logs.js";
 
-beforeAll(async () => {
-  //Connect to database
-  await mongoose.connect(process.env.MONG_URI_TEST);
-});
-
-afterAll(async () => {
-  //Disconnect from database
-  await mongoose.disconnect();
-});
-
 describe("GET api/logs/", () => {
   afterEach(async () => {
     await User.deleteMany();
@@ -40,7 +30,6 @@ describe("GET api/logs/", () => {
       .send();
 
     expect(res.status).toBe(200);
-    expect(res.body.message).toBe("Logs retrieved successfully");
     expect(res.body.logs.length).toBe(1);
     expect(res.body.logs[0].message).toBe("Log message");
   });

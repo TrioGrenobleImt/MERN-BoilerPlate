@@ -13,14 +13,10 @@ import { Constants } from "../../../constants/constants.js";
 import { adminUser, pathAvatarOldTest, userAdminWithAvatar } from "../../fixtures/users.js";
 
 beforeAll(async () => {
-  //Connect to database
-  await mongoose.connect(process.env.MONG_URI_TEST);
   await User.deleteMany();
 });
 afterAll(async () => {
-  // Disconnect from database
   await Log.deleteMany();
-  await mongoose.disconnect();
 
   const uploadsDir = "./uploads/users/avatars/";
 
