@@ -3,10 +3,17 @@ import fs from "fs";
 import path from "path";
 import { Constants } from "../../constants/constants.js";
 
-const updateUserAvatar = async (req, res) => {
+/**
+ * @function updateUserAvatar
+ * @description Updates the avatar of a user by uploading a new file, validating the file type and size,
+ * and replacing the old avatar if it exists.
+ * @param {string} req.params.id - The ID of the user whose avatar is being updated.
+ * @param {Object} req.file - The uploaded file containing the user's new avatar.
+ * @returns {Object} JSON response with success or error message.
+ */
+export const updateUserAvatar = async (req, res) => {
   try {
     const userId = req.params.id;
-    // On récupère l'utilisateur
     const user = await User.findById(userId);
 
     if (!req.file) {
@@ -22,7 +29,6 @@ const updateUserAvatar = async (req, res) => {
       return res.status(400).json({ error: `File size exceeds the limit of ${Constants.AVATAR_MAX_SIZE / 1024 / 1024} MB` });
     }
 
-    // Supprimer l'ancienne image si elle existe
     if (user.avatar) {
       const oldAvatarPath = path.join(process.cwd(), "uploads", "users", "avatars", path.basename(user.avatar));
       if (fs.existsSync(oldAvatarPath)) {
@@ -30,7 +36,6 @@ const updateUserAvatar = async (req, res) => {
       }
     }
 
-    // On enregistre la nouvelle URL de l'avatar
     const newAvatarUrl = `${req.protocol}://${req.get("host")}/uploads/users/avatars/${req.file.filename}`;
 
     user.avatar = newAvatarUrl;
@@ -44,5 +49,3 @@ const updateUserAvatar = async (req, res) => {
     res.status(500).json({ error: "An unexpected error occurred during file upload" });
   }
 };
-
-export { updateUserAvatar };

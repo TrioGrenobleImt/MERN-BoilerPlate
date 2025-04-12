@@ -3,10 +3,11 @@ import { User } from "../models/userModel.js";
 
 /**
  * Middleware to verify JWT token and, if specified, check the user's role.
+ * This middleware verifies the access token from the cookie and ensures the user has the required role (if provided).
  *
  * @param {Object} options - Options for the middleware.
  * @param {string} [options.role] - Required role to access the route (e.g., "admin").
- * @returns {Function} Express middleware function.
+ * @returns {Function} Express middleware function that verifies the token and checks the user's role.
  */
 export const verifyToken = ({ role } = {}) => {
   return async (req, res, next) => {

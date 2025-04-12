@@ -45,11 +45,13 @@ const UserSchema = new mongoose.Schema(
   },
 );
 
+// Virtual field for full name (combines 'name' and 'forename')
 UserSchema.virtual("fullname").get(function () {
   const formattedforename = this.forename.charAt(0).toUpperCase() + this.forename.slice(1).toLowerCase();
   return `${this.name} ${formattedforename}`;
 });
 
+// Pre-save hook to assign a random avatar if the user does not have one
 UserSchema.pre("save", function (next) {
   if (!this.avatar && this.username) {
     this.avatar = generateRandomAvatar(this.username);

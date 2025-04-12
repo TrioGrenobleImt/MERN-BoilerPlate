@@ -4,12 +4,9 @@ import { logLevels } from "../utils/enums/logLevel.js";
 /**
  * Retrieves logs from the database.
  *
- * @param {Object} req - Express request object.
- * @param {Object} req.body - Request body containing log retrieval details.
- * @param {Object} res - Express response object.
  * @returns {Object} JSON response with logs or error message.
  */
-const getLogs = async (req, res) => {
+export const getLogs = async (req, res) => {
   const size = parseInt(req.query.size);
   const page = parseInt(req.query.page);
 
@@ -36,7 +33,7 @@ const getLogs = async (req, res) => {
  * @param {string} logData.userId - The ID of the user associated with the log.
  * @param {string} logData.level - The log level (e.g., INFO, ERROR).
  */
-const createLog = async ({ message, userId, level }) => {
+export const createLog = async ({ message, userId, level }) => {
   if (!message || !userId || !level) {
     console.error("createLog: Missing parameters", { message, userId, level });
     return;
@@ -57,13 +54,9 @@ const createLog = async ({ message, userId, level }) => {
 /**
  * Deletes a specific log entry by ID.
  *
- * @param {Object} req - Express request object.
- * @param {Object} req.params - Route parameters.
- * @param {string} req.params.id - The ID of the log to delete.
- * @param {Object} res - Express response object.
  * @returns {Object} JSON response with success message or error message.
  */
-const deleteLog = async (req, res) => {
+export const deleteLog = async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -80,11 +73,9 @@ const deleteLog = async (req, res) => {
 /**
  * Deletes all log entries from the database.
  *
- * @param {Object} req - Express request object.
- * @param {Object} res - Express response object.
  * @returns {Object} JSON response with success message or error message.
  */
-const deleteAllLogs = async (req, res) => {
+export const deleteAllLogs = async (req, res) => {
   try {
     await Log.deleteMany();
     res.status(200).json({ message: "All logs deleted successfully" });
@@ -96,12 +87,8 @@ const deleteAllLogs = async (req, res) => {
 /**
  * Retrieves all available log levels.
  *
- * @param {Object} req - Express request object.
- * @param {Object} res - Express response object.
  * @returns {Object} JSON response with log levels.
  */
-const getLoglevels = (req, res) => {
+export const getLoglevels = (req, res) => {
   res.status(200).json({ logLevels: Object.values(logLevels) });
 };
-
-export { getLogs, createLog, deleteLog, deleteAllLogs, getLoglevels };

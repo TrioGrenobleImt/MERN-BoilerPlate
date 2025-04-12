@@ -8,17 +8,16 @@ import { logLevels } from "../utils/enums/logLevel.js";
 /**
  * Registers a new user.
  *
- * @param {Object} req - Express request object.
- * @param {Object} req.body - Request body containing user details.
- * @param {string} req.body.email - User's email address.
- * @param {string} req.body.username - User's username.
- * @param {string} req.body.password - User's password.
- * @param {string} req.body.confirmPassword - Confirmation of user's password.
- * @param {Object} res - Express response object.
+ * @param {Object} userData - Data for the user registration.
+ * @param {string} userData.email - User's email address.
+ * @param {string} userData.username - User's username.
+ * @param {string} userData.password - User's password.
+ * @param {string} userData.confirmPassword - Confirmation of user's password.
  * @returns {Object} JSON response with user details or error message.
  */
-const register = async (req, res) => {
+export const register = async (req, res) => {
   const { name, forename, email, username, password, confirmPassword } = req.body;
+
   if (!username || !email || !password || !confirmPassword || !name || !forename) {
     return res.status(422).json({ error: "Missing fields" });
   }
@@ -66,15 +65,14 @@ const register = async (req, res) => {
 /**
  * Logs in a user.
  *
- * @param {Object} req - Express request object.
- * @param {Object} req.body - Request body containing login details.
- * @param {string} req.body.username - User's username.
- * @param {string} req.body.password - User's password.
- * @param {Object} res - Express response object.
+ * @param {Object} credentials - Login credentials.
+ * @param {string} credentials.username - User's username.
+ * @param {string} credentials.password - User's password.
  * @returns {Object} JSON response with user details or error message.
  */
-const login = async (req, res) => {
+export const login = async (req, res) => {
   const { username, password, email } = req.body;
+
   if (!password || (!username && !email)) {
     return res.status(422).json({ error: "Password is required, and either username or email must be provided." });
   }
@@ -118,11 +116,9 @@ const login = async (req, res) => {
 /**
  * Logs out a user by clearing the access token cookie.
  *
- * @param {Object} req - Express request object.
- * @param {Object} res - Express response object.
  * @returns {Object} JSON response with success message.
  */
-const logout = async (req, res) => {
+export const logout = async (req, res) => {
   try {
     res.clearCookie("__access__token");
     res.status(200).json({ message: "Signed out successfully" });
@@ -134,12 +130,10 @@ const logout = async (req, res) => {
 /**
  * Retrieves the currently connected user's details.
  *
- * @param {Object} req - Express request object.
- * @param {string} req.userId - User ID extracted from the token.
- * @param {Object} res - Express response object.
+ * @param {string} userId - The ID of the connected user, extracted from the token.
  * @returns {Object} JSON response with user details or error message.
  */
-const getConnectedUser = async (req, res) => {
+export const getConnectedUser = async (req, res) => {
   const id = req.userId;
 
   try {
@@ -149,5 +143,3 @@ const getConnectedUser = async (req, res) => {
     return res.status(500).json({ error: err.message });
   }
 };
-
-export { login, register, logout, getConnectedUser };

@@ -19,12 +19,13 @@ authRouter.post("/register", register);
 /**
  * @route GET /logout
  * @description Logs out the currently authenticated user.
+ * @middleware verifyToken() - Ensures the user is authenticated before logging out.
  */
 authRouter.get("/logout", verifyToken(), logout);
 
 /**
  * @route GET /me
  * @description Fetches the currently authenticated user's information.
- * @middleware verifyToken - Ensures the user is authenticated by validating the JWT token.
+ * @middleware verifyToken() - Ensures the user is authenticated by validating the JWT token.
  */
 authRouter.get("/me", verifyToken(), getConnectedUser);
