@@ -6,6 +6,7 @@ import { uploadRouter } from "./uploadRoutes.js";
 
 import path from "path";
 import { fileURLToPath } from "url";
+import { serviceRouter } from "./serviceRoutes.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -19,6 +20,9 @@ router.use("/api/logs", logRouter);
 //UPLOADS routes
 router.use("/api/uploads", uploadRouter);
 router.use("/uploads", express.static(path.join(__dirname, "../../uploads")));
+
+//SERVICES routes
+router.use("/api/services", serviceRouter);
 
 /**
  * Healthcheck
