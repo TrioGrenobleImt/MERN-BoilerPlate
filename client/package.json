@@ -21,6 +21,7 @@
     "@radix-ui/react-separator": "^1.1.2",
     "@radix-ui/react-slot": "^1.1.2",
     "@radix-ui/react-tooltip": "^1.1.8",
+    "@react-email/components": "0.0.36",
     "@tanstack/react-table": "^8.21.2",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.7.2",
@@ -31,8 +32,8 @@
     "i18next": "^24.1.0",
     "lucide-react": "0.484.0",
     "next-themes": "^0.4.4",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-hook-form": "^7.54.2",
     "react-i18next": "^15.2.0",
     "react-router-dom": "^6.23.1",
@@ -50,6 +51,7 @@
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.49",
+    "react-email": "4.0.7",
     "tailwindcss": "^3.4.16",
     "vite": "^5.2.0"
   }
