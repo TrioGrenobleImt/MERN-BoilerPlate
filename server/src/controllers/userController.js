@@ -133,6 +133,12 @@ export const updateUser = async (req, res) => {
 
     const { password: userPassword, ...userWithoutPassword } = user._doc;
 
+    createLog({
+      message: `User '${user.username}' updated successfully`,
+      userId: userId,
+      level: logLevels.INFO,
+    });
+
     res.status(200).json({ user: userWithoutPassword, message: "User updated successfully" });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -156,6 +162,12 @@ export const deleteUser = async (req, res) => {
         fs.unlinkSync(oldAvatarPath);
       }
     }
+
+    createLog({
+      message: `User '${user.username}' deleted successfully`,
+      userId: req.userId,
+      level: logLevels.INFO,
+    });
 
     res.status(200).json({ user, message: "User deleted successfully" });
   } catch (err) {
@@ -239,6 +251,12 @@ export const deleteAccount = async (req, res) => {
         fs.unlinkSync(oldAvatarPath);
       }
     }
+
+    createLog({
+      message: `User '${user.username}' deleted their account`,
+      userId: userId,
+      level: logLevels.INFO,
+    });
 
     await User.findByIdAndDelete(userId);
     res.clearCookie("__access__token");

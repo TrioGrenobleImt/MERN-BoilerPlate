@@ -49,7 +49,7 @@ export const register = async (req, res) => {
     });
 
     createLog({
-      message: `New user registered successfully`,
+      message: `New user ${user.username} registered successfully`,
       userId: user._id,
       level: logLevels.INFO,
     });
@@ -100,12 +100,6 @@ export const login = async (req, res) => {
     });
 
     const { password: userPassword, ...userWithoutPassword } = user._doc;
-
-    createLog({
-      message: `User logged in successfully`,
-      userId: user._id,
-      level: logLevels.INFO,
-    });
 
     res.status(201).json({ user: userWithoutPassword, message: "Logged in successfully" });
   } catch (err) {

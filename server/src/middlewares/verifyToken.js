@@ -1,5 +1,7 @@
 import jwt from "jsonwebtoken";
 import { User } from "../models/userModel.js";
+import { createLog } from "../controllers/logController.js";
+import { logLevels } from "../utils/enums/logLevel.js";
 
 /**
  * Middleware to verify JWT token and, if specified, check the user's role.
@@ -24,6 +26,11 @@ export const verifyToken = ({ role } = {}) => {
         req.userId = payload.id;
 
         if (role && user.role !== role) {
+          createLog({
+            message: `User ${user.username} attempted to access a restricted route`,
+            userId: user._id,
+            level: logLevels.ERROR,
+          });
           return res.status(403).json({ error: "Access restricted" });
         }
       } catch (error) {
