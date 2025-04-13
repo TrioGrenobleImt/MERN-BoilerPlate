@@ -19,13 +19,9 @@ export const LanguageChanger = () => {
   } = useTranslation();
 
   const handleChangeLanguage = (l: string) => {
-    toast.loading(t("navbar.changingLanguage"));
-    setTimeout(() => {
-      toast.dismiss();
-      toast.success(t("navbar.languageChanged"));
-      localStorage.setItem("i18nextLng", l);
-      changeLanguage(l);
-    }, 1000);
+    localStorage.setItem("i18nextLng", l);
+    changeLanguage(l);
+    toast.success(t("navbar.languageChanged"));
   };
 
   return (
