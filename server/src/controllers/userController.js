@@ -123,6 +123,12 @@ export const updateUser = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
         req.body.password = hashedPassword;
       }
+
+      createLog({
+        message: `User '${username}' updated successfully`,
+        userId: userId,
+        level: logLevels.INFO,
+      });
     } else {
       delete req.body.role;
       delete req.body.password;
@@ -132,12 +138,6 @@ export const updateUser = async (req, res) => {
     if (!user) return res.status(404).json({ error: "No such user" });
 
     const { password: userPassword, ...userWithoutPassword } = user._doc;
-
-    createLog({
-      message: `User '${user.username}' updated successfully`,
-      userId: userId,
-      level: logLevels.INFO,
-    });
 
     res.status(200).json({ user: userWithoutPassword, message: "User updated successfully" });
   } catch (err) {
