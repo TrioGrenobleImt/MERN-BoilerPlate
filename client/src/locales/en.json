@@ -6,6 +6,7 @@
     "login": "Login",
     "language": "Language",
     "languageChanged": "Language changed to English.",
+    "changingLanguage": "Changing language...",
     "logout": "Logout",
     "profile": "Profile"
   },

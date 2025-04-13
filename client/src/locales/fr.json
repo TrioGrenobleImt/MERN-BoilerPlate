@@ -6,6 +6,7 @@
     "login": "Se connecter",
     "language": "Langage",
     "languageChanged": "Langage changé en français.",
+    "changingLanguage": "Changement de langage...",
     "logout": "Se déconnecter",
     "profile": "Profil"
   },

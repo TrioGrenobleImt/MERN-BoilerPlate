@@ -39,10 +39,9 @@ export const Login = () => {
         ...(isEmail ? { email: values.loginName } : { username: values.loginName }),
       };
       const response = await axiosConfig.post("/auth/login", payload);
-      const data = await response.data;
 
-      toast.success(data.message);
-      setAuthUser(data.user);
+      toast.success(response.data.message);
+      setAuthUser(response.data.user);
       navigate("/");
     } catch (error: any) {
       toast.error(error.response.data.error);

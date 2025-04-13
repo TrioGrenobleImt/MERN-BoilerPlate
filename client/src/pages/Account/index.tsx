@@ -46,8 +46,12 @@ export const Account = () => {
     try {
       setUpdateLoading(true);
       const response = await axiosConfig.put(`/users/${authUser?._id}`, values);
-      toast.success(response.data.message);
-      setAuthUser(response.data.user);
+      toast.loading("Updating account...");
+      setTimeout(() => {
+        toast.dismiss();
+        toast.success(response.data.message);
+        setAuthUser(response.data.user);
+      }, 1000);
     } catch (error: any) {
       toast.error(error.response.data.error);
     } finally {
@@ -79,8 +83,13 @@ export const Account = () => {
       const response = await axiosConfig.post(`/uploads/avatar/${authUser?._id}`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      setAuthUser(response.data.user);
-      toast.success(response.data.message);
+
+      toast.loading("Updating profile picture...");
+      setTimeout(() => {
+        toast.dismiss();
+        toast.success(response.data.message);
+        setAuthUser(response.data.user);
+      }, 1000);
     } catch (error: any) {
       toast.error(error.response?.data?.error);
     } finally {

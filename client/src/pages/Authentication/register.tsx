@@ -37,11 +37,13 @@ export const Register = () => {
     try {
       setLoading(true);
       const response = await axiosConfig.post("/auth/register", values);
-      const data = await response.data;
-
-      toast.success(data.message);
-      setAuthUser(data.user);
-      navigate("/");
+      toast.loading("Creating account...");
+      setTimeout(() => {
+        toast.dismiss();
+        toast.success(response.data.message);
+        setAuthUser(response.data.user);
+        navigate("/");
+      }, 1000);
     } catch (error: any) {
       toast.error(error.response.data.error);
     } finally {

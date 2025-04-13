@@ -35,8 +35,12 @@ export const Logs = () => {
   async function deleteAllLogs() {
     try {
       const response = await axiosConfig.delete(`/logs`);
-      toast.success(response.data.message);
-      fetchAllLogs();
+      toast.loading("Deleting all logs...");
+      setTimeout(() => {
+        toast.dismiss();
+        toast.success(response.data.message);
+        fetchAllLogs();
+      }, 1000);
     } catch (error: any) {
       toast.error(error.response);
     }

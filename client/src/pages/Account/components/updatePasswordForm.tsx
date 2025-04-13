@@ -32,9 +32,13 @@ export const UpdatePasswordForm = ({ setOpen }: UpdatePasswordProps) => {
     try {
       setLoading(true);
       const response = await axiosConfig.put(`/users/${authUser?._id}/password`, values);
-      toast.success(response.data.message);
-      setOpen(false);
-      updatePasswordForm.reset();
+      toast.loading("Updating password...");
+      setTimeout(() => {
+        toast.dismiss();
+        toast.success(response.data.message);
+        setOpen(false);
+        updatePasswordForm.reset();
+      }, 1000);
     } catch (error: any) {
       toast.error(error.response.data.error);
     } finally {
