@@ -64,7 +64,7 @@ export const createUser = async (req, res) => {
   }
 
   try {
-    const existingUserByEmail = await User.findOne({ email });
+    const existingUserByEmail = await User.findOne({ email: email.toLowerCase() });
     const existingUserByUsername = await User.findOne({ username });
 
     if (existingUserByEmail) return res.status(409).json({ error: "Email already taken" });
@@ -75,7 +75,7 @@ export const createUser = async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await User.create({ email, username, password: hashedPassword, role, name, forename });
+    const user = await User.create({ email: email.toLowerCase(), username, password: hashedPassword, role, name, forename });
 
     const { password: userPassword, ...userWithoutPassword } = user._doc;
 
@@ -103,7 +103,7 @@ export const updateUser = async (req, res) => {
 
   try {
     if (email) {
-      const existingUserByEmail = await User.findOne({ email, _id: { $ne: id } });
+      const existingUserByEmail = await User.findOne({ email: email.toLowerCase(), _id: { $ne: id } });
       if (existingUserByEmail) return res.status(409).json({ error: "Email already taken" });
     }
 
@@ -134,7 +134,11 @@ export const updateUser = async (req, res) => {
       delete req.body.password;
     }
 
-    const user = await User.findOneAndUpdate({ _id: id }, { ...req.body }, { new: true });
+    const user = await User.findOneAndUpdate(
+      { _id: id },
+      { ...req.body, ...(req.body.email && { email: req.body.email.toLowerCase() }) },
+      { new: true },
+    );
     if (!user) return res.status(404).json({ error: "No such user" });
 
     const { password: userPassword, ...userWithoutPassword } = user._doc;

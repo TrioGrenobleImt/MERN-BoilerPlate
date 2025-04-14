@@ -10,7 +10,7 @@ export const LayoutWrapper = ({ withLayout = true }: LayoutWrapperProps) => {
   return (
     <>
       {withLayout && <Navbar />}
-      <Outlet /> {/* Affiche les enfants des routes */}
+      <Outlet />
       {withLayout && <Footer />}
     </>
   );

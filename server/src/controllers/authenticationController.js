@@ -34,13 +34,13 @@ export const register = async (req, res) => {
   }
 
   try {
-    if (await User.findOne({ email })) {
+    if (await User.findOne({ email: email.toLowerCase() })) {
       return res.status(409).json({ error: "This email is already taken" });
     } else if (await User.findOne({ username })) {
       return res.status(409).json({ error: "This username is already taken" });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await User.create({ email, username, password: hashedPassword, name, forename });
+    const user = await User.create({ email: email.toLowerCase(), username, password: hashedPassword, name, forename });
     const accessToken = generateAccessToken(user._id);
 
     res.cookie("__access__token", accessToken, {
@@ -78,7 +78,7 @@ export const login = async (req, res) => {
   }
 
   try {
-    const user = await User.findOne({ $or: [{ username }, { email }] }).select("+password");
+    const user = await User.findOne({ $or: [{ username }, { email: email.toLowerCase() }] }).select("+password");
     if (!user) {
       return res.status(400).json({ error: "No such user" });
     }
