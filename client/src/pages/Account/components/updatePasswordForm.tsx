@@ -4,10 +4,11 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { axiosConfig } from "@/config/axiosConfig";
 import { useAuthContext } from "@/contexts/authContext";
-import { updatePasswordSchema } from "@/lib/zod/schemas/account/zod";
+import { getUpdatePasswordSchema } from "@/lib/zod/schemas/account/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -19,6 +20,9 @@ export const UpdatePasswordForm = ({ setOpen }: UpdatePasswordProps) => {
   const { authUser } = useAuthContext();
   const [loading, setLoading] = useState(false);
 
+  const { t } = useTranslation();
+
+  const updatePasswordSchema = getUpdatePasswordSchema(t);
   const updatePasswordForm = useForm<z.infer<typeof updatePasswordSchema>>({
     resolver: zodResolver(updatePasswordSchema),
     defaultValues: {

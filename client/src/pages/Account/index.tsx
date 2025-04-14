@@ -7,7 +7,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
-import { updateAccountSchema } from "@/lib/zod/schemas/account/zod";
+import { getUpdateAccountSchema } from "@/lib/zod/schemas/account/zod";
 import { useState } from "react";
 import { toast } from "sonner";
 import { axiosConfig } from "@/config/axiosConfig";
@@ -25,6 +25,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DeleteAccountForm } from "./components/deleteAccountForm";
+import { useTranslation } from "react-i18next";
 
 export const Account = () => {
   const { authUser, setAuthUser, loading } = useAuthContext();
@@ -32,6 +33,9 @@ export const Account = () => {
   const [openUpdatePasswordDialog, setOpenUpdatePasswordDialog] = useState(false);
   const [openDeleteAccountDialog, setOpenDeleteAccountDialog] = useState(false);
 
+  const { t } = useTranslation();
+
+  const updateAccountSchema = getUpdateAccountSchema(t);
   const updateForm = useForm<z.infer<typeof updateAccountSchema>>({
     resolver: zodResolver(updateAccountSchema),
     defaultValues: {

@@ -15,7 +15,22 @@
       "welcome_message": "Bienvenue sur ce boilerplate !"
     },
     "account": {
-      "logout": "Se déconnecter"
+      "errors": {
+        "check_approval": "Veuillez cocher la case pour confirmer la suppression de votre compte.",
+        "password_min": "Le mot de passe doit comporter au moins 6 caractères.",
+        "name_min": "Le nom doit comporter au moins 2 caractères.",
+        "name_max": "Le nom doit comporter au maximum 25 caractères.",
+        "forename_min": "Le prénom doit comporter au moins 2 caractères.",
+        "forename_max": "Le prénom doit comporter au maximum 25 caractères.",
+        "username_min": "Le nom d'utilisateur doit comporter au moins 2 caractères.",
+        "username_max": "Le nom d'utilisateur doit comporter au maximum 25 caractères.",
+        "invalid_email": "Adresse e-mail invalide.",
+        "current_password_min": "Le mot de passe actuel doit comporter au moins 6 caractères.",
+        "new_password_min": "Le nouveau mot de passe doit comporter au moins 6 caractères.",
+        "new_password_max": "Le mot de passe doit comporter au maximum 25 caractères.",
+        "new_password_confirm_min": "La confirmation du nouveau mot de passe doit comporter au moins 6 caractères.",
+        "passwords_do_not_match": "Les mots de passe ne correspondent pas."
+      }
     },
     "login": {
       "welcome_back": "Content de vous revoir",

@@ -1,38 +1,41 @@
 import { z } from "zod";
 
-export const updateAccountSchema = z.object({
-  name: z
-    .string()
-    .min(2, { message: "Name must be at least 2 characters long" })
-    .max(25, { message: "Name must be at most 25 characters long" }),
-  forename: z
-    .string()
-    .min(2, { message: "Forename must be at least 2 characters long" })
-    .max(25, { message: "Forename must be at most 25 characters long" }),
-  username: z
-    .string()
-    .min(2, { message: "Username must be at least 2 characters long" })
-    .max(25, { message: "Username must be at most 25 characters long" }),
-  email: z.string().email({ message: "Invalid email address" }),
-});
-
-export const updatePasswordSchema = z
-  .object({
-    currentPassword: z.string().min(6, { message: "Current password is atleast 6 characters" }),
-    newPassword: z
+export const getUpdateAccountSchema = (t: (key: string) => string) =>
+  z.object({
+    name: z
       .string()
-      .min(6, { message: "New password is atleast 6 characters" })
-      .max(25, { message: "Password must be at most 25 characters long" }),
-    newPasswordConfirm: z.string().min(6, { message: "New password is atleast 6 characters" }),
-  })
-  .refine((data) => data.newPassword === data.newPasswordConfirm, {
-    message: "Passwords do not match",
-    path: ["newPasswordConfirm"],
+      .min(2, { message: t("pages.account.errors.name_min") })
+      .max(25, { message: t("pages.account.errors.name_max") }),
+    forename: z
+      .string()
+      .min(2, { message: t("pages.account.errors.forename_min") })
+      .max(25, { message: t("pages.account.errors.forename_max") }),
+    username: z
+      .string()
+      .min(2, { message: t("pages.account.errors.username_min") })
+      .max(25, { message: t("pages.account.errors.username_max") }),
+    email: z.string().email({ message: t("pages.account.errors.invalid_email") }),
   });
 
-export const deleteAccountSchema = z.object({
-  checkApproval: z.boolean().refine((val) => val === true, {
-    message: "You must check the box to confirm account deletion",
-  }),
-  password: z.string().min(6, { message: "You must enter your password" }),
-});
+export const getUpdatePasswordSchema = (t: (key: string) => string) =>
+  z
+    .object({
+      currentPassword: z.string().min(6, { message: t("pages.account.errors.current_password_min") }),
+      newPassword: z
+        .string()
+        .min(6, { message: t("pages.account.errors.new_password_min") })
+        .max(25, { message: t("pages.account.errors.new_password_max") }),
+      newPasswordConfirm: z.string().min(6, { message: t("pages.account.errors.new_password_confirm_min") }),
+    })
+    .refine((data) => data.newPassword === data.newPasswordConfirm, {
+      message: t("pages.account.errors.passwords_do_not_match"),
+      path: ["newPasswordConfirm"],
+    });
+
+export const getDeleteAccountSchema = (t: (key: string) => string) =>
+  z.object({
+    checkApproval: z.boolean().refine((val) => val === true, {
+      message: t("pages.account.errors.check_approval"),
+    }),
+    password: z.string().min(6, { message: t("pages.account.errors.password_min") }),
+  });

@@ -15,7 +15,22 @@
       "welcome_message": "Welcome to this boilerplate!"
     },
     "account": {
-      "logout": "Logout"
+      "errors": {
+        "check_approval": "Please check the box to confirm the deletion of your account.",
+        "password_min": "Password is at least 6 characters long.",
+        "name_min": "Name must be at least 2 characters long.",
+        "name_max": "Name must be at most 25 characters long.",
+        "forename_min": "Forename must be at least 2 characters long.",
+        "forename_max": "Forename must be at most 25 characters long.",
+        "username_min": "Username must be at least 2 characters long.",
+        "username_max": "Username must be at most 25 characters long.",
+        "invalid_email": "Invalid email address.",
+        "current_password_min": "Current password is at least 6 characters long.",
+        "new_password_min": "New password is at least 6 characters long.",
+        "new_password_max": "Password must be at most 25 characters long.",
+        "new_password_confirm_min": "New password confirmation is at least 6 characters long.",
+        "passwords_do_not_match": "Passwords do not match."
+      }
     },
     "login": {
       "welcome_back": "Welcome Back",

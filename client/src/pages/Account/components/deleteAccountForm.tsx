@@ -4,7 +4,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input";
 import { axiosConfig } from "@/config/axiosConfig";
 import { useAuthContext } from "@/contexts/authContext";
-import { deleteAccountSchema } from "@/lib/zod/schemas/account/zod";
+import { getDeleteAccountSchema } from "@/lib/zod/schemas/account/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { useNavigate } from "react-router-dom";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useTranslation } from "react-i18next";
 
 interface DeleteAccountProps {
   setOpen: (open: boolean) => void;
@@ -22,6 +23,9 @@ export const DeleteAccountForm = ({ setOpen }: DeleteAccountProps) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const { t } = useTranslation();
+
+  const deleteAccountSchema = getDeleteAccountSchema(t);
   const deleteAccountForm = useForm<z.infer<typeof deleteAccountSchema>>({
     resolver: zodResolver(deleteAccountSchema),
     defaultValues: {
