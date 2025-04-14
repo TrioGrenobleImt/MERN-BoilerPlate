@@ -31,19 +31,31 @@
         "new_password_confirm_min": "New password confirmation is at least 6 characters long.",
         "passwords_do_not_match": "Passwords do not match."
       },
-      "deleting_account": "Deleting account ...",
+      "account_settings_title": "Account Settings",
+      "account_settings_description": "Update your personal information and account details.",
+      "forename_label": "Forename",
+      "name_label": "Name",
+      "username_label": "Username",
+      "email_label": "Email",
+      "password_label": "Password",
+      "choose_image": "Choose Image",
       "delete_account_title": "Delete account",
       "delete_account_description": "Please be very mindful of your action, there is no going back",
       "accept_delete_account": "I accept to delete my account forever",
       "accept_delete_account_description": "Please note that this action is irreversible and will delete all your data and settings. If you are sure, please check the box to confirm.",
-      "password_label": "Password",
       "password_placeholder": "********",
       "delete_account_button": "Delete this account",
       "edit_profile_title": "Edit profile",
       "edit_profile_description": "Make changes to your password here. Click save when you're done.",
       "current_password_label": "Current password",
       "new_password_label": "New password",
-      "new_password_confirm_label": "New password confirmation"
+      "new_password_confirm_label": "New password confirmation",
+      "updating_account": "Updating account...",
+      "updating_password": "Updating password...",
+      "updating_profile_picture": "Updating profile picture...",
+      "change_password": "Change Password",
+      "delete_account": "Delete account",
+      "actions": "Actions"
     },
     "login": {
       "welcome_back": "Welcome Back",
@@ -84,7 +96,6 @@
         "forename_max": "Forename must be at most 25 characters long.",
         "username_min": "Username must be at least 2 characters long.",
         "username_max": "Username must be at most 25 characters long.",
-
         "invalid_email": "Please enter a valid email address.",
         "password_max": "Password must be at most 255 characters long.",
         "passwords_mismatch": "The passwords do not match.",
@@ -101,7 +112,8 @@
   "global": {
     "buttons": {
       "cancel": "Cancel",
-      "save": "Save"
+      "save": "Save",
+      "update": "Update"
     }
   }
 }

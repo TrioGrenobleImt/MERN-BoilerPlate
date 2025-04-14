@@ -31,19 +31,31 @@
         "new_password_confirm_min": "La confirmation du nouveau mot de passe doit comporter au moins 6 caractères.",
         "passwords_do_not_match": "Les mots de passe ne correspondent pas."
       },
-      "deleting_account": "Suppression du compte ...",
+      "account_settings_title": "Paramètres du compte",
+      "account_settings_description": "Mettez à jour vos informations personnelles et les détails de votre compte.",
+      "forename_label": "Prénom",
+      "name_label": "Nom",
+      "username_label": "Nom d'utilisateur",
+      "email_label": "Email",
+      "password_label": "Mot de passe",
+      "choose_image": "Choisir une image",
       "delete_account_title": "Supprimer le compte",
-      "delete_account_description": "Veuillez être très attentif à votre action, il n'y a pas de retour en arrière",
+      "delete_account_description": "Soyez très prudent avec votre action, il n'y a pas de retour en arrière",
       "accept_delete_account": "J'accepte de supprimer mon compte définitivement",
       "accept_delete_account_description": "Veuillez noter que cette action est irréversible et supprimera toutes vos données et paramètres. Si vous êtes sûr, veuillez cocher la case pour confirmer.",
-      "password_label": "Mot de passe",
       "password_placeholder": "********",
       "delete_account_button": "Supprimer ce compte",
       "edit_profile_title": "Modifier le profil",
-      "edit_profile_description": "Changez votre mot de passe ici. Cliquez sur enregistrer lorsque vous avez terminé.",
+      "edit_profile_description": "Apportez des modifications à votre mot de passe ici. Cliquez sur enregistrer lorsque vous avez terminé.",
       "current_password_label": "Mot de passe actuel",
       "new_password_label": "Nouveau mot de passe",
-      "new_password_confirm_label": "Confirmation du nouveau mot de passe"
+      "new_password_confirm_label": "Confirmation du nouveau mot de passe",
+      "updating_account": "Mise à jour du compte...",
+      "updating_password": "Mise à jour du mot de passe...",
+      "updating_profile_picture": "Mise à jour de la photo de profil...",
+      "change_password": "Changer le mot de passe",
+      "delete_account": "Supprimer le compte",
+      "actions": "Actions"
     },
     "login": {
       "welcome_back": "Content de vous revoir",
@@ -100,7 +112,8 @@
   "global": {
     "buttons": {
       "cancel": "Annuler",
-      "save": "Enregistrer"
+      "save": "Enregistrer",
+      "update": "Mettre à jour"
     }
   }
 }

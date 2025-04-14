@@ -50,7 +50,7 @@ export const Account = () => {
     try {
       setUpdateLoading(true);
       const response = await axiosConfig.put(`/users/${authUser?._id}`, values);
-      toast.loading("Updating account...");
+      toast.loading(t("pages.account.updating_account"));
       setTimeout(() => {
         toast.dismiss();
         toast.success(response.data.message);
@@ -69,13 +69,13 @@ export const Account = () => {
     const file = e.target.files?.[0];
 
     if (!file?.type.includes("image")) {
-      toast.error("File must be an image or a gif");
+      toast.error(t("pages.account.errors.invalid_file_type"));
       setUpdateLoading(false);
       return;
     }
 
     if (!file) {
-      toast.error("No file selected");
+      toast.error(t("pages.account.errors.no_file_selected"));
       setUpdateLoading(false);
       return;
     }
@@ -88,7 +88,7 @@ export const Account = () => {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      toast.loading("Updating profile picture...");
+      toast.loading(t("pages.account.updating_profile_picture"));
       setTimeout(() => {
         toast.dismiss();
         toast.success(response.data.message);
@@ -108,8 +108,8 @@ export const Account = () => {
       <Card className="w-full max-w-4xl p-4 shadow-xl rounded-2xl">
         <CardHeader className="flex flex-row items-center justify-between ">
           <div>
-            <CardTitle>Account Settings</CardTitle>
-            <CardDescription>Update your personal information and account details.</CardDescription>
+            <CardTitle>{t("pages.account.account_settings_title")}</CardTitle>
+            <CardDescription>{t("pages.account.account_settings_description")}</CardDescription>
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild className="cursor-pointer">
@@ -117,12 +117,12 @@ export const Account = () => {
                 <EllipsisVertical className="w-5 h-5 text-primary" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-40">
-              <DropdownMenuLabel>Account actions</DropdownMenuLabel>
+            <DropdownMenuContent className="w-auto">
+              <DropdownMenuLabel>{t("pages.account.actions")}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="cursor-pointer" onClick={() => setOpenDeleteAccountDialog(true)}>
                 <Trash className="w-4 h-4 text-destructive" />
-                <span className="text-destructive ">Delete account</span>
+                <span className="text-destructive ">{t("pages.account.delete_account")}</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -135,7 +135,7 @@ export const Account = () => {
               </Avatar>
             </div>
             <div>
-              <InputFile buttonText="choose_image" id="profile-picture" disabled={loading} onChange={updateProfilePic} />
+              <InputFile buttonText={t("choose_image")} id="profile-picture" disabled={loading} onChange={updateProfilePic} />
             </div>
           </div>
           <Form {...updateForm}>
@@ -146,7 +146,7 @@ export const Account = () => {
                   name="forename"
                   render={({ field }) => (
                     <FormItem className="flex-1">
-                      <FormLabel>Forename</FormLabel>
+                      <FormLabel>{t("pages.account.forename_label")}</FormLabel>
                       <FormControl>
                         <Input placeholder="John" {...field} />
                       </FormControl>
@@ -159,7 +159,7 @@ export const Account = () => {
                   name="name"
                   render={({ field }) => (
                     <FormItem className="flex-1">
-                      <FormLabel>Name</FormLabel>
+                      <FormLabel>{t("pages.account.name_label")}</FormLabel>
                       <FormControl>
                         <Input placeholder="Doe" {...field} />
                       </FormControl>
@@ -173,7 +173,7 @@ export const Account = () => {
                 name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Username</FormLabel>
+                    <FormLabel>{t("pages.account.username_label")}</FormLabel>
                     <FormControl>
                       <Input placeholder="john_doe" {...field} />
                     </FormControl>
@@ -186,7 +186,7 @@ export const Account = () => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>{t("pages.account.email_label")}</FormLabel>
                     <FormControl>
                       <Input placeholder="john.doe@gmail.com" {...field} />
                     </FormControl>
@@ -196,20 +196,20 @@ export const Account = () => {
               />
 
               <FormItem className="flex items-end justify-between gap-4">
-                <div className="w-full">
-                  <FormLabel>Password</FormLabel>
+                <div className="flex flex-col w-full gap-2">
+                  <FormLabel>{t("pages.account.password_label")}</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="***********" disabled />
+                    <Input type="password" placeholder={t("pages.account.password_placeholder")} disabled />
                   </FormControl>
                 </div>
                 <Button type="button" variant="outline" onClick={() => setOpenUpdatePasswordDialog(true)} disabled={updateLoading}>
-                  Change Password
+                  {t("pages.account.change_password")}
                 </Button>
               </FormItem>
 
               <CardFooter className="px-0">
                 <Button type="submit" disabled={updateLoading} className="w-full">
-                  Update
+                  {t("global.buttons.update")}
                 </Button>
               </CardFooter>
             </form>
