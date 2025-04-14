@@ -39,7 +39,7 @@ export const DeleteAccountForm = ({ setOpen }: DeleteAccountProps) => {
     try {
       setLoading(true);
       const response = await axiosConfig.delete(`/users/delete/account`, { data: valuesToSend });
-      toast.loading("Deleting account...");
+      toast.loading(t("pages.account.deleting_account"));
       setTimeout(() => {
         toast.dismiss();
         toast.success(response.data.message);
@@ -59,8 +59,8 @@ export const DeleteAccountForm = ({ setOpen }: DeleteAccountProps) => {
       <Form {...deleteAccountForm}>
         <form onSubmit={deleteAccountForm.handleSubmit(onDeleteAccountSubmit)} className="space-y-6">
           <DialogHeader>
-            <DialogTitle>Delete account</DialogTitle>
-            <DialogDescription>Please be very mindful of your action, there is no going back</DialogDescription>
+            <DialogTitle>{t("pages.account.delete_account_title")}</DialogTitle>
+            <DialogDescription>{t("pages.account.delete_account_description")}</DialogDescription>
           </DialogHeader>
           <FormField
             control={deleteAccountForm.control}
@@ -72,11 +72,8 @@ export const DeleteAccountForm = ({ setOpen }: DeleteAccountProps) => {
                     <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                   </FormControl>
                   <div className="space-y-1">
-                    <FormLabel>I accept to delete my account forever</FormLabel>
-                    <FormDescription>
-                      Please note that this action is irreversible and will delete all your data and settings. If you are sure, please check
-                      the box to confirm.
-                    </FormDescription>
+                    <FormLabel>{t("pages.account.accept_delete_account")}</FormLabel>
+                    <FormDescription>{t("pages.account.accept_delete_account_description")}</FormDescription>
                   </div>
                 </div>
                 <FormMessage />
@@ -89,9 +86,9 @@ export const DeleteAccountForm = ({ setOpen }: DeleteAccountProps) => {
             name="password"
             render={({ field }) => (
               <FormItem className="flex-1">
-                <FormLabel>Password</FormLabel>
+                <FormLabel>{t("pages.account.password_label")}</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="********" {...field} />
+                  <Input type="password" placeholder={t("pages.account.password_placeholder")} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -100,10 +97,10 @@ export const DeleteAccountForm = ({ setOpen }: DeleteAccountProps) => {
 
           <DialogFooter>
             <Button disabled={loading} type="submit">
-              Delete this account
+              {t("pages.account.delete_account_button")}
             </Button>
             <Button variant="outline" onClick={() => setOpen(false)} type="button">
-              Cancel
+              {t("global.buttons.cancel")}
             </Button>
           </DialogFooter>
         </form>
