@@ -38,7 +38,12 @@
       "accept_delete_account_description": "Please note that this action is irreversible and will delete all your data and settings. If you are sure, please check the box to confirm.",
       "password_label": "Password",
       "password_placeholder": "********",
-      "delete_account_button": "Delete this account"
+      "delete_account_button": "Delete this account",
+      "edit_profile_title": "Edit profile",
+      "edit_profile_description": "Make changes to your password here. Click save when you're done.",
+      "current_password_label": "Current password",
+      "new_password_label": "New password",
+      "new_password_confirm_label": "New password confirmation"
     },
     "login": {
       "welcome_back": "Welcome Back",
@@ -95,7 +100,8 @@
   },
   "global": {
     "buttons": {
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "save": "Save"
     }
   }
 }

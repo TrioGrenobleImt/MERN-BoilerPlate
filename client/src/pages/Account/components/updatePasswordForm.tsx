@@ -36,7 +36,7 @@ export const UpdatePasswordForm = ({ setOpen }: UpdatePasswordProps) => {
     try {
       setLoading(true);
       const response = await axiosConfig.put(`/users/${authUser?._id}/password`, values);
-      toast.loading("Updating password...");
+      toast.loading(t("pages.account.updating_password"));
       setTimeout(() => {
         toast.dismiss();
         toast.success(response.data.message);
@@ -55,17 +55,17 @@ export const UpdatePasswordForm = ({ setOpen }: UpdatePasswordProps) => {
       <Form {...updatePasswordForm}>
         <form onSubmit={updatePasswordForm.handleSubmit(onUpdatePasswordSubmit)} className="space-y-6">
           <DialogHeader>
-            <DialogTitle>Edit profile</DialogTitle>
-            <DialogDescription>Make changes to your password here. Click save when you're done.</DialogDescription>
+            <DialogTitle>{t("pages.account.edit_profile_title")}</DialogTitle>
+            <DialogDescription>{t("pages.account.edit_profile_description")}</DialogDescription>
           </DialogHeader>
           <FormField
             control={updatePasswordForm.control}
             name="currentPassword"
             render={({ field }) => (
               <FormItem className="flex-1">
-                <FormLabel>Current password</FormLabel>
+                <FormLabel>{t("pages.account.current_password_label")}</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="********" {...field} />
+                  <Input type="password" placeholder={t("pages.account.password_placeholder")} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -76,9 +76,9 @@ export const UpdatePasswordForm = ({ setOpen }: UpdatePasswordProps) => {
             name="newPassword"
             render={({ field }) => (
               <FormItem className="flex-1">
-                <FormLabel>New password</FormLabel>
+                <FormLabel>{t("pages.account.new_password_label")}</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="********" {...field} />
+                  <Input type="password" placeholder={t("pages.account.password_placeholder")} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -89,9 +89,9 @@ export const UpdatePasswordForm = ({ setOpen }: UpdatePasswordProps) => {
             name="newPasswordConfirm"
             render={({ field }) => (
               <FormItem className="flex-1">
-                <FormLabel>New password confirmation</FormLabel>
+                <FormLabel>{t("pages.account.new_password_confirm_label")}</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="********" {...field} />
+                  <Input type="password" placeholder={t("pages.account.password_placeholder")} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -100,7 +100,10 @@ export const UpdatePasswordForm = ({ setOpen }: UpdatePasswordProps) => {
 
           <DialogFooter>
             <Button disabled={loading} type="submit">
-              Save changes
+              {t("global.buttons.save")}
+            </Button>
+            <Button variant="outline" onClick={() => setOpen(false)} type="button">
+              {t("global.buttons.cancel")}
             </Button>
           </DialogFooter>
         </form>

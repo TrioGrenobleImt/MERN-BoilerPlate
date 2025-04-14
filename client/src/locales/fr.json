@@ -38,7 +38,12 @@
       "accept_delete_account_description": "Veuillez noter que cette action est irréversible et supprimera toutes vos données et paramètres. Si vous êtes sûr, veuillez cocher la case pour confirmer.",
       "password_label": "Mot de passe",
       "password_placeholder": "********",
-      "delete_account_button": "Supprimer ce compte"
+      "delete_account_button": "Supprimer ce compte",
+      "edit_profile_title": "Modifier le profil",
+      "edit_profile_description": "Changez votre mot de passe ici. Cliquez sur enregistrer lorsque vous avez terminé.",
+      "current_password_label": "Mot de passe actuel",
+      "new_password_label": "Nouveau mot de passe",
+      "new_password_confirm_label": "Confirmation du nouveau mot de passe"
     },
     "login": {
       "welcome_back": "Content de vous revoir",
@@ -94,7 +99,8 @@
   },
   "global": {
     "buttons": {
-      "cancel": "Annuler"
+      "cancel": "Annuler",
+      "save": "Enregistrer"
     }
   }
 }
