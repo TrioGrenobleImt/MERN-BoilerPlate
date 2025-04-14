@@ -203,11 +203,11 @@ describe("PUT /api/users/:id", () => {
     const user = await User.create(adminUser);
     const response = await request(app)
       .put(`/api/users/${user._id}`)
-      .send({ username: "newUsername" })
+      .send({ username: "newusername" })
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(200);
-    expect(response.body.user.username).toBe("newUsername");
+    expect(response.body.user.username).toBe("newusername");
     expect(response.body.user.password).toBe(undefined);
     expect(response.body.message).toBe("User updated successfully");
   });
