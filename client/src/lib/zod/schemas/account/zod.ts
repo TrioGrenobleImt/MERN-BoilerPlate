@@ -13,7 +13,9 @@ export const getUpdateAccountSchema = (t: (key: string) => string) =>
     username: z
       .string()
       .min(2, { message: t("pages.account.errors.username_min") })
-      .max(25, { message: t("pages.account.errors.username_max") }),
+      .max(25, { message: t("pages.account.errors.username_max") })
+      .regex(/^[^\s]+$/, { message: t("pages.account.errors.username_no_spaces") }),
+
     email: z.string().email({ message: t("pages.account.errors.invalid_email") }),
   });
 

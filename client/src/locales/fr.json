@@ -29,7 +29,8 @@
         "new_password_min": "Le nouveau mot de passe doit comporter au moins 6 caractères.",
         "new_password_max": "Le mot de passe doit comporter au maximum 25 caractères.",
         "new_password_confirm_min": "La confirmation du nouveau mot de passe doit comporter au moins 6 caractères.",
-        "passwords_do_not_match": "Les mots de passe ne correspondent pas."
+        "passwords_do_not_match": "Les mots de passe ne correspondent pas.",
+        "username_no_spaces": "Le nom d'utilisateur ne doit pas contenir d'espaces au début, à la fin ou au milieu."
       },
       "account_settings_title": "Paramètres du compte",
       "account_settings_description": "Mettez à jour vos informations personnelles et les détails de votre compte.",
@@ -70,7 +71,8 @@
       "errors": {
         "login_name_max": "Nom d'utilisateur ou email doit comporter au moins 2 caractères",
         "password_min": "Le mot de passe doit comporter au moins 6 caractères",
-        "password_max": "Le mot de passe doit comporter au plus 255 caractères"
+        "password_max": "Le mot de passe doit comporter au plus 255 caractères",
+        "login_name_no_spaces": "Le nom d'utilisateur ou l'email ne doit pas contenir d'espaces au début, à la fin ou au milieu"
       }
     },
     "register": {
@@ -96,6 +98,7 @@
         "forename_max": "Le prénom doit comporter au maximum 25 caractères.",
         "username_min": "Le nom d'utilisateur doit comporter au moins 2 caractères.",
         "username_max": "Le nom d'utilisateur doit comporter au maximum 25 caractères.",
+        "username_no_spaces": "Le nom d'utilisateur ne doit pas contenir d'espaces au début, à la fin ou au milieu.",
         "invalid_email": "Veuillez entrer une adresse email valide.",
         "password_max": "Le mot de passe doit comporter au maximum 255 caractères.",
         "passwords_mismatch": "Les mots de passe ne correspondent pas.",
