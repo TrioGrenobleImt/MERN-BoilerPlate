@@ -131,7 +131,7 @@ export const Account = () => {
               </Avatar>
             </div>
             <div>
-              <InputFile buttonText="Sélectionner une image" id="profile-picture" disabled={loading} onChange={updateProfilePic} />
+              <InputFile buttonText="choose_image" id="profile-picture" disabled={loading} onChange={updateProfilePic} />
             </div>
           </div>
           <Form {...updateForm}>
