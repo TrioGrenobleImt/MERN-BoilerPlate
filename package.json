@@ -15,7 +15,7 @@
     "coverage": "cd server && vitest run --coverage",
     "prepare": "husky",
     "format": "prettier --write 'server/**/*.{js,ts,json,css,md}' 'client/**/*.{js,ts,json,css,md,tsx}'",
-    "coverage-check": "cd server && vitest run --coverage.thresholds.functions=85"
+    "coverage-check": "cd server && vitest run --coverage && node scripts/check-coverage.cjs"
   },
   "lint-staged": {
     "server/**/*.{js,ts,json,css,md}": [

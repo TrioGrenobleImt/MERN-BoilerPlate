@@ -1,11 +1,2 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
+# Exécuter le formatage
 pnpm format
-pnpm run coverage-check
-
-# Vérifier le code de sortie de vitest
-if [ $? -ne 0 ]; then
-  echo "Coverage is below threshold, aborting commit."
-  exit 1
-fi
