@@ -13,19 +13,9 @@
     "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
     "test": "cd server && vitest",
     "coverage": "cd server && vitest run --coverage",
-    "prepare": "husky && husky install",
-    "format": "lint-staged",
+    "prepare": "husky",
+    "format": "prettier --write 'server/**/*.{js,ts,json,css,md}' 'client/**/*.{js,ts,json,css,md,tsx}'",
     "coverage-check": "cd server && vitest run --coverage && node scripts/check-coverage.cjs"
-  },
-  "lint-staged": {
-    "server/**/*.{js,ts,json,css,md}": [
-      "prettier --write",
-      "git add"
-    ],
-    "client/**/*.{js,ts,json,css,md,tsx}": [
-      "prettier --write",
-      "git add"
-    ]
   },
   "dependencies": {
     "@hookform/resolvers": "5.0.1",
@@ -81,8 +71,7 @@
     "@vitest/coverage-v8": "3.0.9",
     "autoprefixer": "^10.4.20",
     "concurrently": "^8.2.0",
-    "husky": "^8.0.0",
-    "lint-staged": "^15.5.1",
+    "husky": "^9.1.7",
     "nodemon": "^3.0.1",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.16",
