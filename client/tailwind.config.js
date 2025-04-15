@@ -40,10 +40,10 @@ export default {
           DEFAULT: "rgb(var(--destructive))",
           foreground: "rgb(var(--destructive-foreground))",
         },
-		success: {
-		  DEFAULT: "rgb(var(--success))",
-		  foreground: "rgb(var(--success-foreground))",
-		},
+        success: {
+          DEFAULT: "rgb(var(--success))",
+          foreground: "rgb(var(--success-foreground))",
+        },
         border: "rgb(var(--border))",
         input: "rgb(var(--input))",
         ring: "rgb(var(--ring))",
