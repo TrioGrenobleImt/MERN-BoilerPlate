@@ -30,7 +30,7 @@
         "new_password_max": "Password must be at most 25 characters long.",
         "new_password_confirm_min": "New password confirmation is at least 6 characters long.",
         "passwords_do_not_match": "Passwords do not match.",
-        "username_no_spaces": "Username must not contain leading, trailing, or middle spaces."
+        "username_no_spaces": "Username must not contain leading, trailing, middle spaces or uppercase letters."
       },
       "account_settings_title": "Account Settings",
       "account_settings_description": "Update your personal information and account details.",
@@ -72,7 +72,7 @@
         "login_name_min": "Username or email must be at least 2 characters long",
         "password_min": "Password must be at least 6 characters long",
         "password_max": "Password must be at most 255 characters long",
-        "login_name_no_spaces": "Username or email must not contain leading, trailing, or middle spaces"
+        "login_name_no_spaces": "Username or email must not contain leading, trailing, middle spaces or uppercase letters."
       }
     },
     "register": {
@@ -98,7 +98,7 @@
         "forename_max": "Forename must be at most 25 characters long.",
         "username_min": "Username must be at least 2 characters long.",
         "username_max": "Username must be at most 25 characters long.",
-        "username_no_spaces": "Username must not contain leading, trailing, or middle spaces.",
+        "username_no_spaces": "Username must not contain leading, trailing, middle spaces or uppercase letters.",
         "invalid_email": "Please enter a valid email address.",
         "password_max": "Password must be at most 255 characters long.",
         "passwords_mismatch": "The passwords do not match.",
