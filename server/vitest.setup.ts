@@ -5,7 +5,6 @@ import path from "path";
 import { afterAll, beforeAll } from "vitest";
 import "dotenv/config";
 
-// Utiliser un chemin absolu basé sur __dirname
 const uploadsDir = path.resolve(__dirname, "uploads/users/avatars");
 
 beforeAll(async () => {

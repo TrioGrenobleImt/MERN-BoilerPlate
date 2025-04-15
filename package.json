@@ -10,7 +10,7 @@
   "scripts": {
     "dev:frontend": "cd client && vite",
     "dev:backend": "cd server && nodemon index.js",
-    "dev": "concurrently \"npm run dev:frontend\" && cd .. && \"npm run dev:backend\"",
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
     "test": "cd server && vitest",
     "coverage": "cd server && vitest run --coverage",
     "prepare": "husky",
