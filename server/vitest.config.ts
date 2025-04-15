@@ -8,6 +8,7 @@ export default defineConfig({
     setupFiles: "./vitest.setup.ts",
     coverage: {
       exclude: ["index.js", "vitest.config.ts", "**/uploads/**"],
+      reportsDirectory: "./coverage",
     },
   },
 });
