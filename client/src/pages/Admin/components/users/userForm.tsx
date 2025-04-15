@@ -137,7 +137,9 @@ export const UserForm = ({ dialog, refresh, action, user }: UserFormProps) => {
       return;
     }
 
-    navigator.clipboard.writeText(action === "update" ? updateForm.getValues("password") ?? "" : createForm.getValues("password") ?? "");
+    navigator.clipboard.writeText(
+      action === "update" ? (updateForm.getValues("password") ?? "") : (createForm.getValues("password") ?? ""),
+    );
     toast.success("Password copied to clipboard");
   };
 
