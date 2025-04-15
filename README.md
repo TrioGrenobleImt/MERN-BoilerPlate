@@ -40,7 +40,6 @@ MONG_URI=
 MONG_URI_TEST=
 SECRET_ACCESS_TOKEN=
 CORS_ORIGIN=
-RESEND_API_KEY=
 ```
 
 - **PORT** -> The port your server will use.
@@ -48,23 +47,8 @@ RESEND_API_KEY=
 - **MONG_URI_TEST** -> Connection address to a test database (You can use the same as the main app, but the data will be wiped during tests, **not recommended**).
 - **SECRET_ACCESS_TOKEN** -> **Secret** token used to generate user access tokens.
 - **CORS_ORIGIN** -> The origin address of your frontend application.
-- **RESEND_API_KEY** -> Your Resend API key for sending emails (optional).
 
 For a clear example, please refer to the **.env.example** file in the server directory.
-
-Then, install the required **packages** to run your server:
-
-```shell
-$ pnpm i
-```
-
-Now start the server with the command below:
-
-```shell
-$ pnpm run dev
-```
-
-Once done, you should see a message in your console indicating that the server is running and connected to the database.
 
 ## Frontend
 
@@ -82,24 +66,26 @@ VITE_API_URL=
 
 Example: `http://localhost:5000`. For a clear example, please refer to the **.env.example** file in the client directory.
 
-Install the required **packages** to run your client:
+## Run the Application
+
+From the root of the application, run the following command to install all dependencies:
 
 ```shell
-$ pnpm i
+$ pnpm install
 ```
 
-Now start the frontend with the following command:
+Then to start yout application, run the following command:
 
 ```shell
 $ pnpm run dev
 ```
 
-Go to the URL displayed in your console.  
-And there you have it, a secure authentication application.
+This command will start both the backend and frontend servers.
+Go to your browser and navigate to `http://localhost:5173` to see the application in action.
 
 ## Unit Tests
 
-🧪 Navigate to the `server` directory, make sure your server is turned off, and run the following command:
+🧪 First, Make sure your server is turned off, and run the following command:
 
 ```shell
 $ pnpm run test
