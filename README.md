@@ -13,6 +13,7 @@ Welcome to the MERN-APP boilerplate, a complete solution to quickly start a mode
   - [Frontend](#frontend)
   - [Unit Tests](#unit-tests)
   - [Features](#features)
+  - [Contribution](#contribution)
   
 </details>
 
@@ -68,7 +69,7 @@ Example: `http://localhost:5000`. For a clear example, please refer to the **.en
 
 ## Run the Application
 
-From the root of the application, run the following command to install all dependencies:
+⚡ From the root of the application, run the following command to install all dependencies:
 
 ```shell
 $ pnpm install
@@ -122,3 +123,19 @@ Don't forget to restart your backend after running tests.
 - 🔄 **Prettier Configuration**: Integrated code formatting with Prettier for consistent styling.
 - 🖼 **Avatar Upload with GIF Support**: Users can upload profile pictures, including animated GIFs.
 - 📡 **Real-Time Online Status**: See which users are online in real-time through WebSockets.
+
+## Contribution
+
+🤝 We encourage contributions from the community! If you wish to contribute, please follow these steps:
+
+1. **Fork** the project.
+2. Create a branch for your feature (`git checkout -b feature/new-feature`).
+3. Commit your changes (`git commit -m 'Add new feature'`).
+4. Push the branch (`git push origin feature/new-feature`).
+5. Open a Pull Request.
+
+### Contribution Guidelines
+
+- Ensure your code is well-commented.
+- Follow the project's naming and style conventions.
+- Add unit tests for your changes.
