@@ -12,6 +12,7 @@ Welcome to the MERN-APP boilerplate, a complete solution to quickly start a mode
   - [Backend](#backend)
   - [Frontend](#frontend)
   - [Unit Tests](#unit-tests)
+  - [Husky](#husky)
   - [Features](#features)
   - [Contribution](#contribution)
   
@@ -101,6 +102,20 @@ $ pnpm run coverage
 
 Your coverage report should be located in the `coverage` directory of the server.  
 Don't forget to restart your backend after running tests.
+
+## Husky
+
+🐶 **Husky Integration**:
+
+This project includes Husky, a Git hooks tool that ensures code quality and consistency. Husky automatically formats the entire project using Prettier before each commit, keeping the repository clean and uniform.
+
+### Benefits
+
+- **Consistent Code Style**: Ensures all contributors follow the same coding standards.
+- **Reduced Manual Effort**: Automates formatting, saving time and effort.
+- **Cleaner Repository**: Maintains a clean and readable codebase.
+
+Husky helps keep every commit clean and well-formatted, making collaboration smoother and the codebase more reliable.
 
 ## Features
 
