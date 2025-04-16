@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import { beforeAll, afterAll, describe, it, expect, afterEach, vi } from "vitest";
 import "dotenv/config";
 import request from "supertest";
@@ -6,11 +5,30 @@ import fs from "fs";
 import { User } from "../../../src/models/userModel.js";
 import { Log } from "../../../src/models/logModel.js";
 import { generateAccessToken } from "../../../src/utils/generateAccessToken.js";
+import multer from "multer";
+
+vi.mock("../../../src/configuration/storageConfig.js", async () => {
+  const testStorage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, "./uploads/users/avatars");
+    },
+    filename: function (req, file, cb) {
+      const extension = file.originalname.split(".").pop();
+      const userId = req.userId || "testuser";
+      cb(null, `_test_avatar_${userId}_1234567890000.${extension}`);
+    },
+  });
+
+  return {
+    uploadConfig: multer({ storage: testStorage }),
+  };
+});
 
 //Import server and app
 import { app } from "../../../src/app.js";
 import { Constants } from "../../../constants/constants.js";
 import { adminUser, pathAvatarOldTest, userAdminWithAvatar } from "../../fixtures/users.js";
+import path from "path";
 
 beforeAll(async () => {
   await User.deleteMany();
@@ -18,12 +36,13 @@ beforeAll(async () => {
 afterAll(async () => {
   await Log.deleteMany();
 
-  const uploadsDir = "./uploads/users/avatars/";
+  const uploadsDir = path.resolve(__dirname, "uploads/users/avatars");
+  const testFilePrefix = "_test_";
 
   if (fs.existsSync(uploadsDir)) {
     fs.readdirSync(uploadsDir).forEach((file) => {
-      if (file !== ".gitkeep") {
-        fs.unlinkSync(`${uploadsDir}/${file}`);
+      if (file.startsWith(testFilePrefix)) {
+        fs.unlinkSync(path.join(uploadsDir, file));
       }
     });
   }

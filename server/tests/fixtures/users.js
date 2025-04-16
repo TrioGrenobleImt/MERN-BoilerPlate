@@ -43,7 +43,7 @@ export const regularUser = {
   password: "Abcdef1@",
 };
 
-export const pathAvatarOldTest = "./uploads/users/avatars/hello-world.png";
+export const pathAvatarOldTest = "./uploads/users/avatars/_test_hello-world.png";
 fs.writeFileSync(pathAvatarOldTest, "Hello, world!");
 
 export const userAdminWithAvatar = {
