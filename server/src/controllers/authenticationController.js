@@ -19,7 +19,7 @@ export const register = async (req, res) => {
   const { name, forename, email, username, password, confirmPassword } = req.body;
 
   if (!username || !email || !password || !confirmPassword || !name || !forename) {
-    return res.status(422).json({ error: "server.global.missing_fields" });
+    return res.status(422).json({ error: "server.global.errors.missing_fields" });
   }
 
   if (!Constants.REGEX_PASSWORD.test(password)) {
@@ -79,7 +79,7 @@ export const login = async (req, res) => {
   const { username, password, email } = req.body;
 
   if (!password || (!username && !email)) {
-    return res.status(422).json({ error: "Password is required, and either username or email must be provided." });
+    return res.status(422).json({ error: "server.global.errors.missing_fields" });
   }
 
   try {
@@ -89,7 +89,7 @@ export const login = async (req, res) => {
 
     const user = await User.findOne(query).select("+password");
     if (!user) {
-      return res.status(400).json({ error: "No such user" });
+      return res.status(400).json({ error: "server.global.errors.no_such_user" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
@@ -99,7 +99,7 @@ export const login = async (req, res) => {
         userId: user._id,
         level: logLevels.ERROR,
       });
-      return res.status(400).json({ error: "Invalid credentials" });
+      return res.status(400).json({ error: "server.auth.errors.invalid_credentials" });
     }
 
     const accessToken = generateAccessToken(user._id);
@@ -110,7 +110,7 @@ export const login = async (req, res) => {
 
     const { password: userPassword, ...userWithoutPassword } = user._doc;
 
-    res.status(201).json({ user: userWithoutPassword, message: "Logged in successfully" });
+    res.status(201).json({ user: userWithoutPassword, message: "server.auth.messages.login_success" });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }

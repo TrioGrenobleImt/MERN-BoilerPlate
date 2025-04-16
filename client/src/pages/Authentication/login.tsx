@@ -40,11 +40,11 @@ export const Login = () => {
       };
       const response = await axiosConfig.post("/auth/login", payload);
 
-      toast.success(response.data.message);
+      toast.success(t(response.data.message));
       setAuthUser(response.data.user);
       navigate("/");
     } catch (error: any) {
-      toast.error(error.response.data.error);
+      toast.error(t(error.response.data.error));
     } finally {
       setLoading(false);
     }

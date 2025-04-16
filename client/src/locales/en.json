@@ -121,17 +121,22 @@
   },
   "server": {
     "global": {
-      "missing_fields": "Please fill in all required fields."
+      "errors": {
+        "missing_fields": "Please fill in all required fields.",
+        "no_such_user": "No such user found."
+      }
     },
     "auth": {
       "errors": {
         "regex": "Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, one number, and one special character",
         "password_no_match": "Passwords do not match",
         "email_taken": "This email is already taken",
-        "username_taken": "This username is already taken"
+        "username_taken": "This username is already taken",
+        "invalid_credentials": "Invalid credentials"
       },
       "messages": {
-        "register_success": "Registered successfully"
+        "register_success": "Registered successfully",
+        "login_success": "Logged in successfully"
       }
     }
   }
