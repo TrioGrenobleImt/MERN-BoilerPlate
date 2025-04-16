@@ -11,14 +11,13 @@ import { toast } from "sonner";
 import { useAuthContext } from "@/contexts/authContext";
 import { axiosConfig } from "@/config/axiosConfig";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { t } from "i18next";
 
 export const Register = () => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const { setAuthUser } = useAuthContext();
-  const { t } = useTranslation();
 
   const registerSchema = getRegisterSchema(t);
   const registerForm = useForm<z.infer<typeof registerSchema>>({

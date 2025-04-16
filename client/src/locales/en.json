@@ -136,7 +136,8 @@
       },
       "messages": {
         "register_success": "Registered successfully",
-        "login_success": "Logged in successfully"
+        "login_success": "Logged in successfully",
+        "logout_success": "Logged out successfully"
       }
     }
   }

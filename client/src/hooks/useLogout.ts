@@ -3,6 +3,7 @@ import { axiosConfig } from "../config/axiosConfig";
 import { useAuthContext } from "../contexts/authContext";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { t } from "i18next";
 
 export const useLogout = () => {
   const [loading, setLoading] = useState(false);
@@ -14,17 +15,12 @@ export const useLogout = () => {
     setLoading(true);
     try {
       const response = await axiosConfig.get("/auth/logout");
-      const data = await response.data;
 
-      if (data.error) {
-        throw new Error(data.error);
-      }
-
-      toast.success(data.message);
+      toast.success(t(response.data.message));
       setAuthUser(null);
       navigate("/login");
     } catch (error: any) {
-      toast.error(error.message);
+      toast.error(error.response.data.error);
     } finally {
       setLoading(false);
     }
