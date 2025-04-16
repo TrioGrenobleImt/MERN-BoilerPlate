@@ -40,12 +40,12 @@ export const Register = () => {
       toast.loading("Creating account...");
       setTimeout(() => {
         toast.dismiss();
-        toast.success(response.data.message);
+        toast.success(t(response.data.message));
         setAuthUser(response.data.user);
         navigate("/");
       }, 1000);
     } catch (error: any) {
-      toast.error(error.response.data.error);
+      toast.error(t(error.response.data.error));
     } finally {
       setLoading(false);
     }

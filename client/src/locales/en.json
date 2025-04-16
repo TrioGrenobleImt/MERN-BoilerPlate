@@ -118,5 +118,21 @@
       "save": "Save",
       "update": "Update"
     }
+  },
+  "server": {
+    "global": {
+      "missing_fields": "Please fill in all required fields."
+    },
+    "auth": {
+      "errors": {
+        "regex": "Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, one number, and one special character",
+        "password_no_match": "Passwords do not match",
+        "email_taken": "This email is already taken",
+        "username_taken": "This username is already taken"
+      },
+      "messages": {
+        "register_success": "Registered successfully"
+      }
+    }
   }
 }

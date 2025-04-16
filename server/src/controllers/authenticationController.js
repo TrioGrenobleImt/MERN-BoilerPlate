@@ -19,25 +19,24 @@ export const register = async (req, res) => {
   const { name, forename, email, username, password, confirmPassword } = req.body;
 
   if (!username || !email || !password || !confirmPassword || !name || !forename) {
-    return res.status(422).json({ error: "Missing fields" });
+    return res.status(422).json({ error: "server.global.missing_fields" });
   }
 
   if (!Constants.REGEX_PASSWORD.test(password)) {
     return res.status(400).json({
-      error:
-        "Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, one number, and one special character",
+      error: "server.auth.errors.regex",
     });
   }
 
   if (password !== confirmPassword) {
-    return res.status(400).json({ error: "Passwords do not match" });
+    return res.status(400).json({ error: "server.auth.errors.password_no_match" });
   }
 
   try {
     if (await User.findOne({ email: email.toLowerCase() })) {
-      return res.status(409).json({ error: "This email is already taken" });
+      return res.status(409).json({ error: "server.auth.errors.email_taken" });
     } else if (await User.findOne({ username: username.toLowerCase() })) {
-      return res.status(409).json({ error: "This username is already taken" });
+      return res.status(409).json({ error: "server.auth.errors.username_taken" });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await User.create({
@@ -62,7 +61,7 @@ export const register = async (req, res) => {
 
     const { password: userPassword, ...userWithoutPassword } = user._doc;
 
-    res.status(201).json({ user: userWithoutPassword, message: "Registered successfully" });
+    res.status(201).json({ user: userWithoutPassword, message: "server.auth.messages.register_success" });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
