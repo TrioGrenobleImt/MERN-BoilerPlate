@@ -25,15 +25,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DeleteAccountForm } from "./components/deleteAccountForm";
-import { useTranslation } from "react-i18next";
+import { t } from "i18next";
 
 export const Account = () => {
   const { authUser, setAuthUser, loading } = useAuthContext();
   const [updateLoading, setUpdateLoading] = useState(false);
   const [openUpdatePasswordDialog, setOpenUpdatePasswordDialog] = useState(false);
   const [openDeleteAccountDialog, setOpenDeleteAccountDialog] = useState(false);
-
-  const { t } = useTranslation();
 
   const updateAccountSchema = getUpdateAccountSchema(t);
   const updateForm = useForm<z.infer<typeof updateAccountSchema>>({
@@ -53,11 +51,11 @@ export const Account = () => {
       toast.loading(t("pages.account.updating_account"));
       setTimeout(() => {
         toast.dismiss();
-        toast.success(response.data.message);
+        toast.success(t(response.data.message));
         setAuthUser(response.data.user);
       }, 1000);
     } catch (error: any) {
-      toast.error(error.response.data.error);
+      toast.error(t(error.response.data.error));
     } finally {
       setUpdateLoading(false);
     }
@@ -91,11 +89,11 @@ export const Account = () => {
       toast.loading(t("pages.account.updating_profile_picture"));
       setTimeout(() => {
         toast.dismiss();
-        toast.success(response.data.message);
+        toast.success(t(response.data.message));
         setAuthUser(response.data.user);
-      }, 1000);
+      }, 250);
     } catch (error: any) {
-      toast.error(error.response?.data?.error);
+      toast.error(t(error.response?.data?.error));
     } finally {
       setUpdateLoading(false);
     }

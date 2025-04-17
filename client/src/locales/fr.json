@@ -139,6 +139,16 @@
         "login_success": "Connexion réussie",
         "logout_success": "Déconnexion réussie"
       }
+    },
+    "upload": {
+      "errors": {
+        "no_file": "Aucun fichier téléchargé",
+        "invalid_file_type": "Type de fichier invalide. Seuls les fichiers jpg, jpeg, png, gif et svg sont autorisés",
+        "limit": "La taille du fichier dépasse la limite autorisée."
+      },
+      "messages": {
+        "avatar_success": "Avatar mis à jour avec succès"
+      }
     }
   }
 }

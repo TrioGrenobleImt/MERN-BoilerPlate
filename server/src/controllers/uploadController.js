@@ -17,16 +17,16 @@ export const updateUserAvatar = async (req, res) => {
     const user = await User.findById(userId);
 
     if (!req.file) {
-      return res.status(400).json({ error: "No file uploaded" });
+      return res.status(400).json({ error: "server.upload.errors.no_file" });
     }
 
     const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/svg+xml"];
     if (!allowedTypes.includes(req.file.mimetype)) {
-      return res.status(400).json({ error: "Invalid file type. Only jpg, jpeg, png, gif, and svg are allowed" });
+      return res.status(400).json({ error: "server.upload.errors.invalid_file_type" });
     }
 
     if (req.file.size > Constants.AVATAR_MAX_SIZE) {
-      return res.status(400).json({ error: `File size exceeds the limit of ${Constants.AVATAR_MAX_SIZE / 1024 / 1024} MB` });
+      return res.status(400).json({ error: `server.upload.errors.limit` });
     }
 
     if (user.avatar) {
@@ -42,7 +42,7 @@ export const updateUserAvatar = async (req, res) => {
     await user.save();
 
     res.status(200).json({
-      message: "Avatar updated successfully",
+      message: "server.upload.messages.avatar_success",
       user,
     });
   } catch (error) {

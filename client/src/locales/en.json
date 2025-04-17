@@ -139,6 +139,16 @@
         "login_success": "Logged in successfully",
         "logout_success": "Logged out successfully"
       }
+    },
+    "upload": {
+      "errors": {
+        "no_file": "No file uploaded",
+        "invalid_file_type": "Invalid file type. Only jpg, jpeg, png, gif, and svg are allowed",
+        "limit": "File size exceeds the allowed limit."
+      },
+      "messages": {
+        "avatar_success": "Avatar updated successfully"
+      }
     }
   }
 }
