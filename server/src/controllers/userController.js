@@ -112,19 +112,19 @@ export const updateUser = async (req, res) => {
     if (email) {
       const existingUserByEmail = await User.findOne({ email: email.toLowerCase(), _id: { $ne: id } });
       console.log(email.toLowerCase());
-      if (existingUserByEmail) return res.status(409).json({ error: "Email already taken" });
+      if (existingUserByEmail) return res.status(409).json({ error: "server.users.errors.email_taken" });
     }
 
     if (username) {
       const existingUserByUsername = await User.findOne({ username: username.toLowerCase(), _id: { $ne: id } });
-      if (existingUserByUsername) return res.status(409).json({ error: "Username already taken" });
+      if (existingUserByUsername) return res.status(409).json({ error: "server.users.errors.username_taken" });
     }
 
     const actionUser = await User.findById(userId);
 
     if (actionUser.role == userRoles.ADMIN) {
       if (role && !Object.values(userRoles).includes(role)) {
-        return res.status(400).json({ error: "Invalid role" });
+        return res.status(400).json({ error: "server.users.errors.invalid_role" });
       }
 
       if (password) {
@@ -151,11 +151,11 @@ export const updateUser = async (req, res) => {
       },
       { new: true },
     );
-    if (!user) return res.status(404).json({ error: "No such user" });
+    if (!user) return res.status(404).json({ error: "server.global.errors.no_such_user" });
 
     const { password: userPassword, ...userWithoutPassword } = user._doc;
 
-    res.status(200).json({ user: userWithoutPassword, message: "User updated successfully" });
+    res.status(200).json({ user: userWithoutPassword, message: "server.users.messages.user_updated" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -215,29 +215,29 @@ export const updatePassword = async (req, res) => {
 
   try {
     const user = await User.findById(id).select("+password");
-    if (!user) return res.status(400).json({ error: "No such user" });
+    if (!user) return res.status(400).json({ error: "server.global.errors.no_such_user" });
 
     if (!currentPassword || !newPassword || !newPasswordConfirm) {
-      return res.status(400).json({ error: "Missing fields" });
+      return res.status(400).json({ error: "server.global.errors.missing_fields" });
     }
 
     const isMatch = await bcrypt.compare(currentPassword, user.password);
-    if (!isMatch) return res.status(400).json({ error: "Actual password is incorrect" });
+    if (!isMatch) return res.status(400).json({ error: "server.users.errors.actual_password_incorrect" });
 
     if (!Constants.REGEX_PASSWORD.test(newPassword)) {
       return res.status(400).json({
-        error: "Password must contain at least 8 characters, including uppercase, lowercase letters, numbers, and special characters.",
+        error: "server.users.errors.regex_error",
       });
     }
 
     if (newPassword !== newPasswordConfirm) {
-      return res.status(400).json({ error: "Passwords do not match" });
+      return res.status(400).json({ error: "server.users.errors.passwords_do_not_match" });
     }
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     await User.updateOne({ _id: id }, { password: hashedPassword });
 
-    res.status(200).json({ message: "Password updated successfully" });
+    res.status(200).json({ message: "server.users.messages.password_updated" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -254,12 +254,12 @@ export const deleteAccount = async (req, res) => {
   const { password } = req.body;
 
   try {
-    if (!password) return res.status(400).json({ error: "Missing fields" });
+    if (!password) return res.status(400).json({ error: "server.global.errors.no_such_user" });
 
     const user = await User.findById(userId).select("+password");
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ error: "Password is incorrect" });
+    if (!isMatch) return res.status(400).json({ error: "server.users.errors.password_incorrect" });
 
     if (user.avatar) {
       const oldAvatarPath = path.join(process.cwd(), "uploads", "users", "avatars", path.basename(user.avatar));
@@ -277,7 +277,7 @@ export const deleteAccount = async (req, res) => {
     await User.findByIdAndDelete(userId);
     res.clearCookie("__access__token");
 
-    res.status(200).json({ message: "Account deleted successfully" });
+    res.status(200).json({ message: "server.users.messages.user_deleted" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

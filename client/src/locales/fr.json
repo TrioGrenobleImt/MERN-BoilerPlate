@@ -56,6 +56,7 @@
       "updating_profile_picture": "Mise à jour de la photo de profil...",
       "change_password": "Changer le mot de passe",
       "delete_account": "Supprimer le compte",
+      "deleting_account": "Suppression du compte...",
       "actions": "Actions"
     },
     "login": {
@@ -148,6 +149,22 @@
       },
       "messages": {
         "avatar_success": "Avatar mis à jour avec succès"
+      }
+    },
+    "users": {
+      "errors": {
+        "email_taken": "Cet email est déjà utilisé",
+        "username_taken": "Ce nom d'utilisateur est déjà utilisé",
+        "invalid_role": "Rôle invalide",
+        "actual_password_incorrect": "Le mot de passe actuel est incorrect",
+        "regex_error": "Le mot de passe doit contenir au moins 8 caractères, incluant des majuscules, des minuscules, des chiffres et des caractères spéciaux.",
+        "passwords_do_not_match": "Le nouveau mot de passe et la confirmation ne correspondent pas",
+        "password_incorrect": "Le mot de passe est incorrect"
+      },
+      "messages": {
+        "user_updated": "Utilisateur mis à jour avec succès",
+        "password_updated": "Mot de passe mis à jour avec succès",
+        "user_deleted": "Utilisateur supprimé avec succès"
       }
     }
   }

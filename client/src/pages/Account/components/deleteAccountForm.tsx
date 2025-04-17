@@ -13,6 +13,7 @@ import { z } from "zod";
 import { useNavigate } from "react-router-dom";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useTranslation } from "react-i18next";
+import { t } from "i18next";
 
 interface DeleteAccountProps {
   setOpen: (open: boolean) => void;
@@ -22,8 +23,6 @@ export const DeleteAccountForm = ({ setOpen }: DeleteAccountProps) => {
   const { setAuthUser } = useAuthContext();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
-  const { t } = useTranslation();
 
   const deleteAccountSchema = getDeleteAccountSchema(t);
   const deleteAccountForm = useForm<z.infer<typeof deleteAccountSchema>>({
@@ -42,13 +41,13 @@ export const DeleteAccountForm = ({ setOpen }: DeleteAccountProps) => {
       toast.loading(t("pages.account.deleting_account"));
       setTimeout(() => {
         toast.dismiss();
-        toast.success(response.data.message);
+        toast.success(t(response.data.message));
         setAuthUser(null);
         navigate("/login");
         deleteAccountForm.reset();
       }, 1000);
     } catch (error: any) {
-      toast.error(error.response.data.error);
+      toast.error(t(error.response.data.error));
     } finally {
       setLoading(false);
     }

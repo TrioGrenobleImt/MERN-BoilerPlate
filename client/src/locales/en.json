@@ -56,6 +56,7 @@
       "updating_profile_picture": "Updating profile picture...",
       "change_password": "Change Password",
       "delete_account": "Delete account",
+      "deleting_account": "Deleting account...",
       "actions": "Actions"
     },
     "login": {
@@ -148,6 +149,22 @@
       },
       "messages": {
         "avatar_success": "Avatar updated successfully"
+      }
+    },
+    "users": {
+      "errors": {
+        "email_taken": "This email is already taken",
+        "username_taken": "This username is already taken",
+        "invalid_role": "Invalid role",
+        "actual_password_incorrect": "The current password is incorrect",
+        "regex_error": "Password must contain at least 8 characters, including uppercase, lowercase letters, numbers, and special characters.",
+        "passwords_do_not_match": "The new password and confirmation do not match",
+        "password_incorrect": "The password is incorrect"
+      },
+      "messages": {
+        "user_updated": "User updated successfully",
+        "password_updated": "Password updated successfully",
+        "user_deleted": "User deleted successfully"
       }
     }
   }

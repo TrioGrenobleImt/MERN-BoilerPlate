@@ -6,9 +6,9 @@ import { axiosConfig } from "@/config/axiosConfig";
 import { useAuthContext } from "@/contexts/authContext";
 import { getUpdatePasswordSchema } from "@/lib/zod/schemas/account/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { t } from "i18next";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -19,8 +19,6 @@ interface UpdatePasswordProps {
 export const UpdatePasswordForm = ({ setOpen }: UpdatePasswordProps) => {
   const { authUser } = useAuthContext();
   const [loading, setLoading] = useState(false);
-
-  const { t } = useTranslation();
 
   const updatePasswordSchema = getUpdatePasswordSchema(t);
   const updatePasswordForm = useForm<z.infer<typeof updatePasswordSchema>>({
@@ -39,12 +37,12 @@ export const UpdatePasswordForm = ({ setOpen }: UpdatePasswordProps) => {
       toast.loading(t("pages.account.updating_password"));
       setTimeout(() => {
         toast.dismiss();
-        toast.success(response.data.message);
+        toast.success(t(response.data.message));
         setOpen(false);
         updatePasswordForm.reset();
       }, 1000);
     } catch (error: any) {
-      toast.error(error.response.data.error);
+      toast.error(t(error.response.data.error));
     } finally {
       setLoading(false);
     }
