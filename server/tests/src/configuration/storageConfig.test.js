@@ -9,29 +9,6 @@ import { generateAccessToken } from "../../../src/utils/generateAccessToken.js";
 import path from "path";
 
 describe("Tests uploads files", () => {
-  let filesBeforeTest = [];
-
-  beforeEach(() => {
-    const uploadsDir = path.resolve(__dirname, "../../../uploads/users/avatars");
-    if (fs.existsSync(uploadsDir)) {
-      filesBeforeTest = fs.readdirSync(uploadsDir);
-    }
-  });
-
-  afterEach(async () => {
-    await User.deleteMany();
-
-    const uploadsDir = path.resolve(__dirname, "../../../uploads/users/avatars");
-    if (fs.existsSync(uploadsDir)) {
-      const filesAfterTest = fs.readdirSync(uploadsDir);
-      const uploadedFiles = filesAfterTest.filter((file) => !filesBeforeTest.includes(file));
-
-      uploadedFiles.forEach((file) => {
-        fs.unlinkSync(path.join(uploadsDir, file));
-      });
-    }
-  });
-
   it("should delete old profilePic if there is one and update the current", async () => {
     const user = await User.create(userAdminWithAvatar);
 

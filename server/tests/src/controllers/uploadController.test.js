@@ -5,26 +5,6 @@ import fs from "fs";
 import { User } from "../../../src/models/userModel.js";
 import { Log } from "../../../src/models/logModel.js";
 import { generateAccessToken } from "../../../src/utils/generateAccessToken.js";
-import multer from "multer";
-import path from "path";
-
-vi.mock("../../../src/configuration/storageConfig.js", async () => {
-  const testStorage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, "./uploads/users/avatars");
-    },
-    filename: function (req, file, cb) {
-      const extension = file.originalname.split(".").pop();
-      const userId = req.userId || "testuser";
-      cb(null, `_test_avatar_${userId}_1234567890000.${extension}`);
-    },
-  });
-
-  return {
-    uploadConfig: multer({ storage: testStorage }),
-  };
-});
-
 import { app } from "../../../src/app.js";
 import { adminUser, pathAvatarOldTest, userAdminWithAvatar } from "../../fixtures/users.js";
 
@@ -33,17 +13,6 @@ beforeAll(async () => {
 });
 afterAll(async () => {
   await Log.deleteMany();
-
-  const uploadsDir = path.resolve(__dirname, "uploads/users/avatars");
-  const testFilePrefix = "_test_";
-
-  if (fs.existsSync(uploadsDir)) {
-    fs.readdirSync(uploadsDir).forEach((file) => {
-      if (file.startsWith(testFilePrefix)) {
-        fs.unlinkSync(path.join(uploadsDir, file));
-      }
-    });
-  }
 });
 
 describe("Tests uploads files", () => {
