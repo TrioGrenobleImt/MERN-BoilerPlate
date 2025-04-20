@@ -212,6 +212,20 @@ describe("PUT /api/users/:id", () => {
     expect(response.body.message).toBe("server.users.messages.user_updated");
   });
 
+  it("should update a user's email and set it in lowercase", async () => {
+    const user = await User.create(adminUser);
+    const newEmail = "NEWEMAIL@gmail.com";
+    const response = await request(app)
+      .put(`/api/users/${user._id}`)
+      .send({ email: newEmail })
+      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+
+    expect(response.status).toBe(200);
+    expect(response.body.user.email).toBe(newEmail.toLowerCase());
+    expect(response.body.user.password).toBe(undefined);
+    expect(response.body.message).toBe("server.users.messages.user_updated");
+  });
+
   it("should update a user's password", async () => {
     const user = await User.create(adminUser);
     const response = await request(app)
@@ -239,11 +253,11 @@ describe("PUT /api/users/:id", () => {
 
     const updatedUser = await User.findById(user._id);
 
-    expect(updatedUser.password).not.toBe("newPassword"); // Le mot de passe ne doit pas avoir été modifié
-    expect(updatedUser.role).toBe("user"); // Le rôle doit être resté 'user' et non pas changé en 'admin'
+    expect(updatedUser.password).not.toBe("newPassword");
+    expect(updatedUser.role).toBe("user");
 
-    expect(response.body.password).toBeUndefined(); // Assurer que le mot de passe n'est pas dans la réponse
-    expect(response.body.role).toBeUndefined(); // Assurer que le rôle n'est pas dans la réponse
+    expect(response.body.password).toBeUndefined();
+    expect(response.body.role).toBeUndefined();
   });
 
   it("should return an error if the email already exists", async () => {
