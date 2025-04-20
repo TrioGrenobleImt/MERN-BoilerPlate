@@ -209,7 +209,7 @@ describe("PUT /api/users/:id", () => {
     expect(response.status).toBe(200);
     expect(response.body.user.username).toBe("newusername");
     expect(response.body.user.password).toBe(undefined);
-    expect(response.body.message).toBe("User updated successfully");
+    expect(response.body.message).toBe("server.users.messages.user_updated");
   });
 
   it("should update a user's password", async () => {
@@ -220,7 +220,7 @@ describe("PUT /api/users/:id", () => {
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(200);
-    expect(response.body.message).toBe("User updated successfully");
+    expect(response.body.message).toBe("server.users.messages.user_updated");
     const updatedUser = await User.findById(user._id);
     expect(updatedUser.password).not.toBe(user.password);
   });
@@ -255,7 +255,7 @@ describe("PUT /api/users/:id", () => {
       .send({ email: "user@gmail.com" })
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
     expect(response.status).toBe(409);
-    expect(response.body.error).toBe("Email already taken");
+    expect(response.body.error).toBe("server.users.errors.email_taken");
   });
 
   it("should return an error if the username already exists", async () => {
@@ -267,7 +267,7 @@ describe("PUT /api/users/:id", () => {
       .send({ username: "user" })
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
     expect(response.status).toBe(409);
-    expect(response.body.error).toBe("Username already taken");
+    expect(response.body.error).toBe("server.users.errors.username_taken");
   });
 
   it("should return an error if the user doesn't exist", async () => {
@@ -279,7 +279,7 @@ describe("PUT /api/users/:id", () => {
       .send({ username: "newUsername" })
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
     expect(response.status).toBe(404);
-    expect(response.body.error).toBe("No such user");
+    expect(response.body.error).toBe("server.global.errors.no_such_user");
   });
 
   it("should return an error if the role is invalid", async () => {
@@ -290,7 +290,7 @@ describe("PUT /api/users/:id", () => {
       .send({ role: "roleInexistant" })
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
     expect(response.status).toBe(400);
-    expect(response.body.error).toBe("Invalid role");
+    expect(response.body.error).toBe("server.users.errors.invalid_role");
   });
 
   it("should return a 500 status if an error occurs", async () => {
@@ -397,7 +397,7 @@ describe("PUT /api/users/:id/password", () => {
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(200);
-    expect(response.body.message).toBe("Password updated successfully");
+    expect(response.body.message).toBe("server.users.messages.password_updated");
 
     const updatedUser = await User.findById(user._id).select("+password");
     const isMatch = await bcrypt.compare("NewPass1@", updatedUser.password);
@@ -415,7 +415,7 @@ describe("PUT /api/users/:id/password", () => {
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(400);
-    expect(response.body.error).toBe("Missing fields");
+    expect(response.body.error).toBe("server.global.errors.missing_fields");
   });
 
   it("should return a 400 status error for incorrect current password", async () => {
@@ -429,7 +429,7 @@ describe("PUT /api/users/:id/password", () => {
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(400);
-    expect(response.body.error).toBe("Actual password is incorrect");
+    expect(response.body.error).toBe("server.users.errors.actual_password_incorrect");
   });
 
   it("should return a 400 status error for weak new password", async () => {
@@ -443,9 +443,7 @@ describe("PUT /api/users/:id/password", () => {
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(400);
-    expect(response.body.error).toBe(
-      "Password must contain at least 8 characters, including uppercase, lowercase letters, numbers, and special characters.",
-    );
+    expect(response.body.error).toBe("server.users.errors.regex_error");
   });
 
   it("should return a 400 status error for passwords that do not match", async () => {
@@ -459,7 +457,7 @@ describe("PUT /api/users/:id/password", () => {
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(400);
-    expect(response.body.error).toBe("Passwords do not match");
+    expect(response.body.error).toBe("server.users.errors.passwords_do_not_match");
   });
 
   it("should return a 400 status error if user does not exist", async () => {
@@ -477,7 +475,7 @@ describe("PUT /api/users/:id/password", () => {
     console.log(response.body);
 
     expect(response.status).toBe(400);
-    expect(response.body.error).toBe("No such user");
+    expect(response.body.error).toBe("server.global.errors.no_such_user");
   });
 
   it("should return a 500 status error due to internal server error", async () => {
@@ -522,7 +520,7 @@ describe("DELETE /api/users/delete/account", () => {
 
     expect(fs.existsSync(pathAvatarOldTest)).toBe(false);
     expect(response.status).toBe(200);
-    expect(response.body.message).toBe("Account deleted successfully");
+    expect(response.body.message).toBe("server.users.messages.user_deleted");
     expect(response.body.user).toBe(undefined);
     const deletedUser = await User.findById(user._id);
     expect(deletedUser).toBeNull();
@@ -556,7 +554,7 @@ describe("DELETE /api/users/delete/account", () => {
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(400);
-    expect(response.body.error).toBe("Missing fields");
+    expect(response.body.error).toBe("server.global.errors.missing_fields");
   });
 
   it("should return a 400 status if password is incorrect", async () => {
@@ -570,6 +568,6 @@ describe("DELETE /api/users/delete/account", () => {
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(400);
-    expect(response.body.error).toBe("Password is incorrect");
+    expect(response.body.error).toBe("server.users.errors.password_incorrect");
   });
 });

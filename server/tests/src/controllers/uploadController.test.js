@@ -60,7 +60,7 @@ describe("Tests uploads files", () => {
       .post(`/api/uploads/avatar/${user._id}`)
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
 
-    expect(response.body.error).toBe("No file uploaded");
+    expect(response.body.error).toBe("server.upload.errors.no_file");
     expect(response.statusCode).toBe(400);
   });
 
@@ -75,7 +75,7 @@ describe("Tests uploads files", () => {
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`)
       .attach("avatar", path, "hello-world.txt");
 
-    expect(response.body.error).toBe("Invalid file type. Only jpg, jpeg, png, gif, and svg are allowed");
+    expect(response.body.error).toBe("server.upload.errors.invalid_file_type");
     expect(response.statusCode).toBe(400);
 
     if (fs.existsSync(path)) {
@@ -121,7 +121,7 @@ describe("Tests uploads files", () => {
     // Vérifie si l'ancien avatar a bien été supprimé
     expect(fs.existsSync(pathAvatarOldTest)).toBe(false);
     expect(fs.existsSync(pathNewAvatar)).toBe(true);
-    expect(response.body.message).toBe("Avatar updated successfully");
+    expect(response.body.message).toBe("server.upload.messages.avatar_success");
     expect(response.statusCode).toBe(200);
 
     // Nettoyage des fichiers temporaires
@@ -144,7 +144,7 @@ describe("Tests uploads files", () => {
       .attach("avatar", pathNewAvatar, "hello-world.png");
 
     expect(response.statusCode).toBe(400);
-    expect(response.body.error).toBe(`File size exceeds the limit of ${Constants.AVATAR_MAX_SIZE / 1024 / 1024} MB`);
+    expect(response.body.error).toBe(`server.upload.errors.limit`);
 
     // Nettoyage des fichiers temporaires
     if (fs.existsSync(pathNewAvatar)) {

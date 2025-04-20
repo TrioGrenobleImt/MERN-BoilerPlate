@@ -31,7 +31,7 @@ describe("POST /api/auth/register", () => {
     const response = await request(app).post("/api/auth/register").send(registerUser);
     expect(response.status).toBe(201);
     expect(response.headers["set-cookie"][0].startsWith("__access__token=")).toBe(true);
-    expect(response.body.message).toBe("Registered successfully");
+    expect(response.body.message).toBe("server.auth.messages.register_success");
     expect(response.body.user).toHaveProperty("_id" && "username" && "email");
     expect(response.body.password).toBe(undefined);
   });
@@ -39,35 +39,33 @@ describe("POST /api/auth/register", () => {
   it("should return a 400 status error because the password isnt strong enough", async () => {
     const response = await request(app).post("/api/auth/register").send(badPasswordRegisterUser);
     expect(response.status).toBe(400);
-    expect(response.body.error).toBe(
-      "Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, one number, and one special character",
-    );
+    expect(response.body.error).toBe("server.auth.errors.regex");
   });
 
   it("should return a 400 status error because the passwords do not match", async () => {
     const response = await request(app).post("/api/auth/register").send(badConfirmPasswordRegisterUser);
     expect(response.status).toBe(400);
-    expect(response.body.error).toBe("Passwords do not match");
+    expect(response.body.error).toBe("server.auth.errors.password_no_match");
   });
 
   it("should return a 409 status error because the email is already taken", async () => {
     await User.create(userWithSameUsername);
     const response = await request(app).post("/api/auth/register").send(registerUser);
     expect(response.status).toBe(409);
-    expect(response.body.error).toBe("This email is already taken");
+    expect(response.body.error).toBe("server.auth.errors.email_taken");
   });
 
   it("should return a 409 status error because the username is already taken", async () => {
     await User.create(userWithSameEmail);
     const response = await request(app).post("/api/auth/register").send(registerUser);
     expect(response.status).toBe(409);
-    expect(response.body.error).toBe("This username is already taken");
+    expect(response.body.error).toBe("server.auth.errors.username_taken");
   });
 
   it("should return a 422 status error because of missing fields", async () => {
     const response = await request(app).post("/api/auth/register").send(regularUser);
     expect(response.status).toBe(422);
-    expect(response.body.error).toBe("Missing fields");
+    expect(response.body.error).toBe("server.global.errors.missing_fields");
   });
 
   it("should return a 500 status error because of an internal error", async () => {
@@ -96,7 +94,7 @@ describe("POST /api/auth/login", () => {
 
     expect(response.status).toBe(201);
     expect(response.headers["set-cookie"][0].startsWith("__access__token=")).toBe(true);
-    expect(response.body.message).toBe("Logged in successfully");
+    expect(response.body.message).toBe("server.auth.messages.login_success");
     expect(response.body.user).toHaveProperty("_id" && "username" && "email");
     expect(response.body.password).toBe(undefined);
   });
@@ -107,7 +105,7 @@ describe("POST /api/auth/login", () => {
       username: "test",
     });
     expect(response.status).toBe(422);
-    expect(response.body.error).toBe("Password is required, and either username or email must be provided.");
+    expect(response.body.error).toBe("server.global.errors.missing_fields");
   });
   it("should return a 422 error status because one of the fields is missing", async () => {
     const user = new User(regularUser);
@@ -116,7 +114,7 @@ describe("POST /api/auth/login", () => {
       password: "test",
     });
     expect(response.status).toBe(422);
-    expect(response.body.error).toBe("Password is required, and either username or email must be provided.");
+    expect(response.body.error).toBe("server.global.errors.missing_fields");
   });
   it("should return a 400 error status because there is no user with this username", async () => {
     const user = new User(regularUser);
@@ -127,7 +125,7 @@ describe("POST /api/auth/login", () => {
     });
 
     expect(response.status).toBe(400);
-    expect(response.body.error).toBe("No such user");
+    expect(response.body.error).toBe("server.global.errors.no_such_user");
   });
   it("should return a 400 error status because the password is wrong", async () => {
     const user = new User(regularUser);
@@ -138,7 +136,7 @@ describe("POST /api/auth/login", () => {
     });
 
     expect(response.status).toBe(400);
-    expect(response.body.error).toBe("Invalid credentials");
+    expect(response.body.error).toBe("server.auth.errors.invalid_credentials");
   });
   it("should return a 500 error status because of an internal error", async () => {
     vitest.spyOn(User, "findOne").mockImplementationOnce(() => {
@@ -167,7 +165,7 @@ describe("GET /api/auth/logout", () => {
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(200);
-    expect(response.body.message).toBe("Signed out successfully");
+    expect(response.body.message).toBe("server.auth.messages.logout_success");
     expect(response.headers["set-cookie"][0].startsWith("__access__token=;")).toBe(true);
   });
   it("should return a 500 error status in case of an internal error", async () => {

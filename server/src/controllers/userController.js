@@ -254,7 +254,7 @@ export const deleteAccount = async (req, res) => {
   const { password } = req.body;
 
   try {
-    if (!password) return res.status(400).json({ error: "server.global.errors.no_such_user" });
+    if (!password) return res.status(400).json({ error: "server.global.errors.missing_fields" });
 
     const user = await User.findById(userId).select("+password");
 
