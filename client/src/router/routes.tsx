@@ -10,6 +10,7 @@ import { Users } from "@/pages/Admin/components/users";
 import { Dashboard } from "@/pages/Admin/components/dashboard";
 import { Login } from "@/pages/Authentication/login";
 import { Register } from "@/pages/Authentication/register";
+import { Config } from "@/pages/Admin/components/config";
 
 export const Router = () => {
   return (
@@ -44,6 +45,7 @@ export const Router = () => {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="users" element={<Users />} />
           <Route path="logs" element={<Logs />} />
+          <Route path="settings" element={<Config />} />
         </Route>
       </Route>
 
