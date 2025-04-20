@@ -83,11 +83,10 @@ export const login = async (req, res) => {
   }
 
   try {
-    const query = {
+    const user = await User.findOne({
       $or: [...(username ? [{ username: username.toLowerCase() }] : []), ...(email ? [{ email: email.toLowerCase() }] : [])],
-    };
+    }).select("+password");
 
-    const user = await User.findOne(query).select("+password");
     if (!user) {
       return res.status(400).json({ error: "server.global.errors.no_such_user" });
     }

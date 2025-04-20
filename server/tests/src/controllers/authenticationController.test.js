@@ -98,6 +98,37 @@ describe("POST /api/auth/login", () => {
     expect(response.body.user).toHaveProperty("_id" && "username" && "email");
     expect(response.body.password).toBe(undefined);
   });
+
+  it("should return a 201 status when logging in with email", async () => {
+    await request(app).post("/api/auth/register").send(registerUser);
+
+    const response = await request(app).post("/api/auth/login").send({
+      email: "user@gmail.com",
+      password: "Abcdef1@",
+    });
+
+    expect(response.status).toBe(201);
+    expect(response.headers["set-cookie"][0].startsWith("__access__token=")).toBe(true);
+    expect(response.body.message).toBe("server.auth.messages.login_success");
+    expect(response.body.user).toHaveProperty("_id" && "username" && "email");
+    expect(response.body.password).toBe(undefined);
+  });
+
+  it("should return a 201 status when logging in with username", async () => {
+    await request(app).post("/api/auth/register").send(registerUser);
+
+    const response = await request(app).post("/api/auth/login").send({
+      username: "user",
+      password: "Abcdef1@",
+    });
+
+    expect(response.status).toBe(201);
+    expect(response.headers["set-cookie"][0].startsWith("__access__token=")).toBe(true);
+    expect(response.body.message).toBe("server.auth.messages.login_success");
+    expect(response.body.user).toHaveProperty("_id" && "username" && "email");
+    expect(response.body.password).toBe(undefined);
+  });
+
   it("should return a 422 error status because one of the fields is missing", async () => {
     const user = new User(regularUser);
     await user.save();
