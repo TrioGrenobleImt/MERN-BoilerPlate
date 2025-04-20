@@ -6,6 +6,7 @@ import { User } from "../../../src/models/userModel.js";
 import { Log } from "../../../src/models/logModel.js";
 import { generateAccessToken } from "../../../src/utils/generateAccessToken.js";
 import multer from "multer";
+import path from "path";
 
 vi.mock("../../../src/configuration/storageConfig.js", async () => {
   const testStorage = multer.diskStorage({
@@ -24,11 +25,8 @@ vi.mock("../../../src/configuration/storageConfig.js", async () => {
   };
 });
 
-//Import server and app
 import { app } from "../../../src/app.js";
-import { Constants } from "../../../constants/constants.js";
 import { adminUser, pathAvatarOldTest, userAdminWithAvatar } from "../../fixtures/users.js";
-import path from "path";
 
 beforeAll(async () => {
   await User.deleteMany();
