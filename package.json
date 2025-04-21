@@ -1,12 +1,11 @@
 {
-  "name": "fullstack-app",
+  "name": "mern-boilerplate",
   "private": true,
   "version": "1.0.0",
   "type": "module",
   "description": "",
   "author": "villett",
   "license": "ISC",
-  "main": "server/index.js",
   "scripts": {
     "dev:frontend": "cd client && vite",
     "dev:backend": "cd server && nodemon index.js",
