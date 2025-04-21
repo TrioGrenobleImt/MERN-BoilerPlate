@@ -1,58 +1,43 @@
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
-import { axiosConfig } from "@/config/axiosConfig";
-import type { ConfigInterface } from "@/interfaces/Config";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { useConfigStore } from "@/stores/configStore";
+import { Button } from "@/components/ui/button"; // ShadCN Button
+import { Input } from "@/components/ui/input"; // ShadCN Input
+import { Card } from "@/components/ui/card"; // ShadCN Card
+import { Label } from "@/components/ui/label"; // ShadCN Label
 
 export const Config = () => {
-  const [config, setConfig] = useState<ConfigInterface[]>([]);
-  const [editedConfig, setEditedConfig] = useState<Record<string, string>>({});
+  const { config } = useConfigStore();
+  const [localConfig, setLocalConfig] = useState(config);
 
-  useEffect(() => {
-    const fetchConfig = async () => {
-      try {
-        const response = await axiosConfig.get("/config");
-        setConfig(response.data.config);
-      } catch (error: any) {
-        toast.error("Failed to fetch config: " + error?.response?.data?.message);
-      }
-    };
-
-    fetchConfig();
-  }, []);
-
-  const handleChange = (id: string, value: string) => {
-    setEditedConfig((prev) => ({ ...prev, [id]: value }));
+  const handleChange = (key: string, value: string) => {
+    setLocalConfig((prevConfig) => ({
+      ...prevConfig,
+      [key]: value,
+    }));
   };
 
-  const handleSave = async (id: string) => {
-    const newValue = editedConfig[id];
-    try {
-      await axiosConfig.put(`/config/${id}`, { value: newValue });
-      setConfig((prev) => prev.map((item) => (item._id === id ? { ...item, value: newValue } : item)));
-      toast.success("Config updated");
-    } catch (error: any) {
-      toast.error("Update failed: " + error?.response?.data?.message || error.message);
-    }
+  const handleSave = async (keys: Array<string>) => {
+    // TODO: Sauvegarder la nouvelle valeur, tu peux l'envoyer à ton backend ici
   };
 
   return (
-    <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-2 lg:grid-cols-3">
-      {config.map(({ _id, key, value }) => (
-        <Card key={_id} className="p-4">
-          <CardHeader>
-            <CardTitle className="text-xl">{key}</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <Label htmlFor={`value-${_id}`}>Value</Label>
-            <Input id={`value-${_id}`} value={editedConfig[_id] ?? value} onChange={(e) => handleChange(_id, e.target.value)} />
-            <Button onClick={() => handleSave(_id)}>Save</Button>
-          </CardContent>
+    <div>
+      <div className="container px-4 mx-auto">
+        <Card className="p-6 bg-white rounded-lg shadow-lg">
+          <h2 className="mb-4 text-2xl font-semibold">Configuration</h2>
+          {Object.entries(localConfig).map(([key, value]) => (
+            <div key={key} className="mb-4">
+              <Label htmlFor={key} className="block font-medium text-gray-700">
+                {key}
+              </Label>
+              <Input id={key} type="text" value={value} onChange={(e) => handleChange(key, e.target.value)} className="mt-2 mb-2" />
+            </div>
+          ))}
+          <Button onClick={() => handleSave([])} className="w-full">
+            Save
+          </Button>
         </Card>
-      ))}
+      </div>
     </div>
   );
 };
