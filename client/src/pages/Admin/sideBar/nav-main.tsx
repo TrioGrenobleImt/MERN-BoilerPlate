@@ -1,6 +1,7 @@
 import { type LucideIcon } from "lucide-react";
 import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useConfigStore } from "@/stores/configStore";
 
 export function NavMain({
   items,
@@ -18,6 +19,7 @@ export function NavMain({
   const isActive = (path: string, includeSubroutes = false) => (includeSubroutes ? pathname.startsWith(path) : pathname === path);
   const styleDefault = "px-4 py-3 font-light flex items-center justify-center gap-3";
   const styleActive = ` mx-4 my-3 flex items-center justify-center gap-3 text-primary border-b border-primary`;
+  const appName = useConfigStore((state) => state.config["APP_NAME"]);
 
   function handleClick(url: string) {
     if (isMobile) {
@@ -28,7 +30,7 @@ export function NavMain({
 
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>MERN-BoilerPlate</SidebarGroupLabel>
+      <SidebarGroupLabel>{appName}</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
           <SidebarMenuItem key={item.title} onClick={() => handleClick(item.url)}>

@@ -20,9 +20,11 @@ import {
 } from "../ui/dropdown-menu";
 import { useLogout } from "@/hooks/useLogout";
 import { AvatarWithStatusCell } from "@/components/ui/customs/avatarStatusCell";
+import { useConfigStore } from "@/stores/configStore";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const appName = useConfigStore((state) => state.config["APP_NAME"]);
 
   const menuRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -32,7 +34,6 @@ export const Navbar = () => {
 
   const { logout, loading } = useLogout();
 
-  // Handle clicks outside of the hamburger menu
   useEffect(() => {
     const handleClickOutside = (event: { target: any }) => {
       if (menuRef.current && !menuRef.current.contains(event.target) && isOpen) {
@@ -54,7 +55,7 @@ export const Navbar = () => {
       <div className="sticky top-0 left-0 right-0 z-50 border-b border-primary bg-background">
         <div className="items-center justify-between hidden p-4 px-8 select-none md:flex text-primary">
           <div className="text-3xl font-extrabold">
-            <Link to="/">MERN-Boilerplate</Link>
+            <Link to="/">{appName}</Link>
           </div>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
@@ -109,7 +110,7 @@ export const Navbar = () => {
         {/* Mobile Navbar with Hamburger Menu */}
         <div className="flex items-center justify-between p-4 md:hidden ">
           <div className="text-3xl font-extrabold">
-            <Link to="/"> MERN-Boilerplate</Link>
+            <Link to="/">{appName}</Link>
           </div>
           <Menu onClick={() => setIsOpen(!isOpen)} className="cursor-pointer" />
         </div>

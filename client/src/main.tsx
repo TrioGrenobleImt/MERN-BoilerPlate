@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.js";
 import { BrowserRouter } from "react-router-dom";
@@ -7,14 +7,27 @@ import { AuthContextProvider } from "./contexts/authContext.js";
 import "./lib/i18n.js";
 import { ThemeProvider } from "./providers/theme-provider.js";
 import { SocketContextProvider } from "./contexts/socketContext.js";
+import { useConfigStore } from "@/stores/configStore"; // Importer le store
+import { Loading } from "./components/ui/customs/Loading.js";
 
 if (!import.meta.env.VITE_API_URL) {
   throw new Error("VITE_API_URL is not defined in the environment file");
 }
 
-const rootElement = document.getElementById("root");
-if (rootElement) {
-  ReactDOM.createRoot(rootElement).render(
+const GlobalConfigLoader = () => {
+  const { isLoaded, loadConfig } = useConfigStore();
+
+  useEffect(() => {
+    if (!isLoaded) {
+      loadConfig(["APP_NAME", "SOME_OTHER_KEY"]);
+    }
+  }, [isLoaded, loadConfig]);
+
+  if (!isLoaded) {
+    return <Loading />;
+  }
+
+  return (
     <React.StrictMode>
       <AuthContextProvider>
         <SocketContextProvider>
@@ -26,8 +39,13 @@ if (rootElement) {
           </BrowserRouter>
         </SocketContextProvider>
       </AuthContextProvider>
-    </React.StrictMode>,
+    </React.StrictMode>
   );
+};
+
+const rootElement = document.getElementById("root");
+if (rootElement) {
+  ReactDOM.createRoot(rootElement).render(<GlobalConfigLoader />);
 } else {
   console.error("Failed to find the root element");
 }
