@@ -1,34 +1,14 @@
 import { Config } from "../models/configModel.js";
 
+// Express + Mongoose controller
 export const getConfig = async (req, res) => {
-  try {
-    const config = await Config.find();
-    res.status(200).json({ config });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
-export const createConfig = async (req, res) => {
-  const { key, value } = req.body;
-
-  if (!key || !value) {
-    return res.status(400).json({ error: "Missing fields" });
-  }
-
-  if (await Config.findOne({ key })) {
-    return res.status(409).json({ error: "This key is already taken" });
-  }
+  const keys = req.query.keys?.split(",") || [];
 
   try {
-    const config = await Config.create({ key, value });
+    const configItems = await Config.find({ key: { $in: keys } });
 
-    res.status(201).json({ config });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.json({ config: configItems });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
-
-export const updateConfig = async (req, res) => {};
-
-export const deleteConfig = async (req, res) => {};
