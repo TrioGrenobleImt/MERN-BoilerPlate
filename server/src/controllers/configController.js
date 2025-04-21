@@ -16,6 +16,10 @@ export const createConfig = async (req, res) => {
     return res.status(400).json({ error: "Missing fields" });
   }
 
+  if (await Config.findOne({ key })) {
+    return res.status(409).json({ error: "This key is already taken" });
+  }
+
   try {
     const config = await Config.create({ key, value });
 
