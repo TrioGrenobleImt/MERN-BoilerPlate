@@ -16,22 +16,38 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { UserInterface } from "@/interfaces/User";
 
+import { useEffect, useRef } from "react";
+
 export function NavUser({ user }: { user: UserInterface | null }) {
   if (!user) return null;
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const { logout, loading } = useLogout();
   const { isMobile } = useSidebar();
   const navigate = useNavigate();
+  const dropdownRef = useRef<HTMLLIElement | null>(null);
+
+  const handleClickOutside = (event: any) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setDropdownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <SidebarMenu>
-      <SidebarMenuItem>
+      <SidebarMenuItem ref={dropdownRef}>
         <DropdownMenu open={isDropdownOpen}>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-              onClick={() => setDropdownOpen((prev: boolean) => !prev)}
+              onClick={() => setDropdownOpen((prev) => !prev)}
             >
               <Avatar className="w-8 h-8 rounded-lg">
                 <AvatarImage src={user.avatar} alt="User Avatar" className="object-cover object-center w-full h-full rounded-full" />
