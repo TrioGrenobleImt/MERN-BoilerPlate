@@ -14,21 +14,28 @@ export const getConfig = async (req, res) => {
 };
 
 export const updateConfig = async (req, res) => {
-  const { keys } = req.body;
+  const { keys, config } = req.body;
 
-  if (!keys || Object.keys(keys).length === 0) {
-    return res.status(400).json({ message: "No keys to update" });
+  if (!Array.isArray(keys) || typeof config !== "object" || config === null) {
+    return res.status(400).json({ message: "Invalid input format" });
   }
 
   try {
-    const updatePromises = Object.keys(keys).map(async (key) => {
-      const updatedConfig = await Config.findOneAndUpdate({ key }, { value: keys[key] }, { new: true });
-      return updatedConfig;
+    const updatePromises = keys.map(async (key) => {
+      if (config.hasOwnProperty(key)) {
+        const updatedConfig = await Config.findOneAndUpdate({ key }, { value: config[key] }, { new: true, upsert: true });
+        return updatedConfig;
+      } else {
+        console.warn(`Key ${key} not found in config object`);
+        return null;
+      }
     });
 
     const updatedConfigs = await Promise.all(updatePromises);
 
-    res.json({ message: "Configuration updated successfully", config: updatedConfigs });
+    const validUpdatedConfigs = updatedConfigs.filter((config) => config !== null);
+
+    res.json({ message: "Configuration updated successfully", config: validUpdatedConfigs });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
