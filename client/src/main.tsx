@@ -19,7 +19,7 @@ const GlobalConfigLoader = () => {
 
   useEffect(() => {
     if (!isLoaded) {
-      loadConfig(["APP_NAME", "LOGO_URL"]);
+      loadConfig(["APP_NAME"]);
     }
   }, [isLoaded, loadConfig]);
 
