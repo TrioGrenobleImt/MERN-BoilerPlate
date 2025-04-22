@@ -35,11 +35,11 @@ export const Config = () => {
   return (
     <div>
       <div className="container px-4 mx-auto">
-        <Card className="p-6 bg-white rounded-lg shadow-lg">
+        <Card className="p-6 rounded-lg shadow-lg">
           <h2 className="mb-4 text-2xl font-semibold">Configuration</h2>
           {Object.entries(localConfig).map(([key, value]) => (
             <div key={key} className="mb-4">
-              <Label htmlFor={key} className="block font-medium text-gray-700">
+              <Label htmlFor={key} className="block font-medium">
                 {key}
               </Label>
               <Input id={key} type="text" value={value} onChange={(e) => handleChange(key, e.target.value)} className="mt-2 mb-2" />
