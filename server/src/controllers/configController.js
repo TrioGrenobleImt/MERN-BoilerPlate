@@ -1,6 +1,9 @@
 import { Config } from "../models/configModel.js";
 
-// Express + Mongoose controller
+/**
+ * Gets configuration settings based on provided keys.
+ * @returns {Object} JSON response with configuration settings.
+ */
 export const getConfig = async (req, res) => {
   const keys = req.query.keys?.split(",") || [];
 
@@ -13,6 +16,10 @@ export const getConfig = async (req, res) => {
   }
 };
 
+/**
+ * Updates configuration settings based on provided keys and values.
+ * @returns {Object} JSON response with updated configuration settings.
+ */
 export const updateConfig = async (req, res) => {
   const { keys, config } = req.body;
 
