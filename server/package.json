@@ -26,7 +26,11 @@
     "prettier": "^3.5.3",
     "sinon": "^20.0.0",
     "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
     "supertest": "^7.1.0",
     "vitest": "^3.1.2"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "3.1.2"
   }
 }
