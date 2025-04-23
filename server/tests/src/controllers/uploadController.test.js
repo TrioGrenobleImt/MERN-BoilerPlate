@@ -8,18 +8,7 @@ import { generateAccessToken } from "../../../src/utils/generateAccessToken.js";
 import { app } from "../../../src/app.js";
 import { adminUser, pathAvatarOldTest, userAdminWithAvatar } from "../../fixtures/users.js";
 
-beforeAll(async () => {
-  await User.deleteMany();
-});
-afterAll(async () => {
-  await Log.deleteMany();
-});
-
 describe("Tests uploads files", () => {
-  afterEach(async () => {
-    await User.deleteMany();
-  });
-
   it("should return an error if no file is provided", async () => {
     const user = await User.create(adminUser);
 

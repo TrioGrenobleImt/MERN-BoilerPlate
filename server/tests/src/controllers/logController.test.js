@@ -14,11 +14,6 @@ import { adminUser } from "../../fixtures/users.js";
 import { basicLog, logInvalidLevel, logWithMissingParams } from "../../fixtures/logs.js";
 
 describe("GET api/logs/", () => {
-  afterEach(async () => {
-    await User.deleteMany();
-    await Log.deleteMany();
-  });
-
   it("should return a 200 success status and the list of the logs", async () => {
     const user = await User.create(adminUser);
 
@@ -106,11 +101,6 @@ describe("createLog", () => {
 });
 
 describe("DELETE api/logs/", () => {
-  afterEach(async () => {
-    await User.deleteMany();
-    await Log.deleteMany();
-  });
-
   it("should return a 200 success status and delete all the logs", async () => {
     const user = await User.create(adminUser);
 
@@ -142,11 +132,6 @@ describe("DELETE api/logs/", () => {
 });
 
 describe("DELETE api/logs/:id", () => {
-  afterEach(async () => {
-    await User.deleteMany();
-    await Log.deleteMany();
-  });
-
   it("should return a 200 success status and delete all the logs", async () => {
     const user = await User.create(adminUser);
 
@@ -193,11 +178,6 @@ describe("DELETE api/logs/:id", () => {
 });
 
 describe("GET api/logs/log-levels/", () => {
-  afterEach(async () => {
-    await User.deleteMany();
-    await Log.deleteMany();
-  });
-
   it("should return a 200 success status and the list of the logs", async () => {
     const user = await User.create(adminUser);
 

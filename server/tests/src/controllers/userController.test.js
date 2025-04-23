@@ -23,19 +23,7 @@ import {
 } from "../../fixtures/users.js";
 import path from "path";
 
-beforeAll(async () => {
-  await User.deleteMany();
-});
-
-afterAll(async () => {
-  await Log.deleteMany();
-});
-
 describe("GET /api/users/", () => {
-  afterEach(async () => {
-    await User.deleteMany();
-  });
-
   it("should return a 200 status and list all the users, ", async () => {
     const user = await User.create(adminUser);
 
@@ -63,10 +51,6 @@ describe("GET /api/users/", () => {
 });
 
 describe("GET /api/users/:id", () => {
-  afterEach(async () => {
-    await User.deleteMany();
-  });
-
   it("should return the user with the given id", async () => {
     const user = await User.create({
       username: "test",
@@ -110,10 +94,6 @@ describe("GET /api/users/:id", () => {
 });
 
 describe("POST /api/users/", () => {
-  afterEach(async () => {
-    await User.deleteMany();
-  });
-
   it("should create a new user with valid data", async () => {
     const user = await User.create(adminUser);
 
@@ -195,10 +175,6 @@ describe("POST /api/users/", () => {
 });
 
 describe("PUT /api/users/:id", () => {
-  afterEach(async () => {
-    await User.deleteMany();
-  });
-
   it("should update a user's username", async () => {
     const user = await User.create(adminUser);
     const response = await request(app)
@@ -324,10 +300,6 @@ describe("PUT /api/users/:id", () => {
 });
 
 describe("DELETE /api/users/:id", () => {
-  afterEach(async () => {
-    await User.deleteMany();
-  });
-
   it("should delete a user", async () => {
     const user = await User.create(userAdminWithAvatar);
 
@@ -371,10 +343,6 @@ describe("DELETE /api/users/:id", () => {
 });
 
 describe("GET /api/users/generatePassword", () => {
-  afterEach(async () => {
-    await User.deleteMany();
-  });
-
   it("should return a 200 status and a generated password", async () => {
     const user = await User.create(adminUser);
 
@@ -394,10 +362,6 @@ describe("PUT /api/users/:id/password", () => {
   beforeEach(async () => {
     user = new User(userWithHashPassword);
     await user.save();
-  });
-
-  afterEach(async () => {
-    await User.deleteMany();
   });
 
   it("should return a 200 status and update the password successfully", async () => {
@@ -512,10 +476,6 @@ describe("PUT /api/users/:id/password", () => {
 });
 
 describe("DELETE /api/users/delete/account", () => {
-  afterEach(async () => {
-    await User.deleteMany();
-  });
-
   it("should delete the current user's account", async () => {
     fs.mkdirSync(path.dirname(pathAvatarOldTest), { recursive: true });
     fs.writeFileSync(pathAvatarOldTest, "fake image content");

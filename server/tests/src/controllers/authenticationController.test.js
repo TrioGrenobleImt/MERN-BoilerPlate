@@ -18,15 +18,7 @@ import {
   userWithSameUsername,
 } from "../../fixtures/users.js";
 
-afterAll(async () => {
-  await Log.deleteMany();
-});
-
 describe("POST /api/auth/register", () => {
-  afterEach(async () => {
-    await User.deleteMany();
-  });
-
   it("should return a 201 status, create an account and stock the token into the cookies", async () => {
     const response = await request(app).post("/api/auth/register").send(registerUser);
     expect(response.status).toBe(201);
@@ -81,10 +73,6 @@ describe("POST /api/auth/register", () => {
 });
 
 describe("POST /api/auth/login", () => {
-  afterEach(async () => {
-    await User.deleteMany();
-  });
-
   it("should return a 201 status, create an account and stock the token into the cookies", async () => {
     await request(app).post("/api/auth/register").send(registerUser);
     const response = await request(app).post("/api/auth/login").send({
@@ -185,9 +173,6 @@ describe("POST /api/auth/login", () => {
 });
 
 describe("GET /api/auth/logout", () => {
-  afterEach(async () => {
-    await User.deleteMany();
-  });
   it("should return a 200 status and clear the cookies", async () => {
     const user = new User(regularUser);
     await user.save();
@@ -219,9 +204,6 @@ describe("GET /api/auth/me", () => {
   beforeEach(async () => {
     user = new User(regularUser);
     await user.save();
-  });
-  afterEach(async () => {
-    await User.deleteMany();
   });
 
   it("should return a 200 status and the connected user infos", async () => {

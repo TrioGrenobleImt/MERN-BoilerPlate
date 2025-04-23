@@ -4,14 +4,6 @@ import "dotenv/config";
 import { User } from "../../../src/models/userModel.js";
 import { Log } from "../../../src/models/logModel.js";
 
-beforeAll(async () => {
-  await User.deleteMany();
-});
-
-afterAll(async () => {
-  await Log.deleteMany();
-});
-
 describe("TEST fullname generation", () => {
   test("should handle lowercase forename correctly", () => {
     const user = new User({ name: "MARTIN", forename: "pierre" });
