@@ -4,14 +4,18 @@ import mongoose from "mongoose";
 import path from "path";
 import { afterAll, afterEach, beforeAll, beforeEach } from "vitest";
 import "dotenv/config";
+import { User } from "./src/models/userModel.js";
+import { Log } from "./src/models/logModel.js";
 
 const uploadsDir = path.resolve(__dirname, "uploads/users/avatars");
 let filesBeforeTest: string[] = [];
 
-beforeEach(() => {
+beforeEach(async () => {
   if (fs.existsSync(uploadsDir)) {
     filesBeforeTest = fs.readdirSync(uploadsDir);
   }
+  await User.deleteMany({});
+  await Log.deleteMany({});
 });
 
 afterEach(async () => {
@@ -30,5 +34,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
+  await User.deleteMany({});
+  await Log.deleteMany({});
   await mongoose.disconnect();
 });

@@ -9,11 +9,6 @@ import { generateAccessToken } from "../../../src/utils/generateAccessToken";
 import { regularUser } from "../../fixtures/users";
 
 describe("verifyToken Middleware", () => {
-  afterEach(async () => {
-    // Nettoyage après chaque test
-    await User.deleteMany();
-  });
-
   it("should return 401 if no token is provided", async () => {
     const res = await request(app).get("/api/users/").send();
 
