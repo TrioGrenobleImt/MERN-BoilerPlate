@@ -1,65 +1,82 @@
-import { useState } from "react";
-import { useConfigStore } from "@/stores/configStore";
-import { Button } from "@/components/ui/button"; // ShadCN Button
-import { Input } from "@/components/ui/input"; // ShadCN Input
-import { Card, CardFooter } from "@/components/ui/card"; // ShadCN Card
-import { Label } from "@/components/ui/label"; // ShadCN Label
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
 import { axiosConfig } from "@/config/axiosConfig";
 import { toast } from "sonner";
+import { useConfig } from "@/contexts/configContext";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+
+const configurationFormSchema = z.object({
+  APP_NAME: z.string().trim(),
+});
+
+type ConfigurationFormValues = z.infer<typeof configurationFormSchema>;
 
 export const Config = () => {
-  const { config } = useConfigStore();
-  const [localConfig, setLocalConfig] = useState(config);
+  const { configValues, getConfigValue, updateConfigValues } = useConfig();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const handleChange = (key: string, value: string) => {
-    setLocalConfig((prevConfig) => ({
-      ...prevConfig,
-      [key]: value,
-    }));
-  };
+  const form = useForm<ConfigurationFormValues>({
+    resolver: zodResolver(configurationFormSchema),
+    defaultValues: configValues,
+    mode: "onChange",
+  });
 
-  const handleSave = async () => {
-    const updatedConfig = { ...localConfig };
-    const keys = Object.keys(localConfig).filter((key) => localConfig[key] !== config[key]);
+  useEffect(() => {
+    const fetchConfigValues = async () => {
+      const values = await getConfigValue(["APP_NAME"]);
+      form.reset(values);
+      setIsLoading(false);
+    };
 
-    if (keys.length === 0) {
-      toast.info("No changes detected.");
-      return;
-    }
+    fetchConfigValues();
+  }, [getConfigValue, form]);
 
-    for (const key of keys) {
-      if (localConfig[key] === "") {
-        toast.error(`The value for ${key} is empty. Please provide a valid value.`);
-        return;
-      }
-    }
+  const onSubmit = async (values: ConfigurationFormValues) => {
+    const keys = Object.keys(values);
+    const config = Object.fromEntries(Object.entries(values).map(([key, value]) => [key, value.trim()]));
 
     try {
-      const response = await axiosConfig.put("/config", { config: updatedConfig, keys });
+      const response = await axiosConfig.put("/config", { keys, config });
+      updateConfigValues(config);
+      form.reset({ ...configValues, ...config });
       toast.success(response.data.message);
-      useConfigStore.setState({ config: updatedConfig });
-      setLocalConfig(updatedConfig);
     } catch (error: any) {
-      toast.error(error.response?.data?.message);
+      toast.error(error.response.data.message);
     }
   };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
       <div className="container px-4 mx-auto">
-        <Card className="p-6 rounded-lg shadow-lg ">
+        <Card className="p-6 rounded-lg shadow-lg">
           <h2 className="mb-4 text-2xl font-semibold">Configuration</h2>
-          {Object.entries(localConfig).map(([key, value]) => (
-            <div key={key} className="mb-4">
-              <Label htmlFor={key} className="block font-medium">
-                {key}
-              </Label>
-              <Input id={key} type="text" value={value} onChange={(e) => handleChange(key, e.target.value)} className="mt-2 mb-2" />
-            </div>
-          ))}
-          <Button onClick={handleSave} className="px-6 py-3 rounded-md">
-            Save
-          </Button>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <FormField
+                control={form.control}
+                name="APP_NAME"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>APP_NAME</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Nom de l'application" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button type="submit">Enregistrer</Button>
+            </form>
+          </Form>
         </Card>
       </div>
     </div>
