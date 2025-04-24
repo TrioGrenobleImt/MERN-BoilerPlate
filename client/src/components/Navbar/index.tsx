@@ -20,11 +20,10 @@ import {
 } from "../ui/dropdown-menu";
 import { useLogout } from "@/hooks/useLogout";
 import { AvatarWithStatusCell } from "@/components/ui/customs/avatarStatusCell";
-import { useConfigStore } from "@/stores/configStore";
+import { useConfig } from "../../contexts/configContext";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const appName = useConfigStore((state) => state.config["APP_NAME"]);
 
   const menuRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -33,6 +32,18 @@ export const Navbar = () => {
   const { authUser } = useAuthContext();
 
   const { logout, loading } = useLogout();
+
+  const { getConfigValue } = useConfig();
+  const [configValues, setConfigValues] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    const fetchConfigValues = async () => {
+      const values = await getConfigValue(["APP_NAME"]);
+      setConfigValues(values);
+    };
+
+    fetchConfigValues();
+  }, [getConfigValue]);
 
   useEffect(() => {
     const handleClickOutside = (event: { target: any }) => {
@@ -55,7 +66,7 @@ export const Navbar = () => {
       <div className="sticky top-0 left-0 right-0 z-50 border-b border-primary bg-background">
         <div className="items-center justify-between hidden p-4 px-8 select-none md:flex text-primary">
           <div className="text-3xl font-extrabold">
-            <Link to="/">{appName}</Link>
+            <Link to="/">{configValues["APP_NAME"]}</Link>
           </div>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
@@ -110,7 +121,7 @@ export const Navbar = () => {
         {/* Mobile Navbar with Hamburger Menu */}
         <div className="flex items-center justify-between p-4 md:hidden ">
           <div className="text-3xl font-extrabold">
-            <Link to="/">{appName}</Link>
+            <Link to="/">{configValues["APP_NAME"]}</Link>
           </div>
           <Menu onClick={() => setIsOpen(!isOpen)} className="cursor-pointer" />
         </div>
