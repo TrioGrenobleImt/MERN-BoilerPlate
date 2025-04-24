@@ -1,4 +1,6 @@
 import { Config } from "../models/configModel.js";
+import { logLevels } from "../utils/enums/logLevel.js";
+import { createLog } from "./logController.js";
 
 /**
  * Gets configuration settings based on provided keys.
@@ -28,21 +30,26 @@ export const updateConfig = async (req, res) => {
   }
 
   try {
-    const updatePromises = keys.map(async (key) => {
+    keys.map(async (key) => {
       if (config.hasOwnProperty(key)) {
         const updatedConfig = await Config.findOneAndUpdate({ key }, { value: config[key] }, { new: true, upsert: true });
+        createLog({
+          level: logLevels.INFO,
+          message: `Configuration updated for key : ${key}`,
+          userId: req.userId,
+        });
         return updatedConfig;
       } else {
-        console.warn(`Key ${key} not found in config object`);
-        return null;
+        createLog({
+          level: logLevels.ERROR,
+          message: `Key ${key} not found in config object`,
+          userId: req.userId,
+        });
+        return res.status(400).json({ message: `Key ${key} not found in config object` });
       }
     });
 
-    const updatedConfigs = await Promise.all(updatePromises);
-
-    const validUpdatedConfigs = updatedConfigs.filter((config) => config !== null);
-
-    res.json({ message: "Configuration updated successfully", config: validUpdatedConfigs });
+    res.json({ message: "Configuration updated successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
