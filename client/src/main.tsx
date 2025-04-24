@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.js";
 import { BrowserRouter } from "react-router-dom";
@@ -7,45 +7,30 @@ import { AuthContextProvider } from "./contexts/authContext.js";
 import "./lib/i18n.js";
 import { ThemeProvider } from "./providers/theme-provider.js";
 import { SocketContextProvider } from "./contexts/socketContext.js";
-import { useConfigStore } from "@/stores/configStore"; // Importer le store
-import { Loading } from "./components/ui/customs/Loading.js";
+import { ConfigProvider } from "./contexts/configContext.js";
 
 if (!import.meta.env.VITE_API_URL) {
   throw new Error("VITE_API_URL is not defined in the environment file");
 }
 
-const GlobalConfigLoader = () => {
-  const { isLoaded, loadConfig } = useConfigStore();
-
-  useEffect(() => {
-    if (!isLoaded) {
-      loadConfig(["APP_NAME"]);
-    }
-  }, [isLoaded, loadConfig]);
-
-  if (!isLoaded) {
-    return <Loading />;
-  }
-
-  return (
-    <React.StrictMode>
-      <AuthContextProvider>
-        <SocketContextProvider>
-          <BrowserRouter>
-            <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-              <App />
-            </ThemeProvider>
-            <Toaster />
-          </BrowserRouter>
-        </SocketContextProvider>
-      </AuthContextProvider>
-    </React.StrictMode>
-  );
-};
-
 const rootElement = document.getElementById("root");
 if (rootElement) {
-  ReactDOM.createRoot(rootElement).render(<GlobalConfigLoader />);
+  ReactDOM.createRoot(rootElement).render(
+    <React.StrictMode>
+      <ConfigProvider>
+        <AuthContextProvider>
+          <SocketContextProvider>
+            <BrowserRouter>
+              <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+                <App />
+              </ThemeProvider>
+              <Toaster />
+            </BrowserRouter>
+          </SocketContextProvider>
+        </AuthContextProvider>
+      </ConfigProvider>
+    </React.StrictMode>,
+  );
 } else {
   console.error("Failed to find the root element");
 }
