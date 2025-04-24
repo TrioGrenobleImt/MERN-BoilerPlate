@@ -10,14 +10,12 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useAuthContext } from "@/contexts/authContext";
 import { axiosConfig } from "@/config/axiosConfig";
-import { useState } from "react";
 import { t } from "i18next";
-import { useConfigStore } from "@/stores/configStore";
+import { useConfig } from "@/contexts/configContext";
+import { useEffect, useState } from "react";
 
 export const Register = () => {
   const [loading, setLoading] = useState(false);
-
-  const appName = useConfigStore((state) => state.config["APP_NAME"]);
 
   const navigate = useNavigate();
   const { setAuthUser } = useAuthContext();
@@ -53,10 +51,22 @@ export const Register = () => {
     }
   }
 
+  const { getConfigValue } = useConfig();
+  const [configValues, setConfigValues] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    const fetchConfigValues = async () => {
+      const values = await getConfigValue(["APP_NAME"]);
+      setConfigValues(values);
+    };
+
+    fetchConfigValues();
+  }, [getConfigValue]);
+
   return (
     <div className="flex flex-col items-center justify-center gap-6 p-6 min-h-svh bg-muted md:p-10">
       <div className="flex flex-col w-full max-w-2xl gap-6 px-4 md:px-0">
-        <div className="flex items-center self-center gap-2 text-xl font-medium">{appName}</div>
+        <div className="flex items-center self-center gap-2 text-xl font-medium">{configValues["APP_NAME"]}</div>
         <Card className="w-full">
           <CardHeader className="text-center">
             <CardTitle className="text-xl md:text-2xl">{t("pages.register.title")}</CardTitle>
