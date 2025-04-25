@@ -150,6 +150,11 @@ Don’t forget to restart the server afterward.
 🐶 **Husky Integration**:
 
 This project uses **Husky** to automatically run code formatting and lint checks before each commit, ensuring a consistent codebase.
+If the pre-commit hook doesn’t work, verify that husky have the correct permissions:
+
+```bash
+chmod +x .husky/pre-commit
+```
 
 ### Benefits
 
@@ -194,3 +199,7 @@ This project uses **Husky** to automatically run code formatting and lint checks
 - Comment your code when necessary.
 - Follow naming and style conventions.
 - Add unit tests when applicable.
+
+```
+
+```
