@@ -15,7 +15,6 @@ import { useLogout } from "@/hooks/useLogout";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { UserInterface } from "@/interfaces/User";
-
 import { useEffect, useRef } from "react";
 
 export function NavUser({ user }: { user: UserInterface | null }) {

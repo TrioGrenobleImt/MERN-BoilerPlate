@@ -49,7 +49,7 @@ export const Router = () => {
         </Route>
       </Route>
 
-      <Route element={<LayoutWrapper withLayout={true} />}>
+      <Route element={<LayoutWrapper />}>
         <Route path="/" element={<Home />} />
         <Route
           path="/account"

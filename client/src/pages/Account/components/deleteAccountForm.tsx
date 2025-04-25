@@ -12,7 +12,6 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { useNavigate } from "react-router-dom";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useTranslation } from "react-i18next";
 import { t } from "i18next";
 
 interface DeleteAccountProps {

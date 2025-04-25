@@ -2,7 +2,7 @@ import { Loading } from "@/components/ui/customs/Loading";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { axiosConfig } from "@/config/axiosConfig";
 import { useSocketContext } from "@/contexts/socketContext";
-import { UserCheck, UserRoundCheck, Users, UserX } from "lucide-react";
+import { UserRoundCheck, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 

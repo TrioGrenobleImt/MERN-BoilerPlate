@@ -3,7 +3,6 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { DataTable } from "./data-table";
 import { getColumns } from "./columns";
-
 import { Dialog, DialogHeader, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { UserForm } from "./userForm";
 import { UserInterface } from "@/interfaces/User";
