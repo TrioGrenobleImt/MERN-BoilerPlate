@@ -11,6 +11,8 @@ Welcome to the MERN-APP boilerplate, a complete solution to quickly start a mode
   - [Technologies Used](#technologies-used)
   - [Backend](#backend)
   - [Frontend](#frontend)
+  - [Run the Application](#run-the-application)
+  - [Application Configuration](#application-configuration)
   - [Unit Tests](#unit-tests)
   - [Husky](#husky)
   - [Features](#features)
@@ -32,9 +34,9 @@ Welcome to the MERN-APP boilerplate, a complete solution to quickly start a mode
 ## Backend
 
 🔙 Navigate to the `server` directory.  
-You first need to create a **.env** file containing the backend environment variables.
+You need to create a **.env** file containing the backend environment variables.
 
-Example below:
+Example:
 
 ```env
 PORT=
@@ -44,113 +46,125 @@ SECRET_ACCESS_TOKEN=
 CORS_ORIGIN=
 ```
 
-- **PORT** -> The port your server will use.
-- **MONG_URI** -> Connection address to a MongoDB database (Don't forget to add your IP address in **Network Access**).
-- **MONG_URI_TEST** -> Connection address to a test database (You can use the same as the main app, but the data will be wiped during tests, **not recommended**).
-- **SECRET_ACCESS_TOKEN** -> **Secret** token used to generate user access tokens.
-- **CORS_ORIGIN** -> The origin address of your frontend application.
+- **PORT** → The port your server will use.
+- **MONG_URI** → MongoDB connection string (don’t forget to allow your IP in MongoDB Atlas if applicable).
+- **MONG_URI_TEST** → Test DB URI (data gets wiped during tests — use a separate DB).
+- **SECRET_ACCESS_TOKEN** → JWT token secret.
+- **CORS_ORIGIN** → Frontend URL for CORS setup.
 
-For a clear example, please refer to the **.env.example** file in the server directory.
+Refer to the `.env.example` file in the `server` directory for guidance.
 
 ## Frontend
 
-🎨 For the frontend, it's even simpler. Navigate to the `client` directory and follow the procedure below:
-
-Create a **.env** file containing the frontend environment variables.
-
-Example below:
+🎨 Navigate to the `client` directory and create a **.env** file:
 
 ```env
 VITE_API_URL=
 ```
 
-- **VITE_API_URL** -> Connection address to your backend server
+- **VITE_API_URL** → URL of your backend server (e.g. `http://localhost:5000`)
 
-Example: `http://localhost:5000`. For a clear example, please refer to the **.env.example** file in the client directory.
+See `.env.example` in `client` for reference.
 
 ## Run the Application
 
-⚡ From the root of the application, run the following command to install all dependencies:
+⚡ Install and run the frontend and backend separately in two terminals:
 
-```shell
-$ pnpm install
+**Terminal 1: Start the Frontend**
+
+```bash
+cd client
+pnpm i
+pnpm dev
 ```
 
-Then to start yout application, run the following command:
+**Terminal 2: Start the Backend**
 
-```shell
-$ pnpm run dev
+```bash
+cd server
+pnpm i
+pnpm dev
 ```
 
-This command will start both the backend and frontend servers.
-Go to your browser and navigate to `http://localhost:5173` to see the application in action.
+Once both servers are running, go to [http://localhost:5173](http://localhost:5173) to see the application.
+
+## 🛠 Application Configuration
+
+This boilerplate includes a `config` table in the database which stores dynamic configuration values, including the **application name**.
+
+🧩 After cloning and launching the app:
+
+1. **Manually create your first admin user** in the database (via MongoDB Atlas or another method).
+2. Log into the app with this admin account.
+3. Access the **Admin Dashboard**.
+4. Go to the **Settings** section.
+5. Set your **application name** (APP_NAME).
+
+📛 This name will be displayed in various places across the app, providing a personalized brand. Once configured, your application is fully ready to be extended for your use case.
 
 ## Unit Tests
 
-🧪 First, Make sure your server is turned off, and run the following command:
+🧪 First, turn off the server if it's running, then run:
 
-```shell
-$ pnpm run test
+```bash
+pnpm run test
 ```
 
-Unit tests should run one by one.  
-If you want full coverage, run the following command:
+To check full test coverage:
 
-```shell
-$ pnpm run coverage
+```bash
+pnpm run coverage
 ```
 
-Your coverage report should be located in the `coverage` directory of the server.  
-Don't forget to restart your backend after running tests.
+The coverage report will be generated in the `server/coverage` folder.  
+Don’t forget to restart the server afterward.
 
 ## Husky
 
 🐶 **Husky Integration**:
 
-This project includes Husky, a Git hooks tool that ensures code quality and consistency. Husky automatically formats the entire project using Prettier before each commit, keeping the repository clean and uniform.
+This project uses **Husky** to automatically run code formatting and lint checks before each commit, ensuring a consistent codebase.
 
 ### Benefits
 
-- **Consistent Code Style**: Ensures all contributors follow the same coding standards.
-- **Reduced Manual Effort**: Automates formatting, saving time and effort.
-- **Cleaner Repository**: Maintains a clean and readable codebase.
-
-Husky helps keep every commit clean and well-formatted, making collaboration smoother and the codebase more reliable.
+- ✨ **Consistent Style**
+- 🛠️ **Less Manual Work**
+- ✅ **Reliable Codebase**
 
 ## Features
 
 🚀 **Features:**
 
-- 📜 **Log Management**: Track app usage for better maintenance and analysis.
-- 👥 **User CRUD**: Manage users with create, read, update, and delete operations.
-- 🔒 **Secure Authentication with JWT**: Secure login and logout with JWT tokens to protect data.
-- 🏢 **Role Management**: Differentiated access based on user roles (Admin, User).
-- ✅ **Unit Testing**: Unit tests to ensure application stability.
-- 📝 **Commented Backend**: All backend code is commented for better understanding and maintenance.
-- 🔗 **Axios for API Requests**: Uses Axios for simplified and efficient HTTP requests.
-- 📊 **Admin Dashboard**: Dedicated interface for user management and tracking application usage logs.
-- 🔐 **Protected Routes**: Conditional access to specific pages based on user rights (Admin Dashboard, etc.).
-- 🚧 **Conditional Routing**: Block certain routes based on login state.
-- 🌙 **Theme Management**: Toggle between "light" and "dark" themes for a customized user experience.
-- 🌍 **Internationalization with I18n**: Multi-language support with JSON translation files.
-- 🎨 **Modern UI**: Uses **TailwindCSS** and **ShadCN** for a responsive and elegant design.
-- 📋 **Auth Forms**: Preconfigured login and register form for quick integration
-- 🔄 **Prettier Configuration**: Integrated code formatting with Prettier for consistent styling.
-- 🖼 **Avatar Upload with GIF Support**: Users can upload profile pictures, including animated GIFs.
-- 📡 **Real-Time Online Status**: See which users are online in real-time through WebSockets.
+- 📜 Log Management
+- 👥 User CRUD (Create, Read, Update, Delete)
+- 🔒 JWT-based Authentication
+- 🏢 Role-based Access Control (Admin, User)
+- ✅ Unit Testing with Coverage
+- 📝 Fully Commented Backend Code
+- 🔗 API Requests with Axios
+- 📊 Admin Dashboard
+- 🔐 Protected & Conditional Routing
+- 🌙 Light/Dark Theme Toggle
+- 🌍 i18n Multi-language Support
+- 🎨 TailwindCSS + ShadCN UI
+- 📋 Ready-to-use Auth Forms
+- 🔄 Prettier Formatting
+- 🖼 Avatar Upload with GIF support
+- 📡 Real-time Online Status via WebSocket
+- 🧩 Application Configuration via Database
 
 ## Contribution
 
-🤝 We encourage contributions from the community! If you wish to contribute, please follow these steps:
+🤝 We welcome contributions! To contribute:
 
-1. **Fork** the project.
-2. Create a branch for your feature (`git checkout -b feature/new-feature`).
-3. Commit your changes (`git commit -m 'Add new feature'`).
-4. Push the branch (`git push origin feature/new-feature`).
+1. **Fork** the repository.
+2. Create a new branch: `git checkout -b feature/my-feature`.
+3. Commit your changes: `git commit -m 'Add my feature'`.
+4. Push to GitHub: `git push origin feature/my-feature`.
 5. Open a Pull Request.
 
 ### Contribution Guidelines
 
-- Ensure your code is well-commented.
-- Follow the project's naming and style conventions.
-- Add unit tests for your changes.
+- Comment your code when necessary.
+- Follow naming and style conventions.
+- Add unit tests when applicable.

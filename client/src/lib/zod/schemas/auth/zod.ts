@@ -8,7 +8,7 @@ export const getLoginSchema = (t: (key: string) => string) =>
       .regex(/^[^A-Z\s]+$/, { message: t("pages.login.errors.login_name_no_spaces") }),
     password: z
       .string()
-      .min(6, { message: t("pages.login.errors.password_min") })
+      .min(1, { message: t("pages.login.errors.password_min") })
       .max(255, { message: t("pages.login.errors.password_max") }),
   });
 
