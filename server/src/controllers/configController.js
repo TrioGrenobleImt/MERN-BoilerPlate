@@ -12,9 +12,9 @@ export const getConfig = async (req, res) => {
   try {
     const configItems = await Config.find({ key: { $in: keys } });
 
-    res.json({ config: configItems });
+    res.status(200).json({ config: configItems });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -51,6 +51,6 @@ export const updateConfig = async (req, res) => {
 
     res.json({ message: "Configuration updated successfully" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
