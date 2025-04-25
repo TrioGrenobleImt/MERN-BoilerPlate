@@ -20,14 +20,30 @@ export const ConfigProvider: React.FC<ConfigProviderProps> = ({ children }) => {
 
   const loadConfig = useCallback(
     async (keys: string[]) => {
-      const missingKeys = keys.filter((key) => configValues[key] === undefined);
+      const missingKeys = keys.filter((key) => !(key in configValues));
       if (missingKeys.length === 0) {
         return configValues;
       }
 
       try {
         const res = await axiosConfig.get(`/config?keys=${missingKeys.join(",")}`);
-        const configMap: ConfigMap = Object.fromEntries(res.data.config.map((c: { key: string; value: string }) => [c.key, c.value]));
+        const foundConfig = res.data.config;
+
+        const configMap: ConfigMap = {};
+        const fetchedKeys = new Set<string>();
+
+        for (const c of foundConfig) {
+          configMap[c.key] = c.value;
+          fetchedKeys.add(c.key);
+        }
+
+        // Marque les clés manquantes avec une valeur spéciale
+        for (const key of missingKeys) {
+          if (!fetchedKeys.has(key)) {
+            configMap[key] = "__NOT_FOUND__";
+          }
+        }
+
         setConfigValues((prevConfig) => ({ ...prevConfig, ...configMap }));
         return { ...configValues, ...configMap };
       } catch (err: any) {
