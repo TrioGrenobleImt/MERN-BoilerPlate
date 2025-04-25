@@ -9,6 +9,7 @@ Welcome to the MERN-APP boilerplate, a complete solution to quickly start a mode
   
   - [Author](#author)
   - [Technologies Used](#technologies-used)
+  - [Requirements](#requirements)
   - [Backend](#backend)
   - [Frontend](#frontend)
   - [Run the Application](#run-the-application)
@@ -30,6 +31,23 @@ Welcome to the MERN-APP boilerplate, a complete solution to quickly start a mode
 ![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
+
+## Requirements
+
+📦 Before starting, make sure you have the following installed:
+
+- **Node.js**: v22.x or higher
+- **pnpm**: v10.x or higher
+- **Git**: v2.47.x or higher (for Husky hooks)
+- **A modern browser** (Chrome, Firefox, etc.)
+
+You can check your installed versions using:
+
+```bash
+node -v
+pnpm -v
+git --version
+```
 
 ## Backend
 
