@@ -104,7 +104,14 @@ pnpm i
 pnpm dev
 ```
 
-Once both servers are running, go to [http://localhost:5173](http://localhost:5173) to see the application.
+You should see the following messages in the terminal:
+
+```bash
+Server listenning on port ... 🚀
+Connected to the database 🧰
+```
+
+Once both are running, go to [http://localhost:5173](http://localhost:5173) to see the application.
 
 ## 🛠 Application Configuration
 
@@ -112,11 +119,12 @@ This boilerplate includes a `config` table in the database which stores dynamic 
 
 🧩 After cloning and launching the app:
 
-1. **Manually create your first admin user** in the database (via MongoDB Atlas or another method).
-2. Log into the app with this admin account.
-3. Access the **Admin Dashboard**.
-4. Go to the **Settings** section.
-5. Set your **application name** (APP_NAME).
+1. **Register a new user** via the **Register** page.
+2. **Set the role to 'admin'** in the database (via MongoDB Atlas or another method)..
+3. Reload the page and you should have access to the **Admin Dashboard**.
+4. Access the **Admin Dashboard**.
+5. Go to the **Settings** section.
+6. Set your **application name** (APP_NAME).
 
 📛 This name will be displayed in various places across the app, providing a personalized brand. Once configured, your application is fully ready to be extended for your use case.
 
