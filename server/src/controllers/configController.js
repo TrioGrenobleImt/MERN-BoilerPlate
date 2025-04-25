@@ -30,15 +30,14 @@ export const updateConfig = async (req, res) => {
   }
 
   try {
-    keys.map(async (key) => {
+    for (const key of keys) {
       if (config.hasOwnProperty(key)) {
-        const updatedConfig = await Config.findOneAndUpdate({ key }, { value: config[key] }, { new: true, upsert: true });
+        await Config.findOneAndUpdate({ key }, { value: config[key] }, { new: true, upsert: true });
         createLog({
           level: logLevels.INFO,
           message: `Configuration updated for key : ${key}`,
           userId: req.userId,
         });
-        return updatedConfig;
       } else {
         createLog({
           level: logLevels.ERROR,
@@ -47,7 +46,7 @@ export const updateConfig = async (req, res) => {
         });
         return res.status(400).json({ message: `Key ${key} not found in config object` });
       }
-    });
+    }
 
     res.json({ message: "Configuration updated successfully" });
   } catch (error) {
