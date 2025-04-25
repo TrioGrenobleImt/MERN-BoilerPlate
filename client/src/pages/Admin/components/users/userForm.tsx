@@ -57,14 +57,10 @@ export const UserForm = ({ dialog, refresh, action, user }: UserFormProps) => {
     try {
       setLoading(true);
       const response = await axiosConfig.post("/users", values);
-      toast.loading("Creating user...");
-      setTimeout(() => {
-        toast.dismiss();
-        toast.success(response.data.message);
-        dialog(false);
-        refresh();
-        createForm.reset();
-      }, 1000);
+      toast.success(response.data.message);
+      dialog(false);
+      refresh();
+      createForm.reset();
     } catch (error: any) {
       toast.error(error.response.data.error);
     } finally {
@@ -76,14 +72,10 @@ export const UserForm = ({ dialog, refresh, action, user }: UserFormProps) => {
     try {
       setLoading(true);
       const response = await axiosConfig.put(`/users/${user?._id}`, values);
-      toast.loading("Updating user...");
-      setTimeout(() => {
-        toast.dismiss();
-        toast.success(response.data.message);
-        dialog(false);
-        refresh();
-        updateForm.reset();
-      }, 1000);
+      toast.success(response.data.message);
+      dialog(false);
+      refresh();
+      updateForm.reset();
     } catch (error: any) {
       toast.error(error.response.data.error);
     } finally {
@@ -96,13 +88,9 @@ export const UserForm = ({ dialog, refresh, action, user }: UserFormProps) => {
       try {
         setLoading(true);
         const response = await axiosConfig.delete(`/users/${user?._id}`);
-        toast.loading("Deleting user...");
-        setTimeout(() => {
-          toast.dismiss();
-          toast.success(response.data.message);
-          dialog(false);
-          refresh();
-        }, 1000);
+        toast.success(response.data.message);
+        dialog(false);
+        refresh();
       } catch (error: any) {
         toast.error(error.response.data.error);
       } finally {
@@ -117,13 +105,9 @@ export const UserForm = ({ dialog, refresh, action, user }: UserFormProps) => {
     try {
       setLoading(true);
       const response = await axiosConfig.get(`/users/utils/generatePassword`);
-      toast.loading("Generating password...");
-      setTimeout(() => {
-        toast.dismiss();
-        toast.success("Password generated successfully");
-        if (action === "update") updateForm.setValue("password", response.data.password);
-        if (action === "create") createForm.setValue("password", response.data.password);
-      }, 1000);
+      toast.success("Password generated successfully");
+      if (action === "update") updateForm.setValue("password", response.data.password);
+      if (action === "create") createForm.setValue("password", response.data.password);
     } catch (error: any) {
       toast.error(error.response.data.error);
     } finally {

@@ -38,14 +38,10 @@ export const DeleteAccountForm = ({ setOpen }: DeleteAccountProps) => {
     try {
       setLoading(true);
       const response = await axiosConfig.delete(`/users/delete/account`, { data: valuesToSend });
-      toast.loading(t("pages.account.deleting_account"));
-      setTimeout(() => {
-        toast.dismiss();
-        toast.success(t(response.data.message));
-        setAuthUser(null);
-        navigate("/login");
-        deleteAccountForm.reset();
-      }, 1000);
+      toast.success(t(response.data.message));
+      setAuthUser(null);
+      navigate("/login");
+      deleteAccountForm.reset();
     } catch (error: any) {
       toast.error(t(error.response.data.error));
     } finally {
