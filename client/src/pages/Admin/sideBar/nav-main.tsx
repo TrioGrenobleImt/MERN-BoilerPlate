@@ -1,7 +1,7 @@
 import { type LucideIcon } from "lucide-react";
 import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useConfig } from "@/contexts/configContext";
+import { useConfigContext } from "@/contexts/configContext";
 import { useEffect, useState } from "react";
 
 export function NavMain({
@@ -21,7 +21,7 @@ export function NavMain({
   const styleDefault = "px-4 py-3 font-light flex items-center justify-center gap-3";
   const styleActive = ` mx-4 my-3 flex items-center justify-center gap-3 text-primary border-b border-primary`;
 
-  const { getConfigValue } = useConfig();
+  const { getConfigValue } = useConfigContext();
   const [configValues, setConfigValues] = useState<Record<string, string>>({});
 
   useEffect(() => {

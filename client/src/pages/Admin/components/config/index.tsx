@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { axiosConfig } from "@/config/axiosConfig";
 import { toast } from "sonner";
-import { useConfig } from "@/contexts/configContext";
+import { useConfigContext } from "@/contexts/configContext";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,7 +17,7 @@ const configurationFormSchema = z.object({
 type ConfigurationFormValues = z.infer<typeof configurationFormSchema>;
 
 export const Config = () => {
-  const { configValues, getConfigValue, updateConfigValues } = useConfig();
+  const { configValues, getConfigValue, updateConfigValues } = useConfigContext();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const form = useForm<ConfigurationFormValues>({

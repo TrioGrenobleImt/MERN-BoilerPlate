@@ -68,10 +68,10 @@ export const ConfigProvider: React.FC<ConfigProviderProps> = ({ children }) => {
   return <ConfigContext.Provider value={{ configValues, getConfigValue, updateConfigValues }}>{children}</ConfigContext.Provider>;
 };
 
-export const useConfig = (): ConfigContextType => {
+export const useConfigContext = (): ConfigContextType => {
   const context = useContext(ConfigContext);
   if (context === null) {
-    throw new Error("useConfig must be used within a ConfigProvider");
+    throw new Error("useConfigContext must be used within a ConfigProvider");
   }
   return context;
 };

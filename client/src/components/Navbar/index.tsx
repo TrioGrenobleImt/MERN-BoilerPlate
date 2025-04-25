@@ -20,21 +20,20 @@ import {
 } from "../ui/dropdown-menu";
 import { useLogout } from "@/hooks/useLogout";
 import { AvatarWithStatusCell } from "@/components/ui/customs/avatarStatusCell";
-import { useConfig } from "../../contexts/configContext";
+import { useConfigContext } from "../../contexts/configContext";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [configValues, setConfigValues] = useState<Record<string, string>>({});
 
   const menuRef = useRef<HTMLDivElement>(null);
+
   const navigate = useNavigate();
-
   const { t } = useTranslation();
-  const { authUser } = useAuthContext();
-
   const { logout, loading } = useLogout();
 
-  const { getConfigValue } = useConfig();
-  const [configValues, setConfigValues] = useState<Record<string, string>>({});
+  const { authUser } = useAuthContext();
+  const { getConfigValue } = useConfigContext();
 
   useEffect(() => {
     const fetchConfigValues = async () => {

@@ -11,7 +11,7 @@ import { useAuthContext } from "@/contexts/authContext";
 import { axiosConfig } from "@/config/axiosConfig";
 import { toast } from "sonner";
 import { t } from "i18next";
-import { useConfig } from "@/contexts/configContext";
+import { useConfigContext } from "@/contexts/configContext";
 import { useEffect, useState } from "react";
 
 export const Login = () => {
@@ -50,7 +50,7 @@ export const Login = () => {
     }
   }
 
-  const { getConfigValue } = useConfig();
+  const { getConfigValue } = useConfigContext();
   const [configValues, setConfigValues] = useState<Record<string, string>>({});
 
   useEffect(() => {
