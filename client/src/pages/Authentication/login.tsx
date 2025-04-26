@@ -10,14 +10,15 @@ import { z } from "zod";
 import { useAuthContext } from "@/contexts/authContext";
 import { axiosConfig } from "@/config/axiosConfig";
 import { toast } from "sonner";
-import { t } from "i18next";
 import { useConfigContext } from "@/contexts/configContext";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export const Login = () => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { setAuthUser } = useAuthContext();
 
   const loginSchema = getLoginSchema(t);

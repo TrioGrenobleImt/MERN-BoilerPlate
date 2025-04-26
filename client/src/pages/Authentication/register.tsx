@@ -10,15 +10,16 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useAuthContext } from "@/contexts/authContext";
 import { axiosConfig } from "@/config/axiosConfig";
-import { t } from "i18next";
 import { useConfigContext } from "@/contexts/configContext";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export const Register = () => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const { setAuthUser } = useAuthContext();
+  const { t } = useTranslation();
 
   const registerSchema = getRegisterSchema(t);
   const registerForm = useForm<z.infer<typeof registerSchema>>({

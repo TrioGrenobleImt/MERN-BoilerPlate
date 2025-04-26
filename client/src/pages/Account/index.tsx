@@ -25,10 +25,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DeleteAccountForm } from "./components/deleteAccountForm";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 export const Account = () => {
   const { authUser, setAuthUser, loading } = useAuthContext();
+  const { t } = useTranslation();
+
   const [updateLoading, setUpdateLoading] = useState(false);
   const [openUpdatePasswordDialog, setOpenUpdatePasswordDialog] = useState(false);
   const [openDeleteAccountDialog, setOpenDeleteAccountDialog] = useState(false);

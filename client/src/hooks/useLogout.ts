@@ -3,11 +3,12 @@ import { axiosConfig } from "../config/axiosConfig";
 import { useAuthContext } from "../contexts/authContext";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 export const useLogout = () => {
   const [loading, setLoading] = useState(false);
 
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { setAuthUser } = useAuthContext();
 
