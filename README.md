@@ -113,7 +113,7 @@ Connected to the database 🧰
 
 Once both are running, go to [http://localhost:5173](http://localhost:5173) to see the application.
 
-## 🛠 Application Configuration
+## Application Configuration
 
 This boilerplate includes a `config` table in the database which stores dynamic configuration values, including the **application name**.
 
@@ -199,7 +199,3 @@ chmod +x .husky/pre-commit
 - Comment your code when necessary.
 - Follow naming and style conventions.
 - Add unit tests when applicable.
-
-```
-
-```
