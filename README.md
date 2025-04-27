@@ -67,7 +67,7 @@ CORS_ORIGIN=
 - **PORT** → The port your server will use.
 - **MONG_URI** → MongoDB connection string (don’t forget to allow your IP in MongoDB Atlas if applicable).
 - **MONG_URI_TEST** → Test DB URI (data gets wiped during tests — use a separate DB).
-- **SECRET_ACCESS_TOKEN** → JWT token secret.
+- **SECRET_ACCESS_TOKEN** → JWT token secret (use this command : *openssl rand -base64 64*).
 - **CORS_ORIGIN** → Frontend URL for CORS setup.
 
 Refer to the `.env.example` file in the `server` directory for guidance.
