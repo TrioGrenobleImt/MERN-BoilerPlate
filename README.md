@@ -119,12 +119,10 @@ This boilerplate includes a `config` table in the database which stores dynamic 
 
 🧩 After cloning and launching the app:
 
-1. **Register a new user** via the **Register** page.
-2. **Set the role to 'admin'** in the database (via MongoDB Atlas or another method)..
-3. Reload the page and you should have access to the **Admin Dashboard**.
-4. Access the **Admin Dashboard**.
-5. Go to the **Settings** section.
-6. Set your **application name** (APP_NAME).
+1. **Register a new user** via the **Register** page (first user is an administrator by default).
+2. Access the **Admin Dashboard**.
+3. Go to the **Settings** section.
+4. Set your **application name** (APP_NAME).
 
 📛 This name will be displayed in various places across the app, providing a personalized brand. Once configured, your application is fully ready to be extended for your use case.
 
