@@ -46,6 +46,14 @@ export const register = async (req, res) => {
       name,
       forename,
     });
+
+
+    const userCount = await User.countDocuments();
+    if (userCount === 1) {
+      user.role = "admin";
+      await user.save();
+    }    
+    
     const accessToken = generateAccessToken(user._id);
 
     res.cookie("__access__token", accessToken, {
