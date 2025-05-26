@@ -93,7 +93,7 @@ export const getColumns = (deleteLog: (id: string) => void): ColumnDef<LogInterf
             >
               <Copy className="w-4 h-4" /> Copy log ID
             </DropdownMenuItem>
-            <DropdownMenuItem className="flex gap-4 text-destructive hover:!text-destructive" onClick={() => deleteLog(log._id)}>
+            <DropdownMenuItem className="flex gap-4 text-destructive hover:text-destructive!" onClick={() => deleteLog(log._id)}>
               <Trash className="w-4 h-4 " />
               <span>Delete this log</span>
             </DropdownMenuItem>

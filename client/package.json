@@ -23,6 +23,7 @@
     "@radix-ui/react-separator": "^1.1.7",
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tooltip": "^1.2.7",
+    "@tailwindcss/vite": "^4.1.7",
     "@tanstack/react-table": "^8.21.3",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.9.0",
@@ -47,13 +48,13 @@
     "zod": "^3.25.28"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.7",
     "@types/node": "^22.15.21",
     "@types/react": "19.1.5",
     "@types/react-dom": "19.1.5",
     "@vitejs/plugin-react": "^4.5.0",
-    "autoprefixer": "^10.4.21",
     "postcss": "^8.5.3",
-    "tailwindcss": "^3.4.17",
+    "tailwindcss": "^4.1.7",
     "vite": "6.3.5"
   }
 }

@@ -46,9 +46,9 @@ export function NavMain({
       <SidebarMenu>
         {items.map((item) => (
           <SidebarMenuItem key={item.title} onClick={() => handleClick(item.url)}>
-            <SidebarMenuButton tooltip={item.title}>
+            <SidebarMenuButton tooltip={item.title} className="cursor-pointer">
               {item.icon && <item.icon />}
-              <span className={`${isActive(item.url, true) ? styleActive : styleDefault}`}>{item.title}</span>
+              <span className={`${isActive(item.url, true) ? styleActive : styleDefault} `}>{item.title}</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         ))}

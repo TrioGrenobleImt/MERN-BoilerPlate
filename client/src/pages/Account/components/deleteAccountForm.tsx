@@ -61,7 +61,7 @@ export const DeleteAccountForm = ({ setOpen }: DeleteAccountProps) => {
             control={deleteAccountForm.control}
             name="checkApproval"
             render={({ field }) => (
-              <FormItem className="flex flex-col p-4 space-y-3 border rounded-md shadow">
+              <FormItem className="flex flex-col p-4 space-y-3 border rounded-md shadow-sm">
                 <div className="flex items-start space-x-3">
                   <FormControl>
                     <Checkbox checked={field.value} onCheckedChange={field.onChange} />
