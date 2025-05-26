@@ -23,8 +23,8 @@ if (rootElement) {
             <BrowserRouter>
               <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
                 <App />
+                <Toaster />
               </ThemeProvider>
-              <Toaster />
             </BrowserRouter>
           </SocketContextProvider>
         </AuthContextProvider>
