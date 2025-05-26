@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import { Constants } from "../../constants/constants.js";
 import { createLog } from "./logController.js";
 import { logLevels } from "../utils/enums/logLevel.js";
+import { userRoles } from "../utils/enums/userRoles.js";
 
 /**
  * Registers a new user.
@@ -47,13 +48,12 @@ export const register = async (req, res) => {
       forename,
     });
 
-
     const userCount = await User.countDocuments();
     if (userCount === 1) {
-      user.role = "admin";
+      user.role = userRoles.ADMIN;
       await user.save();
-    }    
-    
+    }
+
     const accessToken = generateAccessToken(user._id);
 
     res.cookie("__access__token", accessToken, {
