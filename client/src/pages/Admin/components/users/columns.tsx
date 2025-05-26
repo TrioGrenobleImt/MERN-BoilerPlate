@@ -102,7 +102,7 @@ export const getColumns = (callback: (action: string, data: any) => void): Colum
             <DropdownMenuItem className="flex gap-4" onClick={() => callback("update", user._id)}>
               <Pencil className="w-4 h-4" /> Update this user
             </DropdownMenuItem>
-            <DropdownMenuItem className="flex gap-4 text-destructive hover:!text-destructive" onClick={() => callback("delete", user._id)}>
+            <DropdownMenuItem className="flex gap-4 text-destructive hover:text-destructive!" onClick={() => callback("delete", user._id)}>
               <Trash className="w-4 h-4" /> Delete this user
             </DropdownMenuItem>
           </DropdownMenuContent>

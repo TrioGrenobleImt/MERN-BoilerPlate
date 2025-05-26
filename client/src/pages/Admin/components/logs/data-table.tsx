@@ -114,7 +114,7 @@ export function DataTable<TData, TValue>({ columns, data, fetchLogs, isLoading, 
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem className="flex gap-4 text-destructive hover:!text-destructive" onClick={() => setOpenModal(true)}>
+            <DropdownMenuItem className="flex gap-4 text-destructive hover:text-destructive!" onClick={() => setOpenModal(true)}>
               <Trash className="w-4 h-4" />
               <span>Delete all logs</span>
             </DropdownMenuItem>
@@ -140,7 +140,7 @@ export function DataTable<TData, TValue>({ columns, data, fetchLogs, isLoading, 
               <>
                 <tr className="absolute top-0 left-0 z-10 w-full h-0.5 overflow-hidden">
                   <td colSpan={columns.length}>
-                    <div className="w-full h-full bg-gradient-to-r from-primary animate-loading" />
+                    <div className="w-full h-full bg-linear-to-r from-primary animate-loading" />
                   </td>
                 </tr>
                 {Array.from({ length: table.getState().pagination.pageSize }).map((_, idx) => (
