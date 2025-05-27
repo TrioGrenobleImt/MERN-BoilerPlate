@@ -19,7 +19,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { useLogout } from "@/hooks/useLogout";
-import { AvatarWithStatusCell } from "@/components/ui/customs/avatarStatusCell";
+import { AvatarWithStatusCell } from "@/components/customs/avatarStatusCell";
 import { useConfigContext } from "../../contexts/configContext";
 
 export const Navbar = () => {

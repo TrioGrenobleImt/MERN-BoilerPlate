@@ -4,7 +4,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, Copy, EllipsisVertical, Pencil, Trash } from "lucide-react";
 import { toast } from "sonner";
-import { AvatarWithStatusCell } from "../../../../components/ui/customs/avatarStatusCell";
+import { AvatarWithStatusCell } from "../../../../components/customs/avatarStatusCell";
 import { UserInterface } from "@/interfaces/User";
 
 export const getColumns = (callback: (action: string, data: any) => void): ColumnDef<UserInterface>[] => [

@@ -5,7 +5,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, Copy, EllipsisVertical, Trash } from "lucide-react";
 import { toast } from "sonner";
-import { AvatarWithStatusCell } from "../../../../components/ui/customs/avatarStatusCell";
+import { AvatarWithStatusCell } from "../../../../components/customs/avatarStatusCell";
 import { LogInterface } from "@/interfaces/Log";
 
 export const getColumns = (deleteLog: (id: string) => void): ColumnDef<LogInterface>[] => [
