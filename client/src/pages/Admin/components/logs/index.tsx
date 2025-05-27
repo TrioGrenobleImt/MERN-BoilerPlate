@@ -1,8 +1,8 @@
 import { axiosConfig } from "@/config/axiosConfig";
 import { useState } from "react";
 import { toast } from "sonner";
-import { DataTable } from "./data-table";
 import { getColumns } from "./columns";
+import { DataTable } from "@/components/customs/dataTable";
 
 export const Logs = () => {
   const [logs, setLogs] = useState([]);
@@ -42,16 +42,28 @@ export const Logs = () => {
     }
   }
 
+  function callback(action: string, data: any) {
+    switch (action) {
+      case "deleteAll":
+        deleteAllLogs();
+      default:
+        break;
+    }
+  }
+
   return (
     <div>
       <div className="container px-4 mx-auto">
         <DataTable
-          logCount={logCount}
           columns={getColumns(deleteLog)}
           data={logs}
-          fetchLogs={fetchAllLogs}
+          dataCount={logCount}
+          fetchData={fetchAllLogs}
           isLoading={loading}
-          deleteAllLogs={deleteAllLogs}
+          callback={callback}
+          searchElement="message"
+          searchPlaceholder="Filter by message"
+          actions={["deleteAll"]}
         />
       </div>
     </div>

@@ -1,11 +1,11 @@
 import { axiosConfig } from "@/config/axiosConfig";
 import { useState } from "react";
 import { toast } from "sonner";
-import { DataTable } from "./data-table";
 import { getColumns } from "./columns";
 import { Dialog, DialogHeader, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { UserForm } from "./userForm";
 import { UserInterface } from "@/interfaces/User";
+import { DataTable } from "@/components/customs/dataTable";
 
 export const Users = () => {
   const [users, setUsers] = useState<UserInterface[]>([]);
@@ -53,12 +53,15 @@ export const Users = () => {
     <div>
       <div className="container px-4 mx-auto">
         <DataTable
-          userCount={userCount}
           columns={getColumns(callback)}
           data={users}
-          fetchUsers={fetchUsers}
+          dataCount={userCount}
+          fetchData={fetchUsers}
           isLoading={loading}
           callback={callback}
+          searchElement="username"
+          searchPlaceholder="Filter by username"
+          actions={["create"]}
         />
       </div>
       {openDialog && (

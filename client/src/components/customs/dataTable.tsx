@@ -1,15 +1,16 @@
 import {
   ColumnDef,
   ColumnFiltersState,
-  SortingState,
-  VisibilityState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  SortingState,
   useReactTable,
+  VisibilityState,
 } from "@tanstack/react-table";
+import { useEffect, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -21,20 +22,34 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { EllipsisVertical, RefreshCw, UserPlus } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { useEffect, useState } from "react";
+import { EllipsisVertical, Plus, RefreshCw, Trash, UserPlus } from "lucide-react";
+import { Input } from "../ui/input";
+import { DialogHeader, DialogFooter, Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  fetchUsers: (pageIndex: number, pageSize: number) => void;
+  dataCount: number;
+  fetchData: (pageIndex: number, pageSize: number) => void;
   isLoading: boolean;
   callback: (action: string, data: any) => void;
-  userCount: number;
+  searchElement: string;
+  searchPlaceholder: string;
+  actions?: string[];
 }
 
-export function DataTable<TData, TValue>({ columns, data, fetchUsers, isLoading, callback, userCount }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({
+  columns,
+  data,
+  dataCount,
+  fetchData,
+  isLoading,
+  callback,
+  searchElement,
+  searchPlaceholder,
+  actions = [],
+}: DataTableProps<TData, TValue>) {
+  const [openModal, setOpenModal] = useState(false);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -44,7 +59,7 @@ export function DataTable<TData, TValue>({ columns, data, fetchUsers, isLoading,
   });
 
   useEffect(() => {
-    fetchUsers(pagination.pageIndex, pagination.pageSize);
+    fetchData(pagination.pageIndex, pagination.pageSize);
   }, [pagination.pageIndex, pagination.pageSize]);
 
   const table = useReactTable({
@@ -64,7 +79,7 @@ export function DataTable<TData, TValue>({ columns, data, fetchUsers, isLoading,
       pagination,
     },
     manualPagination: true,
-    pageCount: Math.ceil(userCount / pagination.pageSize),
+    pageCount: Math.ceil(dataCount / pagination.pageSize),
   });
 
   return (
@@ -72,9 +87,9 @@ export function DataTable<TData, TValue>({ columns, data, fetchUsers, isLoading,
       <div className="flex flex-col items-center justify-between gap-4 p-4 text-2xl md:flex-row">
         <div className="flex flex-col w-full gap-4 md:flex-row">
           <Input
-            placeholder="Filter username"
-            value={(table.getColumn("username")?.getFilterValue() as string) ?? ""}
-            onChange={(event) => table.getColumn("username")?.setFilterValue(event.target.value)}
+            placeholder={searchPlaceholder}
+            value={(table.getColumn(searchElement)?.getFilterValue() as string) ?? ""}
+            onChange={(event) => table.getColumn(searchElement)?.setFilterValue(event.target.value)}
             className="w-full md:w-auto"
           />
           <div className="flex items-center gap-2">
@@ -99,25 +114,35 @@ export function DataTable<TData, TValue>({ columns, data, fetchUsers, isLoading,
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <Button variant="outline" onClick={() => fetchUsers(pagination.pageIndex, pagination.pageSize)} disabled={isLoading}>
+            <Button variant="outline" onClick={() => fetchData(pagination.pageIndex, pagination.pageSize)} disabled={isLoading}>
               {isLoading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
             </Button>
           </div>
         </div>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline">
-              <EllipsisVertical />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem className="flex gap-4" onClick={() => callback("create", null)}>
-              <UserPlus className="w-4 h-4" />
-              <span>Create a user</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {actions.length !== 0 && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                <EllipsisVertical />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {actions.includes("create") && (
+                <DropdownMenuItem className="flex gap-4" onClick={() => callback("create", null)}>
+                  <Plus className="w-4 h-4" />
+                  <span>Create a new entity</span>
+                </DropdownMenuItem>
+              )}
+              {actions.includes("deleteAll") && (
+                <DropdownMenuItem className="flex gap-4" onClick={() => setOpenModal(true)}>
+                  <Trash className="w-4 h-4" />
+                  <span>Delete all entities</span>
+                </DropdownMenuItem>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
       <Separator />
       <div className="overflow-x-auto">
@@ -162,7 +187,7 @@ export function DataTable<TData, TValue>({ columns, data, fetchUsers, isLoading,
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No users found.
+                  No results found.
                 </TableCell>
               </TableRow>
             )}
@@ -172,7 +197,7 @@ export function DataTable<TData, TValue>({ columns, data, fetchUsers, isLoading,
       <Separator />
       <div className="flex flex-col items-center justify-between gap-4 p-4 md:flex-row">
         <div className="text-sm text-gray-600">
-          Page <strong>{table.getState().pagination.pageIndex + 1}</strong> of <strong>{table.getPageCount()}</strong> • {userCount} total
+          Page <strong>{table.getState().pagination.pageIndex + 1}</strong> of <strong>{table.getPageCount()}</strong> • {dataCount} total
           entries
         </div>
         <div className="flex items-center space-x-2">
@@ -196,7 +221,7 @@ export function DataTable<TData, TValue>({ columns, data, fetchUsers, isLoading,
             variant="outline"
             size="sm"
             onClick={() => setPagination((prev) => ({ ...prev, pageIndex: prev.pageIndex + 1 }))}
-            disabled={(pagination.pageIndex + 1) * pagination.pageSize >= userCount}
+            disabled={(pagination.pageIndex + 1) * pagination.pageSize >= dataCount}
           >
             Next
           </Button>
@@ -206,10 +231,10 @@ export function DataTable<TData, TValue>({ columns, data, fetchUsers, isLoading,
             onClick={() =>
               setPagination((prev) => ({
                 ...prev,
-                pageIndex: Math.floor((userCount - 1) / pagination.pageSize),
+                pageIndex: Math.floor((dataCount - 1) / pagination.pageSize),
               }))
             }
-            disabled={(pagination.pageIndex + 1) * pagination.pageSize >= userCount}
+            disabled={(pagination.pageIndex + 1) * pagination.pageSize >= dataCount}
           >
             Last
           </Button>
@@ -219,7 +244,7 @@ export function DataTable<TData, TValue>({ columns, data, fetchUsers, isLoading,
               if (value === "all") {
                 setPagination((prev) => ({
                   ...prev,
-                  pageSize: userCount,
+                  pageSize: dataCount,
                   pageIndex: 0,
                 }));
               } else {
@@ -233,7 +258,7 @@ export function DataTable<TData, TValue>({ columns, data, fetchUsers, isLoading,
           >
             <SelectTrigger className="w-36">
               <SelectValue placeholder="Rows">
-                {table.getState().pagination.pageSize === userCount ? "All" : `${table.getState().pagination.pageSize} per page`}
+                {table.getState().pagination.pageSize === dataCount ? "All" : `${table.getState().pagination.pageSize} per page`}
               </SelectValue>
             </SelectTrigger>
             <SelectContent>
@@ -247,6 +272,29 @@ export function DataTable<TData, TValue>({ columns, data, fetchUsers, isLoading,
           </Select>
         </div>
       </div>
+      {openModal && (
+        <Dialog open={openModal} onOpenChange={setOpenModal}>
+          <DialogContent className="sm:max-w-[450px]">
+            <DialogHeader>
+              <DialogTitle>Delete all entities</DialogTitle>
+              <DialogDescription>Are you sure you want to delete all entities of this table? There is no going back</DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setOpenModal(false)}>
+                Cancel
+              </Button>
+              <Button
+                onClick={() => {
+                  callback("deleteAll", null);
+                  setOpenModal(false);
+                }}
+              >
+                Delete
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 }
