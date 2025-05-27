@@ -36,9 +36,10 @@ Welcome to the MERN-APP boilerplate, a complete solution to quickly start a mode
 
 📦 Before starting, make sure you have the following installed:
 
-- **Node.js**: v22.x or higher
-- **pnpm**: v10.x or higher
-- **Git**: v2.47.x or higher (for Husky hooks)
+- [**Node.js**](https://nodejs.org/en): v22.x or higher
+- [**pnpm**](https://pnpm.io/fr/): v10.x or higher
+- [**Git**](https://git-scm.com/): v2.47.x or higher (for Husky hooks)
+- [**MongoDB**](https://www.mongodb.com/): v8.0.9 or higher
 - **A modern browser** (Chrome, Firefox, etc.)
 
 You can check your installed versions using:
@@ -67,7 +68,7 @@ CORS_ORIGIN=
 - **PORT** → The port your server will use.
 - **MONG_URI** → MongoDB connection string (don’t forget to allow your IP in MongoDB Atlas if applicable).
 - **MONG_URI_TEST** → Test DB URI (data gets wiped during tests — use a separate DB).
-- **SECRET_ACCESS_TOKEN** → JWT token secret (use this command : *openssl rand -base64 64*).
+- **SECRET_ACCESS_TOKEN** → JWT token secret (use this command : _openssl rand -base64 64_).
 - **CORS_ORIGIN** → Frontend URL for CORS setup.
 
 Refer to the `.env.example` file in the `server` directory for guidance.
