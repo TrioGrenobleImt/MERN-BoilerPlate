@@ -196,7 +196,7 @@ export function DataTable<TData, TValue>({
       </div>
       <Separator />
       <div className="flex flex-col items-center justify-between gap-4 p-4 md:flex-row">
-        <div className="text-sm text-gray-600">
+        <div className="text-sm">
           Page <strong>{table.getState().pagination.pageIndex + 1}</strong> of <strong>{table.getPageCount()}</strong> • {dataCount} total
           entries
         </div>
