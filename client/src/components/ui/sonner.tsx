@@ -22,11 +22,11 @@ const Toaster = ({ ...props }: ToasterProps) => {
         },
       }}
       icons={{
-        success: <CheckCircle className="w-4 h-4 text-green-500" />,
-        info: <Info className="w-4 h-4 text-blue-500" />,
-        warning: <AlertTriangle className="w-4 h-4 text-amber-500" />,
-        error: <XCircle className="w-4 h-4 text-red-500" />,
-        loading: <Loader className="w-4 h-4 text-gray-500 animate-spin" />,
+        success: <CheckCircle className="w-4 h-4 text-accent" />,
+        info: <Info className="w-4 h-4 text-accent" />,
+        warning: <AlertTriangle className="w-4 h-4 text-accent" />,
+        error: <XCircle className="w-4 h-4 text-accent" />,
+        loading: <Loader className="w-4 h-4 text-accent animate-spin" />,
       }}
       {...props}
     />

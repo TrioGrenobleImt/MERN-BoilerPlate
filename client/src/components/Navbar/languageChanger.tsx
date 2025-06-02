@@ -26,7 +26,7 @@ export const LanguageChanger = () => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild className="cursor-pointer">
+      <DropdownMenuTrigger asChild className="cursor-pointer text-primary">
         <Button variant="outline" size="sm">
           <Globe className="w-5 h-5" />
         </Button>
@@ -38,7 +38,7 @@ export const LanguageChanger = () => {
           <DropdownMenuItem
             key={l}
             onClick={() => handleChangeLanguage(l)}
-            className={` cursor-pointer flex items-center ${language === l ? "bg-accent" : ""}`}
+            className={` cursor-pointer flex items-center ${language === l ? "bg-secondary" : ""}`}
           >
             {l === "fr" && <FR />}
             {l === "en" && <GB />}

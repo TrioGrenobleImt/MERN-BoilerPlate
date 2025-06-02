@@ -63,7 +63,7 @@ export const Register = () => {
   return (
     <div className="flex flex-col items-center justify-center gap-6 p-6 min-h-svh bg-muted md:p-10">
       <div className="flex flex-col w-full max-w-2xl gap-6 px-4 md:px-0">
-        <div className="flex items-center self-center gap-2 text-xl font-medium">{configValues["APP_NAME"]}</div>
+        <div className="flex items-center gap-2 self-center sm:text-4xl text-2xl font-medium text-accent">{configValues["APP_NAME"]}</div>
         <Card className="w-full">
           <CardHeader className="text-center">
             <CardTitle className="text-xl md:text-2xl">{t("pages.register.title")}</CardTitle>

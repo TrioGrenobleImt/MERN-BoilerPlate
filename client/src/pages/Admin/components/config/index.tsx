@@ -68,7 +68,7 @@ export const Config = () => {
                 name="APP_NAME"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>APP_NAME</FormLabel>
+                    <FormLabel>Nom de l'application</FormLabel>
                     <FormControl>
                       <Input placeholder="Nom de l'application" {...field} />
                     </FormControl>
@@ -81,7 +81,7 @@ export const Config = () => {
                 name="ACCENT_COLOR"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>ACCENT_COLOR</FormLabel>
+                    <FormLabel>Couleur d'accentutation</FormLabel>
                     <FormControl>
                       <ColorInput {...field} placeholder="Couleur d'accentuation" />
                     </FormControl>

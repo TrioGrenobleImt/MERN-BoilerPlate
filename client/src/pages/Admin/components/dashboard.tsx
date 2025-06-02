@@ -37,7 +37,7 @@ export const Dashboard = () => {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
                 <CardTitle className="text-sm font-medium">Active users</CardTitle>
-                <Activity className="w-4 h-4 text-primary" />
+                <Activity className="w-4 h-4 text-accent" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold"> + {onlineUsers.length}</div>
@@ -46,7 +46,7 @@ export const Dashboard = () => {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
                 <CardTitle className="text-sm font-medium">Registrations</CardTitle>
-                <Users className="w-4 h-4 text-primary" />
+                <Users className="w-4 h-4 text-accent" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold"> + {userCount}</div>
