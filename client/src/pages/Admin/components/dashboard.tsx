@@ -2,7 +2,7 @@ import { Loading } from "@/components/customs/Loading";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { axiosConfig } from "@/config/axiosConfig";
 import { useSocketContext } from "@/contexts/socketContext";
-import { UserRoundCheck, Users } from "lucide-react";
+import { Activity, UserRoundCheck, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -37,7 +37,7 @@ export const Dashboard = () => {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
                 <CardTitle className="text-sm font-medium">Active users</CardTitle>
-                <UserRoundCheck className="w-4 h-4 text-success" />
+                <Activity className="w-4 h-4 text-primary" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold"> + {onlineUsers.length}</div>
