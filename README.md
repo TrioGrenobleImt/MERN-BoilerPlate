@@ -125,7 +125,7 @@ This boilerplate includes a `config` table in the database which stores dynamic 
 3. Go to the **Settings** section.
 4. Set the configuration you want for your application.
 
-📛 This name will be displayed in various places across the app, providing a personalized brand. Once configured, your application is fully ready to be extended for your use case.
+Once configured, your application is fully ready to be extended for your use case.
 
 ## Unit Tests
 
