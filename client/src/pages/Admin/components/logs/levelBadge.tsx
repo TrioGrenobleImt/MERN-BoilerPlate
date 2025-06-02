@@ -1,4 +1,5 @@
 import { Bug, ShieldQuestion, Info, AlertTriangle, XCircle } from "lucide-react";
+import { JSX } from "react";
 
 const logLevels = {
   info: "info",
