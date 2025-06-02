@@ -67,7 +67,7 @@ export const Login = () => {
   return (
     <div className="flex flex-col items-center justify-center gap-6 p-6 min-h-svh bg-muted md:p-10">
       <div className="flex flex-col w-full max-w-md gap-6 px-4 md:px-0">
-        <div className="flex items-center gap-2 self-center sm:text-4xl text-2xl font-medium text-accent">{configValues["APP_NAME"]}</div>
+        <div className="flex items-center self-center gap-2 text-2xl font-medium sm:text-4xl text-accent">{configValues["APP_NAME"]}</div>
         <Card className="w-full">
           <CardHeader className="text-center">
             <CardTitle className="text-xl md:text-2xl">{t("pages.login.welcome_back")}</CardTitle>
@@ -108,8 +108,8 @@ export const Login = () => {
                 <Button type="submit" className="w-full" disabled={loading}>
                   {t("pages.login.login_button")}
                 </Button>
-                <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
-                  <span className="bg-background text-muted-foreground relative z-10 px-2">Or continue with</span>
+                <div className="relative text-sm text-center after:border-border after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
+                  <span className="relative z-10 px-2 bg-background text-muted-foreground">Or continue with</span>
                 </div>
                 <OAuth message="pages.login.login_button" />
               </form>

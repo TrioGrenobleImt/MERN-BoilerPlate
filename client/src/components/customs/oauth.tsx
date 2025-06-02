@@ -53,7 +53,7 @@ export function OAuth({ message }: OauthProps) {
     <Button
       type="button"
       onClick={handleGoogleAuth}
-      className="w-full flex items-center gap-3 px-4 py-2 border border-gray-300 bg-white text-black hover:bg-gray-100"
+      className="flex items-center w-full gap-3 px-4 py-2 text-black bg-white border border-gray-300 hover:bg-gray-100"
     >
       <svg className="w-5 h-5" viewBox="0 0 533.5 544.3" xmlns="http://www.w3.org/2000/svg">
         <path
