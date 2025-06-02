@@ -7,6 +7,7 @@ import { AuthContextProvider } from "./contexts/authContext.js";
 import { ThemeProvider } from "./providers/theme-provider.js";
 import { SocketContextProvider } from "./contexts/socketContext.js";
 import { ConfigProvider } from "./contexts/configContext.js";
+import { AppInitializer } from "./AppInitializer.js";
 import "./lib/i18n.js";
 
 if (!import.meta.env.VITE_API_URL) {
@@ -14,23 +15,25 @@ if (!import.meta.env.VITE_API_URL) {
 }
 
 const rootElement = document.getElementById("root");
-if (rootElement) {
+if (!rootElement) {
+  console.error("Failed to find the root element");
+} else {
   ReactDOM.createRoot(rootElement).render(
     <React.StrictMode>
       <ConfigProvider>
-        <AuthContextProvider>
-          <SocketContextProvider>
-            <BrowserRouter>
-              <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-                <App />
-                <Toaster />
-              </ThemeProvider>
-            </BrowserRouter>
-          </SocketContextProvider>
-        </AuthContextProvider>
+        <AppInitializer>
+          <AuthContextProvider>
+            <SocketContextProvider>
+              <BrowserRouter>
+                <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+                  <App />
+                  <Toaster />
+                </ThemeProvider>
+              </BrowserRouter>
+            </SocketContextProvider>
+          </AuthContextProvider>
+        </AppInitializer>
       </ConfigProvider>
     </React.StrictMode>,
   );
-} else {
-  console.error("Failed to find the root element");
 }

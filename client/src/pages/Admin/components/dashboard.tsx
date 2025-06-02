@@ -1,4 +1,4 @@
-import { Loading } from "@/components/customs/Loading";
+import { Loading } from "@/components/customs/loading";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { axiosConfig } from "@/config/axiosConfig";
 import { useSocketContext } from "@/contexts/socketContext";

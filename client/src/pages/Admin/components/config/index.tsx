@@ -9,9 +9,11 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { ColorInput } from "@/components/customs/colorInput";
 
 const configurationFormSchema = z.object({
   APP_NAME: z.string().trim(),
+  ACCENT_COLOR: z.string().trim(),
 });
 
 type ConfigurationFormValues = z.infer<typeof configurationFormSchema>;
@@ -28,7 +30,7 @@ export const Config = () => {
 
   useEffect(() => {
     const fetchConfigValues = async () => {
-      const values = await getConfigValue(["APP_NAME"]);
+      const values = await getConfigValue(["APP_NAME", "ACCENT_COLOR"]);
       form.reset(values);
       setIsLoading(false);
     };
@@ -69,6 +71,19 @@ export const Config = () => {
                     <FormLabel>APP_NAME</FormLabel>
                     <FormControl>
                       <Input placeholder="Nom de l'application" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="ACCENT_COLOR"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>ACCENT_COLOR</FormLabel>
+                    <FormControl>
+                      <ColorInput {...field} placeholder="Couleur d'accentuation" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
