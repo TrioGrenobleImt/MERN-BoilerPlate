@@ -62,7 +62,7 @@ export const Navbar = () => {
 
   return (
     <>
-      <div className="sticky top-0 left-0 right-0 z-50 border-b border-primary bg-background">
+      <div className="sticky top-0 left-0 right-0 z-50 border-b bg-background">
         <div className="items-center justify-between hidden p-4 px-8 select-none md:flex text-primary">
           <div className="text-3xl font-extrabold">
             <Link to="/">{configValues["APP_NAME"]}</Link>
@@ -127,7 +127,7 @@ export const Navbar = () => {
         <div
           ref={menuRef}
           className={cn(
-            "fixed top-0 right-0 w-4/5 h-screen overflow-hidden bg-background text-primary transition-transform duration-300 ease-in-out z-20",
+            "fixed top-0 right-0 w-4/5 h-screen overflow-hidden bg-background transition-transform duration-300 ease-in-out z-20",
             isOpen ? "translate-x-0" : "translate-x-full",
           )}
         >

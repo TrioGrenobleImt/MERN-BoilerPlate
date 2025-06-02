@@ -28,7 +28,7 @@ export const LanguageChanger = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="cursor-pointer">
         <Button variant="outline" size="sm">
-          <Globe className="w-5 h-5 text-primary" />
+          <Globe className="w-5 h-5" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-40">
