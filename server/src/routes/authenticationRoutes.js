@@ -1,5 +1,5 @@
 import express from "express";
-import { getConnectedUser, login, logout, register } from "../controllers/authenticationController.js";
+import { getConnectedUser, login, logout, register, signInWithGoogle } from "../controllers/authenticationController.js";
 import { verifyToken } from "../middlewares/verifyToken.js";
 
 export const authRouter = new express.Router();
@@ -9,6 +9,8 @@ export const authRouter = new express.Router();
  * @description Authenticates a user with their credentials (e.g., email and password).
  */
 authRouter.post("/login", login);
+
+authRouter.post("/google", signInWithGoogle);
 
 /**
  * @route POST /register

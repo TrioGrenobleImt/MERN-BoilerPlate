@@ -153,3 +153,7 @@ export const getConnectedUser = async (req, res) => {
     return res.status(500).json({ error: err.message });
   }
 };
+
+export const signInWithGoogle = async (req, res) => {
+  console.log("coucou");
+};
