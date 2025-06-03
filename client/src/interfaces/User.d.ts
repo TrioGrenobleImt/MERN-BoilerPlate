@@ -11,4 +11,5 @@ export interface UserInterface {
   updatedAt?: Date;
   __v?: number;
   avatar?: string;
+  auth_type: string;
 }
