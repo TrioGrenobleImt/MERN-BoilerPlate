@@ -1,4 +1,4 @@
-import { Loading } from "@/components/customs/Loading";
+import { Loading } from "@/components/customs/loading";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useAuthContext } from "@/contexts/authContext";
@@ -187,19 +187,21 @@ export const Account = () => {
                 )}
               />
 
-              <FormItem>
-                <div className="flex flex-col w-full gap-2">
-                  <FormLabel>{t("pages.account.password_label")}</FormLabel>
-                  <div className="flex items-center justify-between gap-4">
-                    <FormControl>
-                      <Input type="password" placeholder={t("pages.account.password_placeholder")} disabled />
-                    </FormControl>
-                    <Button type="button" variant="outline" onClick={() => setOpenUpdatePasswordDialog(true)} disabled={updateLoading}>
-                      {t("pages.account.change_password")}
-                    </Button>
+              {authUser?.auth_type === "local" && (
+                <FormItem>
+                  <div className="flex flex-col w-full gap-2">
+                    <FormLabel>{t("pages.account.password_label")}</FormLabel>
+                    <div className="flex items-center justify-between gap-4">
+                      <FormControl>
+                        <Input type="password" placeholder={t("pages.account.password_placeholder")} disabled />
+                      </FormControl>
+                      <Button type="button" variant="outline" onClick={() => setOpenUpdatePasswordDialog(true)} disabled={updateLoading}>
+                        {t("pages.account.change_password")}
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              </FormItem>
+                </FormItem>
+              )}
 
               <CardFooter className="px-0">
                 <Button type="submit" disabled={updateLoading} className="w-full">
