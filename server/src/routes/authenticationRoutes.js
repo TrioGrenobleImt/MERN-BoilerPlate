@@ -1,5 +1,5 @@
 import express from "express";
-import { getConnectedUser, login, logout, register, signInWithGoogle } from "../controllers/authenticationController.js";
+import { getConnectedUser, login, logout, register, signWithGoogle } from "../controllers/authenticationController.js";
 import { verifyToken } from "../middlewares/verifyToken.js";
 
 export const authRouter = new express.Router();
@@ -10,7 +10,12 @@ export const authRouter = new express.Router();
  */
 authRouter.post("/login", login);
 
-authRouter.post("/google", signInWithGoogle);
+/**
+ * @route POST /google
+ * @description Authenticates a user using Google OAuth.
+ * @body {Object} - Contains user details like name, email, and photoURL.
+ */
+authRouter.post("/google", signWithGoogle);
 
 /**
  * @route POST /register
