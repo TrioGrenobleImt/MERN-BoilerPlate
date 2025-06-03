@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { userRoles } from "../utils/enums/userRoles.js";
 import { generateRandomAvatar } from "../utils/generateRandomAvatar.js";
+import { authTypes } from "../utils/enums/authTypes.js";
 
 const UserSchema = new mongoose.Schema(
   {
@@ -41,6 +42,10 @@ const UserSchema = new mongoose.Schema(
     avatar: {
       type: String,
       default: "",
+    },
+    auth_type: {
+      type: String,
+      default: authTypes.LOCAL,
     },
   },
   {
