@@ -5,6 +5,8 @@ import { Constants } from "../../constants/constants.js";
 import { createLog } from "./logController.js";
 import { logLevels } from "../utils/enums/logLevel.js";
 import { userRoles } from "../utils/enums/userRoles.js";
+import { generateRandomPassword } from "../utils/generateRandomPassword.js";
+import { authTypes } from "../utils/enums/authTypes.js";
 
 /**
  * Registers a new user.
@@ -154,6 +156,49 @@ export const getConnectedUser = async (req, res) => {
   }
 };
 
-export const signInWithGoogle = async (req, res) => {
-  console.log("coucou");
+export const signWithGoogle = async (req, res) => {
+  const { name, email, photoURL } = req.body;
+
+  try {
+    const user = await User.findOne({ email: email.toLowerCase() });
+    if (user) {
+      const accessToken = generateAccessToken(user._id);
+      res.cookie("__access__token", accessToken, {
+        maxAge: Constants.MAX_AGE,
+        httpOnly: true,
+      });
+
+      return res.status(200).json({ user, message: "server.auth.messages.login_success" });
+    } else {
+      const newPassword = generateRandomPassword();
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      const newUser = await User.create({
+        email: email.toLowerCase(),
+        username: email.split("@")[0].toLowerCase(),
+        name,
+        forename: email.split("@")[0].toLowerCase(),
+        avatar: photoURL,
+        password: hashedPassword,
+        auth_type: authTypes.GOOGLE,
+      });
+
+      const userCount = await User.countDocuments();
+      if (userCount === 1) {
+        newUser.role = userRoles.ADMIN;
+        await newUser.save();
+      }
+
+      const accessToken = generateAccessToken(newUser._id);
+      res.cookie("__access__token", accessToken, {
+        maxAge: Constants.MAX_AGE,
+        httpOnly: true,
+      });
+
+      const { password: userPassword, ...userWithoutPassword } = newUser._doc;
+
+      return res.status(201).json({ user: userWithoutPassword, message: "server.auth.messages.register_success" });
+    }
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
 };
