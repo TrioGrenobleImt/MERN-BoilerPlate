@@ -2,6 +2,12 @@ import https from "https";
 import fs from "fs";
 import path from "path";
 
+/**
+ * Downloads an image from a given URL and saves it to the server's filesystem.
+ * @param {string} photoURL - The URL of the image to download.
+ * @param {string} userId - The ID of the user, used to create a unique filename.
+ * @return {Promise<string>} - A promise that resolves to the path of the saved image.
+ */
 export const saveAvatarFromUrl = (photoURL, userId) => {
   return new Promise((resolve, reject) => {
     const extension = "jpg";
