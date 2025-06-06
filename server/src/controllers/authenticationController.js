@@ -157,6 +157,12 @@ export const getConnectedUser = async (req, res) => {
   }
 };
 
+/** * Signs in a user using Google OAuth.
+ *
+ * @param {Object} req - The request object containing user details from Google.
+ * @param {Object} res - The response object to send the result.
+ * @returns {Object} JSON response with user details or error message.
+ */
 export const signWithGoogle = async (req, res) => {
   const { name, email, photoURL } = req.body;
 
@@ -174,7 +180,6 @@ export const signWithGoogle = async (req, res) => {
       const newPassword = generateRandomPassword();
       const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-      // Crée l'utilisateur sans avatar pour l'instant
       const newUser = new User({
         email: email.toLowerCase(),
         username: email.split("@")[0].toLowerCase(),
@@ -186,7 +191,6 @@ export const signWithGoogle = async (req, res) => {
 
       await newUser.save();
 
-      // Télécharge et sauvegarde l'avatar localement
       let avatarPath = null;
       try {
         avatarPath = await saveAvatarFromUrl(photoURL, newUser._id);
@@ -197,10 +201,8 @@ export const signWithGoogle = async (req, res) => {
       if (avatarPath) {
         newUser.avatar = `${req.protocol}://${req.get("host")}${avatarPath}`;
         await newUser.save();
-        await newUser.save();
       }
 
-      // Si premier utilisateur, admin
       const userCount = await User.countDocuments();
       if (userCount === 1) {
         newUser.role = userRoles.ADMIN;
