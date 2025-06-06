@@ -7,6 +7,7 @@ import { logLevels } from "../utils/enums/logLevel.js";
 import { userRoles } from "../utils/enums/userRoles.js";
 import { generateRandomPassword } from "../utils/generateRandomPassword.js";
 import { authTypes } from "../utils/enums/authTypes.js";
+import { saveAvatarFromUrl } from "../utils/downloadImage.js";
 
 /**
  * Registers a new user.
@@ -172,16 +173,34 @@ export const signWithGoogle = async (req, res) => {
     } else {
       const newPassword = generateRandomPassword();
       const hashedPassword = await bcrypt.hash(newPassword, 10);
-      const newUser = await User.create({
+
+      // Crée l'utilisateur sans avatar pour l'instant
+      const newUser = new User({
         email: email.toLowerCase(),
         username: email.split("@")[0].toLowerCase(),
         name,
         forename: email.split("@")[0].toLowerCase(),
-        avatar: photoURL,
         password: hashedPassword,
         auth_type: authTypes.GOOGLE,
       });
 
+      await newUser.save();
+
+      // Télécharge et sauvegarde l'avatar localement
+      let avatarPath = null;
+      try {
+        avatarPath = await saveAvatarFromUrl(photoURL, newUser._id);
+      } catch (err) {
+        console.error("Failed to download avatar:", err.message);
+      }
+
+      if (avatarPath) {
+        newUser.avatar = `${req.protocol}://${req.get("host")}${avatarPath}`;
+        await newUser.save();
+        await newUser.save();
+      }
+
+      // Si premier utilisateur, admin
       const userCount = await User.countDocuments();
       if (userCount === 1) {
         newUser.role = userRoles.ADMIN;

@@ -157,9 +157,9 @@ chmod +x .husky/pre-commit
 
 ### Benefits
 
-- ✨ **Consistent Style**
-- 🛠️ **Less Manual Work**
-- ✅ **Reliable Codebase**
+- **Consistent Style**
+- **Less Manual Work**
+- **Reliable Codebase**
 
 ## Features
 
