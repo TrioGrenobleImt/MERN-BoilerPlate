@@ -187,21 +187,19 @@ export const Account = () => {
                 )}
               />
 
-              {authUser?.auth_type === "local" && (
-                <FormItem>
-                  <div className="flex flex-col w-full gap-2">
-                    <FormLabel>{t("pages.account.password_label")}</FormLabel>
-                    <div className="flex items-center justify-between gap-4">
-                      <FormControl>
-                        <Input type="password" placeholder={t("pages.account.password_placeholder")} disabled />
-                      </FormControl>
-                      <Button type="button" variant="outline" onClick={() => setOpenUpdatePasswordDialog(true)} disabled={updateLoading}>
-                        {t("pages.account.change_password")}
-                      </Button>
-                    </div>
+              <FormItem>
+                <div className="flex flex-col w-full gap-2">
+                  <FormLabel>{t("pages.account.password_label")}</FormLabel>
+                  <div className="flex items-center justify-between gap-4">
+                    <FormControl>
+                      <Input type="password" placeholder={t("pages.account.password_placeholder")} disabled />
+                    </FormControl>
+                    <Button type="button" variant="outline" onClick={() => setOpenUpdatePasswordDialog(true)} disabled={updateLoading}>
+                      {t("pages.account.change_password")}
+                    </Button>
                   </div>
-                </FormItem>
-              )}
+                </div>
+              </FormItem>
 
               <CardFooter className="px-0">
                 <Button type="submit" disabled={updateLoading} className="w-full">
