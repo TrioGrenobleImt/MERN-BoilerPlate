@@ -24,17 +24,28 @@ export function OAuth({ message }: OauthProps) {
 
     try {
       const googleRes = await signInWithPopup(auth, provider);
-      const res = await axiosConfig.post("/auth/google", {
+
+      const userData = {
         name: googleRes.user.displayName,
         email: googleRes.user.email,
         photoURL: googleRes.user.photoURL,
-      });
+      };
 
-      toast.success(t(res.data.message));
-      setAuthUser(res.data.user);
-      navigate("/");
+      try {
+        const res = await axiosConfig.post("/auth/login/google", userData);
+        toast.success(t(res.data.message));
+        setAuthUser(res.data.user);
+        navigate("/");
+      } catch (err: any) {
+        const errorMessage = err?.response?.data?.error;
+        if (errorMessage === "User not found") {
+          navigate("/register/google", { state: userData });
+        } else {
+          toast.error(t(errorMessage || "auth.error"));
+        }
+      }
     } catch (error: any) {
-      toast.error(t(error?.response?.data?.error || t("auth.error")));
+      toast.error(t("auth.error"));
     }
   };
 

@@ -39,5 +39,10 @@ export const updatePlayerSchema = z.object({
 });
 
 export const deletePlayerSchema = z.object({
-  confirmDelete: z.string(),
+  confirmDelete: z
+    .string()
+    .toUpperCase()
+    .refine((val) => val === "DELETE", {
+      message: "You must type 'DELETE' to confirm",
+    }),
 });

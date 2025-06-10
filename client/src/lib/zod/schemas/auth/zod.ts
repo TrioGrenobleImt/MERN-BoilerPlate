@@ -29,8 +29,12 @@ export const getRegisterSchema = (t: (key: string) => string) =>
         .max(25, { message: t("pages.register.errors.username_max") })
         .regex(/^[^A-Z\s]+$/, { message: t("pages.register.errors.username_no_spaces") }),
       email: z.string().email({ message: t("pages.register.errors.invalid_email") }),
-      password: z.string().max(255, { message: t("pages.register.errors.password_max") }),
+      password: z
+        .string()
+        .max(255, { message: t("pages.register.errors.password_max") })
+        .min(1, { message: t("pages.register.errors.password_invalid") }),
       confirmPassword: z.string(),
+      photoURL: z.string().optional(),
     })
     .refine((data) => data.password === data.confirmPassword, {
       message: t("pages.register.errors.passwords_mismatch"),
