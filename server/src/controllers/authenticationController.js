@@ -5,7 +5,6 @@ import { Constants } from "../../constants/constants.js";
 import { createLog } from "./logController.js";
 import { logLevels } from "../utils/enums/logLevel.js";
 import { userRoles } from "../utils/enums/userRoles.js";
-import { generateRandomPassword } from "../utils/generateRandomPassword.js";
 import { authTypes } from "../utils/enums/authTypes.js";
 import { saveAvatarFromUrl } from "../utils/downloadImage.js";
 
@@ -157,68 +156,108 @@ export const getConnectedUser = async (req, res) => {
   }
 };
 
-/** * Signs in a user using Google OAuth.
+/**
+ * Signs in a user using Google OAuth.
  *
- * @param {Object} req - The request object containing user details from Google.
- * @param {Object} res - The response object to send the result.
+ * @param {Object} req - Request object containing user details from Google.
+ * @param {Object} res - Response object to send the result.
  * @returns {Object} JSON response with user details or error message.
  */
-export const signWithGoogle = async (req, res) => {
-  const { name, email, photoURL } = req.body;
+export const signInWithGoogle = async (req, res) => {
+  const { email } = req.body;
 
   try {
     const user = await User.findOne({ email: email.toLowerCase() });
-    if (user) {
-      const accessToken = generateAccessToken(user._id);
-      res.cookie("__access__token", accessToken, {
-        maxAge: Constants.MAX_AGE,
-        httpOnly: true,
-      });
-
-      return res.status(200).json({ user, message: "server.auth.messages.login_success" });
-    } else {
-      const newPassword = generateRandomPassword();
-      const hashedPassword = await bcrypt.hash(newPassword, 10);
-
-      const newUser = new User({
-        email: email.toLowerCase(),
-        username: email.split("@")[0].toLowerCase(),
-        name,
-        forename: email.split("@")[0].toLowerCase(),
-        password: hashedPassword,
-        auth_type: authTypes.GOOGLE,
-      });
-
-      await newUser.save();
-
-      let avatarPath = null;
-      try {
-        avatarPath = await saveAvatarFromUrl(photoURL, newUser._id);
-      } catch (err) {
-        console.error("Failed to download avatar:", err.message);
-      }
-
-      if (avatarPath) {
-        newUser.avatar = `${req.protocol}://${req.get("host")}${avatarPath}`;
-        await newUser.save();
-      }
-
-      const userCount = await User.countDocuments();
-      if (userCount === 1) {
-        newUser.role = userRoles.ADMIN;
-        await newUser.save();
-      }
-
-      const accessToken = generateAccessToken(newUser._id);
-      res.cookie("__access__token", accessToken, {
-        maxAge: Constants.MAX_AGE,
-        httpOnly: true,
-      });
-
-      const { password: userPassword, ...userWithoutPassword } = newUser._doc;
-
-      return res.status(201).json({ user: userWithoutPassword, message: "server.auth.messages.register_success" });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
     }
+
+    const accessToken = generateAccessToken(user._id);
+    res.cookie("__access__token", accessToken, {
+      maxAge: Constants.MAX_AGE,
+      httpOnly: true,
+    });
+
+    return res.status(200).json({ user, message: "server.auth.messages.login_success" });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+/**
+ * Registers a new user using Google OAuth.
+ *
+ * @param {Object} req - Request object containing user details from Google.
+ * @param {Object} res - Response object to send the result.
+ * @returns {Object} JSON response with new user details or error message.
+ */
+export const registerWithGoogle = async (req, res) => {
+  const { forename, username, name, email, photoURL, password, confirmPassword } = req.body;
+
+  try {
+    const existingUser = await User.findOne({ email: email.toLowerCase() });
+    if (existingUser) {
+      return res.status(409).json({ error: "server.auth.errors.email_taken" });
+    }
+
+    if (!forename || !username || !email || !name || !photoURL) {
+      return res.status(422).json({ error: "server.global.errors.missing_fields" });
+    }
+
+    if (!Constants.REGEX_PASSWORD.test(password)) {
+      return res.status(400).json({
+        error: "server.auth.errors.regex",
+      });
+    }
+    if (password !== confirmPassword) {
+      return res.status(400).json({ error: "server.auth.errors.password_no_match" });
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    if (await User.findOne({ username: username.toLowerCase() })) {
+      return res.status(409).json({ error: "server.auth.errors.username_taken" });
+    }
+    if (await User.findOne({ email: email.toLowerCase() })) {
+      return res.status(409).json({ error: "server.auth.errors.email_taken" });
+    }
+
+    const newUser = new User({
+      forename,
+      username: username.toLowerCase(),
+      name,
+      email: email.toLowerCase(),
+      password: hashedPassword,
+      auth_type: authTypes.GOOGLE,
+    });
+
+    await newUser.save();
+
+    let avatarPath = null;
+    try {
+      avatarPath = await saveAvatarFromUrl(photoURL, newUser._id);
+    } catch (err) {
+      console.error("Failed to download avatar:", err.message);
+    }
+
+    if (avatarPath) {
+      newUser.avatar = `${req.protocol}://${req.get("host")}${avatarPath}`;
+      await newUser.save();
+    }
+
+    const userCount = await User.countDocuments();
+    if (userCount === 1) {
+      newUser.role = userRoles.ADMIN;
+      await newUser.save();
+    }
+
+    const accessToken = generateAccessToken(newUser._id);
+    res.cookie("__access__token", accessToken, {
+      maxAge: Constants.MAX_AGE,
+      httpOnly: true,
+    });
+
+    const { password: userPassword, ...userWithoutPassword } = newUser._doc;
+
+    return res.status(201).json({ user: userWithoutPassword, message: "server.auth.messages.register_success" });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
