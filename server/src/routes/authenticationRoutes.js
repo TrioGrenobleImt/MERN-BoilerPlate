@@ -5,7 +5,7 @@ import {
   logout,
   register,
   signInWithGoogle,
-  registerWithGoogle,
+  // registerWithGoogle,
 } from "../controllers/authenticationController.js";
 import { verifyToken } from "../middlewares/verifyToken.js";
 
@@ -29,12 +29,6 @@ authRouter.post("/login/google", signInWithGoogle);
  * @description Registers a new user with the provided details.
  */
 authRouter.post("/register", register);
-
-/**
- * @route POST /register
- * @description Registers a new user with the provided details.
- */
-authRouter.post("/register/google", registerWithGoogle);
 
 /**
  * @route GET /logout
