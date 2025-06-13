@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useConfigContext } from "./contexts/configContext.js";
+import { Loading } from "./components/customs/loading.js";
 
 export function AppInitializer({ children }: { children: React.ReactNode }) {
   const { getConfigValue } = useConfigContext();
@@ -17,6 +18,7 @@ export function AppInitializer({ children }: { children: React.ReactNode }) {
       }
 
       if (values["APP_NAME"]) {
+        document.title = values["APP_NAME"];
         setConfigValues(values);
       }
 
@@ -27,13 +29,8 @@ export function AppInitializer({ children }: { children: React.ReactNode }) {
   }, [getConfigValue]);
 
   if (!ready) {
-    return <div>Loading config...</div>;
+    return <Loading />;
   }
 
-  return (
-    <>
-      {configValues["APP_NAME"] ? <title>{configValues["APP_NAME"]}</title> : null}
-      {children}
-    </>
-  );
+  return <>{children}</>;
 }
