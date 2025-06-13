@@ -1,6 +1,6 @@
 import { Router } from "./router/routes.js";
 import { useAuthContext } from "./contexts/authContext.js";
-import { Loading } from "./components/customs/Loading.js";
+import { Loading } from "./components/customs/loading.js";
 import "./styles/index.css";
 
 function App() {
