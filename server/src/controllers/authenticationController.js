@@ -6,7 +6,7 @@ import { createLog } from "./logController.js";
 import { logLevels } from "../utils/enums/logLevel.js";
 import { userRoles } from "../utils/enums/userRoles.js";
 import { authTypes } from "../utils/enums/authTypes.js";
-import { saveAvatarFromUrl } from "../utils/downloadImage.js";
+import { saveAvatarFromUrl } from "../utils/saveAvatarFromUrl.js";
 
 /**
  * Registers a new user.
