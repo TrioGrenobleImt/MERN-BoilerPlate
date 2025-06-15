@@ -99,3 +99,10 @@ export const badConfirmPasswordRegisterUser = {
   password: "Abcdef1@",
   confirmPassword: "Abcdef1@f",
 };
+
+export const googleUser = {
+  name: "Google User",
+  email: "google@gmail.com",
+};
+
+export const stablePhotoURL = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1024px-React-icon.svg.png";

@@ -2,8 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import { saveAvatarFromUrl } from "../../../src/utils/saveAvatarFromUrl";
 import fs from "fs";
 import https from "https";
-
-const stablePhotoURL = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1024px-React-icon.svg.png";
+import { stablePhotoURL } from "../../fixtures/users";
 
 describe("Saving avatar from an url", () => {
   it("should save the avatar from a valid URL", async () => {

@@ -1,11 +1,9 @@
-import mongoose from "mongoose";
-import { describe, it, beforeAll, afterAll, expect, afterEach, vitest, beforeEach } from "vitest";
+import { describe, it, expect, vitest, beforeEach } from "vitest";
 import "dotenv/config";
 import request from "supertest";
 import { User } from "../../../src/models/userModel.js";
 import { logout } from "../../../src/controllers/authenticationController.js";
 import { generateAccessToken } from "../../../src/utils/generateAccessToken.js";
-import { Log } from "../../../src/models/logModel.js";
 
 //Import server and app
 import { app } from "../../../src/app.js";
@@ -14,9 +12,11 @@ import {
   badPasswordRegisterUser,
   registerUser,
   regularUser,
+  stablePhotoURL,
   userWithSameEmail,
   userWithSameUsername,
 } from "../../fixtures/users.js";
+import { authTypes } from "../../../src/utils/enums/authTypes.js";
 
 describe("POST /api/auth/register", () => {
   it("should return a 201 status, create an account and stock the token into the cookies", async () => {
@@ -25,7 +25,36 @@ describe("POST /api/auth/register", () => {
     expect(response.headers["set-cookie"][0].startsWith("__access__token=")).toBe(true);
     expect(response.body.message).toBe("server.auth.messages.register_success");
     expect(response.body.user).toHaveProperty("_id" && "username" && "email");
+    expect(response.body.user.auth_type).toBe(authTypes.LOCAL);
     expect(response.body.password).toBe(undefined);
+  });
+
+  it("should return a 201 status, create an account and stock the token into the cookies with a photoURL", async () => {
+    const response = await request(app)
+      .post("/api/auth/register")
+      .send({
+        ...registerUser,
+        photoURL: stablePhotoURL,
+      });
+    expect(response.status).toBe(201);
+    expect(response.headers["set-cookie"][0].startsWith("__access__token=")).toBe(true);
+    expect(response.body.message).toBe("server.auth.messages.register_success");
+    expect(response.body.user).toHaveProperty("_id" && "username" && "email" && "avatar");
+    expect(response.body.user.auth_type).toBe(authTypes.GOOGLE);
+    expect(response.body.password).toBe(undefined);
+  });
+
+  it("should log an error if the avatar fails to be downloaded", async () => {
+    const response = await request(app)
+      .post("/api/auth/register")
+      .send({
+        ...registerUser,
+        photoURL: "invalid-url",
+      });
+    expect(response.status).toBe(201);
+    expect(response.headers["set-cookie"][0].startsWith("__access__token=")).toBe(true);
+    expect(response.body.message).toBe("server.auth.messages.register_success");
+    expect(response.body.user).toHaveProperty("_id" && "username" && "email");
   });
 
   it("should return a 400 status error because the password isnt strong enough", async () => {
@@ -165,6 +194,53 @@ describe("POST /api/auth/login", () => {
     const response = await request(app).post("/api/auth/login").send({
       username: "test",
       password: "testPassword",
+    });
+
+    expect(response.status).toBe(500);
+    expect(response.body.error).toBe("Test error");
+  });
+});
+
+describe("GET /api/auth/login/google", () => {
+  it("should return a 201 status, create an account and stock the token into the cookies", async () => {
+    await request(app)
+      .post("/api/auth/register")
+      .send({ ...registerUser, photoURL: stablePhotoURL });
+    const response = await request(app).post("/api/auth/login/google").send({
+      email: "user@gmail.com",
+    });
+
+    expect(response.status).toBe(201);
+    expect(response.headers["set-cookie"][0].startsWith("__access__token=")).toBe(true);
+    expect(response.body.message).toBe("server.auth.messages.login_success");
+    expect(response.body.user).toHaveProperty("_id" && "username" && "email");
+    expect(response.body.password).toBe(undefined);
+  });
+
+  it("should return a 404 error status because the user does not exist", async () => {
+    await request(app)
+      .post("/api/auth/register")
+      .send({ ...registerUser, photoURL: stablePhotoURL });
+    const response = await request(app).post("/api/auth/login/google").send({
+      email: "inconnu@gmail.com",
+    });
+    expect(response.status).toBe(404);
+    expect(response.body.error).toBe("server.global.errors.no_such_user");
+  });
+
+  it("should return a 422 error status because the email is missing", async () => {
+    const response = await request(app).post("/api/auth/login/google").send({});
+    expect(response.status).toBe(422);
+    expect(response.body.error).toBe("server.global.errors.missing_fields");
+  });
+
+  it("should return a 500 error status because of an internal error", async () => {
+    vitest.spyOn(User, "findOne").mockImplementationOnce(() => {
+      throw new Error("Test error");
+    });
+
+    const response = await request(app).post("/api/auth/login/google").send({
+      email: "user@gmail.com",
     });
 
     expect(response.status).toBe(500);
