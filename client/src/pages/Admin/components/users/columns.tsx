@@ -6,6 +6,7 @@ import { ArrowUpDown, Copy, EllipsisVertical, Pencil, Trash } from "lucide-react
 import { toast } from "sonner";
 import { AvatarWithStatusCell } from "../../../../components/customs/avatarStatusCell";
 import { UserInterface } from "@/interfaces/User";
+import { Badge } from "@/components/ui/badge";
 
 export const getColumns = (callback: (action: string, data: any) => void): ColumnDef<UserInterface>[] => [
   {
@@ -59,6 +60,16 @@ export const getColumns = (callback: (action: string, data: any) => void): Colum
       </Button>
     ),
     cell: ({ row }) => <div>{row.getValue("email")}</div>,
+  },
+  {
+    accessorKey: "auth_type",
+    header: ({ column }) => (
+      <Button variant="ghost" className="font-bold" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+        Auth type
+        <ArrowUpDown className="w-4 h-4 ml-2" />
+      </Button>
+    ),
+    cell: ({ row }) => <Badge variant={"outline"}>{(row.getValue("auth_type") as string).replace(/^./, (c) => c.toUpperCase())}</Badge>,
   },
   {
     accessorKey: "createdAt",
