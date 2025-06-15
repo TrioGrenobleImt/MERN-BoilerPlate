@@ -38,7 +38,7 @@ export function OAuth({ message }: OauthProps) {
         navigate("/");
       } catch (err: any) {
         const errorMessage = err?.response?.data?.error;
-        if (errorMessage === "User not found") {
+        if (errorMessage === "User not found, lets register !") {
           navigate("/register/google", { state: userData });
         } else {
           toast.error(t(errorMessage || "auth.error"));

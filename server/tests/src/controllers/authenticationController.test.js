@@ -225,7 +225,7 @@ describe("GET /api/auth/login/google", () => {
       email: "inconnu@gmail.com",
     });
     expect(response.status).toBe(404);
-    expect(response.body.error).toBe("server.global.errors.no_such_user");
+    expect(response.body.error).toBe("User not found, lets register !");
   });
 
   it("should return a 422 error status because the email is missing", async () => {

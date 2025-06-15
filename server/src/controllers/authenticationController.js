@@ -188,7 +188,8 @@ export const signInWithGoogle = async (req, res) => {
 
     const user = await User.findOne({ email: email.toLowerCase() });
     if (!user) {
-      return res.status(404).json({ error: "server.global.errors.no_such_user" });
+      // Do not change the error message, this is intentional to redirect to register
+      return res.status(404).json({ error: "User not found, lets register !" });
     }
 
     const accessToken = generateAccessToken(user._id);
