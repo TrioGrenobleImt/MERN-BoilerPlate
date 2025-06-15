@@ -12,6 +12,7 @@ Welcome to the MERN-APP boilerplate, a complete solution to quickly start a mode
   - [Requirements](#requirements)
   - [Backend](#backend)
   - [Frontend](#frontend)
+  - [Firebase OAuth Setup](#firebase-oauth-setup)
   - [Run the Application](#run-the-application)
   - [Application Configuration](#application-configuration)
   - [Unit Tests](#unit-tests)
@@ -84,6 +85,54 @@ VITE_API_URL=
 - **VITE_API_URL** → URL of your backend server (e.g. `http://localhost:5000`)
 
 See `.env.example` in `client` for reference.
+
+## Firebase OAuth Setup
+
+🔐 This app uses **Firebase Authentication with Google OAuth** to let users sign in effortlessly.
+
+Here’s how to set it up quickly:
+
+1. Go to [console.firebase.google.com](https://console.firebase.google.com) and **create a new project**.
+2. Once inside your project, click on **“Authentication”** in the sidebar.
+3. Click on **“Get started”**, then select **Google** as the sign-in method.
+4. Enable the provider:
+   - (Optional) Change the **app name**
+   - Add a **support email**
+   - Save ✅
+
+Next up:
+
+5. Go back to your **Firebase dashboard**, and click the **web icon `</>`** to register a new web app.
+6. Enter your app name and move to the next step.  
+   You’ll get a config object like this:
+
+```js
+const firebaseConfig = {
+  apiKey: "XXXX",
+  authDomain: "XXXX.firebaseapp.com",
+  projectId: "XXXX",
+  storageBucket: "XXXX.appspot.com",
+  messagingSenderId: "XXXX",
+  appId: "XXXX",
+  measurementId: "XXXX", // 👉 not needed
+};
+```
+
+7. Copy every line **except `measurementId`** into your `.env` file inside the `client` folder:
+
+```env
+VITE_API_URL=...
+
+VITE_FIREBASE_API_KEY=XXXX
+VITE_FIREBASE_AUTH_DOMAIN=XXXX.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=XXXX
+VITE_FIREBASE_STORAGE_BUCKET=XXXX.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=XXXX
+VITE_FIREBASE_APP_ID=XXXX
+```
+
+8. Finally, click **“Go to Console”** to complete the setup.  
+   Your app is now connected to Firebase and ready to support Google OAuth login 🚀
 
 ## Run the Application
 
@@ -182,6 +231,7 @@ chmod +x .husky/pre-commit
 - 🖼 Avatar Upload with GIF support
 - 📡 Real-time Online Status via WebSocket
 - 🧩 Application Configuration via Database
+- 🔑 OAuth with Google via Firebase
 
 ## Contribution
 
