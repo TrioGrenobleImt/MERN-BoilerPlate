@@ -48,6 +48,7 @@ export const register = async (req, res) => {
       password: hashedPassword,
       name,
       forename,
+      auth_type: photoURL ? authTypes.GOOGLE : authTypes.LOCAL,
     });
 
     if (photoURL) {
@@ -181,9 +182,13 @@ export const signInWithGoogle = async (req, res) => {
   const { email } = req.body;
 
   try {
+    if (!email) {
+      return res.status(422).json({ error: "server.global.errors.missing_fields" });
+    }
+
     const user = await User.findOne({ email: email.toLowerCase() });
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({ error: "server.global.errors.no_such_user" });
     }
 
     const accessToken = generateAccessToken(user._id);
@@ -192,7 +197,7 @@ export const signInWithGoogle = async (req, res) => {
       httpOnly: true,
     });
 
-    return res.status(200).json({ user, message: "server.auth.messages.login_success" });
+    return res.status(201).json({ user, message: "server.auth.messages.login_success" });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
