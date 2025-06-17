@@ -75,7 +75,8 @@
         "password_min": "Le mot de passe doit comporter au moins 6 caractères",
         "password_max": "Le mot de passe doit comporter au plus 255 caractères",
         "login_name_no_spaces": "Le nom d'utilisateur ou l'email ne doit pas contenir d'espaces ni de lettres majuscules."
-      }
+      },
+      "or_continue_with": "Ou continuer avec"
     },
     "register": {
       "title": "Créer un compte",

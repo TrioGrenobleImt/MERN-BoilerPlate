@@ -88,6 +88,9 @@ See `.env.example` in `client` for reference.
 
 ## Firebase OAuth Setup
 
+**Non mandatory**
+🔑 If you want to enable Google OAuth for user authentication, follow these steps to set up Firebase:
+
 🔐 This app uses **Firebase Authentication with Google OAuth** to let users sign in effortlessly.
 
 Here’s how to set it up quickly:
