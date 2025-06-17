@@ -75,7 +75,8 @@
         "password_min": "Password must be at least 6 characters long",
         "password_max": "Password must be at most 255 characters long",
         "login_name_no_spaces": "Username or email must not contain leading, trailing, middle spaces or uppercase letters."
-      }
+      },
+      "or_continue_with": "Or continue with"
     },
     "register": {
       "title": "Create an account",
