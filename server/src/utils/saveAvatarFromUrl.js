@@ -8,9 +8,8 @@ import path from "path";
  * @param {string} userId - The ID of the user, used to create a unique filename.
  * @return {Promise<string>} - A promise that resolves to the path of the saved image.
  */
-export const saveAvatarFromUrl = (photoURL, userId) => {
+export const saveAvatarFromUrl = (photoURL, userId, extension = "jpg") => {
   return new Promise((resolve, reject) => {
-    const extension = "jpg";
     const filename = `avatar_${userId}_${Date.now()}.${extension}`;
     const folderPath = path.join(process.cwd(), "uploads", "users", "avatars");
     const fullPath = path.join(folderPath, filename);
