@@ -7,6 +7,7 @@ import { logLevels } from "../utils/enums/logLevel.js";
 import { userRoles } from "../utils/enums/userRoles.js";
 import { authTypes } from "../utils/enums/authTypes.js";
 import { saveAvatarFromUrl } from "../utils/saveAvatarFromUrl.js";
+import { generateRandomAvatar } from "../utils/generateRandomAvatar.js";
 
 /**
  * Registers a new user.
@@ -52,13 +53,18 @@ export const register = async (req, res) => {
     });
 
     if (photoURL) {
-      let avatarPath = null;
       try {
-        avatarPath = await saveAvatarFromUrl(photoURL, user._id);
+        const avatarPath = await saveAvatarFromUrl(photoURL, user._id);
+        if (avatarPath) {
+          user.avatar = `${req.protocol}://${req.get("host")}${avatarPath}`;
+          await user.save();
+        }
       } catch (err) {
         console.error("Failed to download avatar:", err.message);
       }
-
+    } else {
+      // If no photoURL is provided, generate a random avatar
+      const avatarPath = await saveAvatarFromUrl(generateRandomAvatar(user.username), user._id, "svg");
       if (avatarPath) {
         user.avatar = `${req.protocol}://${req.get("host")}${avatarPath}`;
         await user.save();
