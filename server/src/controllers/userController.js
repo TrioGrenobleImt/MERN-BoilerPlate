@@ -8,6 +8,7 @@ import fs from "fs";
 import path from "path";
 import { generateRandomPassword } from "../utils/generateRandomPassword.js";
 import { Constants } from "../../constants/constants.js";
+import { authTypes } from "../utils/enums/authTypes.js";
 
 /**
  * @function getUser
@@ -282,3 +283,38 @@ export const deleteAccount = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const getAuthTypesStat = async (req, res) => {
+  const validAuthTypes = Object.values(authTypes);
+
+  try {
+    const users = await User.find({ auth_type: { $in: validAuthTypes } });
+
+    // Initialise le comptage
+    const stats = {};
+    validAuthTypes.forEach((type) => {
+      stats[type] = 0;
+    });
+
+    // Compte les utilisateurs par type
+    users.forEach((user) => {
+      stats[user.auth_type]++;
+    });
+
+    // Transforme en format pour le graphique
+    const chartData = {
+      data: Object.entries(stats).map(([type, count]) => ({
+        label: capitalize(type), // ex: "google" -> "Google"
+        value: count,
+      })),
+      valueFormatter: (number) => `${number}%`,
+    };
+
+    res.status(200).json(chartData);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Helper pour capitaliser la première lettre
+const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);

@@ -8,6 +8,7 @@ import {
   generateUserPassword,
   updatePassword,
   deleteAccount,
+  getAuthTypesStat,
 } from "../controllers/userController.js";
 import { verifyToken } from "../middlewares/verifyToken.js";
 
@@ -71,3 +72,5 @@ userRouter.put("/:id/password", verifyToken(), updatePassword);
  * @middleware verifyToken() - Ensures the user is authenticated to access this route.
  */
 userRouter.delete("/delete/account", verifyToken(), deleteAccount);
+
+userRouter.get("/stats/authTypes", verifyToken("admin"), getAuthTypesStat);
