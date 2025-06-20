@@ -10,7 +10,7 @@ import { PieChart, pieArcLabelClasses } from "@mui/x-charts/PieChart";
 export const Dashboard = () => {
   const [loading, setLoading] = useState(false);
   const [userCount, setUserCount] = useState(0);
-  const [authTypes, setAuthType] = useState();
+  const [authTypes, setAuthType] = useState<{ label: string; value: number }[]>();
   const { onlineUsers } = useSocketContext();
 
   useEffect(() => {
