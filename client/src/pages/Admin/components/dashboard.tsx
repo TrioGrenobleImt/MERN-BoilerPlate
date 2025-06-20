@@ -10,10 +10,12 @@ import { PieChart, pieArcLabelClasses } from "@mui/x-charts/PieChart";
 export const Dashboard = () => {
   const [loading, setLoading] = useState(false);
   const [userCount, setUserCount] = useState(0);
+  const [authTypes, setAuthType] = useState();
   const { onlineUsers } = useSocketContext();
 
   useEffect(() => {
     fetchUsers();
+    fetchStats();
   }, []);
 
   async function fetchUsers() {
@@ -28,13 +30,17 @@ export const Dashboard = () => {
     }
   }
 
-  const chartData = {
-    data: [
-      { label: "Google", value: 72 },
-      { label: "Local", value: 28 },
-    ],
-    valueFormatter,
-  };
+  async function fetchStats() {
+    setLoading(true);
+    try {
+      const response = await axiosConfig.get("/users/stats/authTypes");
+      setAuthType(response.data.data);
+    } catch (error: any) {
+      toast.error(error.response?.data?.error);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <>
@@ -72,10 +78,10 @@ export const Dashboard = () => {
                 <PieChart
                   series={[
                     {
-                      arcLabel: (item: any) => `${item.value}%`,
+                      data: authTypes || [],
+                      arcLabel: (item: any) => `${item.value}`,
                       arcLabelMinAngle: 25,
                       arcLabelRadius: "60%",
-                      ...chartData,
                       color: "#4f46e5",
                     },
                   ]}
