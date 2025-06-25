@@ -1,19 +1,13 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from "@/components/ui/form";
 import { getRegisterSchema } from "@/lib/zod/schemas/auth/zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { z } from "zod";
-import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useAuthContext } from "@/contexts/authContext";
 import { axiosConfig } from "@/config/axiosConfig";
-import { useConfigContext } from "@/contexts/configContext";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { OAuth } from "@/components/customs/oauth";
+import { RegisterForm } from "@/components/customs/registerForm";
+import { Link } from "react-router-dom";
 
 export const Register = () => {
   const [loading, setLoading] = useState(false);
@@ -23,17 +17,6 @@ export const Register = () => {
   const { t } = useTranslation();
 
   const registerSchema = getRegisterSchema(t);
-  const registerForm = useForm<z.infer<typeof registerSchema>>({
-    resolver: zodResolver(registerSchema),
-    defaultValues: {
-      name: "",
-      forename: "",
-      username: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    },
-  });
 
   async function register(values: z.infer<typeof registerSchema>) {
     try {
@@ -49,139 +32,15 @@ export const Register = () => {
     }
   }
 
-  const { getConfigValue } = useConfigContext();
-  const [configValues, setConfigValues] = useState<Record<string, string>>({});
-
-  useEffect(() => {
-    const fetchConfigValues = async () => {
-      const values = await getConfigValue(["APP_NAME"]);
-      setConfigValues(values);
-    };
-
-    fetchConfigValues();
-  }, [getConfigValue]);
-
   return (
-    <div className="flex flex-col items-center justify-center gap-6 p-6 min-h-svh bg-muted md:p-10">
-      <div className="flex flex-col w-full max-w-2xl gap-6 px-4 md:px-0">
-        <div className="flex items-center gap-2 self-center sm:text-4xl text-2xl font-medium text-accent">{configValues["APP_NAME"]}</div>
-        <Card className="w-full">
-          <CardHeader className="text-center">
-            <CardTitle className="text-xl md:text-2xl">{t("pages.register.title")}</CardTitle>
-          </CardHeader>
-          <CardContent className="flex flex-col items-center gap-6">
-            <Form {...registerForm}>
-              <form onSubmit={registerForm.handleSubmit(register)} className="w-full space-y-4">
-                <div className="flex flex-col gap-4 md:flex-row md:items-center">
-                  <FormField
-                    control={registerForm.control}
-                    name="forename"
-                    render={({ field }) => (
-                      <FormItem className="w-full">
-                        <FormLabel>{t("pages.register.forename")}</FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={registerForm.control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem className="w-full">
-                        <FormLabel>{t("pages.register.name")}</FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <FormField
-                  control={registerForm.control}
-                  name="username"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t("pages.register.username")}</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormDescription>{t("pages.register.username_description")}</FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={registerForm.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t("pages.register.email")}</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormDescription>{t("pages.register.email_description")}</FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={registerForm.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t("pages.register.password")}</FormLabel>
-                      <FormControl>
-                        <Input type="password" {...field} />
-                      </FormControl>
-                      <FormDescription>{t("pages.register.password_description")}</FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={registerForm.control}
-                  name="confirmPassword"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t("pages.register.confirm_password")}</FormLabel>
-                      <FormControl>
-                        <Input type="password" {...field} />
-                      </FormControl>
-                      <FormDescription>{t("pages.register.confirm_password_description")}</FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <Button type="submit" className="w-full" disabled={loading}>
-                  {t("pages.register.register")}
-                </Button>
-                {import.meta.env.VITE_FIREBASE_API_KEY && (
-                  <>
-                    <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
-                      <span className="bg-background text-muted-foreground relative z-10 px-2">{t("pages.login.or_continue_with")}</span>
-                    </div>
-                    <OAuth message="pages.register.register" />
-                  </>
-                )}
-              </form>
-            </Form>
-            <div className="text-sm text-center md:text-base">
-              {t("pages.register.already_have_account")}{" "}
-              <Link to="/login" className="underline underline-offset-4">
-                {t("pages.register.login")}
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
+    <>
+      <RegisterForm onSubmit={register} disabledFields={[]} loading={loading} oauth={true} />
+      <div className="text-sm text-center md:text-base">
+        {t("pages.register.already_have_account")}{" "}
+        <Link to="/login" className="underline underline-offset-4">
+          {t("pages.register.login")}
+        </Link>
       </div>
-    </div>
+    </>
   );
 };
