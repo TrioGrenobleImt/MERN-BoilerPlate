@@ -2,7 +2,7 @@ import { Loading } from "@/components/customs/loading";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { axiosConfig } from "@/config/axiosConfig";
 import { useSocketContext } from "@/contexts/socketContext";
-import { Activity, Users } from "lucide-react";
+import { Activity, LogIn, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -69,7 +69,10 @@ export const Dashboard = () => {
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle>Authentication Summary</CardTitle>
+                <div className="flex flex-row items-center justify-between pb-2">
+                  <CardTitle>Authentication Summary</CardTitle>
+                  <LogIn className="w-4 h-4 text-accent" />
+                </div>
                 <CardDescription>Detailed breakdown of all authentication methods</CardDescription>
               </CardHeader>
               <CardContent>
