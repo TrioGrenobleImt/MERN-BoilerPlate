@@ -9,6 +9,8 @@ import path from "path";
 import { generateRandomPassword } from "../utils/generateRandomPassword.js";
 import { Constants } from "../../constants/constants.js";
 import { authTypes } from "../utils/enums/authTypes.js";
+import { saveAvatarFromUrl } from "../utils/saveAvatarFromUrl.js";
+import { generateRandomAvatar } from "../utils/generateRandomAvatar.js";
 
 /**
  * @function getUser
@@ -84,6 +86,12 @@ export const createUser = async (req, res) => {
       name,
       forename,
     });
+
+    const avatarPath = await saveAvatarFromUrl(generateRandomAvatar(user.username), user._id, "svg");
+    if (avatarPath) {
+      user.avatar = `${req.protocol}://${req.get("host")}${avatarPath}`;
+      await user.save();
+    }
 
     const { password: userPassword, ...userWithoutPassword } = user._doc;
 
