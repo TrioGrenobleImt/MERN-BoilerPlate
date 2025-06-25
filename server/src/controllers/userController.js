@@ -312,7 +312,7 @@ export const getAuthTypesStat = async (req, res) => {
     // Transforme en format pour le graphique
     const chartData = {
       data: Object.entries(stats).map(([type, count]) => ({
-        label: capitalize(type), // ex: "google" -> "Google"
+        label: type.charAt(0).toUpperCase() + type.slice(1), // ex: "google" -> "Google"
         value: count,
       })),
       valueFormatter: (number) => `${number}%`,
@@ -323,6 +323,3 @@ export const getAuthTypesStat = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
-// Helper pour capitaliser la première lettre
-const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
