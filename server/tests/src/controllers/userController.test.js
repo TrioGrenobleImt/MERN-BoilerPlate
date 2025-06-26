@@ -22,6 +22,8 @@ import {
   userWithSameUsername,
 } from "../../fixtures/users.js";
 import path from "path";
+import { authTypes } from "../../../src/utils/enums/authTypes.js";
+import { userRoles } from "../../../src/utils/enums/userRoles.js";
 
 describe("GET /api/users/", () => {
   it("should return a 200 status and list all the users, ", async () => {
@@ -543,5 +545,74 @@ describe("DELETE /api/users/delete/account", () => {
 
     expect(response.status).toBe(400);
     expect(response.body.error).toBe("server.users.errors.password_incorrect");
+  });
+});
+
+describe("GET /api/users/stats/authTypes", () => {
+  let adminToken;
+  beforeEach(async () => {
+    await User.deleteMany({});
+
+    // Crée un user admin
+    const adminUser = await User.create({
+      name: "Admin",
+      forename: "Super",
+      username: "admin",
+      email: "admin@test.com",
+      password: "fakehashedpassword",
+      auth_type: authTypes.LOCAL,
+      role: userRoles.ADMIN,
+    });
+
+    // Génère un token admin
+    adminToken = generateAccessToken(adminUser._id);
+  });
+
+  it("should return 200 and stats when authorized as admin", async () => {
+    await User.create([
+      { username: "user1", email: "u1@test.com", auth_type: authTypes.LOCAL, name: "N", forename: "F", password: "p" },
+      { username: "user2", email: "u2@test.com", auth_type: authTypes.GOOGLE, name: "N", forename: "F", password: "p" },
+    ]);
+
+    const res = await request(app).get("/api/users/stats/authTypes").set("Cookie", `__access__token=${adminToken}`);
+
+    expect(res.status).toBe(200);
+    expect(Array.isArray(res.body.data)).toBe(true);
+    expect(res.body.data.find((d) => d.label === "Local").value).toBe(2);
+    expect(res.body.data.find((d) => d.label === "Google").value).toBe(1);
+  });
+
+  it("should return 401 if no token provided", async () => {
+    const res = await request(app).get("/api/users/stats/authTypes");
+    expect(res.status).toBe(401);
+  });
+
+  it("should return 401 if user is not admin", async () => {
+    const user = await User.create({
+      name: "User",
+      forename: "Simple",
+      username: "user",
+      email: "user@test.com",
+      password: "p",
+      auth_type: authTypes.LOCAL,
+      role: "user",
+    });
+
+    const token = generateAccessToken(user._id);
+
+    const res = await request(app).get("/api/users/stats/authTypes").set("Authorization", `Bearer ${token}`);
+
+    expect(res.status).toBe(401);
+  });
+
+  it("should return 500 if an error occurs", async () => {
+    vi.spyOn(User, "find").mockImplementationOnce(() => {
+      throw new Error("Test error");
+    });
+
+    const res = await request(app).get("/api/users/stats/authTypes").set("Cookie", `__access__token=${adminToken}`);
+
+    expect(res.status).toBe(500);
+    expect(res.body.error).toBe("Test error");
   });
 });
