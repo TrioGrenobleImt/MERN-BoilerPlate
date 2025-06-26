@@ -73,4 +73,8 @@ userRouter.put("/:id/password", verifyToken(), updatePassword);
  */
 userRouter.delete("/delete/account", verifyToken(), deleteAccount);
 
+/** * @route GET /stats/authTypes
+ * @description Retrieves statistics about the different authentication types used by users.
+ * @middleware verifyToken("admin") - Ensures the user has an admin role to access this route.
+ */
 userRouter.get("/stats/authTypes", verifyToken("admin"), getAuthTypesStat);

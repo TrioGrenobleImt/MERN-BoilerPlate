@@ -292,24 +292,28 @@ export const deleteAccount = async (req, res) => {
   }
 };
 
+/** * @function getAuthTypesStat
+ * @description Retrieves statistics on the number of users per authentication type.
+ * @returns {Object} JSON response with statistics formatted for chart display.
+ */
 export const getAuthTypesStat = async (req, res) => {
   const validAuthTypes = Object.values(authTypes);
 
   try {
     const users = await User.find({ auth_type: { $in: validAuthTypes } });
 
-    // Initialise le comptage
+    // Intitialize stats object with valid auth types
     const stats = {};
     validAuthTypes.forEach((type) => {
       stats[type] = 0;
     });
 
-    // Compte les utilisateurs par type
+    // Count users per auth type
     users.forEach((user) => {
       stats[user.auth_type]++;
     });
 
-    // Transforme en format pour le graphique
+    // Transform stats into chart data format
     const chartData = {
       data: Object.entries(stats).map(([type, count]) => ({
         label: type.charAt(0).toUpperCase() + type.slice(1), // ex: "google" -> "Google"
