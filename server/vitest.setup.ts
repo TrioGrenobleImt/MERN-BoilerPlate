@@ -1,44 +1,47 @@
 // vitest.setup.ts
 import fs from "fs";
-import mongoose from "mongoose";
 import path from "path";
-import { afterAll, afterEach, beforeAll, beforeEach } from "vitest";
-import "dotenv/config";
+import mongoose from "mongoose";
+import { beforeAll, afterAll, beforeEach, afterEach } from "vitest";
 import { User } from "./src/models/userModel.js";
 import { Log } from "./src/models/logModel.js";
 import { Config } from "./src/models/configModel.js";
 
+import "dotenv/config";
+
 const uploadsDir = path.resolve(__dirname, "uploads/users/avatars");
-let filesBeforeTest: string[] = [];
-
-beforeEach(async () => {
-  if (fs.existsSync(uploadsDir)) {
-    filesBeforeTest = fs.readdirSync(uploadsDir);
-  }
-  await User.deleteMany({});
-  await Log.deleteMany({});
-  await Config.deleteMany({});
-});
-
-afterEach(async () => {
-  if (fs.existsSync(uploadsDir)) {
-    const filesAfterTest = fs.readdirSync(uploadsDir);
-    const uploadedFiles = filesAfterTest.filter((file) => !filesBeforeTest.includes(file));
-
-    uploadedFiles.forEach((file) => {
-      fs.unlinkSync(path.join(uploadsDir, file));
-    });
-  }
-});
+let initialAvatarFiles: string[] = [];
 
 beforeAll(async () => {
   await mongoose.connect(process.env.MONG_URI_TEST as string);
 });
 
-afterAll(async () => {
+beforeEach(async () => {
+  // Snapshot des fichiers existants AVANT test
+  if (fs.existsSync(uploadsDir)) {
+    initialAvatarFiles = fs.readdirSync(uploadsDir);
+  } else {
+    initialAvatarFiles = [];
+  }
+
+  // Reset BDD
   await User.deleteMany({});
   await Log.deleteMany({});
   await Config.deleteMany({});
+});
 
+afterEach(() => {
+  if (!fs.existsSync(uploadsDir)) return;
+
+  const finalFiles = fs.readdirSync(uploadsDir);
+  const newFiles = finalFiles.filter((f) => !initialAvatarFiles.includes(f));
+
+  newFiles.forEach((file) => {
+    const fullPath = path.join(uploadsDir, file);
+    fs.unlinkSync(fullPath);
+  });
+});
+
+afterAll(async () => {
   await mongoose.disconnect();
 });

@@ -20,6 +20,12 @@ export const saveAvatarFromUrl = (photoURL, userId, extension = "jpg") => {
 
     https
       .get(photoURL, (response) => {
+        try {
+          new URL(photoURL);
+        } catch {
+          return reject(new Error("Invalid URL"));
+        }
+
         if (response.statusCode !== 200) {
           return reject(new Error(`Failed to get image, status code: ${response.statusCode}`));
         }
