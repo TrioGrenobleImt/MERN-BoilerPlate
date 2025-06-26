@@ -17,6 +17,7 @@ import {
   userWithSameUsername,
 } from "../../fixtures/users.js";
 import { authTypes } from "../../../src/utils/enums/authTypes.js";
+import { saveAvatarFromUrl } from "../../../src/utils/saveAvatarFromUrl.js";
 
 describe("POST /api/auth/register", () => {
   it("should return a 201 status, create an account and stock the token into the cookies", async () => {
@@ -27,6 +28,7 @@ describe("POST /api/auth/register", () => {
     expect(response.body.user).toHaveProperty("_id" && "username" && "email");
     expect(response.body.user.auth_type).toBe(authTypes.LOCAL);
     expect(response.body.password).toBe(undefined);
+    expect(response.body.user.avatar).toContain("uploads/users/avatars/avatar_");
   });
 
   it("should return a 201 status, create an account and stock the token into the cookies with a photoURL", async () => {
@@ -42,6 +44,18 @@ describe("POST /api/auth/register", () => {
     expect(response.body.user).toHaveProperty("_id" && "username" && "email" && "avatar");
     expect(response.body.user.auth_type).toBe(authTypes.GOOGLE);
     expect(response.body.password).toBe(undefined);
+  });
+
+  it("should attach the downloaded avatar to the user if photoURL is valid", async () => {
+    const response = await request(app)
+      .post("/api/auth/register")
+      .send({
+        ...registerUser,
+        photoURL: stablePhotoURL,
+      });
+    expect(response.status).toBe(201);
+    expect(response.body.user.avatar).toContain("uploads/users/avatars/avatar_");
+    expect(response.body.user.avatar).toContain(".jpg");
   });
 
   it("should log an error if the avatar fails to be downloaded", async () => {
