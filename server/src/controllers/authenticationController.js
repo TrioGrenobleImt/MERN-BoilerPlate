@@ -82,6 +82,8 @@ export const register = async (req, res) => {
     res.cookie("__access__token", accessToken, {
       maxAge: Constants.MAX_AGE,
       httpOnly: true,
+      sameSite: "None",
+      secure: true,
     });
 
     createLog({
@@ -136,6 +138,8 @@ export const login = async (req, res) => {
     res.cookie("__access__token", accessToken, {
       maxAge: Constants.MAX_AGE,
       httpOnly: true,
+      sameSite: "None",
+      secure: true,
     });
 
     const { password: userPassword, ...userWithoutPassword } = user._doc;
@@ -202,6 +206,8 @@ export const signInWithGoogle = async (req, res) => {
     res.cookie("__access__token", accessToken, {
       maxAge: Constants.MAX_AGE,
       httpOnly: true,
+      sameSite: "None",
+      secure: true,
     });
 
     return res.status(201).json({ user, message: "server.auth.messages.login_success" });
