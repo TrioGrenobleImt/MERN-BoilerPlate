@@ -121,7 +121,8 @@
       "cancel": "Cancel",
       "save": "Save",
       "update": "Update"
-    }
+    },
+    "expired_session": "Your session has expired, please log in again."
   },
   "server": {
     "global": {

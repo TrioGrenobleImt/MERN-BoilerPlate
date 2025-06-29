@@ -60,7 +60,14 @@ export const Router = () => {
       </Route>
 
       <Route element={<LayoutWrapper />}>
-        <Route path="/" element={<Home />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute authRequired={true}>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/account"
           element={

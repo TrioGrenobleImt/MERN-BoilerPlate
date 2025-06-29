@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { ColorInput } from "@/components/customs/colorInput";
+import { useTranslation } from "react-i18next";
 
 const configurationFormSchema = z.object({
   APP_NAME: z.string().trim(),
@@ -21,6 +22,8 @@ type ConfigurationFormValues = z.infer<typeof configurationFormSchema>;
 export const Config = () => {
   const { configValues, getConfigValue, updateConfigValues } = useConfigContext();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const { t } = useTranslation();
 
   const form = useForm<ConfigurationFormValues>({
     resolver: zodResolver(configurationFormSchema),
@@ -48,7 +51,7 @@ export const Config = () => {
       form.reset({ ...configValues, ...config });
       toast.success(response.data.message);
     } catch (error: any) {
-      toast.error(error.response.data.message);
+      toast.error(t(error.response.data.error));
     }
   };
 

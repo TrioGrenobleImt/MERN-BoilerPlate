@@ -3,11 +3,14 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { getColumns } from "./columns";
 import { DataTable } from "@/components/customs/dataTable";
+import { useTranslation } from "react-i18next";
 
 export const Logs = () => {
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [logCount, setLogCount] = useState(0);
+
+  const { t } = useTranslation();
 
   async function fetchAllLogs(page: number = 0, size: number = 10) {
     setLoading(true);
@@ -16,7 +19,7 @@ export const Logs = () => {
       setLogs(response.data.logs);
       setLogCount(response.data.count);
     } catch (error: any) {
-      toast.error(error.response?.data?.error);
+      toast.error(t(error.response.data.error));
     } finally {
       setLoading(false);
     }
@@ -28,7 +31,7 @@ export const Logs = () => {
       toast.success(response.data.message);
       fetchAllLogs();
     } catch (error: any) {
-      toast.error(error.response);
+      toast.error(t(error.response.data.error));
     }
   }
 
@@ -38,7 +41,7 @@ export const Logs = () => {
       toast.success(response.data.message);
       fetchAllLogs();
     } catch (error: any) {
-      toast.error(error.response);
+      toast.error(t(error.response.data.error));
     }
   }
 

@@ -14,7 +14,7 @@ import { logLevels } from "../utils/enums/logLevel.js";
 export const verifyToken = ({ role } = {}) => {
   return async (req, res, next) => {
     const token = req.cookies["__access__token"];
-    if (!token) return res.status(401).json({ error: "Not Authenticated" });
+    if (!token) return res.status(401).json({ error: "global.expired_session" });
 
     jwt.verify(token, process.env.SECRET_ACCESS_TOKEN, async (err, payload) => {
       if (err) return res.status(403).json({ error: "Access Token is invalid" });
