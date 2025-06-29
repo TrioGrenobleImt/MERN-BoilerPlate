@@ -4,6 +4,7 @@ import { axiosConfig } from "@/config/axiosConfig";
 import { useSocketContext } from "@/contexts/socketContext";
 import { Activity, LogIn, Users } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 export const Dashboard = () => {
@@ -11,6 +12,7 @@ export const Dashboard = () => {
   const [userCount, setUserCount] = useState(0);
   const [authTypes, setAuthType] = useState<{ label: string; value: number }[]>();
   const { onlineUsers } = useSocketContext();
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetchUsers();
@@ -23,7 +25,7 @@ export const Dashboard = () => {
       const response = await axiosConfig.get("/users");
       setUserCount(response.data.count);
     } catch (error: any) {
-      toast.error(error.response?.data?.error);
+      toast.error(t(error.response.data.error));
     } finally {
       setLoading(false);
     }
@@ -35,7 +37,7 @@ export const Dashboard = () => {
       const response = await axiosConfig.get("/users/stats/authTypes");
       setAuthType(response.data.data);
     } catch (error: any) {
-      toast.error(error.response?.data?.error);
+      toast.error(t(error.response.data.error));
     } finally {
       setLoading(false);
     }

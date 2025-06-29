@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { createPlayerSchema, deletePlayerSchema, updatePlayerSchema } from "@/lib/zod/schemas/admin/zod";
 import { Copy } from "lucide-react";
 import { UserInterface } from "@/interfaces/User";
+import { useTranslation } from "react-i18next";
 
 interface UserFormProps {
   dialog: (isOpen: boolean) => void;
@@ -21,6 +22,8 @@ interface UserFormProps {
 
 export const UserForm = ({ dialog, refresh, action, user }: UserFormProps) => {
   const [loading, setLoading] = useState(false);
+
+  const { t } = useTranslation();
 
   const createForm = useForm<z.infer<typeof createPlayerSchema>>({
     resolver: zodResolver(createPlayerSchema),
@@ -62,7 +65,7 @@ export const UserForm = ({ dialog, refresh, action, user }: UserFormProps) => {
       refresh();
       createForm.reset();
     } catch (error: any) {
-      toast.error(error.response.data.error);
+      toast.error(t(error.response.data.error));
     } finally {
       setLoading(false);
     }
@@ -77,7 +80,7 @@ export const UserForm = ({ dialog, refresh, action, user }: UserFormProps) => {
       refresh();
       updateForm.reset();
     } catch (error: any) {
-      toast.error(error.response.data.error);
+      toast.error(t(error.response.data.error));
     } finally {
       setLoading(false);
     }
@@ -92,7 +95,7 @@ export const UserForm = ({ dialog, refresh, action, user }: UserFormProps) => {
         dialog(false);
         refresh();
       } catch (error: any) {
-        toast.error(error.response.data.error);
+        toast.error(t(error.response.data.error));
       } finally {
         setLoading(false);
       }
@@ -109,7 +112,7 @@ export const UserForm = ({ dialog, refresh, action, user }: UserFormProps) => {
       if (action === "update") updateForm.setValue("password", response.data.password);
       if (action === "create") createForm.setValue("password", response.data.password);
     } catch (error: any) {
-      toast.error(error.response.data.error);
+      toast.error(t(error.response.data.error));
     } finally {
       setLoading(false);
     }

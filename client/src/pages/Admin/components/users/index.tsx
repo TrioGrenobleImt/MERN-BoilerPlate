@@ -6,6 +6,7 @@ import { Dialog, DialogHeader, DialogContent, DialogTitle, DialogDescription } f
 import { UserForm } from "./userForm";
 import { UserInterface } from "@/interfaces/User";
 import { DataTable } from "@/components/customs/dataTable";
+import { useTranslation } from "react-i18next";
 
 export const Users = () => {
   const [users, setUsers] = useState<UserInterface[]>([]);
@@ -15,6 +16,8 @@ export const Users = () => {
   const [selectedUser, setSelectedUser] = useState<UserInterface>();
   const [userCount, setUserCount] = useState(0);
 
+  const { t } = useTranslation();
+
   async function fetchUsers(page: number = 0, size: number = 10) {
     setLoading(true);
     try {
@@ -22,7 +25,7 @@ export const Users = () => {
       setUsers(response.data.users);
       setUserCount(response.data.count);
     } catch (error: any) {
-      toast.error(error.response?.data?.error);
+      toast.error(t(error.response.data.error));
     } finally {
       setLoading(false);
     }
