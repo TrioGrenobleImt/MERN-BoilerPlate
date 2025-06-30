@@ -163,7 +163,16 @@
           "admin": "Administrateur",
           "user": "Utilisateur"
         },
-        "a_user": "un utilisateur"
+        "a_user": "un utilisateur",
+        "actions_type": {
+          "create": "Créer",
+          "update": "Mettre à jour",
+          "delete": "Supprimer"
+        },
+        "copy_id": "Copier l'ID de l'utilisateur",
+        "copy_id_success": "ID de l'utilisateur copié dans le presse-papiers",
+        "delete_user": "Supprimer cet utilisateur",
+        "update_user": "Mettre à jour cet utilisateur"
       }
     }
   },
