@@ -71,7 +71,7 @@ describe("PUT /api/config", () => {
       });
 
     expect(res.status).toBe(200);
-    expect(res.body.message).toBe("Configuration updated successfully");
+    expect(res.body.message).toBe("config_updated");
   });
 
   it("should return a 400 error if the keys are not in the config object", async () => {
@@ -92,7 +92,7 @@ describe("PUT /api/config", () => {
       });
 
     expect(res.status).toBe(400);
-    expect(res.body.message).toBe("Key key2 not found in config object");
+    expect(res.body.message).toBe("config_not_found");
   });
 
   it("should return a 400 error if the format is invalid", async () => {
@@ -113,7 +113,7 @@ describe("PUT /api/config", () => {
       });
 
     expect(res.status).toBe(400);
-    expect(res.body.message).toBe("Invalid input format");
+    expect(res.body.message).toBe("invalid_config");
   });
 
   it("should return a 400 error if the format is invalid", async () => {
@@ -132,7 +132,7 @@ describe("PUT /api/config", () => {
       });
 
     expect(res.status).toBe(400);
-    expect(res.body.message).toBe("Invalid input format");
+    expect(res.body.message).toBe("invalid_config");
   });
 
   it("should return a 400 error if the format is invalid", async () => {
@@ -150,7 +150,7 @@ describe("PUT /api/config", () => {
       });
 
     expect(res.status).toBe(400);
-    expect(res.body.message).toBe("Invalid input format");
+    expect(res.body.message).toBe("invalid_config");
   });
 
   it("should return a 500 status if an error occurs", async () => {

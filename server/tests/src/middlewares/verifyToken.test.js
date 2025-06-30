@@ -13,7 +13,7 @@ describe("verifyToken Middleware", () => {
     const res = await request(app).get("/api/users/").send();
 
     expect(res.status).toBe(401);
-    expect(res.body.error).toBe("Not Authenticated");
+    expect(res.body.error).toBe("global.expired_session");
   });
 
   it("should return 403 if the token is invalid", async () => {
