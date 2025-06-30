@@ -140,6 +140,13 @@
     "inputFile": {
       "choose_file": "Choose a file",
       "choose_image": "Choose an image"
+    },
+    "colorPicker": {
+      "preset_colors": "Preset colors",
+      "hex_color": "Hex color",
+      "hue": "Hue",
+      "saturation": "Saturation",
+      "lightness": "Lightness"
     }
   },
   "global": {

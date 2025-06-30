@@ -140,6 +140,13 @@
     "inputFile": {
       "choose_file": "Choisir un fichier",
       "choose_image": "Choisir une image"
+    },
+    "colorPicker": {
+      "preset_colors": "Couleurs prédéfinies",
+      "hex_color": "Couleur Hex",
+      "hue": "Teinte",
+      "saturation": "Saturation",
+      "lightness": "Luminosité"
     }
   },
   "global": {
