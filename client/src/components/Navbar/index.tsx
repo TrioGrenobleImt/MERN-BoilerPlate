@@ -3,7 +3,7 @@ import { ThemeChanger } from "./themeChanger";
 import { LanguageChanger } from "./languageChanger";
 import { useTranslation } from "react-i18next";
 import { Separator } from "../ui/separator";
-import { Home, House, LogIn, LogOut, Menu, User, Wrench, X } from "lucide-react";
+import { Home, House, LogOut, Menu, User, Wrench, X } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";

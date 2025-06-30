@@ -108,6 +108,14 @@
         "passwords_mismatch": "The passwords do not match.",
         "password_invalid": "Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, one number, and one special character."
       }
+    },
+    "admin": {
+      "home": "Home",
+      "dashboard": "Dashboard",
+      "users": "Users",
+      "settings": "Settings",
+      "admin": "Admin",
+      "logs": "Logs"
     }
   },
   "components": {
