@@ -19,7 +19,7 @@ export const Logs = () => {
       setLogs(response.data.logs);
       setLogCount(response.data.count);
     } catch (error: any) {
-      toast.error(t("server.admin.errors." + error.response.data.error));
+      toast.error(t(error.response.data.error));
     } finally {
       setLoading(false);
     }
@@ -28,20 +28,20 @@ export const Logs = () => {
   async function deleteLog(logId: string) {
     try {
       const response = await axiosConfig.delete(`/logs/${logId}`);
-      toast.success(t("server.admin.messages." + response.data.message));
+      toast.success(t(response.data.message));
       fetchAllLogs();
     } catch (error: any) {
-      toast.error(t("server.admin.errors." + error.response.data.error));
+      toast.error(t(error.response.data.error));
     }
   }
 
   async function deleteAllLogs() {
     try {
       const response = await axiosConfig.delete(`/logs`);
-      toast.success(t("server.admin.messages." + response.data.message));
+      toast.success(t(response.data.message));
       fetchAllLogs();
     } catch (error: any) {
-      toast.error(t("server.admin.errors." + error.response.data.error));
+      toast.error(t(error.response.data.error));
     }
   }
 
