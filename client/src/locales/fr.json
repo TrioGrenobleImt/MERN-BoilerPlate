@@ -108,6 +108,14 @@
         "passwords_mismatch": "Les mots de passe ne correspondent pas.",
         "password_invalid": "Le mot de passe doit contenir au moins 8 caractères, une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial."
       }
+    },
+    "admin": {
+      "home": "Accueil",
+      "dashboard": "Tableau de bord",
+      "users": "Utilisateurs",
+      "settings": "Paramètres",
+      "admin": "Admin",
+      "logs": "Journaux"
     }
   },
   "components": {
