@@ -3,7 +3,7 @@ import { ThemeChanger } from "./themeChanger";
 import { LanguageChanger } from "./languageChanger";
 import { useTranslation } from "react-i18next";
 import { Separator } from "../ui/separator";
-import { House, LogIn, LogOut, Menu, User, Wrench, X } from "lucide-react";
+import { Home, House, LogIn, LogOut, Menu, User, Wrench, X } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
@@ -69,40 +69,65 @@ export const Navbar = () => {
           </div>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
-              {authUser?.role === "admin" && (
-                <Button onClick={() => navigate("/admin/dashboard")} variant="link">
-                  {t("navbar.dashboard")}
-                </Button>
-              )}
               {authUser ? (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild className="hover:cursor-pointer">
-                    <span className="hover:cursor-pointer">
-                      <AvatarWithStatusCell user={authUser} />
-                    </span>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-40">
-                    <DropdownMenuLabel>{t("navbar.account")}</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuGroup>
-                      <DropdownMenuItem className="flex items-center gap-2 hover:cursor-pointer" onClick={() => navigate("/account")}>
-                        {t("navbar.profile")}
-                        <DropdownMenuShortcut>
-                          <User className="w-4 h-4" />
-                        </DropdownMenuShortcut>
-                      </DropdownMenuItem>
-                    </DropdownMenuGroup>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuGroup>
-                      <DropdownMenuItem className="hover:cursor-pointer" onClick={() => logout()} disabled={loading}>
-                        {t("navbar.logout")}
-                        <DropdownMenuShortcut>
-                          <LogOut className="w-4 h-4" />
-                        </DropdownMenuShortcut>
-                      </DropdownMenuItem>
-                    </DropdownMenuGroup>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                <>
+                  <Button onClick={() => navigate("/")} variant="link">
+                    {t("navbar.home")}
+                  </Button>
+                  <Button onClick={() => navigate("/account")} variant="link">
+                    {t("navbar.profile")}
+                  </Button>
+                  {authUser?.role === "admin" && (
+                    <Button onClick={() => navigate("/admin/dashboard")} variant="link">
+                      {t("navbar.dashboard")}
+                    </Button>
+                  )}
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild className="hover:cursor-pointer">
+                      <span className="hover:cursor-pointer">
+                        <AvatarWithStatusCell user={authUser} />
+                      </span>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-40">
+                      <DropdownMenuLabel>
+                        {authUser.name} {authUser.forename}
+                      </DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuGroup>
+                        <DropdownMenuItem className="flex items-center gap-2 hover:cursor-pointer" onClick={() => navigate("/")}>
+                          {t("navbar.home")}
+                          <DropdownMenuShortcut>
+                            <Home className="w-4 h-4" />
+                          </DropdownMenuShortcut>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="flex items-center gap-2 hover:cursor-pointer" onClick={() => navigate("/account")}>
+                          {t("navbar.profile")}
+                          <DropdownMenuShortcut>
+                            <User className="w-4 h-4" />
+                          </DropdownMenuShortcut>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="flex items-center gap-2 hover:cursor-pointer"
+                          onClick={() => navigate("/admin/dashboard")}
+                        >
+                          {t("navbar.dashboard")}
+                          <DropdownMenuShortcut>
+                            <Wrench className="w-4 h-4" />
+                          </DropdownMenuShortcut>
+                        </DropdownMenuItem>
+                      </DropdownMenuGroup>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuGroup>
+                        <DropdownMenuItem className="hover:cursor-pointer" onClick={() => logout()} disabled={loading}>
+                          {t("navbar.logout")}
+                          <DropdownMenuShortcut>
+                            <LogOut className="w-4 h-4" />
+                          </DropdownMenuShortcut>
+                        </DropdownMenuItem>
+                      </DropdownMenuGroup>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </>
               ) : (
                 <Button onClick={() => navigate("/login")} variant="link">
                   {t("navbar.login")}
