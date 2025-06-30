@@ -1,5 +1,4 @@
-import mongoose from "mongoose";
-import { describe, it, beforeAll, afterAll, expect, afterEach, vitest, beforeEach } from "vitest";
+import { describe, it, expect, vitest } from "vitest";
 import "dotenv/config";
 import request from "supertest";
 import { User } from "../../../src/models/userModel.js";

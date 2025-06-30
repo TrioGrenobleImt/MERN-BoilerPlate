@@ -63,7 +63,6 @@ export const Users = () => {
           isLoading={loading}
           callback={callback}
           searchElement="username"
-          searchPlaceholder="Filter by username"
           actions={["create"]}
         />
       </div>

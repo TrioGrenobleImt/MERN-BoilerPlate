@@ -147,13 +147,38 @@
       "hue": "Hue",
       "saturation": "Saturation",
       "lightness": "Lightness"
+    },
+    "dataTable": {
+      "no_data": "No data available",
+      "columns": "Columns",
+      "create_entity": "Create a new entity",
+      "delete_entity": "Delete all entities",
+      "filters": {
+        "username": "Filter by username",
+        "message": "Filter by message"
+      },
+      "delete_title": "Delete all entities",
+      "delete_description": "Are you sure you want to delete all entities? This action cannot be undone.",
+      "footer": {
+        "page": "Page",
+        "of": "of",
+        "total": "total",
+        "entries": "entries",
+        "first": "First",
+        "last": "Last",
+        "next": "Next",
+        "previous": "Previous",
+        "per_page": "per page",
+        "all": "All"
+      }
     }
   },
   "global": {
     "buttons": {
       "cancel": "Cancel",
       "save": "Save",
-      "update": "Update"
+      "update": "Update",
+      "delete": "Delete"
     },
     "expired_session": "Your session has expired, please log in again."
   },
