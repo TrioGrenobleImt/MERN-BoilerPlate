@@ -1,4 +1,4 @@
-import { ChevronRight, LogOut, User } from "lucide-react";
+import { ChevronRight, House, LogOut, User, Wrench } from "lucide-react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -77,10 +77,22 @@ export function NavUser({ user }: { user: UserInterface | null }) {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
+              <DropdownMenuItem className="flex items-center gap-2 hover:cursor-pointer" onClick={() => navigate("/")}>
+                Accueil
+                <DropdownMenuShortcut>
+                  <House className="w-4 h-4" />
+                </DropdownMenuShortcut>
+              </DropdownMenuItem>
               <DropdownMenuItem className="flex items-center gap-2 hover:cursor-pointer" onClick={() => navigate("/account")}>
                 My account
                 <DropdownMenuShortcut>
                   <User className="w-4 h-4" />
+                </DropdownMenuShortcut>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex items-center gap-2 hover:cursor-pointer" onClick={() => navigate("/admin/dashboard")}>
+                Dashboard
+                <DropdownMenuShortcut>
+                  <Wrench className="w-4 h-4" />
                 </DropdownMenuShortcut>
               </DropdownMenuItem>
             </DropdownMenuGroup>
