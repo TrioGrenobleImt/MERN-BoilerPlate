@@ -123,6 +123,16 @@
         "auth_methods": "Méthodes d'authentification",
         "auth_methods_description": "Cette section indique le nombre d'utilisateurs inscrits par méthode d'authentification.",
         "of_users": "des utilisateurs"
+      },
+      "config_page": {
+        "title": "Configuration",
+        "description": "Cette page vous permet de configurer les paramètres de l'application. Assurez-vous d'enregistrer vos modifications avant de quitter cette page.",
+        "save_changes": "Enregistrer les modifications",
+        "updating_config": "Mise à jour de la configuration...",
+        "app_name": "Nom de l'application",
+        "app_name_description": "Saisissez le nom de votre application. Il sera affiché dans l'en-tête et à divers endroits de l'application.",
+        "accent_color": "Couleur d'accentuation",
+        "accent_color_description": "Choisissez la couleur d'accentuation de votre application. Elle sera utilisée à plusieurs endroits dans l'application."
       }
     }
   },

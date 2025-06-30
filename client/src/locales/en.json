@@ -123,6 +123,16 @@
         "auth_methods": "Authentication Methods",
         "auth_methods_description": "This section shows the number of users registered with each authentication method.",
         "of_users": "of all users"
+      },
+      "config_page": {
+        "title": "Configuration",
+        "description": "This page allows you to configure the application settings. Make sure to save your changes before leaving this page.",
+        "save_changes": "Save changes",
+        "updating_config": "Updating configuration...",
+        "app_name": "Application Name",
+        "app_name_description": "Enter the name of your application. This will be displayed in the header and in various places throughout the application.",
+        "accent_color": "Accent Color",
+        "accent_color_description": "Choose the accent color for your application. This will be used in various places throughout the application."
       }
     }
   },
