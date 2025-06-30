@@ -1,46 +1,49 @@
 import { z } from "zod";
 
-export const createPlayerSchema = z.object({
-  name: z
-    .string()
-    .min(2, { message: "Name must be at least 2 characters long" })
-    .max(25, { message: "Name must be at most 25 characters long" }),
-  forename: z
-    .string()
-    .min(2, { message: "Forename must be at least 2 characters long" })
-    .max(25, { message: "Forename must be at most 25 characters long" }),
-  username: z
-    .string()
-    .min(2, { message: "Username must be at least 2 characters long" })
-    .max(25, { message: "Username must be at most 25 characters long" })
-    .regex(/^[^A-Z\s]+$/, { message: "Username cannot contain spaces or uppercases" }),
-  email: z.string().email({ message: "Invalid email address" }),
-  password: z.string().min(1, { message: "Password is required" }).max(255, { message: "Password must be at most 255 characters long" }),
-  role: z.string(),
-});
+export const getCreateUserSchema = (t: (key: string) => string) =>
+  z.object({
+    name: z
+      .string()
+      .min(2, { message: t("pages.admin.users_page.form.name_min") })
+      .max(25, { message: t("pages.admin.users_page.form.name_max") }),
+    forename: z
+      .string()
+      .min(2, { message: t("pages.admin.users_page.form.forename_min") })
+      .max(25, { message: t("pages.admin.users_page.form.forename_max") }),
+    username: z
+      .string()
+      .min(2, { message: t("pages.admin.users_page.form.username_min") })
+      .max(25, { message: t("pages.admin.users_page.form.username_max") })
+      .regex(/^[^A-Z\s]+$/, { message: t("pages.admin.users_page.form.username_no_spaces") }),
+    email: z.string().email({ message: t("pages.admin.users_page.form.invalid_email") }),
+    password: z.string().min(1, { message: t("pages.admin.users_page.form.password_required") }),
+    role: z.string(),
+  });
 
-export const updatePlayerSchema = z.object({
-  name: z
-    .string()
-    .min(2, { message: "Name must be at least 2 characters long" })
-    .max(25, { message: "Name must be at most 25 characters long" }),
-  forename: z
-    .string()
-    .min(2, { message: "Forename must be at least 2 characters long" })
-    .max(25, { message: "Forename must be at most 25 characters long" }),
-  username: z
-    .string()
-    .min(2, { message: "Username must be at least 2 characters long" })
-    .max(25, { message: "Username must be at most 25 characters long" })
-    .regex(/^[^A-Z\s]+$/, { message: "Username cannot contain spaces or uppercases" }),
-  email: z.string().email({ message: "Invalid email address" }),
-  role: z.string(),
-  password: z.string().max(255, { message: "Password must be at most 255 characters long" }).optional(),
-});
+export const getUpdateUserSchema = (t: (key: string) => string) =>
+  z.object({
+    name: z
+      .string()
+      .min(2, { message: t("pages.admin.users_page.form.name_min") })
+      .max(25, { message: t("pages.admin.users_page.form.name_max") }),
+    forename: z
+      .string()
+      .min(2, { message: t("pages.admin.users_page.form.forename_min") })
+      .max(25, { message: t("pages.admin.users_page.form.forename_max") }),
+    username: z
+      .string()
+      .min(2, { message: t("pages.admin.users_page.form.username_min") })
+      .max(25, { message: t("pages.admin.users_page.form.username_max") })
+      .regex(/^[^A-Z\s]+$/, { message: t("pages.admin.users_page.form.username_no_spaces") }),
+    email: z.string().email({ message: t("pages.admin.users_page.form.invalid_email") }),
+    role: z.string(),
+    password: z.string().optional(),
+  });
 
-export const deletePlayerSchema = z.object({
-  confirmDelete: z
-    .string()
-    .min(1, { message: "You must type something" })
-    .transform((val) => val.toUpperCase()),
-});
+export const getDeleteUserSchema = (t: (key: string) => string) =>
+  z.object({
+    confirmDelete: z
+      .string()
+      .min(1, { message: t("pages.admin.users_page.form.confirm_delete_required") })
+      .transform((val) => val.toUpperCase()),
+  });

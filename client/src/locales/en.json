@@ -165,14 +165,46 @@
         },
         "a_user": "a user",
         "actions_type": {
-          "create": "create",
-          "update": "update",
-          "delete": "delete"
+          "create": "Create",
+          "update": "Update",
+          "delete": "Delete"
         },
         "copy_id": "Copy User ID",
         "copy_id_success": "User ID copied to clipboard",
         "delete_user": "Delete this User",
-        "update_user": "Update this User"
+        "update_user": "Update this User",
+        "form": {
+          "name_min": "Name must be at least 2 characters long.",
+          "name_max": "Name must be at most 25 characters long.",
+          "forename_min": "Forename must be at least 2 characters long.",
+          "forename_max": "Forename must be at most 25 characters long.",
+          "username_min": "Username must be at least 2 characters long.",
+          "username_max": "Username must be at most 25 characters long.",
+          "invalid_email": "Invalid email address.",
+          "username_no_spaces": "Username must not contain leading, trailing, middle spaces or uppercase letters.",
+          "password_required": "Password is required.",
+          "confirm_delete_required": "Please confirm the deletion of the user by typing 'DELETE'.",
+          "forename": "Forename",
+          "name": "Name",
+          "username": "Username",
+          "email": "Email",
+          "password": "Password",
+          "generate_password": "Generate",
+          "copy_password": "Copy password",
+          "no_password_yet": "No password generated yet",
+          "password_generated": "Password generated successfully",
+          "password_copied": "Password copied to clipboard",
+          "role": "Role",
+          "select_role_placeholder": "Select a role for the new user",
+          "user": "User",
+          "admin": "Administrator",
+          "save": "Save",
+          "update": "Update",
+          "confirm_delete_label": "Type \"DELETE\" to confirm",
+          "confirm_delete_placeholder": "DELETE",
+          "delete": "Delete",
+          "confirm_text_invalid": "Confirmation text is incorrect"
+        }
       }
     }
   },
