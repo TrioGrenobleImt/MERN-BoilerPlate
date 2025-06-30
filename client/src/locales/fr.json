@@ -115,7 +115,8 @@
       "users": "Utilisateurs",
       "settings": "Paramètres",
       "admin": "Admin",
-      "logs": "Journaux"
+      "logs": "Journaux",
+      "back_to_app": "Retour à l'accueil"
     }
   },
   "components": {

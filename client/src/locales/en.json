@@ -115,7 +115,8 @@
       "users": "Users",
       "settings": "Settings",
       "admin": "Admin",
-      "logs": "Logs"
+      "logs": "Logs",
+      "back_to_app": "Back to home"
     }
   },
   "components": {
