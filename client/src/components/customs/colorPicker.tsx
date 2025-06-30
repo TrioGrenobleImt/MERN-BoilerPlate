@@ -233,11 +233,7 @@ export default function ColorPicker({ value = "#3B82F6", onChange, className, di
       {isOpen && (
         <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-black border border-gray-300 dark:border-gray-600 rounded-xl shadow-xl z-50 p-6">
           {/* Color Preview and Hex Input */}
-          <div className="flex items-center gap-4 mb-6">
-            <div
-              className="w-16 h-16 rounded-xl border-4 border-gray-300 dark:border-gray-600 shadow-lg"
-              style={{ backgroundColor: currentColor }}
-            />
+          <div className="flex items-center gap-2 mb-6">
             <div className="flex-1">
               <label className="block text-sm font-medium text-black dark:text-white mb-2">Hex Color</label>
               <div className="flex gap-2">
@@ -245,7 +241,7 @@ export default function ColorPicker({ value = "#3B82F6", onChange, className, di
                   type="text"
                   value={hexInput}
                   onChange={handleHexInputChange}
-                  className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-black text-black dark:text-white rounded-lg font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="flex-1 pl-2 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-black text-black dark:text-white rounded-lg font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="#000000"
                 />
                 <button
