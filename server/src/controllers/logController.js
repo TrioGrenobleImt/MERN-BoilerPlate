@@ -62,9 +62,9 @@ export const deleteLog = async (req, res) => {
   try {
     const log = await Log.findByIdAndDelete(id);
     if (!log) {
-      return res.status(400).json({ error: "No such log" });
+      return res.status(400).json({ error: "log_not_found" });
     }
-    res.status(200).json({ message: "Log deleted successfully" });
+    res.status(200).json({ message: "log_deleted" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -78,7 +78,7 @@ export const deleteLog = async (req, res) => {
 export const deleteAllLogs = async (req, res) => {
   try {
     await Log.deleteMany();
-    res.status(200).json({ message: "All logs deleted successfully" });
+    res.status(200).json({ message: "logs_cleared" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

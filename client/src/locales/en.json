@@ -133,6 +133,23 @@
         "app_name_description": "Enter the name of your application. This will be displayed in the header and in various places throughout the application.",
         "accent_color": "Accent Color",
         "accent_color_description": "Choose the accent color for your application. This will be used in various places throughout the application."
+      },
+      "log_page": {
+        "level": "Level",
+        "user": "User",
+        "unknow_user": "Unknown User",
+        "message": "Message",
+        "date": "Date",
+        "actions": "Actions",
+        "copy_id": "Copy Log ID",
+        "copy_id_success": "Log ID copied to clipboard",
+        "delete_log": "Delete this Log",
+        "levels": {
+          "info": "Info",
+          "warn": "Warning",
+          "error": "Error",
+          "debug": "Debug"
+        }
       }
     }
   },
@@ -151,6 +168,12 @@
     "dataTable": {
       "no_data": "No data available",
       "columns": "Columns",
+      "columns_list": {
+        "user": "User",
+        "level": "Level",
+        "message": "Message",
+        "createdAt": "Date"
+      },
       "create_entity": "Create a new entity",
       "delete_entity": "Delete all entities",
       "filters": {
@@ -232,10 +255,13 @@
     "admin": {
       "errors": {
         "invalid_config": "Invalid configuration",
-        "config_not_found": "Configuration not found"
+        "config_not_found": "Configuration not found",
+        "log_not_found": "Log not found"
       },
       "messages": {
-        "config_updated": "Configuration updated successfully"
+        "config_updated": "Configuration updated successfully",
+        "log_deleted": "Log deleted successfully",
+        "logs_cleared": "All logs cleared successfully"
       }
     }
   }
