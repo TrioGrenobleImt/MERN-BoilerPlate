@@ -2,7 +2,7 @@ import { axiosConfig } from "@/config/axiosConfig";
 import { useState } from "react";
 import { toast } from "sonner";
 import { getColumns } from "./columns";
-import { Dialog, DialogHeader, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Dialog, DialogHeader, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { UserForm } from "./userForm";
 import { UserInterface } from "@/interfaces/User";
 import { DataTable } from "@/components/customs/dataTable";
@@ -56,7 +56,7 @@ export const Users = () => {
     <div>
       <div className="container px-4 mx-auto">
         <DataTable
-          columns={getColumns(callback)}
+          columns={getColumns(callback, t)}
           data={users}
           dataCount={userCount}
           fetchData={fetchUsers}
@@ -70,8 +70,9 @@ export const Users = () => {
         <Dialog open={openDialog} onOpenChange={() => setOpenDialog(false)}>
           <DialogContent className="sm:max-w-[625px]">
             <DialogHeader>
-              <DialogTitle>{action.charAt(0).toUpperCase() + action.slice(1)} a user</DialogTitle>
-              {action === "create" && <DialogDescription>Here you can give life to a new user</DialogDescription>}
+              <DialogTitle>
+                {action.charAt(0).toUpperCase() + action.slice(1)} {t("pages.admin.users_page.a_user")}
+              </DialogTitle>
             </DialogHeader>
             <UserForm dialog={setOpenDialog} refresh={fetchUsers} action={action} user={selectedUser} />
           </DialogContent>

@@ -7,11 +7,13 @@ import { toast } from "sonner";
 import { AvatarWithStatusCell } from "../../../../components/customs/avatarStatusCell";
 import { UserInterface } from "@/interfaces/User";
 import { Badge } from "@/components/ui/badge";
+import { TFunction } from "i18next";
+import { UserRoleBadge } from "@/components/customs/userRoleBadge";
 
-export const getColumns = (callback: (action: string, data: any) => void): ColumnDef<UserInterface>[] => [
+export const getColumns = (callback: (action: string, data: any) => void, t: TFunction<"translation">): ColumnDef<UserInterface>[] => [
   {
-    accessorKey: "Identity",
-    header: "User",
+    accessorKey: "user",
+    header: t("pages.admin.users_page.user"),
     cell: ({ row }) => {
       const user = row.original;
       return (
@@ -32,20 +34,19 @@ export const getColumns = (callback: (action: string, data: any) => void): Colum
     accessorKey: "role",
     header: ({ column }) => (
       <Button variant="ghost" className="font-bold" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-        Role
-        <ArrowUpDown className="w-4 h-4 ml-2" />
+        {t("pages.admin.users_page.role")} <ArrowUpDown className="w-4 h-4 ml-2" />
       </Button>
     ),
     cell: ({ row }) => {
       const value = row.getValue("role");
-      return <div>{(value as string).charAt(0).toUpperCase() + (value as string).slice(1)}</div>;
+      return <UserRoleBadge role={value as any} />;
     },
   },
   {
     accessorKey: "username",
     header: ({ column }) => (
       <Button variant="ghost" className="font-bold" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-        Username
+        {t("pages.admin.users_page.username")}
         <ArrowUpDown className="w-4 h-4 ml-2" />
       </Button>
     ),
@@ -55,7 +56,7 @@ export const getColumns = (callback: (action: string, data: any) => void): Colum
     accessorKey: "email",
     header: ({ column }) => (
       <Button variant="ghost" className="font-bold" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-        Email
+        {t("pages.admin.users_page.email")}
         <ArrowUpDown className="w-4 h-4 ml-2" />
       </Button>
     ),
@@ -65,7 +66,7 @@ export const getColumns = (callback: (action: string, data: any) => void): Colum
     accessorKey: "auth_type",
     header: ({ column }) => (
       <Button variant="ghost" className="font-bold" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-        Auth type
+        {t("pages.admin.users_page.auth_type")}
         <ArrowUpDown className="w-4 h-4 ml-2" />
       </Button>
     ),
@@ -75,7 +76,7 @@ export const getColumns = (callback: (action: string, data: any) => void): Colum
     accessorKey: "createdAt",
     header: ({ column }) => (
       <Button variant="ghost" className="font-bold" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-        Joined
+        {t("pages.admin.users_page.joined")}
         <ArrowUpDown className="w-4 h-4 ml-2" />
       </Button>
     ),
@@ -89,7 +90,7 @@ export const getColumns = (callback: (action: string, data: any) => void): Colum
   {
     id: "actions",
     enableHiding: false,
-    header: "Actions",
+    header: t("pages.admin.users_page.actions"),
     cell: ({ row }) => {
       const user = row.original;
 

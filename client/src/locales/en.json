@@ -150,6 +150,20 @@
           "error": "Error",
           "debug": "Debug"
         }
+      },
+      "users_page": {
+        "user": "User",
+        "username": "Username",
+        "email": "Email",
+        "role": "Role",
+        "joined": "Joined",
+        "actions": "Actions",
+        "auth_type": "Authentication Type",
+        "roles": {
+          "admin": "Administrator",
+          "user": "User"
+        },
+        "a_user": "a user"
       }
     }
   },
@@ -172,7 +186,11 @@
         "user": "User",
         "level": "Level",
         "message": "Message",
-        "createdAt": "Date"
+        "createdAt": "Date",
+        "username": "Username",
+        "email": "Email",
+        "role": "Role",
+        "auth_type": "Authentication Type"
       },
       "create_entity": "Create a new entity",
       "delete_entity": "Delete all entities",
