@@ -19,7 +19,7 @@ export function NavMain({
   const { isMobile, setOpenMobile } = useSidebar();
   const isActive = (path: string, includeSubroutes = false) => (includeSubroutes ? pathname.startsWith(path) : pathname === path);
   const styleDefault = "px-4 py-3 font-light flex items-center justify-center gap-3";
-  const styleActive = ` mx-4 my-3 flex items-center justify-center gap-3 text-primary border-b border-primary`;
+  const styleActive = ` mx-4 my-3 flex items-center justify-center gap-3 text-primary border-b border-accent`;
 
   const { getConfigValue } = useConfigContext();
   const [configValues, setConfigValues] = useState<Record<string, string>>({});
