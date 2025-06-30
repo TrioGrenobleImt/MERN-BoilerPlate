@@ -306,6 +306,7 @@
         "password_incorrect": "Le mot de passe est incorrect"
       },
       "messages": {
+        "user_created": "Utilisateur créé avec succès",
         "user_updated": "Utilisateur mis à jour avec succès",
         "password_updated": "Mot de passe mis à jour avec succès",
         "user_deleted": "Utilisateur supprimé avec succès"

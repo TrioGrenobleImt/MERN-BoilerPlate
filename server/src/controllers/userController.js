@@ -63,18 +63,18 @@ export const createUser = async (req, res) => {
   const userId = req.userId;
 
   if (!email || !username || !password || !name || !forename) {
-    return res.status(400).json({ error: "Missing fields" });
+    return res.status(400).json({ error: "server.global.errors.missing_fields" });
   }
 
   try {
     const existingUserByEmail = await User.findOne({ email: email.toLowerCase() });
     const existingUserByUsername = await User.findOne({ username: username.toLowerCase() });
 
-    if (existingUserByEmail) return res.status(409).json({ error: "Email already taken" });
-    if (existingUserByUsername) return res.status(409).json({ error: "Username already taken" });
+    if (existingUserByEmail) return res.status(409).json({ error: "server.users.errors.email_taken" });
+    if (existingUserByUsername) return res.status(409).json({ error: "server.users.errors.username_taken" });
 
     if (role && !Object.values(userRoles).includes(role)) {
-      return res.status(400).json({ error: "Invalid role" });
+      return res.status(400).json({ error: "server.users.errors.invalid_role" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -101,7 +101,7 @@ export const createUser = async (req, res) => {
       level: logLevels.INFO,
     });
 
-    res.status(201).json({ user: userWithoutPassword, message: "User created successfully" });
+    res.status(201).json({ user: userWithoutPassword, message: "server.users.messages.user_created" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -179,7 +179,7 @@ export const deleteUser = async (req, res) => {
   const { id } = req.params;
   try {
     const user = await User.findOneAndDelete({ _id: id });
-    if (!user) return res.status(400).json({ error: "No such user" });
+    if (!user) return res.status(400).json({ error: "server.global.errors.no_such_user" });
 
     if (user.avatar) {
       const oldAvatarPath = path.join(process.cwd(), "uploads", "users", "avatars", path.basename(user.avatar));
@@ -194,7 +194,7 @@ export const deleteUser = async (req, res) => {
       level: logLevels.INFO,
     });
 
-    res.status(200).json({ user, message: "User deleted successfully" });
+    res.status(200).json({ user, message: "server.users.messages.user_deleted" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -206,7 +206,7 @@ export const deleteUser = async (req, res) => {
  * @returns {Object} JSON response with generated password.
  */
 export const generateUserPassword = async (req, res) => {
-  res.status(200).json({ message: "Password generated successfully", password: generateRandomPassword() });
+  res.status(200).json({ message: "pages.admin.users_page.form.password_generated", password: generateRandomPassword() });
 };
 
 /**
