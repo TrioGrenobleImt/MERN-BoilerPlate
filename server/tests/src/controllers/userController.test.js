@@ -108,7 +108,7 @@ describe("POST /api/users/", () => {
     expect(response.body.user.username).toBe(regularUser.username);
     expect(response.body.user.email).toBe(regularUser.email);
     expect(response.body.user.password).toBe(undefined);
-    expect(response.body.message).toBe("User created successfully");
+    expect(response.body.message).toBe("server.users.messages.user_created");
   });
 
   it("should return an error if required fields are missing", async () => {
@@ -120,7 +120,7 @@ describe("POST /api/users/", () => {
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(400);
-    expect(response.body.error).toBe("Missing fields");
+    expect(response.body.error).toBe("server.global.errors.missing_fields");
   });
 
   it("should return an error if the email already exist", async () => {
@@ -132,7 +132,7 @@ describe("POST /api/users/", () => {
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(409);
-    expect(response.body.error).toBe("Email already taken");
+    expect(response.body.error).toBe("server.users.errors.email_taken");
   });
 
   it("should return an error if the username already exist", async () => {
@@ -144,7 +144,7 @@ describe("POST /api/users/", () => {
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(409);
-    expect(response.body.error).toBe("Username already taken");
+    expect(response.body.error).toBe("server.users.errors.username_taken");
   });
 
   it("should return an error if the role isnt valid", async () => {
@@ -156,7 +156,7 @@ describe("POST /api/users/", () => {
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(400);
-    expect(response.body.error).toBe("Invalid role");
+    expect(response.body.error).toBe("server.users.errors.invalid_role");
   });
 
   it("should return a 500 status if there is an error during user creation", async () => {
@@ -311,7 +311,7 @@ describe("DELETE /api/users/:id", () => {
 
     expect(fs.existsSync(pathAvatarOldTest)).toBe(false);
     expect(response.status).toBe(200);
-    expect(response.body.message).toBe("User deleted successfully");
+    expect(response.body.message).toBe("server.users.messages.user_deleted");
     expect(response.body.user.username).toBe(user.username);
     expect(response.body.user.password).toBe(undefined);
     const deletedUser = await User.findById(user._id);
@@ -326,7 +326,7 @@ describe("DELETE /api/users/:id", () => {
       .delete(`/api/users/${newUserId}`)
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
     expect(response.status).toBe(400);
-    expect(response.body.error).toBe("No such user");
+    expect(response.body.error).toBe("server.global.errors.no_such_user");
   });
 
   it("should return a 500 status if an error occurs", async () => {
@@ -353,7 +353,7 @@ describe("GET /api/users/generatePassword", () => {
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(200);
-    expect(response.body.message).toBe("Password generated successfully");
+    expect(response.body.message).toBe("pages.admin.users_page.form.password_generated");
     expect(response.body.password).toBeDefined();
   });
 });
