@@ -17,6 +17,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
   DropdownMenuItem,
+  DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
@@ -84,15 +85,18 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="overflow-hidden border rounded-md">
-      <div className="flex flex-col items-center justify-between gap-4 p-4 text-2xl md:flex-row">
-        <div className="flex flex-col w-full gap-4 md:flex-row">
+      <div className="flex flex-col p-4 gap-4 md:flex-row md:items-center md:justify-between">
+        {/* Search */}
+        <div className="w-full md:flex md:flex-row md:items-center md:justify-start md:gap-4">
           <Input
             placeholder={searchPlaceholder}
             value={(table.getColumn(searchElement)?.getFilterValue() as string) ?? ""}
             onChange={(event) => table.getColumn(searchElement)?.setFilterValue(event.target.value)}
-            className="w-full md:w-auto"
+            className="w-full md:w-auto md:max-w-xs"
           />
-          <div className="flex items-center gap-2">
+
+          {/* Bloc Columns + Reload en PC */}
+          <div className="hidden md:flex md:items-center md:gap-2">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline">Columns</Button>
@@ -120,30 +124,86 @@ export function DataTable<TData, TValue>({
           </div>
         </div>
 
+        {/* Menu toujours à droite en PC */}
         {actions.length !== 0 && (
+          <div className="hidden md:flex">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">
+                  <EllipsisVertical />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {actions.includes("create") && (
+                  <DropdownMenuItem className="flex gap-4" onClick={() => callback("create", null)}>
+                    <Plus className="w-4 h-4" />
+                    <span>Create a new entity</span>
+                  </DropdownMenuItem>
+                )}
+                {actions.includes("deleteAll") && (
+                  <DropdownMenuItem className="flex gap-4" onClick={() => setOpenModal(true)}>
+                    <Trash className="w-4 h-4" />
+                    <span>Delete all entities</span>
+                  </DropdownMenuItem>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        )}
+
+        {/* Mobile: Actions sous la search bar, centrées */}
+        <div className="flex justify-center items-center gap-2 md:hidden flex-wrap">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline">
-                <EllipsisVertical />
-              </Button>
+              <Button variant="outline">Columns</Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              {actions.includes("create") && (
-                <DropdownMenuItem className="flex gap-4" onClick={() => callback("create", null)}>
-                  <Plus className="w-4 h-4" />
-                  <span>Create a new entity</span>
-                </DropdownMenuItem>
-              )}
-              {actions.includes("deleteAll") && (
-                <DropdownMenuItem className="flex gap-4" onClick={() => setOpenModal(true)}>
-                  <Trash className="w-4 h-4" />
-                  <span>Delete all entities</span>
-                </DropdownMenuItem>
-              )}
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className="capitalize"
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                  >
+                    {(column.columnDef.meta as any)?.label ?? column.id}
+                  </DropdownMenuCheckboxItem>
+                ))}
             </DropdownMenuContent>
           </DropdownMenu>
-        )}
+
+          <Button variant="outline" onClick={() => fetchData(pagination.pageIndex, pagination.pageSize)} disabled={isLoading}>
+            {isLoading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
+          </Button>
+
+          {actions.length !== 0 && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">
+                  <EllipsisVertical />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {actions.includes("create") && (
+                  <DropdownMenuItem className="flex gap-4" onClick={() => callback("create", null)}>
+                    <Plus className="w-4 h-4" />
+                    <span>Create a new entity</span>
+                  </DropdownMenuItem>
+                )}
+                {actions.includes("deleteAll") && (
+                  <DropdownMenuItem className="flex gap-4" onClick={() => setOpenModal(true)}>
+                    <Trash className="w-4 h-4" />
+                    <span>Delete all entities</span>
+                  </DropdownMenuItem>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+        </div>
       </div>
+
       <Separator />
       <div className="overflow-x-auto">
         <Table>
@@ -200,44 +260,47 @@ export function DataTable<TData, TValue>({
           Page <strong>{table.getState().pagination.pageIndex + 1}</strong> of <strong>{table.getPageCount()}</strong> • {dataCount} total
           entries
         </div>
-        <div className="flex items-center space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setPagination((prev) => ({ ...prev, pageIndex: 0 }))}
-            disabled={pagination.pageIndex === 0}
-          >
-            First
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setPagination((prev) => ({ ...prev, pageIndex: prev.pageIndex - 1 }))}
-            disabled={pagination.pageIndex === 0}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setPagination((prev) => ({ ...prev, pageIndex: prev.pageIndex + 1 }))}
-            disabled={(pagination.pageIndex + 1) * pagination.pageSize >= dataCount}
-          >
-            Next
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() =>
-              setPagination((prev) => ({
-                ...prev,
-                pageIndex: Math.floor((dataCount - 1) / pagination.pageSize),
-              }))
-            }
-            disabled={(pagination.pageIndex + 1) * pagination.pageSize >= dataCount}
-          >
-            Last
-          </Button>
+        <div className="flex flex-col items-center sm:flex-row sm:items-start gap-4">
+          {" "}
+          <div className="flex items-center space-x-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setPagination((prev) => ({ ...prev, pageIndex: 0 }))}
+              disabled={pagination.pageIndex === 0}
+            >
+              First
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setPagination((prev) => ({ ...prev, pageIndex: prev.pageIndex - 1 }))}
+              disabled={pagination.pageIndex === 0}
+            >
+              Previous
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setPagination((prev) => ({ ...prev, pageIndex: prev.pageIndex + 1 }))}
+              disabled={(pagination.pageIndex + 1) * pagination.pageSize >= dataCount}
+            >
+              Next
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() =>
+                setPagination((prev) => ({
+                  ...prev,
+                  pageIndex: Math.floor((dataCount - 1) / pagination.pageSize),
+                }))
+              }
+              disabled={(pagination.pageIndex + 1) * pagination.pageSize >= dataCount}
+            >
+              Last
+            </Button>
+          </div>
           <Select
             value={String(table.getState().pagination.pageSize)}
             onValueChange={(value) => {
