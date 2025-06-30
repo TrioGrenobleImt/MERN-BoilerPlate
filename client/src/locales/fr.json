@@ -116,7 +116,14 @@
       "settings": "Paramètres",
       "admin": "Admin",
       "logs": "Journaux",
-      "back_to_app": "Retour à l'accueil"
+      "back_to_app": "Retour à l'accueil",
+      "dashboard_page": {
+        "active_users": "Utilisateurs actifs",
+        "total_users": "Utilisateurs totaux",
+        "auth_methods": "Méthodes d'authentification",
+        "auth_methods_description": "Cette section indique le nombre d'utilisateurs inscrits par méthode d'authentification.",
+        "of_users": "des utilisateurs"
+      }
     }
   },
   "components": {

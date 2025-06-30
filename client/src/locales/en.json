@@ -116,7 +116,14 @@
       "settings": "Settings",
       "admin": "Admin",
       "logs": "Logs",
-      "back_to_app": "Back to home"
+      "back_to_app": "Back to home",
+      "dashboard_page": {
+        "active_users": "Active Users",
+        "total_users": "Total Users",
+        "auth_methods": "Authentication Methods",
+        "auth_methods_description": "This section shows the number of users registered with each authentication method.",
+        "of_users": "of all users"
+      }
     }
   },
   "components": {

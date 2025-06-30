@@ -52,7 +52,7 @@ export const Dashboard = () => {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-2">
             <Card className="max-h-[120px]">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium">Active users</CardTitle>
+                <CardTitle className="text-sm font-medium">{t("pages.admin.dashboard_page.active_users")}</CardTitle>
                 <Activity className="w-4 h-4 text-accent" />
               </CardHeader>
               <CardContent>
@@ -62,7 +62,7 @@ export const Dashboard = () => {
 
             <Card className="max-h-[120px]">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium">Registrations</CardTitle>
+                <CardTitle className="text-sm font-medium">{t("pages.admin.dashboard_page.total_users")}</CardTitle>
                 <Users className="w-4 h-4 text-accent" />
               </CardHeader>
               <CardContent>
@@ -72,10 +72,10 @@ export const Dashboard = () => {
             <Card>
               <CardHeader>
                 <div className="flex flex-row items-center justify-between pb-2">
-                  <CardTitle>Authentication Summary</CardTitle>
+                  <CardTitle>{t("pages.admin.dashboard_page.auth_methods")}</CardTitle>
                   <LogIn className="w-4 h-4 text-accent" />
                 </div>
-                <CardDescription>Detailed breakdown of all authentication methods</CardDescription>
+                <CardDescription>{t("pages.admin.dashboard_page.auth_methods_description")}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -91,7 +91,9 @@ export const Dashboard = () => {
                             <div className={`w-4 h-4 rounded-full ${color}`} />
                             <div>
                               <p className="font-medium">{item.label}</p>
-                              <p className="text-sm text-muted-foreground">{Math.round((item.value / userCount) * 100)}% of total users</p>
+                              <p className="text-sm text-muted-foreground">
+                                {Math.round((item.value / userCount) * 100)}% {t("pages.admin.dashboard_page.of_users")}
+                              </p>
                             </div>
                           </div>
                           <div className="text-right">
