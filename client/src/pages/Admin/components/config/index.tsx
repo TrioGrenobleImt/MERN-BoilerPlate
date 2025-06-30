@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card } from "@/components/ui/card";
+import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { axiosConfig } from "@/config/axiosConfig";
 import { toast } from "sonner";
 import { useConfigContext } from "@/contexts/configContext";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { ColorInput } from "@/components/customs/colorInput";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useTranslation } from "react-i18next";
+import { Loading } from "@/components/customs/loading";
+import ColorPicker from "@/components/customs/colorPicker";
 
 const configurationFormSchema = z.object({
   APP_NAME: z.string().trim(),
@@ -56,14 +57,15 @@ export const Config = () => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return (
     <div>
       <div className="container px-4 mx-auto">
         <Card className="p-6 rounded-lg shadow-lg">
-          <h2 className="mb-4 text-2xl font-semibold">Configuration</h2>
+          <CardTitle className="mb-2 text-2xl font-semibold">{t("pages.admin.config_page.title")}</CardTitle>
+          <CardDescription className="mb-6">{t("pages.admin.config_page.description")}</CardDescription>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <FormField
@@ -71,10 +73,11 @@ export const Config = () => {
                 name="APP_NAME"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Nom de l'application</FormLabel>
+                    <FormLabel>{t("pages.admin.config_page.app_name")}</FormLabel>
                     <FormControl>
-                      <Input placeholder="Nom de l'application" {...field} />
+                      <Input placeholder={t("pages.admin.config_page.app_name")} {...field} />
                     </FormControl>
+                    <FormDescription>{t("pages.admin.config_page.app_name_description")}</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -84,15 +87,17 @@ export const Config = () => {
                 name="ACCENT_COLOR"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Couleur d'accentutation</FormLabel>
+                    <FormLabel>{t("pages.admin.config_page.accent_color")}</FormLabel>
                     <FormControl>
-                      <ColorInput {...field} placeholder="Couleur d'accentuation" />
+                      <ColorPicker {...field} />
                     </FormControl>
+                    <FormDescription>{t("pages.admin.config_page.accent_color_description")}</FormDescription>
+
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <Button type="submit">Enregistrer</Button>
+              <Button type="submit">{t("global.buttons.save")}</Button>
             </form>
           </Form>
         </Card>
