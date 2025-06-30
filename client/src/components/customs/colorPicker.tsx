@@ -4,6 +4,7 @@ import type React from "react";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { ChevronDown, Palette, Copy, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 interface ColorPickerProps {
   value?: string;
@@ -42,6 +43,8 @@ export default function ColorPicker({ value = "#3B82F6", onChange, className, di
   const dropdownRef = useRef<HTMLDivElement>(null);
   const isUpdatingFromHSL = useRef(false);
   const isUpdatingFromHex = useRef(false);
+
+  const { t } = useTranslation();
 
   // Convert hex to HSL
   const hexToHsl = useCallback((hex: string) => {
@@ -235,7 +238,7 @@ export default function ColorPicker({ value = "#3B82F6", onChange, className, di
           {/* Color Preview and Hex Input */}
           <div className="flex items-center gap-2 mb-6">
             <div className="flex-1">
-              <label className="block text-sm font-medium text-black dark:text-white mb-2">Hex Color</label>
+              <label className="block text-sm font-medium text-black dark:text-white mb-2">{t("components.colorPicker.hex_color")}</label>
               <div className="flex gap-2">
                 <input
                   type="text"
@@ -258,7 +261,9 @@ export default function ColorPicker({ value = "#3B82F6", onChange, className, di
           {/* HSL Sliders */}
           <div className="space-y-4 mb-6">
             <div>
-              <label className="block text-sm font-medium text-black dark:text-white mb-2">Hue: {Math.round(hue)}°</label>
+              <label className="block text-sm font-medium text-black dark:text-white mb-2">
+                {t("components.colorPicker.hue")}: {Math.round(hue)}°
+              </label>
               <input
                 type="range"
                 min="0"
@@ -276,7 +281,9 @@ export default function ColorPicker({ value = "#3B82F6", onChange, className, di
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-black dark:text-white mb-2">Saturation: {Math.round(saturation)}%</label>
+              <label className="block text-sm font-medium text-black dark:text-white mb-2">
+                {t("components.colorPicker.saturation")}: {Math.round(saturation)}%
+              </label>
               <input
                 type="range"
                 min="0"
@@ -293,7 +300,9 @@ export default function ColorPicker({ value = "#3B82F6", onChange, className, di
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-black dark:text-white mb-2">Lightness: {Math.round(lightness)}%</label>
+              <label className="block text-sm font-medium text-black dark:text-white mb-2">
+                {t("components.colorPicker.lightness")}: {Math.round(lightness)}%
+              </label>
               <input
                 type="range"
                 min="0"
@@ -315,7 +324,7 @@ export default function ColorPicker({ value = "#3B82F6", onChange, className, di
           <div>
             <label className="block text-sm font-medium text-black dark:text-white mb-3">
               <Palette className="w-4 h-4 inline mr-2" />
-              Preset Colors
+              {t("components.colorPicker.preset_colors")}
             </label>
             <div className="grid grid-cols-5 gap-2">
               {presetColors.map((color) => (
