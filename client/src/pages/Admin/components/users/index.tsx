@@ -71,7 +71,7 @@ export const Users = () => {
           <DialogContent className="sm:max-w-[625px]">
             <DialogHeader>
               <DialogTitle>
-                {action.charAt(0).toUpperCase() + action.slice(1)} {t("pages.admin.users_page.a_user")}
+                {t(`pages.admin.users_page.actions_type.` + action)} {t("pages.admin.users_page.a_user")}
               </DialogTitle>
             </DialogHeader>
             <UserForm dialog={setOpenDialog} refresh={fetchUsers} action={action} user={selectedUser} />

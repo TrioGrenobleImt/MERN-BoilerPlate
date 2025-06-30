@@ -163,7 +163,16 @@
           "admin": "Administrator",
           "user": "User"
         },
-        "a_user": "a user"
+        "a_user": "a user",
+        "actions_type": {
+          "create": "create",
+          "update": "update",
+          "delete": "delete"
+        },
+        "copy_id": "Copy User ID",
+        "copy_id_success": "User ID copied to clipboard",
+        "delete_user": "Delete this User",
+        "update_user": "Update this User"
       }
     }
   },

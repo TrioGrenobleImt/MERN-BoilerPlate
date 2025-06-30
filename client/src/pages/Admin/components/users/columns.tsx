@@ -106,16 +106,17 @@ export const getColumns = (callback: (action: string, data: any) => void, t: TFu
               className="flex gap-4"
               onClick={() => {
                 navigator.clipboard.writeText(user._id);
-                toast.success("User ID copied to clipboard");
+                toast.success(t("pages.admin.users_page.copy_id_success"));
               }}
             >
-              <Copy className="w-4 h-4" /> Copy user ID
+              <Copy className="w-4 h-4" />
+              {t("pages.admin.users_page.copy_id")}
             </DropdownMenuItem>
             <DropdownMenuItem className="flex gap-4" onClick={() => callback("update", user._id)}>
-              <Pencil className="w-4 h-4" /> Update this user
+              <Pencil className="w-4 h-4" /> {t("pages.admin.users_page.update_user")}
             </DropdownMenuItem>
             <DropdownMenuItem className="flex gap-4 text-destructive hover:text-destructive!" onClick={() => callback("delete", user._id)}>
-              <Trash className="w-4 h-4" /> Delete this user
+              <Trash className="w-4 h-4" /> {t("pages.admin.users_page.delete_user")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
