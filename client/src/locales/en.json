@@ -203,6 +203,15 @@
         "password_updated": "Password updated successfully",
         "user_deleted": "User deleted successfully"
       }
+    },
+    "admin": {
+      "errors": {
+        "invalid_config": "Invalid configuration",
+        "config_not_found": "Configuration not found"
+      },
+      "messages": {
+        "config_updated": "Configuration updated successfully"
+      }
     }
   }
 }

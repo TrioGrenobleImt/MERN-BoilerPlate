@@ -26,7 +26,12 @@ export const updateConfig = async (req, res) => {
   const { keys, config } = req.body;
 
   if (!Array.isArray(keys) || typeof config !== "object" || config === null) {
-    return res.status(400).json({ message: "Invalid input format" });
+    createLog({
+      level: logLevels.ERROR,
+      message: "Invalid configuration update request",
+      userId: req.userId,
+    });
+    return res.status(400).json({ message: "invalid_config" });
   }
 
   try {
@@ -44,11 +49,11 @@ export const updateConfig = async (req, res) => {
           message: `Key ${key} not found in config object`,
           userId: req.userId,
         });
-        return res.status(400).json({ message: `Key ${key} not found in config object` });
+        return res.status(400).json({ message: `config_not_found` });
       }
     }
 
-    res.json({ message: "Configuration updated successfully" });
+    res.json({ message: "config_updated" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

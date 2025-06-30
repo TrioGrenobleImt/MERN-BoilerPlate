@@ -203,6 +203,15 @@
         "password_updated": "Mot de passe mis à jour avec succès",
         "user_deleted": "Utilisateur supprimé avec succès"
       }
+    },
+    "admin": {
+      "errors": {
+        "invalid_config": "Configuration invalide",
+        "config_not_found": "Configuration non trouvée"
+      },
+      "messages": {
+        "config_updated": "Configuration mise à jour avec succès"
+      }
     }
   }
 }
