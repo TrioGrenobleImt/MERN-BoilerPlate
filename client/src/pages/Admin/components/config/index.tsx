@@ -50,7 +50,7 @@ export const Config = () => {
       const response = await axiosConfig.put("/config", { keys, config });
       updateConfigValues(config);
       form.reset({ ...configValues, ...config });
-      toast.success(response.data.message);
+      toast.success(t(`server.admin.messages.${response.data.message}`));
     } catch (error: any) {
       toast.error(t(error.response.data.error));
     }
