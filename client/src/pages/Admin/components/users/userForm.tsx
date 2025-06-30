@@ -63,7 +63,7 @@ export const UserForm = ({ dialog, refresh, action, user }: UserFormProps) => {
     try {
       setLoading(true);
       const response = await axiosConfig.post("/users", values);
-      toast.success(response.data.message);
+      toast.success(t(response.data.message));
       dialog(false);
       refresh();
       createForm.reset();
@@ -78,7 +78,7 @@ export const UserForm = ({ dialog, refresh, action, user }: UserFormProps) => {
     try {
       setLoading(true);
       const response = await axiosConfig.put(`/users/${user?._id}`, values);
-      toast.success(response.data.message);
+      toast.success(t(response.data.message));
       dialog(false);
       refresh();
       updateForm.reset();
@@ -94,7 +94,7 @@ export const UserForm = ({ dialog, refresh, action, user }: UserFormProps) => {
       try {
         setLoading(true);
         const response = await axiosConfig.delete(`/users/${user?._id}`);
-        toast.success(response.data.message);
+        toast.success(t(response.data.message));
         dialog(false);
         refresh();
       } catch (error: any) {
@@ -111,7 +111,7 @@ export const UserForm = ({ dialog, refresh, action, user }: UserFormProps) => {
     try {
       setLoading(true);
       const response = await axiosConfig.get(`/users/utils/generatePassword`);
-      toast.success(t("pages.admin.users_page.form.password_generated"));
+      toast.success(t(response.data.message));
       if (action === "update") updateForm.setValue("password", response.data.password);
       if (action === "create") createForm.setValue("password", response.data.password);
     } catch (error: any) {
