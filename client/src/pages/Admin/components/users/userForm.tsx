@@ -367,7 +367,7 @@ export const UserForm = ({ dialog, refresh, action, user }: UserFormProps) => {
               </FormItem>
             )}
           />
-          <Button type="submit" disabled={loading}>
+          <Button type="submit" variant="destructive" disabled={loading}>
             Delete
           </Button>
         </form>

@@ -147,13 +147,38 @@
       "hue": "Teinte",
       "saturation": "Saturation",
       "lightness": "Luminosité"
+    },
+    "dataTable": {
+      "no_data": "Aucune donnée disponible",
+      "columns": "Colonnes",
+      "create_entity": "Créer une nouvelle entité",
+      "delete_entity": "Supprimer toutes les entités",
+      "filters": {
+        "username": "Filtrer par nom d'utilisateur",
+        "message": "Filtrer par message"
+      },
+      "delete_title": "Supprimer toutes les entités",
+      "delete_description": "Êtes-vous sûr de vouloir supprimer toutes les entités ? Cette action est irréversible.",
+      "footer": {
+        "page": "Page",
+        "of": "sur",
+        "total": "total",
+        "entries": "entrées",
+        "first": "Première",
+        "last": "Dernière",
+        "next": "Suivant",
+        "previous": "Précédent",
+        "per_page": "par page",
+        "all": "Tout"
+      }
     }
   },
   "global": {
     "buttons": {
       "cancel": "Annuler",
       "save": "Enregistrer",
-      "update": "Mettre à jour"
+      "update": "Mettre à jour",
+      "delete": "Supprimer"
     },
     "expired_session": "Votre session a expiré, veuillez vous reconnecter."
   },

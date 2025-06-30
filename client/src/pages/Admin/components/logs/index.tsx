@@ -65,7 +65,6 @@ export const Logs = () => {
           isLoading={loading}
           callback={callback}
           searchElement="message"
-          searchPlaceholder="Filter by message"
           actions={["deleteAll"]}
         />
       </div>
