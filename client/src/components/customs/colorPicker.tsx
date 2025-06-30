@@ -216,44 +216,44 @@ export default function ColorPicker({ value = "#3B82F6", onChange, className, di
         onClick={() => !disabled && setIsOpen(!isOpen)}
         disabled={disabled}
         className={cn(
-          "flex items-center gap-3 px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm transition-all duration-200",
-          "hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent",
+          "w-full flex items-center gap-3 px-4 py-3 bg-white dark:bg-black border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm transition-all duration-200",
+          "hover:border-gray-400 dark:hover:border-gray-500 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent",
           disabled && "opacity-50 cursor-not-allowed",
-          isOpen && "border-blue-500 dark:border-blue-400 shadow-md",
+          isOpen && "border-blue-500 shadow-md",
         )}
       >
         <div
-          className="w-6 h-6 rounded-md border-2 border-white dark:border-gray-300 shadow-sm"
+          className="w-6 h-6 rounded-md border-2 border-gray-300 dark:border-gray-600 shadow-sm"
           style={{ backgroundColor: currentColor }}
         />
-        <span className="flex-1 text-left font-mono text-sm text-gray-700 dark:text-gray-300">{currentColor.toUpperCase()}</span>
-        <ChevronDown className={cn("w-4 h-4 text-gray-400 dark:text-gray-500 transition-transform duration-200", isOpen && "rotate-180")} />
+        <span className="flex-1 text-left font-mono text-sm text-black dark:text-white">{currentColor.toUpperCase()}</span>
+        <ChevronDown className={cn("w-4 h-4 text-gray-600 dark:text-gray-400 transition-transform duration-200", isOpen && "rotate-180")} />
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-50 p-6">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-black border border-gray-300 dark:border-gray-600 rounded-xl shadow-xl z-50 p-6">
           {/* Color Preview and Hex Input */}
-          <div className="flex items-center gap-2 mb-6">
+          <div className="flex items-center gap-4 mb-6">
+            <div
+              className="w-16 h-16 rounded-xl border-4 border-gray-300 dark:border-gray-600 shadow-lg"
+              style={{ backgroundColor: currentColor }}
+            />
             <div className="flex-1">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Hex Color</label>
+              <label className="block text-sm font-medium text-black dark:text-white mb-2">Hex Color</label>
               <div className="flex gap-2">
                 <input
                   type="text"
                   value={hexInput}
                   onChange={handleHexInputChange}
-                  className="flex-1 px-3 py-2 border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-black text-black dark:text-white rounded-lg font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="#000000"
                 />
                 <button
                   type="button"
                   onClick={copyToClipboard}
-                  className="px-3 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors duration-200"
+                  className="px-3 py-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200"
                 >
-                  {copied ? (
-                    <Check className="w-4 h-4 text-green-600 dark:text-green-400" />
-                  ) : (
-                    <Copy className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-                  )}
+                  {copied ? <Check className="w-4 h-4 text-green-600" /> : <Copy className="w-4 h-4 text-gray-600 dark:text-gray-400" />}
                 </button>
               </div>
             </div>
@@ -262,14 +262,14 @@ export default function ColorPicker({ value = "#3B82F6", onChange, className, di
           {/* HSL Sliders */}
           <div className="space-y-4 mb-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Hue: {Math.round(hue)}°</label>
+              <label className="block text-sm font-medium text-black dark:text-white mb-2">Hue: {Math.round(hue)}°</label>
               <input
                 type="range"
                 min="0"
                 max="360"
                 value={hue}
                 onChange={(e) => handleHueChange(Number(e.target.value))}
-                className="w-full h-3 rounded-lg appearance-none cursor-pointer slider-hue"
+                className="w-full h-3 rounded-lg appearance-none cursor-pointer"
                 style={{
                   background: `linear-gradient(to right, 
                     hsl(0, 100%, 50%), hsl(60, 100%, 50%), hsl(120, 100%, 50%), 
@@ -280,16 +280,14 @@ export default function ColorPicker({ value = "#3B82F6", onChange, className, di
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Saturation: {Math.round(saturation)}%
-              </label>
+              <label className="block text-sm font-medium text-black dark:text-white mb-2">Saturation: {Math.round(saturation)}%</label>
               <input
                 type="range"
                 min="0"
                 max="100"
                 value={saturation}
                 onChange={(e) => handleSaturationChange(Number(e.target.value))}
-                className="w-full h-3 rounded-lg appearance-none cursor-pointer slider-saturation"
+                className="w-full h-3 rounded-lg appearance-none cursor-pointer"
                 style={{
                   background: `linear-gradient(to right, 
                     hsl(${hue}, 0%, ${lightness}%), 
@@ -299,14 +297,14 @@ export default function ColorPicker({ value = "#3B82F6", onChange, className, di
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Lightness: {Math.round(lightness)}%</label>
+              <label className="block text-sm font-medium text-black dark:text-white mb-2">Lightness: {Math.round(lightness)}%</label>
               <input
                 type="range"
                 min="0"
                 max="100"
                 value={lightness}
                 onChange={(e) => handleLightnessChange(Number(e.target.value))}
-                className="w-full h-3 rounded-lg appearance-none cursor-pointer slider-lightness"
+                className="w-full h-3 rounded-lg appearance-none cursor-pointer"
                 style={{
                   background: `linear-gradient(to right, 
                     hsl(${hue}, ${saturation}%, 0%), 
@@ -319,21 +317,21 @@ export default function ColorPicker({ value = "#3B82F6", onChange, className, di
 
           {/* Preset Colors */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+            <label className="block text-sm font-medium text-black dark:text-white mb-3">
               <Palette className="w-4 h-4 inline mr-2" />
               Preset Colors
             </label>
             <div className="grid grid-cols-5 gap-2">
               {presetColors.map((color) => (
                 <button
-                  key={color + Math.random()} // Using Math.random() to ensure unique keys for each render
+                  key={color + Math.random()}
                   type="button"
                   onClick={() => handlePresetClick(color)}
                   className={cn(
                     "w-10 h-10 rounded-lg border-2 transition-all duration-200 hover:scale-110",
                     currentColor.toLowerCase() === color.toLowerCase()
-                      ? "border-gray-800 dark:border-gray-200 shadow-lg"
-                      : "border-white dark:border-gray-600 shadow-sm hover:shadow-md",
+                      ? "border-black dark:border-white shadow-lg"
+                      : "border-gray-300 dark:border-gray-600 shadow-sm hover:shadow-md",
                   )}
                   style={{ backgroundColor: color }}
                 />
