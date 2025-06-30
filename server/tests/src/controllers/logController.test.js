@@ -112,7 +112,7 @@ describe("DELETE api/logs/", () => {
       .send();
 
     expect(res.status).toBe(200);
-    expect(res.body.message).toBe("All logs deleted successfully");
+    expect(res.body.message).toBe("logs_cleared");
     expect(res.body.logs).toBe(undefined);
   });
 
@@ -142,7 +142,7 @@ describe("DELETE api/logs/:id", () => {
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`)
       .send();
 
-    expect(res.body.message).toBe("Log deleted successfully");
+    expect(res.body.message).toBe("log_deleted");
     expect(res.status).toBe(200);
     expect(res.body.log).toBe(undefined);
   });
@@ -156,7 +156,7 @@ describe("DELETE api/logs/:id", () => {
       .send();
 
     expect(res.status).toBe(400);
-    expect(res.body.error).toBe("No such log");
+    expect(res.body.error).toBe("log_not_found");
     expect(res.body.log).toBe(undefined);
   });
 

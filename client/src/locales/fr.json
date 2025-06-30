@@ -133,6 +133,23 @@
         "app_name_description": "Saisissez le nom de votre application. Il sera affiché dans l'en-tête et à divers endroits de l'application.",
         "accent_color": "Couleur d'accentuation",
         "accent_color_description": "Choisissez la couleur d'accentuation de votre application. Elle sera utilisée à plusieurs endroits dans l'application."
+      },
+      "log_page": {
+        "level": "Niveau",
+        "user": "Utilisateur",
+        "unknow_user": "Utilisateur inconnu",
+        "message": "Message",
+        "date": "Date",
+        "actions": "Actions",
+        "copy_id": "Copier l'ID de la log",
+        "copy_id_success": "ID de la log copié dans le presse-papiers",
+        "delete_log": "Supprimer cette log",
+        "levels": {
+          "info": "Information",
+          "warn": "Avertissement",
+          "error": "Erreur",
+          "debug": "Débogage"
+        }
       }
     }
   },
@@ -151,6 +168,12 @@
     "dataTable": {
       "no_data": "Aucune donnée disponible",
       "columns": "Colonnes",
+      "columns_list": {
+        "user": "Utilisateur",
+        "level": "Niveau",
+        "message": "Message",
+        "createdAt": "Date"
+      },
       "create_entity": "Créer une nouvelle entité",
       "delete_entity": "Supprimer toutes les entités",
       "filters": {
@@ -232,10 +255,13 @@
     "admin": {
       "errors": {
         "invalid_config": "Configuration invalide",
-        "config_not_found": "Configuration non trouvée"
+        "config_not_found": "Configuration non trouvée",
+        "log_not_found": "Aucune log trouvée"
       },
       "messages": {
-        "config_updated": "Configuration mise à jour avec succès"
+        "config_updated": "Configuration mise à jour avec succès",
+        "log_deleted": "Log supprimée avec succès",
+        "logs_cleared": "Logs supprimées avec succès"
       }
     }
   }

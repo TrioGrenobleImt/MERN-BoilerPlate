@@ -7,13 +7,14 @@ import { ArrowUpDown, Copy, EllipsisVertical, Trash } from "lucide-react";
 import { toast } from "sonner";
 import { AvatarWithStatusCell } from "../../../../components/customs/avatarStatusCell";
 import { LogInterface } from "@/interfaces/Log";
+import { TFunction } from "i18next";
 
-export const getColumns = (deleteLog: (id: string) => void): ColumnDef<LogInterface>[] => [
+export const getColumns = (deleteLog: (id: string) => void, t: TFunction<"translation">): ColumnDef<LogInterface>[] => [
   {
     accessorKey: "level",
     header: ({ column }) => (
       <Button variant="ghost" className="font-bold" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-        Level
+        {t("pages.admin.log_page.level")}
         <ArrowUpDown className="w-4 h-4 ml-2" />
       </Button>
     ),
@@ -24,12 +25,11 @@ export const getColumns = (deleteLog: (id: string) => void): ColumnDef<LogInterf
   },
   {
     accessorKey: "user",
-    header: "User",
-    meta: { label: "User" },
+    header: t("pages.admin.log_page.user"),
     cell: ({ row }) => {
       const user = row.original.user;
       if (!user) {
-        return <span className="italic text-gray-500">Unknown User</span>;
+        return <span className="italic text-gray-500"> {t("pages.admin.log_page.unknow_user")}</span>;
       }
       return (
         <div className="flex items-center gap-4">
@@ -48,7 +48,7 @@ export const getColumns = (deleteLog: (id: string) => void): ColumnDef<LogInterf
     accessorKey: "message",
     header: ({ column }) => (
       <Button variant="ghost" className="font-bold" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-        Messsage
+        {t("pages.admin.log_page.message")}
         <ArrowUpDown className="w-4 h-4 ml-2" />
       </Button>
     ),
@@ -58,7 +58,7 @@ export const getColumns = (deleteLog: (id: string) => void): ColumnDef<LogInterf
     accessorKey: "createdAt",
     header: ({ column }) => (
       <Button variant="ghost" className="font-bold" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-        Date
+        {t("pages.admin.log_page.date")}
         <ArrowUpDown className="w-4 h-4 ml-2" />
       </Button>
     ),
@@ -67,12 +67,11 @@ export const getColumns = (deleteLog: (id: string) => void): ColumnDef<LogInterf
       const formatted = format(new Date(value as Date), "dd/MM/yyyy HH:mm");
       return <div>{formatted}</div>;
     },
-    meta: { label: "Date" },
   },
   {
     id: "actions",
     enableHiding: false,
-    header: "Actions",
+    header: t("pages.admin.log_page.actions"),
     cell: ({ row }) => {
       const log = row.original;
 
@@ -88,14 +87,14 @@ export const getColumns = (deleteLog: (id: string) => void): ColumnDef<LogInterf
               className="flex gap-4"
               onClick={() => {
                 navigator.clipboard.writeText(log._id);
-                toast.success("Log ID copied to clipboard");
+                toast.success(t("pages.admin.log_page.copy_id_success"));
               }}
             >
-              <Copy className="w-4 h-4" /> Copy log ID
+              <Copy className="w-4 h-4" /> {t("pages.admin.log_page.copy_id")}
             </DropdownMenuItem>
             <DropdownMenuItem className="flex gap-4 text-destructive hover:text-destructive!" onClick={() => deleteLog(log._id)}>
               <Trash className="w-4 h-4 " />
-              <span>Delete this log</span>
+              <span> {t("pages.admin.log_page.delete_log")}</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

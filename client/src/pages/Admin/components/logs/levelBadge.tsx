@@ -1,12 +1,6 @@
 import { Bug, ShieldQuestion, Info, AlertTriangle, XCircle } from "lucide-react";
 import { JSX } from "react";
-
-const logLevels = {
-  info: "info",
-  warn: "warn",
-  error: "error",
-  debug: "debug",
-};
+import { useTranslation } from "react-i18next";
 
 const defaultIcons: Record<string, { icon: JSX.Element; color: string }> = {
   info: { icon: <Info size={16} />, color: "text-blue-500" },
@@ -16,12 +10,21 @@ const defaultIcons: Record<string, { icon: JSX.Element; color: string }> = {
 };
 
 export const LevelBadge = ({ level }: { level: keyof typeof logLevels }) => {
+  const { t } = useTranslation();
+
+  const logLevels = {
+    info: "info",
+    warn: "warn",
+    error: "error",
+    debug: "debug",
+  };
+
   const { icon, color } = defaultIcons[level] || { icon: <ShieldQuestion size={16} />, color: "text-gray-500" };
 
   return (
     <span className={`flex items-center gap-1 font-medium ${color}`}>
       {icon}
-      {level.toString().charAt(0).toUpperCase() + level.toString().slice(1)}
+      {t(`pages.admin.log_page.levels.${level}`)}
     </span>
   );
 };
