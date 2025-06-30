@@ -56,6 +56,7 @@ export const register = async (req, res) => {
       try {
         const avatarPath = await saveAvatarFromUrl(photoURL, user._id);
         if (avatarPath) {
+          console.log(avatarPath);
           user.avatar = `${req.protocol}://${req.get("host")}${avatarPath}`;
           await user.save();
         }
@@ -64,11 +65,9 @@ export const register = async (req, res) => {
       }
     } else {
       // If no photoURL is provided, generate a random avatar
-      const avatarPath = await saveAvatarFromUrl(generateRandomAvatar(user.username), user._id, "svg");
-      if (avatarPath) {
-        user.avatar = `${req.protocol}://${req.get("host")}${avatarPath}`;
-        await user.save();
-      }
+      const avatarPath = await generateRandomAvatar(user._id);
+      user.avatar = `${req.protocol}://${req.get("host")}${avatarPath}`;
+      await user.save();
     }
 
     const userCount = await User.countDocuments();
