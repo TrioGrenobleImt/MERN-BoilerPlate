@@ -6,6 +6,8 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, useSidebar } fro
 import { useAuthContext } from "@/contexts/authContext";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { LanguageChanger } from "@/components/Navbar/languageChanger";
+import { ThemeChanger } from "@/components/Navbar/themeChanger";
 
 const adminMenus = {
   navMain: [
@@ -50,6 +52,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={adminMenus.navMain} />
       </SidebarContent>
       <SidebarFooter>
+        <ThemeChanger />
+        <LanguageChanger />
         <NavUser user={authUser} />
       </SidebarFooter>
     </Sidebar>
