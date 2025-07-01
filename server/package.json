@@ -5,7 +5,9 @@
   "type": "module",
   "author": "villett",
   "scripts": {
-    "dev": "nodemon index.js",
+    "dev": "node --loader ts-node/esm src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
     "test": "vitest",
     "coverage": "vitest run --coverage",
     "format": "pnpm exec prettier --write './**/*.{js,ts,json,css,md}'"
@@ -14,6 +16,8 @@
   "license": "ISC",
   "packageManager": "pnpm@10.6.5",
   "dependencies": {
+    "@types/cookie-parser": "^1.4.9",
+    "@types/cors": "^2.8.19",
     "bcryptjs": "^3.0.2",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
@@ -32,6 +36,11 @@
     "vitest": "^3.2.4"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "3.1.4"
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.0.8",
+    "@vitest/coverage-v8": "3.1.4",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.8.3"
   }
 }

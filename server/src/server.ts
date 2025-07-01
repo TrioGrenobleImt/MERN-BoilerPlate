@@ -1,7 +1,7 @@
-import { app } from "./app.js";
-import { connectToDatabase } from "./database/connectToDB.js";
 import { createServer } from "http";
-import { initSockets } from "./sockets/socket.js";
+import { app } from "./app.ts";
+import { connectToDatabase } from "./database/connectToDB.ts";
+// import { initSockets } from "./sockets/socket.js";
 
 /**
  * Initializes the HTTP server, connects to the database, and sets up WebSockets.
@@ -14,7 +14,7 @@ export function initServer() {
   const httpServer = createServer(app);
 
   // Initialize WebSocket connections
-  initSockets(httpServer);
+  // initSockets(httpServer);
 
   // Ensure the PORT environment variable is defined
   if (!process.env.PORT) {
