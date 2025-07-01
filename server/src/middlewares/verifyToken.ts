@@ -26,13 +26,19 @@ interface VerifyTokenOptions {
 export const verifyToken = ({ role }: VerifyTokenOptions = {}) => {
   return async (req: AuthRequest, res: Response, next: NextFunction) => {
     const token = req.cookies["__access__token"];
-    if (!token) return res.status(401).json({ error: "global.expired_session" });
+    if (!token) {
+      res.status(401).json({ error: "global.expired_session" });
+      return;
+    }
 
     try {
       const decoded = jwt.verify(token, process.env.SECRET_ACCESS_TOKEN as string) as TokenPayload;
 
       const user = await User.findById(decoded.id);
-      if (!user) return res.status(400).json({ error: "No such user" });
+      if (!user) {
+        res.status(400).json({ error: "No such user" });
+        return;
+      }
 
       req.userId = new mongoose.Types.ObjectId(decoded.id);
 
@@ -42,15 +48,18 @@ export const verifyToken = ({ role }: VerifyTokenOptions = {}) => {
           userId: user._id,
           level: logLevels.ERROR,
         });
-        return res.status(403).json({ error: "Access restricted" });
+        res.status(403).json({ error: "Access restricted" });
+        return;
       }
 
       next();
     } catch (error: any) {
       if (error.name === "JsonWebTokenError" || error.name === "TokenExpiredError") {
-        return res.status(403).json({ error: "Access Token is invalid" });
+        res.status(403).json({ error: "Access Token is invalid" });
+        return;
       }
-      return res.status(500).json({ error: error.message });
+      res.status(500).json({ error: error.message });
+      return;
     }
   };
 };
