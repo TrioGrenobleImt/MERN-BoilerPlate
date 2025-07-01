@@ -5,7 +5,7 @@
  * @property {string} ADMIN - The role for administrative users with elevated privileges.
  * @property {string} USER - The role for regular users with standard access.
  */
-export const userRoles = {
-  ADMIN: "admin",
-  USER: "user",
-};
+export enum userRoles {
+  ADMIN = "admin",
+  USER = "user",
+}

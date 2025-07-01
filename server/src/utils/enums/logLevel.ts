@@ -7,9 +7,9 @@
  * @property {string} ERROR - Log level for error messages.
  * @property {string} DEBUG - Log level for debug messages.
  */
-export const logLevels = {
-  INFO: "info",
-  WARN: "warn",
-  ERROR: "error",
-  DEBUG: "debug",
-};
+export enum logLevels {
+  INFO = "info",
+  WARN = "warn",
+  ERROR = "error",
+  DEBUG = "debug",
+}
