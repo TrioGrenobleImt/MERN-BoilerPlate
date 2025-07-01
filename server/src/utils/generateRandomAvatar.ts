@@ -1,8 +1,9 @@
 import fs from "fs";
+import mongoose from "mongoose";
 import path from "path";
 import sharp from "sharp";
 
-const getRandomHexColor = () => {
+const getRandomHexColor = (): string => {
   const min = 0; // min = sombre (0 = noir)
   const max = 225; // max = clair (255 = blanc)
 
@@ -13,7 +14,7 @@ const getRandomHexColor = () => {
   return `#${[r, g, b].map((x) => x.toString(16).padStart(2, "0")).join("")}`;
 };
 
-export const generateRandomAvatar = async (userId) => {
+export const generateRandomAvatar = async (userId: mongoose.Types.ObjectId): Promise<string> => {
   const size = 256;
   const gridSize = 5;
   const squareSize = size / gridSize;
@@ -22,9 +23,9 @@ export const generateRandomAvatar = async (userId) => {
   const primaryColor = getRandomHexColor();
 
   // Génère la moitié gauche de la grille
-  const grid = [];
+  const grid: number[][] = [];
   for (let row = 0; row < gridSize; row++) {
-    const rowData = [];
+    const rowData: number[] = [];
     for (let col = 0; col < Math.ceil(gridSize / 2); col++) {
       rowData.push(Math.random() > 0.5 ? 1 : 0);
     }
@@ -65,9 +66,9 @@ export const generateRandomAvatar = async (userId) => {
   const fullPath = path.join(folderPath, filename);
 
   fs.mkdirSync(folderPath, { recursive: true });
-  await sharp(svgBuffer).toFile(fullPath);
+  await sharp(svgBuffer).png().toFile(fullPath);
 
-  // Chemin relatif
+  // Chemin relatif pour url
   const relativePath = path.relative(path.join(process.cwd(), "uploads"), fullPath);
-  return path.join("/uploads", relativePath);
+  return path.join("/uploads", relativePath).replace(/\\/g, "/"); // Windows-proof
 };
