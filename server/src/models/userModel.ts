@@ -22,7 +22,4 @@ UserSchema.virtual("fullname").get(function (this: IUser) {
   return `${this.name} ${formattedForename}`;
 });
 
-UserSchema.set("toJSON", { virtuals: true });
-UserSchema.set("toObject", { virtuals: true });
-
 export const User = model<IUser>("User", UserSchema);
