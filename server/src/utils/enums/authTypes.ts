@@ -5,7 +5,7 @@
  * @property {string} lOCAL - Local authentication type.
  * @property {string} GOOGLE - Google authentication type.
  */
-export const authTypes = {
-  LOCAL: "local",
-  GOOGLE: "google",
-};
+export enum authTypes {
+  LOCAL = "local",
+  GOOGLE = "google",
+}
