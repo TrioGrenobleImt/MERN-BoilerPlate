@@ -1,5 +1,5 @@
 import express, { Request, Response, Router } from "express";
-// import { authRouter } from "./authenticationRoutes.js";
+import { authRouter } from "./authenticationRoutes.ts";
 // import { logRouter } from "./logsRoutes.js";
 // import { userRouter } from "./usersRoutes.js";
 // import { uploadRouter } from "./uploadRoutes.js";
@@ -14,7 +14,7 @@ export const router: Router = express.Router();
 
 // // API routes
 // router.use("/api/users", userRouter); // User-related routes
-// router.use("/api/auth", authRouter); // Authentication routes
+router.use("/api/auth", authRouter); // Authentication routes
 // router.use("/api/logs", logRouter); // Logging routes
 // router.use("/api/config", configRouter); // Config routes
 
