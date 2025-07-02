@@ -14,15 +14,17 @@ describe("connectToDatabase", () => {
     connectStub.restore();
   });
 
-  it("should log an error and exit if MONG_URI is not specified", () => {
+  it("should log an error and exit if MONG_URI is not specified", async () => {
     delete process.env.MONG_URI;
-    const exitSpy = vi.spyOn(process, "exit").mockImplementation(() => {});
-    const consoleErrorSpy = vi.spyOn(console, "error");
 
-    connectToDatabase();
+    const exitSpy = vi.spyOn(process, "exit").mockImplementation((code) => {
+      throw new Error(`process.exit: ${code}`);
+    });
+    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    await expect(connectToDatabase()).rejects.toThrow("process.exit: 1");
 
     expect(consoleErrorSpy).toHaveBeenCalledWith("Please specify the MongoDB URI in the .env file.");
-    expect(exitSpy).toHaveBeenCalledWith(1);
 
     exitSpy.mockRestore();
     consoleErrorSpy.mockRestore();
@@ -49,13 +51,19 @@ describe("connectToDatabase", () => {
     connectStub.rejects(error);
 
     const consoleErrorSpy = vi.spyOn(console, "error");
+    // Mock process.exit pour éviter qu'il kill le process et lancer une erreur à la place
+    const exitSpy = vi.spyOn(process, "exit").mockImplementation((code) => {
+      throw new Error(`process.exit: ${code}`);
+    });
 
-    await connectToDatabase();
+    // Vérifie que la fonction rejette l'erreur de process.exit
+    await expect(connectToDatabase()).rejects.toThrow("process.exit: 1");
 
     expect(connectStub.calledOnce).toBe(true);
     expect(connectStub.calledWith(process.env.MONG_URI)).toBe(true);
-    expect(consoleErrorSpy).toHaveBeenCalledWith("Error connecting to the database: ", error);
+    expect(consoleErrorSpy).toHaveBeenCalledWith("Error connecting to the database:", error);
 
     consoleErrorSpy.mockRestore();
+    exitSpy.mockRestore();
   });
 });

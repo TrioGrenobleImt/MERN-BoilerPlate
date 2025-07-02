@@ -7,7 +7,7 @@ export default defineConfig({
     fileParallelism: false,
     setupFiles: "./vitest.setup.ts",
     coverage: {
-      exclude: ["index.js", "vitest.config.ts", "**/uploads/**"],
+      exclude: ["src/index.ts", "vitest.config.ts", "**/uploads/**", "src/interfaces/**", "src/types/**"],
     },
   },
 });

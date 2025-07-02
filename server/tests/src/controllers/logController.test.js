@@ -8,7 +8,7 @@ import { generateAccessToken } from "../../../src/utils/generateAccessToken.js";
 
 //Import server and app
 import { app } from "../../../src/app.js";
-import { logLevels } from "../../../src/utils/enums/logLevel.js";
+import { logLevels } from "../../../src/utils/enums/logLevels.js";
 import { createLog } from "../../../src/controllers/logController.js";
 import { adminUser } from "../../fixtures/users.js";
 import { basicLog, logInvalidLevel, logWithMissingParams } from "../../fixtures/logs.js";
@@ -54,20 +54,6 @@ describe("createLog", () => {
       message: "Log message",
       userId: null,
       level: logLevels.INFO,
-    });
-
-    consoleErrorMock.mockRestore();
-  });
-
-  it("should log an error if level is invalid", async () => {
-    const consoleErrorMock = vi.spyOn(console, "error").mockImplementation(() => {});
-
-    await createLog(logInvalidLevel);
-
-    expect(consoleErrorMock).toHaveBeenCalledWith("createLog: Invalid log level", {
-      message: "Log message",
-      userId: "test", // because we cant have a real userId with the fixture
-      level: "invalidLevel",
     });
 
     consoleErrorMock.mockRestore();

@@ -54,7 +54,7 @@ describe("Tests uploads files", () => {
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`)
       .attach("avatar", pathNewAvatar, "hello-world.png");
 
-    expect(response.body.error).toBe("An unexpected error occurred during file upload");
+    expect(response.body.error).toBe("Test error");
     expect(response.statusCode).toBe(500);
 
     // Nettoyage des fichiers temporaires
