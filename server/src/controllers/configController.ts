@@ -18,8 +18,8 @@ export const getConfig = async (req: Request, res: Response): Promise<void> => {
   try {
     const configItems = await Config.find({ key: { $in: keys } });
     res.status(200).json({ config: configItems });
-  } catch (error: any) {
-    res.status(500).json({ error: error.message });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
   }
 };
 
@@ -61,7 +61,7 @@ export const updateConfig = async (req: Request, res: Response): Promise<void> =
     }
 
     res.json({ message: "config_updated" });
-  } catch (error: any) {
-    res.status(500).json({ error: error.message });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
   }
 };

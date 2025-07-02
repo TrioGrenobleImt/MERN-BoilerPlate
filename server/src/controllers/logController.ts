@@ -22,7 +22,7 @@ export const getLogs = async (req: Request, res: Response): Promise<void> => {
     const count = await Log.countDocuments();
 
     res.status(200).json({ logs, count });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
 };
@@ -69,7 +69,7 @@ export const deleteLog = async (req: Request, res: Response): Promise<void> => {
       return;
     }
     res.status(200).json({ message: "server.admin.messages.log_deleted" });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
 };
@@ -83,7 +83,7 @@ export const deleteAllLogs = async (req: Request, res: Response): Promise<void> 
   try {
     await Log.deleteMany();
     res.status(200).json({ message: "server.admin.messages.logs_cleared" });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
 };

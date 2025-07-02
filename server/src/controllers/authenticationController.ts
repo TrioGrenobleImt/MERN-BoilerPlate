@@ -166,7 +166,7 @@ export const logout = async (req: Request, res: Response): Promise<void> => {
  * Retrieves the currently connected user's details.
  */
 export const getConnectedUser = async (req: Request, res: Response): Promise<void> => {
-  const id = (req as any).userId;
+  const id = req.userId;
 
   try {
     const user = await User.findById(id);

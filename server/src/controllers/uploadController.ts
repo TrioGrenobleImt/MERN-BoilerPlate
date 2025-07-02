@@ -17,6 +17,11 @@ export const updateUserAvatar = async (req: Request, res: Response): Promise<voi
     const userId = req.params.id as string;
     const user = await User.findById(userId);
 
+    if (!user) {
+      res.status(400).json({ error: "server.global.errors.no_such_user" });
+      return;
+    }
+
     if (!req.file) {
       res.status(400).json({ error: "server.upload.errors.no_file" });
       return;
@@ -49,7 +54,7 @@ export const updateUserAvatar = async (req: Request, res: Response): Promise<voi
       message: "server.upload.messages.avatar_success",
       user,
     });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
 };

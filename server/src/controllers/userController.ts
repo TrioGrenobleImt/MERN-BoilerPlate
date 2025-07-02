@@ -26,7 +26,7 @@ export const getUser = async (req: Request, res: Response): Promise<void> => {
       return;
     }
     res.status(200).json(user);
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
 };
@@ -49,7 +49,7 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
     const count = await User.countDocuments();
 
     res.status(200).json({ users, count });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
 };
@@ -110,7 +110,7 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
     });
 
     res.status(201).json({ user: userWithoutPassword, message: "server.users.messages.user_created" });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
 };
@@ -184,7 +184,7 @@ export const updateUser = async (req: Request, res: Response): Promise<void> => 
     const { password: _password, ...userWithoutPassword } = userObj;
 
     res.status(200).json({ user: userWithoutPassword, message: "server.users.messages.user_updated" });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
 };
@@ -217,7 +217,7 @@ export const deleteUser = async (req: Request, res: Response): Promise<void> => 
     });
 
     res.status(200).json({ user, message: "server.users.messages.user_deleted" });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
 };
@@ -278,7 +278,7 @@ export const updatePassword = async (req: Request, res: Response): Promise<void>
     await User.updateOne({ _id: id }, { password: hashedPassword });
 
     res.status(200).json({ message: "server.users.messages.password_updated" });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
 };
@@ -324,7 +324,7 @@ export const deleteAccount = async (req: Request, res: Response): Promise<void> 
     res.clearCookie("__access__token");
 
     res.status(200).json({ message: "server.users.messages.user_deleted" });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
 };
@@ -360,7 +360,7 @@ export const getAuthTypesStat = async (req: Request, res: Response): Promise<voi
     };
 
     res.status(200).json(chartData);
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
 };
