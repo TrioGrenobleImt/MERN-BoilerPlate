@@ -1,32 +1,31 @@
-// import { logLevels } from "../utils/enums/logLevel.js";
-
+import { Request, Response } from "express";
 import mongoose from "mongoose";
 import { Log } from "../models/logModel.js";
 import { logLevels } from "../utils/enums/logLevels.js";
 
-// /**
-//  * Retrieves logs from the database.
-//  *
-//  * @returns {Object} JSON response with logs or error message.
-//  */
-// export const getLogs = async (req, res) => {
-//   const size = parseInt(req.query.size);
-//   const page = parseInt(req.query.page);
+/**
+ * Retrieves logs from the database.
+ *
+ * @returns {Object} JSON response with logs or error message.
+ */
+export const getLogs = async (req: Request, res: Response): Promise<void> => {
+  const size = parseInt(req.query.size as string);
+  const page = parseInt(req.query.page as string);
 
-//   try {
-//     const logs = await Log.find({})
-//       .sort({ createdAt: -1 })
-//       .populate("user")
-//       .skip(page * size)
-//       .limit(size);
+  try {
+    const logs = await Log.find({})
+      .sort({ createdAt: -1 })
+      .populate("user")
+      .skip(page * size)
+      .limit(size);
 
-//     const count = await Log.countDocuments();
+    const count = await Log.countDocuments();
 
-//     res.status(200).json({ logs, count });
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// };
+    res.status(200).json({ logs, count });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
 interface CreateLogParams {
   message: string;
@@ -55,44 +54,45 @@ export const createLog = async ({ message, userId, level }: CreateLogParams): Pr
   }
 };
 
-// /**
-//  * Deletes a specific log entry by ID.
-//  *
-//  * @returns {Object} JSON response with success message or error message.
-//  */
-// export const deleteLog = async (req, res) => {
-//   const { id } = req.params;
+/**
+ * Deletes a specific log entry by ID.
+ *
+ * @returns {Object} JSON response with success message or error message.
+ */
+export const deleteLog = async (req: Request, res: Response): Promise<void> => {
+  const { id } = req.params;
 
-//   try {
-//     const log = await Log.findByIdAndDelete(id);
-//     if (!log) {
-//       return res.status(400).json({ error: "server.admin.errors.log_not_found" });
-//     }
-//     res.status(200).json({ message: "server.admin.messages.log_deleted" });
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// };
+  try {
+    const log = await Log.findByIdAndDelete(id);
+    if (!log) {
+      res.status(400).json({ error: "server.admin.errors.log_not_found" });
+      return;
+    }
+    res.status(200).json({ message: "server.admin.messages.log_deleted" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
-// /**
-//  * Deletes all log entries from the database.
-//  *
-//  * @returns {Object} JSON response with success message or error message.
-//  */
-// export const deleteAllLogs = async (req, res) => {
-//   try {
-//     await Log.deleteMany();
-//     res.status(200).json({ message: "server.admin.messages.logs_cleared" });
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// };
+/**
+ * Deletes all log entries from the database.
+ *
+ * @returns {Object} JSON response with success message or error message.
+ */
+export const deleteAllLogs = async (req: Request, res: Response): Promise<void> => {
+  try {
+    await Log.deleteMany();
+    res.status(200).json({ message: "server.admin.messages.logs_cleared" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
-// /**
-//  * Retrieves all available log levels.
-//  *
-//  * @returns {Object} JSON response with log levels.
-//  */
-// export const getLoglevels = (req, res) => {
-//   res.status(200).json({ logLevels: Object.values(logLevels) });
-// };
+/**
+ * Retrieves all available log levels.
+ *
+ * @returns {Object} JSON response with log levels.
+ */
+export const getLoglevels = (req: Request, res: Response) => {
+  res.status(200).json({ logLevels: Object.values(logLevels) });
+};
