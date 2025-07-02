@@ -1,9 +1,9 @@
-import express from "express";
-import { updateUserAvatar } from "../controllers/uploadController.js";
+import express, { Router } from "express";
 import { verifyToken } from "../middlewares/verifyToken.js";
 import { uploadConfig } from "../configuration/storageConfig.js";
+import { updateUserAvatar } from "../controllers/uploadController.js";
 
-export const uploadRouter = new express.Router();
+export const uploadRouter: Router = express.Router();
 
 /**
  * @route POST /avatar/:id

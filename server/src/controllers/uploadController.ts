@@ -1,7 +1,8 @@
+import { Request, Response } from "express";
 import { User } from "../models/userModel.js";
 import fs from "fs";
 import path from "path";
-import { Constants } from "../../constants/constants.js";
+import { Constants } from "../constants/constants.js";
 
 /**
  * @function updateUserAvatar
@@ -11,22 +12,25 @@ import { Constants } from "../../constants/constants.js";
  * @param {Object} req.file - The uploaded file containing the user's new avatar.
  * @returns {Object} JSON response with success or error message.
  */
-export const updateUserAvatar = async (req, res) => {
+export const updateUserAvatar = async (req: Request, res: Response): Promise<void> => {
   try {
-    const userId = req.params.id;
+    const userId = req.params.id as string;
     const user = await User.findById(userId);
 
     if (!req.file) {
-      return res.status(400).json({ error: "server.upload.errors.no_file" });
+      res.status(400).json({ error: "server.upload.errors.no_file" });
+      return;
     }
 
     const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/svg+xml"];
     if (!allowedTypes.includes(req.file.mimetype)) {
-      return res.status(400).json({ error: "server.upload.errors.invalid_file_type" });
+      res.status(400).json({ error: "server.upload.errors.invalid_file_type" });
+      return;
     }
 
     if (req.file.size > Constants.AVATAR_MAX_SIZE) {
-      return res.status(400).json({ error: `server.upload.errors.limit` });
+      res.status(400).json({ error: `server.upload.errors.limit` });
+      return;
     }
 
     if (user.avatar) {
