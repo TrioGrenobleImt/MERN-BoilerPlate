@@ -49,7 +49,7 @@ export const updateUserAvatar = async (req: Request, res: Response): Promise<voi
       message: "server.upload.messages.avatar_success",
       user,
     });
-  } catch (error) {
-    res.status(500).json({ error: "An unexpected error occurred during file upload" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };

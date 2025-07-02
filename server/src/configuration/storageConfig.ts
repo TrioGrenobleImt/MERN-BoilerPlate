@@ -15,7 +15,7 @@ const storageConfig = multer.diskStorage({
 
   filename: (req: MulterRequest, file: Express.Multer.File, cb: (error: Error | null, filename: string) => void) => {
     const extension = path.extname(file.originalname);
-    const userIdPart = req.userId ?? "unknown";
+    const userIdPart = req.userId;
     cb(null, `avatar_${userIdPart}_${Date.now()}${extension}`);
   },
 });

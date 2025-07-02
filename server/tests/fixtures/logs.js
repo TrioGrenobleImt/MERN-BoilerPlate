@@ -1,4 +1,4 @@
-import { logLevels } from "../../src/utils/enums/logLevel";
+import { logLevels } from "../../src/utils/enums/logLevels";
 
 export const basicLog = {
   message: "Log message",
