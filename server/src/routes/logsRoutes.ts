@@ -1,8 +1,8 @@
-import express from "express";
-import { deleteAllLogs, deleteLog, getLogs, getLoglevels } from "../controllers/logController.js";
+import express, { Router } from "express";
 import { verifyToken } from "../middlewares/verifyToken.js";
+import { deleteAllLogs, deleteLog, getLoglevels, getLogs } from "../controllers/logController.js";
 
-export const logRouter = new express.Router();
+export const logRouter: Router = express.Router();
 
 /**
  * @route GET /
