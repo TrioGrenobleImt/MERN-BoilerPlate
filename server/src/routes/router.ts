@@ -1,7 +1,9 @@
 import express, { Request, Response, Router } from "express";
+
 import { authRouter } from "./authenticationRoutes.js";
 import { configRouter } from "./configRoutes.js";
 import { logRouter } from "./logsRoutes.js";
+import { uploadRouter } from "./uploadRoutes.js";
 
 import path from "path";
 import { fileURLToPath } from "url";
@@ -17,8 +19,8 @@ router.use("/api/logs", logRouter); // Logging routes
 router.use("/api/config", configRouter); // Config routes
 
 // // UPLOADS routes
-// router.use("/api/uploads", uploadRouter); // File upload routes
-// router.use("/uploads", express.static(path.join(__dirname, "../../uploads"))); // Serve uploaded files
+router.use("/api/uploads", uploadRouter); // File upload routes
+router.use("/uploads", express.static(path.join(__dirname, "../../uploads"))); // Serve uploaded files
 
 /**
  * @route GET /api/ping
