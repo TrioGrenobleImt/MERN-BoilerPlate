@@ -1,19 +1,24 @@
-import { Config } from "../models/configModel.js";
-import { logLevels } from "../utils/enums/logLevel.js";
+import { Request, Response } from "express";
 import { createLog } from "./logController.js";
+import { logLevels } from "../utils/enums/logLevels.js";
+import { Config } from "../models/configModel.js";
 
 /**
  * Gets configuration settings based on provided keys.
  * @returns {Object} JSON response with configuration settings.
  */
-export const getConfig = async (req, res) => {
-  const keys = req.query.keys?.split(",") || [];
+export const getConfig = async (req: Request, res: Response): Promise<void> => {
+  let keys: string[] = [];
+  if (typeof req.query.keys === "string") {
+    keys = req.query.keys.split(",");
+  } else if (Array.isArray(req.query.keys)) {
+    keys = req.query.keys.flatMap((k) => (typeof k === "string" ? k.split(",") : []));
+  }
 
   try {
     const configItems = await Config.find({ key: { $in: keys } });
-
     res.status(200).json({ config: configItems });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
 };
@@ -22,7 +27,7 @@ export const getConfig = async (req, res) => {
  * Updates configuration settings based on provided keys and values.
  * @returns {Object} JSON response with updated configuration settings.
  */
-export const updateConfig = async (req, res) => {
+export const updateConfig = async (req: Request, res: Response): Promise<void> => {
   const { keys, config } = req.body;
 
   if (!Array.isArray(keys) || typeof config !== "object" || config === null) {
@@ -31,12 +36,13 @@ export const updateConfig = async (req, res) => {
       message: "Invalid configuration update request",
       userId: req.userId,
     });
-    return res.status(400).json({ message: "invalid_config" });
+    res.status(400).json({ message: "invalid_config" });
+    return;
   }
 
   try {
     for (const key of keys) {
-      if (config.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(config, key)) {
         await Config.findOneAndUpdate({ key }, { value: config[key] }, { new: true, upsert: true });
         createLog({
           level: logLevels.INFO,
@@ -49,12 +55,13 @@ export const updateConfig = async (req, res) => {
           message: `Key ${key} not found in config object`,
           userId: req.userId,
         });
-        return res.status(400).json({ message: `config_not_found` });
+        res.status(400).json({ message: `config_not_found` });
+        return;
       }
     }
 
     res.json({ message: "config_updated" });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
 };

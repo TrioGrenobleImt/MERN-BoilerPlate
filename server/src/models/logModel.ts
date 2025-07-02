@@ -1,6 +1,6 @@
 import { Schema, model, SchemaDefinition } from "mongoose";
-import { ILog } from "../interfaces/ILog.ts";
-import { logLevels } from "../utils/enums/logLevels.ts";
+import { ILog } from "../interfaces/ILog.js";
+import { logLevels } from "../utils/enums/logLevels.js";
 
 const allowedLogLevels = Object.values(logLevels);
 

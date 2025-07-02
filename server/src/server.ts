@@ -1,7 +1,7 @@
 import { createServer } from "http";
-import { app } from "./app.ts";
-import { connectToDatabase } from "./database/connectToDB.ts";
-import { initSockets } from "./sockets/socket.ts";
+import { app } from "./app.js";
+import { connectToDatabase } from "./database/connectToDB.js";
+import { initSockets } from "./sockets/socket.js";
 
 /**
  * Initializes the HTTP server, connects to the database, and sets up WebSockets.

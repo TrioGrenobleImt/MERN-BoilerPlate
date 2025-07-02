@@ -1,4 +1,4 @@
-import { Constants } from "../constants/constants.ts";
+import { Constants } from "../constants/constants.js";
 
 /**
  * Generate a random password matching the security regex from Constants.

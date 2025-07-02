@@ -1,8 +1,8 @@
-import express from "express";
-import { getConfig, updateConfig } from "../controllers/configController.js";
+import express, { Router } from "express";
 import { verifyToken } from "../middlewares/verifyToken.js";
+import { getConfig, updateConfig } from "../controllers/configController.js";
 
-export const configRouter = new express.Router();
+export const configRouter: Router = express.Router();
 
 /**
  * @route GET /

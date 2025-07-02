@@ -1,9 +1,9 @@
 import express, { Request, Response, Router } from "express";
-import { authRouter } from "./authenticationRoutes.ts";
+import { authRouter } from "./authenticationRoutes.js";
+import { configRouter } from "./configRoutes.js";
 // import { logRouter } from "./logsRoutes.js";
 // import { userRouter } from "./usersRoutes.js";
 // import { uploadRouter } from "./uploadRoutes.js";
-// import { configRouter } from "./configRoute.js";
 
 import path from "path";
 import { fileURLToPath } from "url";
@@ -16,7 +16,7 @@ export const router: Router = express.Router();
 // router.use("/api/users", userRouter); // User-related routes
 router.use("/api/auth", authRouter); // Authentication routes
 // router.use("/api/logs", logRouter); // Logging routes
-// router.use("/api/config", configRouter); // Config routes
+router.use("/api/config", configRouter); // Config routes
 
 // // UPLOADS routes
 // router.use("/api/uploads", uploadRouter); // File upload routes

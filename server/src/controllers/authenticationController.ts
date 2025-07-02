@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
-import { User } from "../models/userModel.ts";
-import { authTypes } from "../utils/enums/authTypes.ts";
-import { userRoles } from "../utils/enums/userRoles.ts";
-import { logLevels } from "../utils/enums/logLevels.ts";
-import { generateAccessToken } from "../utils/generateAccessToken.ts";
-import { Constants } from "../constants/constants.ts";
-import { createLog } from "./logController.ts";
-import { generateRandomAvatar } from "../utils/generateRandomAvatar.ts";
-import { saveAvatarFromUrl } from "../utils/saveAvatarFromUrl.ts";
+import { User } from "../models/userModel.js";
+import { authTypes } from "../utils/enums/authTypes.js";
+import { userRoles } from "../utils/enums/userRoles.js";
+import { logLevels } from "../utils/enums/logLevels.js";
+import { generateAccessToken } from "../utils/generateAccessToken.js";
+import { Constants } from "../constants/constants.js";
+import { createLog } from "./logController.js";
+import { generateRandomAvatar } from "../utils/generateRandomAvatar.js";
+import { saveAvatarFromUrl } from "../utils/saveAvatarFromUrl.js";
 import bcrypt from "bcryptjs";
 
 /**
@@ -82,7 +82,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     res.cookie("__access__token", accessToken, {
       maxAge: Constants.MAX_AGE,
       httpOnly: true,
-      sameSite: "lax",
+      sameSite: "none",
       secure: true,
     });
 
@@ -138,17 +138,15 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     res.cookie("__access__token", accessToken, {
       maxAge: Constants.MAX_AGE,
       httpOnly: true,
-      sameSite: "lax",
+      sameSite: "none",
       secure: true,
     });
 
     const { password: _password, ...userWithoutPassword } = user.toObject();
 
     res.status(201).json({ user: userWithoutPassword, message: "server.auth.messages.login_success" });
-    return;
   } catch (err: any) {
     res.status(500).json({ error: err.message });
-    return;
   }
 };
 
@@ -159,10 +157,8 @@ export const logout = async (req: Request, res: Response): Promise<void> => {
   try {
     res.clearCookie("__access__token");
     res.status(200).json({ message: "server.auth.messages.logout_success" });
-    return;
   } catch (err: any) {
     res.status(500).json({ error: err.message });
-    return;
   }
 };
 
@@ -175,10 +171,8 @@ export const getConnectedUser = async (req: Request, res: Response): Promise<voi
   try {
     const user = await User.findById(id);
     res.status(200).json(user);
-    return;
   } catch (err: any) {
     res.status(500).json({ error: err.message });
-    return;
   }
 };
 
@@ -204,14 +198,12 @@ export const signInWithGoogle = async (req: Request, res: Response): Promise<voi
     res.cookie("__access__token", accessToken, {
       maxAge: Constants.MAX_AGE,
       httpOnly: true,
-      sameSite: "lax",
+      sameSite: "none",
       secure: true,
     });
 
     res.status(201).json({ user, message: "server.auth.messages.login_success" });
-    return;
   } catch (err: any) {
     res.status(500).json({ error: err.message });
-    return;
   }
 };
