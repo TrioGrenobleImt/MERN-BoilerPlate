@@ -1,6 +1,6 @@
 import express, { Router } from "express";
-import { getConnectedUser, login, logout, register, signInWithGoogle } from "../controllers/authenticationController.ts";
-import { verifyToken } from "../middlewares/verifyToken.ts";
+import { getConnectedUser, login, logout, register, signInWithGoogle } from "../controllers/authenticationController.js";
+import { verifyToken } from "../middlewares/verifyToken.js";
 
 export const authRouter: Router = express.Router();
 /**

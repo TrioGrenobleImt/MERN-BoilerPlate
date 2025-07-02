@@ -3,8 +3,8 @@ import express from "express";
 import "dotenv/config";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { corsOptions } from "./configuration/corsOptions.ts";
-import { router } from "./routes/router.ts";
+import { corsOptions } from "./configuration/corsOptions.js";
+import { router } from "./routes/router.js";
 
 // Create the Express application instance
 export const app = express();

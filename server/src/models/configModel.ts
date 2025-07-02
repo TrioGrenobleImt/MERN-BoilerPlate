@@ -1,5 +1,5 @@
 import mongoose, { Model } from "mongoose";
-import { IConfig } from "../interfaces/IConfig.ts";
+import { IConfig } from "../interfaces/IConfig.js";
 
 const configSchema = new mongoose.Schema<IConfig>(
   {

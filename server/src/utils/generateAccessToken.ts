@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
-import { Constants } from "../constants/constants.ts";
+import { Constants } from "../constants/constants.js";
 
 /**
  * @description Generates a JWT (JSON Web Token) for the user, containing their user ID.

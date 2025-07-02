@@ -4,7 +4,7 @@ import path from "path";
 import mongoose from "mongoose";
 
 interface MulterRequest extends Request {
-  userId?: mongoose.Types.ObjectId;
+  userId: mongoose.Types.ObjectId;
 }
 
 // Configuration for Multer to handle file uploads

@@ -2,16 +2,11 @@ import { Request, Response, NextFunction, RequestHandler } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { User } from "../models/userModel.js";
 import { createLog } from "../controllers/logController.js";
-import { logLevels } from "../utils/enums/logLevels.ts";
+import { logLevels } from "../utils/enums/logLevels.js";
 import mongoose from "mongoose";
 
 interface TokenPayload extends JwtPayload {
   id: string;
-}
-
-// Étends Request pour ajouter userId custom
-interface AuthRequest extends Request {
-  userId?: mongoose.Types.ObjectId;
 }
 
 interface VerifyTokenOptions {
@@ -24,7 +19,7 @@ interface VerifyTokenOptions {
  * @returns Express middleware function.
  */
 export const verifyToken = ({ role }: VerifyTokenOptions = {}) => {
-  return async (req: AuthRequest, res: Response, next: NextFunction) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
     const token = req.cookies["__access__token"];
     if (!token) {
       res.status(401).json({ error: "global.expired_session" });

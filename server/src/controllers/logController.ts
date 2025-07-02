@@ -1,8 +1,8 @@
 // import { logLevels } from "../utils/enums/logLevel.js";
 
 import mongoose from "mongoose";
-import { Log } from "../models/logModel.ts";
-import { logLevels } from "../utils/enums/logLevels.ts";
+import { Log } from "../models/logModel.js";
+import { logLevels } from "../utils/enums/logLevels.js";
 
 // /**
 //  * Retrieves logs from the database.
@@ -30,8 +30,8 @@ import { logLevels } from "../utils/enums/logLevels.ts";
 
 interface CreateLogParams {
   message: string;
-  userId: mongoose.Types.ObjectId | string;
-  level: logLevels; // Assure que level est une clé valide de logLevels
+  userId: mongoose.Types.ObjectId;
+  level: logLevels;
 }
 
 /**
@@ -45,12 +45,6 @@ interface CreateLogParams {
 export const createLog = async ({ message, userId, level }: CreateLogParams): Promise<void> => {
   if (!message || !userId || !level) {
     console.error("createLog: Missing parameters", { message, userId, level });
-    return;
-  }
-
-  // Check if level is valid (valeurs de logLevels)
-  if (!Object.keys(logLevels).includes(level)) {
-    console.error("createLog: Invalid log level", { message, userId, level });
     return;
   }
 
