@@ -1,5 +1,6 @@
 import express, { Request, Response, Router } from "express";
 
+import { userRouter } from "./usersRoutes.js";
 import { authRouter } from "./authenticationRoutes.js";
 import { configRouter } from "./configRoutes.js";
 import { logRouter } from "./logsRoutes.js";
@@ -13,7 +14,7 @@ const __dirname = path.dirname(__filename);
 export const router: Router = express.Router();
 
 // // API routes
-// router.use("/api/users", userRouter); // User-related routes
+router.use("/api/users", userRouter); // User-related routes
 router.use("/api/auth", authRouter); // Authentication routes
 router.use("/api/logs", logRouter); // Logging routes
 router.use("/api/config", configRouter); // Config routes

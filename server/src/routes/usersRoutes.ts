@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Router } from "express";
 import {
   getUsers,
   getUser,
@@ -12,7 +12,7 @@ import {
 } from "../controllers/userController.js";
 import { verifyToken } from "../middlewares/verifyToken.js";
 
-export const userRouter = new express.Router();
+export const userRouter: Router = express.Router();
 
 /**
  * @route GET /:id
@@ -77,4 +77,4 @@ userRouter.delete("/delete/account", verifyToken(), deleteAccount);
  * @description Retrieves statistics about the different authentication types used by users.
  * @middleware verifyToken("admin") - Ensures the user has an admin role to access this route.
  */
-userRouter.get("/stats/authTypes", verifyToken("admin"), getAuthTypesStat);
+userRouter.get("/stats/authTypes", verifyToken({ role: "admin" }), getAuthTypesStat);

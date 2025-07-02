@@ -1,27 +1,29 @@
+import { Request, Response } from "express";
 import { User } from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import { userRoles } from "../utils/enums/userRoles.js";
 import { createLog } from "./logController.js";
-import { logLevels } from "../utils/enums/logLevel.js";
-
 import fs from "fs";
 import path from "path";
 import { generateRandomPassword } from "../utils/generateRandomPassword.js";
-import { Constants } from "../../constants/constants.js";
 import { authTypes } from "../utils/enums/authTypes.js";
 import { generateRandomAvatar } from "../utils/generateRandomAvatar.js";
+import { logLevels } from "../utils/enums/logLevels.js";
+import { IUser } from "../interfaces/IUser.js";
+import { Constants } from "../constants/constants.js";
 
 /**
  * @function getUser
  * @description Retrieves a single user by ID.
  * @returns {Object} JSON response with user details or error message.
  */
-export const getUser = async (req, res) => {
+export const getUser = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
   try {
     const user = await User.findById(id);
     if (!user) {
-      return res.status(400).json({ error: "No such user" });
+      res.status(400).json({ error: "No such user" });
+      return;
     }
     res.status(200).json(user);
   } catch (err) {
@@ -34,9 +36,9 @@ export const getUser = async (req, res) => {
  * @description Retrieves all users sorted by creation date.
  * @returns {Object} JSON response with a list of users or error message.
  */
-export const getUsers = async (req, res) => {
-  const size = parseInt(req.query.size);
-  const page = parseInt(req.query.page);
+export const getUsers = async (req: Request, res: Response): Promise<void> => {
+  const size = parseInt(req.query.size as string);
+  const page = parseInt(req.query.page as string);
 
   try {
     const users = await User.find({})
@@ -57,23 +59,31 @@ export const getUsers = async (req, res) => {
  * @description Creates a new user with the provided details.
  * @returns {Object} JSON response with user details or error message.
  */
-export const createUser = async (req, res) => {
+export const createUser = async (req: Request, res: Response): Promise<void> => {
   const { name, forename, email, username, password, role } = req.body;
   const userId = req.userId;
 
   if (!email || !username || !password || !name || !forename) {
-    return res.status(400).json({ error: "server.global.errors.missing_fields" });
+    res.status(400).json({ error: "server.global.errors.missing_fields" });
+    return;
   }
 
   try {
     const existingUserByEmail = await User.findOne({ email: email.toLowerCase() });
     const existingUserByUsername = await User.findOne({ username: username.toLowerCase() });
 
-    if (existingUserByEmail) return res.status(409).json({ error: "server.users.errors.email_taken" });
-    if (existingUserByUsername) return res.status(409).json({ error: "server.users.errors.username_taken" });
+    if (existingUserByEmail) {
+      res.status(409).json({ error: "server.users.errors.email_taken" });
+      return;
+    }
+    if (existingUserByUsername) {
+      res.status(409).json({ error: "server.users.errors.username_taken" });
+      return;
+    }
 
     if (role && !Object.values(userRoles).includes(role)) {
-      return res.status(400).json({ error: "server.users.errors.invalid_role" });
+      res.status(400).json({ error: "server.users.errors.invalid_role" });
+      return;
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -90,7 +100,8 @@ export const createUser = async (req, res) => {
     user.avatar = `${req.protocol}://${req.get("host")}${avatarPath}`;
     await user.save();
 
-    const { password: userPassword, ...userWithoutPassword } = user._doc;
+    const userObj = user.toObject();
+    const { password: _password, ...userWithoutPassword } = userObj;
 
     createLog({
       message: `User '${username}' created successfully`,
@@ -109,7 +120,7 @@ export const createUser = async (req, res) => {
  * @description Updates a user's details by ID.
  * @returns {Object} JSON response with updated user details or error message.
  */
-export const updateUser = async (req, res) => {
+export const updateUser = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
   const userId = req.userId;
   const { name, forename, email, username, password, role } = req.body;
@@ -118,19 +129,26 @@ export const updateUser = async (req, res) => {
     if (email) {
       const existingUserByEmail = await User.findOne({ email: email.toLowerCase(), _id: { $ne: id } });
       console.log(email.toLowerCase());
-      if (existingUserByEmail) return res.status(409).json({ error: "server.users.errors.email_taken" });
+      if (existingUserByEmail) {
+        res.status(409).json({ error: "server.users.errors.email_taken" });
+        return;
+      }
     }
 
     if (username) {
       const existingUserByUsername = await User.findOne({ username: username.toLowerCase(), _id: { $ne: id } });
-      if (existingUserByUsername) return res.status(409).json({ error: "server.users.errors.username_taken" });
+      if (existingUserByUsername) {
+        res.status(409).json({ error: "server.users.errors.username_taken" });
+        return;
+      }
     }
 
     const actionUser = await User.findById(userId);
 
     if (actionUser.role == userRoles.ADMIN) {
       if (role && !Object.values(userRoles).includes(role)) {
-        return res.status(400).json({ error: "server.users.errors.invalid_role" });
+        res.status(400).json({ error: "server.users.errors.invalid_role" });
+        return;
       }
 
       if (password) {
@@ -157,9 +175,13 @@ export const updateUser = async (req, res) => {
       },
       { new: true },
     );
-    if (!user) return res.status(404).json({ error: "server.global.errors.no_such_user" });
+    if (!user) {
+      res.status(404).json({ error: "server.global.errors.no_such_user" });
+      return;
+    }
 
-    const { password: userPassword, ...userWithoutPassword } = user._doc;
+    const userObj = user.toObject();
+    const { password: _password, ...userWithoutPassword } = userObj;
 
     res.status(200).json({ user: userWithoutPassword, message: "server.users.messages.user_updated" });
   } catch (err) {
@@ -172,11 +194,14 @@ export const updateUser = async (req, res) => {
  * @description Deletes a user by ID.
  * @returns {Object} JSON response with success message or error message.
  */
-export const deleteUser = async (req, res) => {
+export const deleteUser = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
   try {
     const user = await User.findOneAndDelete({ _id: id });
-    if (!user) return res.status(400).json({ error: "server.global.errors.no_such_user" });
+    if (!user) {
+      res.status(400).json({ error: "server.global.errors.no_such_user" });
+      return;
+    }
 
     if (user.avatar) {
       const oldAvatarPath = path.join(process.cwd(), "uploads", "users", "avatars", path.basename(user.avatar));
@@ -202,7 +227,7 @@ export const deleteUser = async (req, res) => {
  * @description Generates a random password.
  * @returns {Object} JSON response with generated password.
  */
-export const generateUserPassword = async (req, res) => {
+export const generateUserPassword = async (req: Request, res: Response): Promise<void> => {
   res.status(200).json({ message: "pages.admin.users_page.form.password_generated", password: generateRandomPassword() });
 };
 
@@ -215,29 +240,38 @@ export const generateUserPassword = async (req, res) => {
  * @param {string} req.body.newPasswordConfirm - Confirmation of the new password.
  * @returns {Object} JSON response with success message or error message.
  */
-export const updatePassword = async (req, res) => {
+export const updatePassword = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
   const { currentPassword, newPassword, newPasswordConfirm } = req.body;
 
   try {
     const user = await User.findById(id).select("+password");
-    if (!user) return res.status(400).json({ error: "server.global.errors.no_such_user" });
+    if (!user) {
+      res.status(400).json({ error: "server.global.errors.no_such_user" });
+      return;
+    }
 
     if (!currentPassword || !newPassword || !newPasswordConfirm) {
-      return res.status(400).json({ error: "server.global.errors.missing_fields" });
+      res.status(400).json({ error: "server.global.errors.missing_fields" });
+      return;
     }
 
     const isMatch = await bcrypt.compare(currentPassword, user.password);
-    if (!isMatch) return res.status(400).json({ error: "server.users.errors.actual_password_incorrect" });
+    if (!isMatch) {
+      res.status(400).json({ error: "server.users.errors.actual_password_incorrect" });
+      return;
+    }
 
     if (!Constants.REGEX_PASSWORD.test(newPassword)) {
-      return res.status(400).json({
+      res.status(400).json({
         error: "server.users.errors.regex_error",
       });
+      return;
     }
 
     if (newPassword !== newPasswordConfirm) {
-      return res.status(400).json({ error: "server.users.errors.passwords_do_not_match" });
+      res.status(400).json({ error: "server.users.errors.passwords_do_not_match" });
+      return;
     }
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
@@ -255,17 +289,23 @@ export const updatePassword = async (req, res) => {
  * @param {string} req.body.password - The user's password for account deletion.
  * @returns {Object} JSON response with success or error message.
  */
-export const deleteAccount = async (req, res) => {
+export const deleteAccount = async (req: Request, res: Response): Promise<void> => {
   const userId = req.userId;
   const { password } = req.body;
 
   try {
-    if (!password) return res.status(400).json({ error: "server.global.errors.missing_fields" });
+    if (!password) {
+      res.status(400).json({ error: "server.global.errors.missing_fields" });
+      return;
+    }
 
     const user = await User.findById(userId).select("+password");
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ error: "server.users.errors.password_incorrect" });
+    if (!isMatch) {
+      res.status(400).json({ error: "server.users.errors.password_incorrect" });
+      return;
+    }
 
     if (user.avatar) {
       const oldAvatarPath = path.join(process.cwd(), "uploads", "users", "avatars", path.basename(user.avatar));
@@ -293,7 +333,7 @@ export const deleteAccount = async (req, res) => {
  * @description Retrieves statistics on the number of users per authentication type.
  * @returns {Object} JSON response with statistics formatted for chart display.
  */
-export const getAuthTypesStat = async (req, res) => {
+export const getAuthTypesStat = async (req: Request, res: Response): Promise<void> => {
   const validAuthTypes = Object.values(authTypes);
 
   try {
