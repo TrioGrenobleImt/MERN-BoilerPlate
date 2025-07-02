@@ -82,7 +82,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     res.cookie("__access__token", accessToken, {
       maxAge: Constants.MAX_AGE,
       httpOnly: true,
-      sameSite: "none",
+      sameSite: "lax",
       secure: true,
     });
 
@@ -138,7 +138,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     res.cookie("__access__token", accessToken, {
       maxAge: Constants.MAX_AGE,
       httpOnly: true,
-      sameSite: "none",
+      sameSite: "lax",
       secure: true,
     });
 
@@ -204,7 +204,7 @@ export const signInWithGoogle = async (req: Request, res: Response): Promise<voi
     res.cookie("__access__token", accessToken, {
       maxAge: Constants.MAX_AGE,
       httpOnly: true,
-      sameSite: "none",
+      sameSite: "lax",
       secure: true,
     });
 
