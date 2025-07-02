@@ -8,8 +8,8 @@
  * @property {string} DEBUG - Log level for debug messages.
  */
 export enum logLevels {
-  INFO = "INFO",
-  WARN = "WARN",
-  ERROR = "ERROR",
-  DEBUG = "DEBUG",
+  INFO = "info",
+  WARN = "warn",
+  ERROR = "error",
+  DEBUG = "debug",
 }

@@ -1,21 +1,22 @@
-import { Schema, model, SchemaDefinition } from "mongoose";
+import { model, Schema } from "mongoose";
 import { ILog } from "../interfaces/ILog.js";
 import { logLevels } from "../utils/enums/logLevels.js";
 
 const allowedLogLevels = Object.values(logLevels);
 
 // Crée un objet schema en respectant SchemaDefinition<ILog>
-const logSchemaDefinition: SchemaDefinition<ILog> = {
-  message: { type: String, required: true },
-  level: {
-    type: String,
-    enum: allowedLogLevels,
-    required: true,
-    default: logLevels.INFO,
+const logSchema = new Schema<ILog>(
+  {
+    message: { type: String, required: true },
+    level: {
+      type: String,
+      enum: allowedLogLevels,
+      required: true,
+      default: logLevels.INFO,
+    },
+    user: { type: Schema.Types.ObjectId, ref: "User", required: false },
   },
-  user: { type: Schema.Types.ObjectId, ref: "User", required: false },
-};
+  { timestamps: true },
+);
 
-const LogSchema = new Schema<ILog>(logSchemaDefinition);
-
-export const Log = model<ILog>("Log", LogSchema);
+export const Log = model<ILog>("Log", logSchema);
