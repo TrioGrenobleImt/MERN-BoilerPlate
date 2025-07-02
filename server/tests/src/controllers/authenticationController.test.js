@@ -1,4 +1,4 @@
-import { describe, it, expect, vitest, beforeEach } from "vitest";
+import { describe, it, expect, vitest, beforeEach, vi } from "vitest";
 import "dotenv/config";
 import request from "supertest";
 import { User } from "../../../src/models/userModel.js";
@@ -17,7 +17,6 @@ import {
   userWithSameUsername,
 } from "../../fixtures/users.js";
 import { authTypes } from "../../../src/utils/enums/authTypes.js";
-import { saveAvatarFromUrl } from "../../../src/utils/saveAvatarFromUrl.js";
 
 describe("POST /api/auth/register", () => {
   it("should return a 201 status, create an account and stock the token into the cookies", async () => {
@@ -303,10 +302,9 @@ describe("GET /api/auth/me", () => {
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty("_id" && "username" && "email");
   });
+
   it("should return a 500 status in case of an internal error", async () => {
-    vitest.spyOn(User, "findById").mockImplementationOnce(async () => {
-      throw new Error("Test error");
-    });
+    vi.spyOn(User, "findById").mockRejectedValueOnce(new Error("Test error"));
 
     const response = await request(app)
       .get("/api/auth/me")

@@ -39,7 +39,7 @@ export const saveAvatarFromUrl = (photoURL: string, userId: mongoose.Types.Objec
           resolve(`/uploads/users/avatars/${filename}`);
         });
 
-        file.on("error", (err) => {
+        file.on("error", (err: any) => {
           fs.unlink(fullPath, () => {});
           reject(err);
         });

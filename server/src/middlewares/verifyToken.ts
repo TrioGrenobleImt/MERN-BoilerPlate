@@ -48,12 +48,12 @@ export const verifyToken = ({ role }: VerifyTokenOptions = {}) => {
       }
 
       next();
-    } catch (error: any) {
-      if (error.name === "JsonWebTokenError" || error.name === "TokenExpiredError") {
+    } catch (err: any) {
+      if (err.name === "JsonWebTokenError" || err.name === "TokenExpiredError") {
         res.status(403).json({ error: "Access Token is invalid" });
         return;
       }
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error: err.message });
       return;
     }
   };

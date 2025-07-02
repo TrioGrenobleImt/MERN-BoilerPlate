@@ -44,7 +44,7 @@ export function OAuth({ message }: OauthProps) {
           toast.error(t(errorMessage || "auth.error"));
         }
       }
-    } catch (error: any) {
+    } catch (err: any) {
       toast.error(t("auth.error"));
     }
   };

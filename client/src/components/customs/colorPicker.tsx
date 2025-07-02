@@ -207,7 +207,7 @@ export default function ColorPicker({ value = "#3B82F6", onChange, className, di
       await navigator.clipboard.writeText(currentColor);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
+    } catch (err: any) {
       console.error("Failed to copy color:", err);
     }
   };

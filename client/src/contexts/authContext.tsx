@@ -28,7 +28,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         const userResponse = await axiosConfig.get("/auth/me");
         const userData = userResponse.data;
         setAuthUser(userData);
-      } catch (error) {
+      } catch (error: any) {
         setAuthUser(null);
       } finally {
         setLoading(false);
