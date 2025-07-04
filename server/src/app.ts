@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Application } from "express";
 
 import "dotenv/config";
 import cors from "cors";
@@ -6,7 +6,7 @@ import { corsOptions } from "./configuration/corsOptions.js";
 import { router } from "./routes/router.js";
 
 // Create the Express application instance
-export const app = express();
+export const app: Application = express();
 
 // Global middleware
 app.use(express.json()); // Parse incoming JSON payloads
