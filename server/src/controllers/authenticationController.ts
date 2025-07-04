@@ -79,13 +79,6 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 
     const accessToken = generateAccessToken(user._id);
 
-    res.cookie("__access__token", accessToken, {
-      maxAge: Constants.MAX_AGE,
-      httpOnly: true,
-      sameSite: "none",
-      secure: true,
-    });
-
     createLog({
       message: `New user ${user.username} registered successfully`,
       userId: user._id,
@@ -94,7 +87,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 
     const { password: _password, ...userWithoutPassword } = user.toObject();
 
-    res.status(201).json({ user: userWithoutPassword, message: "server.auth.messages.register_success" });
+    res.status(201).json({ user: userWithoutPassword, message: "server.auth.messages.register_success", accessToken });
     return;
   } catch (err: any) {
     res.status(500).json({ error: err.message });
@@ -135,16 +128,10 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     }
 
     const accessToken = generateAccessToken(user._id);
-    res.cookie("__access__token", accessToken, {
-      maxAge: Constants.MAX_AGE,
-      httpOnly: true,
-      sameSite: "none",
-      secure: true,
-    });
 
     const { password: _password, ...userWithoutPassword } = user.toObject();
 
-    res.status(201).json({ user: userWithoutPassword, message: "server.auth.messages.login_success" });
+    res.status(201).json({ user: userWithoutPassword, message: "server.auth.messages.login_success", accessToken });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
@@ -195,14 +182,8 @@ export const signInWithGoogle = async (req: Request, res: Response): Promise<voi
     }
 
     const accessToken = generateAccessToken(user._id);
-    res.cookie("__access__token", accessToken, {
-      maxAge: Constants.MAX_AGE,
-      httpOnly: true,
-      sameSite: "none",
-      secure: true,
-    });
 
-    res.status(201).json({ user, message: "server.auth.messages.login_success" });
+    res.status(201).json({ user, message: "server.auth.messages.login_success", accessToken });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }

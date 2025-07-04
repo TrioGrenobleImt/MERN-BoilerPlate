@@ -2,7 +2,6 @@ import express from "express";
 
 import "dotenv/config";
 import cors from "cors";
-import cookieParser from "cookie-parser";
 import { corsOptions } from "./configuration/corsOptions.js";
 import { router } from "./routes/router.js";
 
@@ -21,9 +20,6 @@ app.use((req, res, next) => {
 
 // Enable CORS with predefined options
 app.use(cors(corsOptions));
-
-// Parse cookies from incoming requests
-app.use(cookieParser());
 
 // Register main application routes
 app.use(router);
