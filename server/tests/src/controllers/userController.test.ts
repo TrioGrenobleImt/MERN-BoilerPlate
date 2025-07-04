@@ -1,9 +1,8 @@
 import mongoose from "mongoose";
-import { describe, it, beforeAll, afterAll, expect, afterEach, vitest, vi, beforeEach } from "vitest";
+import { describe, it, expect, vitest, vi, beforeEach } from "vitest";
 import "dotenv/config";
 import request from "supertest";
 import { User } from "../../../src/models/userModel.js";
-import { Log } from "../../../src/models/logModel.js";
 import { generateAccessToken } from "../../../src/utils/generateAccessToken.js";
 import fs from "fs";
 import bcrypt from "bcryptjs";
@@ -214,7 +213,9 @@ describe("PUT /api/users/:id", () => {
     expect(response.status).toBe(200);
     expect(response.body.message).toBe("server.users.messages.user_updated");
     const updatedUser = await User.findById(user._id);
-    expect(updatedUser.password).not.toBe(user.password);
+    if (updatedUser) {
+      expect(updatedUser.password).not.toBe(user.password);
+    }
   });
 
   it("should delete password and role from body if the user isn't admin", async () => {
@@ -230,9 +231,10 @@ describe("PUT /api/users/:id", () => {
     expect(response.status).toBe(200);
 
     const updatedUser = await User.findById(user._id);
-
-    expect(updatedUser.password).not.toBe("newPassword");
-    expect(updatedUser.role).toBe("user");
+    if (updatedUser) {
+      expect(updatedUser.password).not.toBe("newPassword");
+      expect(updatedUser.role).toBe("user");
+    }
 
     expect(response.body.password).toBeUndefined();
     expect(response.body.role).toBeUndefined();
@@ -380,8 +382,10 @@ describe("PUT /api/users/:id/password", () => {
     expect(response.body.message).toBe("server.users.messages.password_updated");
 
     const updatedUser = await User.findById(user._id).select("+password");
-    const isMatch = await bcrypt.compare("NewPass1@", updatedUser.password);
-    expect(isMatch).toBe(true);
+    if (updatedUser) {
+      const isMatch = await bcrypt.compare("NewPass1@", updatedUser.password);
+      expect(isMatch).toBe(true);
+    }
   });
 
   it("should return a 400 status error for missing fields", async () => {

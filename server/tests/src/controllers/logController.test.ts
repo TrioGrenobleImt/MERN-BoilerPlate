@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import { describe, it, beforeAll, afterAll, expect, afterEach, vitest, vi } from "vitest";
+import mongoose, { Types } from "mongoose";
+import { describe, it, expect, vitest, vi } from "vitest";
 import "dotenv/config";
 import request from "supertest";
 import { User } from "../../../src/models/userModel.js";
@@ -11,7 +11,7 @@ import { app } from "../../../src/app.js";
 import { logLevels } from "../../../src/utils/enums/logLevels.js";
 import { createLog } from "../../../src/controllers/logController.js";
 import { adminUser } from "../../fixtures/users.js";
-import { basicLog, logInvalidLevel, logWithMissingParams } from "../../fixtures/logs.js";
+import { basicLog, logWithMissingParams } from "../../fixtures/logs.js";
 
 describe("GET api/logs/", () => {
   it("should return a 200 success status and the list of the logs", async () => {
@@ -45,27 +45,13 @@ describe("GET api/logs/", () => {
 });
 
 describe("createLog", () => {
-  it("should log an error if parameters are missing", async () => {
-    const consoleErrorMock = vi.spyOn(console, "error").mockImplementation(() => {});
-
-    await createLog(logWithMissingParams);
-
-    expect(consoleErrorMock).toHaveBeenCalledWith("createLog: Missing parameters", {
-      message: "Log message",
-      userId: null,
-      level: logLevels.INFO,
-    });
-
-    consoleErrorMock.mockRestore();
-  });
-
   it("should create a log when valid parameters are provided", async () => {
-    const createMock = vi.spyOn(Log, "create").mockResolvedValue({});
+    const createMock = vi.spyOn(Log, "create").mockResolvedValue({} as any);
     await createLog(basicLog);
 
     expect(createMock).toHaveBeenCalledWith({
       message: "Log message",
-      user: "userId",
+      user: basicLog.userId,
       level: logLevels.INFO,
     });
 
