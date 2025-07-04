@@ -35,12 +35,6 @@ export const Register = () => {
   return (
     <>
       <RegisterForm onSubmit={register} disabledFields={[]} loading={loading} oauth={true} />
-      <div className="text-sm text-center md:text-base">
-        {t("pages.register.already_have_account")}{" "}
-        <Link to="/login" className="underline underline-offset-4">
-          {t("pages.register.login")}
-        </Link>
-      </div>
     </>
   );
 };
