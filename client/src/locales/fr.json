@@ -80,6 +80,7 @@
     },
     "register": {
       "title": "Créer un compte",
+      "password_creation": "Créer un mot de passe ",
       "forename": "Prénom",
       "name": "Nom",
       "username": "Nom d'utilisateur",

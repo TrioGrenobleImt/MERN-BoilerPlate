@@ -29,8 +29,6 @@ export const RegisterForm = ({
   oauth = false,
 }: RegisterFormProps) => {
   const { t } = useTranslation();
-
-  // Si tu veux, adapte ton schema pour autoriser ou non le password selon showPassword
   const registerSchema = getRegisterSchema(t);
 
   const form = useForm<z.infer<typeof registerSchema>>({
@@ -64,7 +62,9 @@ export const RegisterForm = ({
         <div className="flex items-center gap-2 self-center sm:text-4xl text-2xl font-medium text-accent">{configValues["APP_NAME"]}</div>
         <Card className="w-full">
           <CardHeader className="text-center">
-            <CardTitle className="text-xl md:text-2xl">{t("pages.register.title")}</CardTitle>
+            <CardTitle className="text-xl md:text-2xl">
+              {oauth ? t("pages.register.title") : t("pages.register.password_creation")}
+            </CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col items-center gap-6">
             <Form {...form}>
@@ -107,29 +107,28 @@ export const RegisterForm = ({
                   />
                 ))}
 
-                <>
-                  {["password", "confirmPassword"].map((fieldName) => (
-                    <FormField
-                      key={fieldName}
-                      control={form.control}
-                      name={fieldName as any}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>{t(`pages.register.${fieldName}`)}</FormLabel>
-                          <FormControl>
-                            <Input type="password" {...field} disabled={disabledFields.includes(fieldName)} />
-                          </FormControl>
-                          <FormDescription>{t(`pages.register.${fieldName}_description`)}</FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  ))}
-                </>
+                {["password", "confirmPassword"].map((fieldName) => (
+                  <FormField
+                    key={fieldName}
+                    control={form.control}
+                    name={fieldName as any}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{t(`pages.register.${fieldName}`)}</FormLabel>
+                        <FormControl>
+                          <Input type="password" {...field} disabled={disabledFields.includes(fieldName)} />
+                        </FormControl>
+                        <FormDescription>{t(`pages.register.${fieldName}_description`)}</FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                ))}
 
                 <Button type="submit" className="w-full" disabled={loading}>
                   {submitLabel || t("pages.register.register")}
                 </Button>
+
                 {import.meta.env.VITE_FIREBASE_API_KEY && oauth && (
                   <>
                     <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
