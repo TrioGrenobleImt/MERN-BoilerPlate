@@ -142,7 +142,6 @@ export const login = async (req: Request, res: Response): Promise<void> => {
  */
 export const logout = async (req: Request, res: Response): Promise<void> => {
   try {
-    res.clearCookie("__access__token");
     res.status(200).json({ message: "server.auth.messages.logout_success" });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
