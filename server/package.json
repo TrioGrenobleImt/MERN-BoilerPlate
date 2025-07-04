@@ -5,7 +5,7 @@
   "type": "module",
   "author": "villett",
   "scripts": {
-    "dev": "nodemon --watch 'src/**/*' --exec 'tsx' src/index.ts",
+    "dev": "nodemon --watch \"src/**/*\" --exec tsx src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
     "test": "vitest",
