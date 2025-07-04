@@ -1,12 +1,12 @@
-import { beforeAll, afterAll, describe, it, expect, afterEach, vi } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import "dotenv/config";
 import request from "supertest";
 import fs from "fs";
 import { User } from "../../../src/models/userModel.js";
-import { Log } from "../../../src/models/logModel.js";
 import { generateAccessToken } from "../../../src/utils/generateAccessToken.js";
 import { app } from "../../../src/app.js";
 import { adminUser, pathAvatarOldTest, userAdminWithAvatar } from "../../fixtures/users.js";
+import path from "path";
 
 describe("Tests uploads files", () => {
   it("should return an error if no file is provided", async () => {
@@ -42,45 +42,54 @@ describe("Tests uploads files", () => {
   it("should return a 500 error if there is a server problem", async () => {
     const user = await User.create(userAdminWithAvatar);
 
-    vi.spyOn(User, "findById").mockImplementationOnce(() => {
-      throw new Error("Test error");
-    });
-
-    const pathNewAvatar = "./tests/src/controllers/hello-world.png";
-    fs.writeFileSync(pathNewAvatar, "Hello, world!");
+    vi.spyOn(User, "findById").mockImplementationOnce(() => Promise.reject(new Error("Test error")));
 
     const response = await request(app)
       .post(`/api/uploads/avatar/${user._id}`)
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`)
-      .attach("avatar", pathNewAvatar, "hello-world.png");
+      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
 
     expect(response.body.error).toBe("Test error");
     expect(response.statusCode).toBe(500);
-
-    // Nettoyage des fichiers temporaires
-    if (fs.existsSync(pathNewAvatar)) {
-      fs.unlinkSync(pathNewAvatar);
-    }
   });
 
   it("should delete old profilePic if there is one and update the current", async () => {
-    const user = await User.create(userAdminWithAvatar);
+    // Construire le chemin local attendu de l'ancien avatar
+    const oldAvatarFileName = "old-avatar.png";
+    const oldAvatarPath = path.join(process.cwd(), "uploads", "users", "avatars", oldAvatarFileName);
 
+    // Crée le fichier ancien avatar s'il n'existe pas
+    if (!fs.existsSync(oldAvatarPath)) {
+      fs.writeFileSync(oldAvatarPath, "fake old avatar content");
+    }
+
+    // Crée user avec avatar URL qui pointe vers ce fichier
+    const userWithAvatar = {
+      ...userAdminWithAvatar,
+      avatar: `http://localhost:3000/uploads/users/avatars/${oldAvatarFileName}`,
+    };
+
+    const user = await User.create(userWithAvatar);
+
+    // Nouveau fichier avatar à uploader
     const pathNewAvatar = "./tests/src/controllers/hello-world.png";
     fs.writeFileSync(pathNewAvatar, "Hello, world!");
 
+    // Appel à ta route upload
     const response = await request(app)
       .post(`/api/uploads/avatar/${user._id}`)
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`)
       .attach("avatar", pathNewAvatar, "hello-world.png");
 
-    // Vérifie si l'ancien avatar a bien été supprimé
-    expect(fs.existsSync(pathAvatarOldTest)).toBe(false);
+    // Check que l'ancien avatar a bien été supprimé
+    expect(fs.existsSync(oldAvatarPath)).toBe(false);
+
+    // Check que le nouveau avatar existe (le fichier que tu as uploadé)
     expect(fs.existsSync(pathNewAvatar)).toBe(true);
+
     expect(response.body.message).toBe("server.upload.messages.avatar_success");
     expect(response.statusCode).toBe(200);
 
-    // Nettoyage des fichiers temporaires
+    // Nettoyage du nouveau fichier
     if (fs.existsSync(pathNewAvatar)) {
       fs.unlinkSync(pathNewAvatar);
     }

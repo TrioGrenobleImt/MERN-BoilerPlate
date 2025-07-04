@@ -78,4 +78,39 @@ describe("Saving avatar from an url", () => {
     await expect(saveAvatarFromUrl(stablePhotoURL, userId)).rejects.toThrow("Network failure");
     expect(fs.unlink).toHaveBeenCalled();
   });
+  it("should handle file write errors gracefully", async () => {
+    const userId = "123456";
+
+    const mockResponse = new PassThrough();
+    mockResponse.statusCode = 200;
+
+    vi.spyOn(https, "get").mockImplementation((_url, cb) => {
+      cb(mockResponse);
+      // Simule du contenu
+      process.nextTick(() => {
+        mockResponse.write("fake image content");
+        mockResponse.end();
+      });
+      return {
+        on: () => {},
+      };
+    });
+
+    const fakeStream = new PassThrough();
+    fakeStream.close = () => {};
+
+    vi.spyOn(fs, "createWriteStream").mockImplementation(() => fakeStream);
+
+    vi.spyOn(fs, "unlink").mockImplementation((_path, cb) => {
+      if (cb) cb(null);
+    });
+
+    const promise = saveAvatarFromUrl("https://fakeurl.com/avatar.jpg", userId);
+
+    // Boom: on déclenche l'erreur du stream
+    fakeStream.emit("error", new Error("Disk write failed"));
+
+    await expect(promise).rejects.toThrow("Disk write failed");
+    expect(fs.unlink).toHaveBeenCalled();
+  });
 });
