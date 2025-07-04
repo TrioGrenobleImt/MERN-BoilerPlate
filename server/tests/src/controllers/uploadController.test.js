@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, vitest } from "vitest";
 import "dotenv/config";
 import request from "supertest";
 import fs from "fs";
@@ -7,6 +7,7 @@ import { generateAccessToken } from "../../../src/utils/generateAccessToken.js";
 import { app } from "../../../src/app.js";
 import { adminUser, pathAvatarOldTest, userAdminWithAvatar } from "../../fixtures/users.js";
 import path from "path";
+import mongoose from "mongoose";
 
 describe("Tests uploads files", () => {
   it("should return an error if no file is provided", async () => {
@@ -17,6 +18,17 @@ describe("Tests uploads files", () => {
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
 
     expect(response.body.error).toBe("server.upload.errors.no_file");
+    expect(response.statusCode).toBe(400);
+  });
+
+  it("should return an error if no user is found", async () => {
+    const user = await User.create(adminUser);
+
+    const response = await request(app)
+      .post(`/api/uploads/avatar/${new mongoose.Types.ObjectId()}`) // ID invalide
+      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+
+    expect(response.body.error).toBe("server.global.errors.no_such_user");
     expect(response.statusCode).toBe(400);
   });
 
@@ -42,7 +54,7 @@ describe("Tests uploads files", () => {
   it("should return a 500 error if there is a server problem", async () => {
     const user = await User.create(userAdminWithAvatar);
 
-    vi.spyOn(User, "findById").mockImplementationOnce(() => Promise.reject(new Error("Test error")));
+    vitest.spyOn(User, "findById").mockRejectedValueOnce(new Error("Test error"));
 
     const response = await request(app)
       .post(`/api/uploads/avatar/${user._id}`)
