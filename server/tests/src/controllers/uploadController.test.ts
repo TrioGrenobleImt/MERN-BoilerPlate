@@ -8,10 +8,11 @@ import { app } from "../../../src/app.js";
 import { adminUser, pathAvatarOldTest, userAdminWithAvatar } from "../../fixtures/users.js";
 import path from "path";
 import mongoose from "mongoose";
+import { IUser } from "../../../src/interfaces/IUser.js";
 
 describe("Tests uploads files", () => {
   it("should return an error if no file is provided", async () => {
-    const user = await User.create(adminUser);
+    const user: IUser = await User.create(adminUser);
 
     const response = await request(app)
       .post(`/api/uploads/avatar/${user._id}`)
@@ -22,7 +23,7 @@ describe("Tests uploads files", () => {
   });
 
   it("should return an error if no user is found", async () => {
-    const user = await User.create(adminUser);
+    const user: IUser = await User.create(adminUser);
 
     const response = await request(app)
       .post(`/api/uploads/avatar/${new mongoose.Types.ObjectId()}`) // ID invalide
@@ -33,7 +34,7 @@ describe("Tests uploads files", () => {
   });
 
   it("should send an error if the file type isn't allowed", async () => {
-    const user = await User.create(adminUser);
+    const user: IUser = await User.create(adminUser);
 
     const path = "./tests/src/controllers/hello-world.txt";
     fs.writeFileSync(path, "Hello, world!");
@@ -52,7 +53,7 @@ describe("Tests uploads files", () => {
   });
 
   it("should return a 500 error if there is a server problem", async () => {
-    const user = await User.create(userAdminWithAvatar);
+    const user: IUser = await User.create(userAdminWithAvatar);
 
     vitest.spyOn(User, "findById").mockRejectedValueOnce(new Error("Test error"));
 
@@ -80,7 +81,7 @@ describe("Tests uploads files", () => {
       avatar: `http://localhost:3000/uploads/users/avatars/${oldAvatarFileName}`,
     };
 
-    const user = await User.create(userWithAvatar);
+    const user: IUser = await User.create(userWithAvatar);
 
     // Nouveau fichier avatar à uploader
     const pathNewAvatar = "./tests/src/controllers/hello-world.png";
@@ -108,7 +109,7 @@ describe("Tests uploads files", () => {
   });
 
   it("should return an error if the file is too large", async () => {
-    const user = await User.create(userAdminWithAvatar);
+    const user: IUser = await User.create(userAdminWithAvatar);
 
     const pathNewAvatar = "./tests/src/controllers/hello-world.png";
     const fileSizeInBytes = 10 * 1024 * 1024;

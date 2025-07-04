@@ -8,10 +8,11 @@ import { adminUser } from "../../fixtures/users.js";
 //Import server and app
 import { app } from "../../../src/app.js";
 import { Config } from "../../../src/models/configModel.js";
+import { IUser } from "../../../src/interfaces/IUser.js";
 
 describe("GET /api/config", () => {
   it("should return a 200 success status and the list of the config", async () => {
-    const user = await User.create(adminUser);
+    const user: IUser = await User.create(adminUser);
     const res = await request(app)
       .get("/api/config")
       .set("Cookie", `__access__token=${generateAccessToken(user._id)}`)
@@ -21,7 +22,7 @@ describe("GET /api/config", () => {
   });
 
   it("should return a 200 success status and the list of the config", async () => {
-    const user = await User.create(adminUser);
+    const user: IUser = await User.create(adminUser);
     await Config.create({
       key: "key1",
       value: "value1",
@@ -37,7 +38,7 @@ describe("GET /api/config", () => {
   });
 
   it("should return a 500 status if an error occurs", async () => {
-    const user = await User.create(adminUser);
+    const user: IUser = await User.create(adminUser);
 
     vitest.spyOn(Config, "find").mockImplementationOnce(() => {
       throw new Error("Test error");
@@ -53,7 +54,7 @@ describe("GET /api/config", () => {
 
 describe("PUT /api/config", () => {
   it("should return a 200 success status and update the config", async () => {
-    const user = await User.create(adminUser);
+    const user: IUser = await User.create(adminUser);
     await Config.create({
       key: "key1",
       value: "value1",
@@ -74,7 +75,7 @@ describe("PUT /api/config", () => {
   });
 
   it("should return a 400 error if the keys are not in the config object", async () => {
-    const user = await User.create(adminUser);
+    const user: IUser = await User.create(adminUser);
     await Config.create({
       key: "key1",
       value: "value1",
@@ -95,7 +96,7 @@ describe("PUT /api/config", () => {
   });
 
   it("should return a 400 error if the format is invalid", async () => {
-    const user = await User.create(adminUser);
+    const user: IUser = await User.create(adminUser);
     await Config.create({
       key: "key1",
       value: "value1",
@@ -116,7 +117,7 @@ describe("PUT /api/config", () => {
   });
 
   it("should return a 400 error if the format is invalid", async () => {
-    const user = await User.create(adminUser);
+    const user: IUser = await User.create(adminUser);
     await Config.create({
       key: "key1",
       value: "value1",
@@ -135,7 +136,7 @@ describe("PUT /api/config", () => {
   });
 
   it("should return a 400 error if the format is invalid", async () => {
-    const user = await User.create(adminUser);
+    const user: IUser = await User.create(adminUser);
     await Config.create({
       key: "key1",
       value: "value1",
@@ -153,7 +154,7 @@ describe("PUT /api/config", () => {
   });
 
   it("should return a 500 status if an error occurs", async () => {
-    const user = await User.create(adminUser);
+    const user: IUser = await User.create(adminUser);
     await Config.create({
       key: "key1",
       value: "value1",

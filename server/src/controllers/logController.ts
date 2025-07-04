@@ -42,11 +42,6 @@ interface CreateLogParams {
  * @param {string} logData.level - The log level (e.g., INFO, ERROR).
  */
 export const createLog = async ({ message, userId, level }: CreateLogParams): Promise<void> => {
-  if (!message || !userId || !level) {
-    console.error("createLog: Missing parameters", { message, userId, level });
-    return;
-  }
-
   try {
     await Log.create({ message, user: userId, level });
   } catch (err: any) {
