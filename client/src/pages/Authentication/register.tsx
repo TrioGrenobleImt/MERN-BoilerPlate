@@ -24,6 +24,7 @@ export const Register = () => {
       const response = await axiosConfig.post("/auth/register", values);
       toast.success(t(response.data.message));
       setAuthUser(response.data.user);
+      localStorage.setItem("accessToken", response.data.accessToken);
       navigate("/");
     } catch (error: any) {
       toast.error(t(error.response.data.error));
