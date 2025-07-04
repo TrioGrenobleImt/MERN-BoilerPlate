@@ -54,7 +54,8 @@ export const updateUserAvatar = async (req: Request, res: Response): Promise<voi
       message: "server.upload.messages.avatar_success",
       user,
     });
-  } catch (err: any) {
-    res.status(500).json({ error: err.message });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Unknown server error";
+    res.status(500).json({ error: message });
   }
 };
