@@ -32,7 +32,7 @@ describe("Socket Server", () => {
       query: { userId: "testUserId" },
     });
 
-    await new Promise((resolve, reject) => {
+    await new Promise<void>((resolve, reject) => {
       clientSocket.on("connect", () => {
         expect(clientSocket.connected).toBe(true);
         resolve();

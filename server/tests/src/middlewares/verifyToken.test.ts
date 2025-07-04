@@ -25,6 +25,10 @@ describe("verifyToken Middleware", () => {
 
   it("should call next middleware if the token is valid and no role is required", async () => {
     const user = { id: "userId123" };
+
+    if (!process.env.SECRET_ACCESS_TOKEN) {
+      throw new Error("Missing SECRET_ACCESS_TOKEN environment variable");
+    }
     const token = jwt.sign(user, process.env.SECRET_ACCESS_TOKEN);
 
     const res = await request(app).get("/api/auth/me/").set("Cookie", `__access__token=${token}`).send();
@@ -36,6 +40,9 @@ describe("verifyToken Middleware", () => {
 
   it("should return 400 if the user does not exist", async () => {
     const nonExistentUserId = { id: new mongoose.Types.ObjectId() };
+    if (!process.env.SECRET_ACCESS_TOKEN) {
+      throw new Error("Missing SECRET_ACCESS_TOKEN environment variable");
+    }
     const token = jwt.sign(nonExistentUserId, process.env.SECRET_ACCESS_TOKEN);
 
     const res = await request(app).get("/api/users").set("Cookie", `__access__token=${token}`).send();
@@ -58,6 +65,9 @@ describe("verifyToken Middleware", () => {
 
   it("should return a 500 status error when there is a database error", async () => {
     const user = { id: "userId123" };
+    if (!process.env.SECRET_ACCESS_TOKEN) {
+      throw new Error("Missing SECRET_ACCESS_TOKEN environment variable");
+    }
     const token = jwt.sign(user, process.env.SECRET_ACCESS_TOKEN);
 
     const findByIdMock = vi.spyOn(User, "findOne").mockRejectedValue(new Error("Database error"));
