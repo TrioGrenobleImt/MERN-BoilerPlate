@@ -28,7 +28,7 @@ describe("Server Tests", () => {
 
   it("should log an error and exit if PORT is not specified", () => {
     delete process.env.PORT;
-    const exitSpy = vi.spyOn(process, "exit").mockImplementation(() => {});
+    const exitSpy = vi.spyOn(process, "exit").mockImplementation({} as any);
     const logSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
     initServer();
