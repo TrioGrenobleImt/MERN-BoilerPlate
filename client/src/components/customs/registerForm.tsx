@@ -10,6 +10,7 @@ import { OAuth } from "./oauth";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useConfigContext } from "@/contexts/configContext";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 type RegisterFormProps = {
   onSubmit: (values: z.infer<any>) => Promise<void>;
@@ -139,6 +140,14 @@ export const RegisterForm = ({
                 )}
               </form>
             </Form>
+            {oauth && (
+              <div className="text-sm text-center md:text-base">
+                {t("pages.register.already_have_account")}{" "}
+                <Link to="/login" className="underline underline-offset-4">
+                  {t("pages.register.login")}
+                </Link>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
