@@ -30,7 +30,7 @@ describe("GET /api/users/", () => {
 
     const response = await request(app)
       .get("/api/users/")
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
     expect(response.status).toBe(200);
     expect(response.body.users.length).toBe(1);
     expect(response.body.users[0].username).toBe(user.username);
@@ -45,7 +45,7 @@ describe("GET /api/users/", () => {
 
     const response = await request(app)
       .get("/api/users/")
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
     expect(response.status).toBe(500);
     expect(response.body.error).toBe("Test error");
   });
@@ -63,7 +63,7 @@ describe("GET /api/users/:id", () => {
     });
     const response = await request(app)
       .get(`/api/users/${user._id}`)
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
     expect(response.status).toBe(200);
     expect(response.body.email).toBe(user.email);
   });
@@ -74,7 +74,7 @@ describe("GET /api/users/:id", () => {
     const falseId = new mongoose.Types.ObjectId();
     const response = await request(app)
       .get(`/api/users/${falseId}`)
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
     expect(response.status).toBe(400);
     expect(response.body.error).toBe("No such user");
   });
@@ -88,7 +88,7 @@ describe("GET /api/users/:id", () => {
 
     const response = await request(app)
       .get(`/api/users/${user._id}`)
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
     expect(response.status).toBe(500);
     expect(response.body.error).toBe("Test error");
   });
@@ -101,7 +101,7 @@ describe("POST /api/users/", () => {
     const response = await request(app)
       .post("/api/users/")
       .send(regularUser)
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
     // Vérification du statut de la réponse et des données de l'utilisateur créé
     expect(response.status).toBe(201);
     expect(response.body.user.username).toBe(regularUser.username);
@@ -116,7 +116,7 @@ describe("POST /api/users/", () => {
     const response = await request(app)
       .post("/api/users/")
       .send({ username: "invaliduser", email: "invaliduser@example.com" })
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(400);
     expect(response.body.error).toBe("server.global.errors.missing_fields");
@@ -128,7 +128,7 @@ describe("POST /api/users/", () => {
     const response = await request(app)
       .post("/api/users/")
       .send(userWithSameEmail)
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(409);
     expect(response.body.error).toBe("server.users.errors.email_taken");
@@ -140,7 +140,7 @@ describe("POST /api/users/", () => {
     const response = await request(app)
       .post("/api/users/")
       .send(userWithSameUsername)
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(409);
     expect(response.body.error).toBe("server.users.errors.username_taken");
@@ -152,7 +152,7 @@ describe("POST /api/users/", () => {
     const response = await request(app)
       .post("/api/users/")
       .send(invalidRoleUser)
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(400);
     expect(response.body.error).toBe("server.users.errors.invalid_role");
@@ -168,7 +168,7 @@ describe("POST /api/users/", () => {
     const response = await request(app)
       .post("/api/users/")
       .send(regularUser)
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(500);
     expect(response.body.error).toBe("Test error");
@@ -181,7 +181,7 @@ describe("PUT /api/users/:id", () => {
     const response = await request(app)
       .put(`/api/users/${user._id}`)
       .send({ username: "newusername" })
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(200);
     expect(response.body.user.username).toBe("newusername");
@@ -195,7 +195,7 @@ describe("PUT /api/users/:id", () => {
     const response = await request(app)
       .put(`/api/users/${user._id}`)
       .send({ email: newEmail })
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(200);
     expect(response.body.user.email).toBe(newEmail.toLowerCase());
@@ -208,7 +208,7 @@ describe("PUT /api/users/:id", () => {
     const response = await request(app)
       .put(`/api/users/${user._id}`)
       .send({ password: "newPassword" })
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(200);
     expect(response.body.message).toBe("server.users.messages.user_updated");
@@ -226,7 +226,7 @@ describe("PUT /api/users/:id", () => {
     const response = await request(app)
       .put(`/api/users/${user._id}`)
       .send({ password: "newPassword", role: "admin" })
-      .set("Cookie", `__access__token=${token}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(200);
 
@@ -247,7 +247,7 @@ describe("PUT /api/users/:id", () => {
     const response = await request(app)
       .put(`/api/users/${user._id}`)
       .send({ email: "user@gmail.com" })
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
     expect(response.status).toBe(409);
     expect(response.body.error).toBe("server.users.errors.email_taken");
   });
@@ -259,7 +259,7 @@ describe("PUT /api/users/:id", () => {
     const response = await request(app)
       .put(`/api/users/${user._id}`)
       .send({ username: "user" })
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
     expect(response.status).toBe(409);
     expect(response.body.error).toBe("server.users.errors.username_taken");
   });
@@ -271,7 +271,7 @@ describe("PUT /api/users/:id", () => {
     const response = await request(app)
       .put(`/api/users/${newUserId}`)
       .send({ username: "newUsername" })
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
     expect(response.status).toBe(404);
     expect(response.body.error).toBe("server.global.errors.no_such_user");
   });
@@ -282,7 +282,7 @@ describe("PUT /api/users/:id", () => {
     const response = await request(app)
       .put(`/api/users/${user._id}`)
       .send({ role: "roleInexistant" })
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
     expect(response.status).toBe(400);
     expect(response.body.error).toBe("server.users.errors.invalid_role");
   });
@@ -296,7 +296,7 @@ describe("PUT /api/users/:id", () => {
     const response = await request(app)
       .put(`/api/users/${user._id}`)
       .send({ username: "newUsername" })
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(500);
     expect(response.body.error).toBe("Test error");
@@ -309,7 +309,7 @@ describe("DELETE /api/users/:id", () => {
 
     const response = await request(app)
       .delete(`/api/users/${user._id}`)
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
 
     expect(fs.existsSync(pathAvatarOldTest)).toBe(false);
     expect(response.status).toBe(200);
@@ -326,7 +326,7 @@ describe("DELETE /api/users/:id", () => {
     const newUserId = new mongoose.Types.ObjectId();
     const response = await request(app)
       .delete(`/api/users/${newUserId}`)
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
     expect(response.status).toBe(400);
     expect(response.body.error).toBe("server.global.errors.no_such_user");
   });
@@ -340,7 +340,7 @@ describe("DELETE /api/users/:id", () => {
 
     const response = await request(app)
       .delete(`/api/users/${user._id}`)
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
     expect(response.status).toBe(500);
     expect(response.body.error).toBe("Test error");
   });
@@ -352,7 +352,7 @@ describe("GET /api/users/generatePassword", () => {
 
     const response = await request(app)
       .get(`/api/users/utils/generatePassword`)
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(200);
     expect(response.body.message).toBe("pages.admin.users_page.form.password_generated");
@@ -376,7 +376,7 @@ describe("PUT /api/users/:id/password", () => {
         newPassword: "NewPass1@",
         newPasswordConfirm: "NewPass1@",
       })
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(200);
     expect(response.body.message).toBe("server.users.messages.password_updated");
@@ -396,7 +396,7 @@ describe("PUT /api/users/:id/password", () => {
         newPassword: "NewPass1@",
         // Missing newPasswordConfirm
       })
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(400);
     expect(response.body.error).toBe("server.global.errors.missing_fields");
@@ -410,7 +410,7 @@ describe("PUT /api/users/:id/password", () => {
         newPassword: "NewPass1@",
         newPasswordConfirm: "NewPass1@",
       })
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(400);
     expect(response.body.error).toBe("server.users.errors.actual_password_incorrect");
@@ -424,7 +424,7 @@ describe("PUT /api/users/:id/password", () => {
         newPassword: "weakpass", // Does not meet regex
         newPasswordConfirm: "weakpass",
       })
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(400);
     expect(response.body.error).toBe("server.users.errors.regex_error");
@@ -438,7 +438,7 @@ describe("PUT /api/users/:id/password", () => {
         newPassword: "NewPass1@",
         newPasswordConfirm: "DifferentPass1@",
       })
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(400);
     expect(response.body.error).toBe("server.users.errors.passwords_do_not_match");
@@ -454,7 +454,7 @@ describe("PUT /api/users/:id/password", () => {
         newPassword: "NewPass1@",
         newPasswordConfirm: "NewPass1@",
       })
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
 
     console.log(response.body);
 
@@ -474,7 +474,7 @@ describe("PUT /api/users/:id/password", () => {
         newPassword: "NewPass1@",
         newPasswordConfirm: "NewPass1@",
       })
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(500);
     expect(response.body.error).toBe("Test error");
@@ -496,7 +496,7 @@ describe("DELETE /api/users/delete/account", () => {
       .send({
         password: "Abcdef1@",
       })
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
 
     expect(fs.existsSync(pathAvatarOldTest)).toBe(false);
     expect(response.status).toBe(200);
@@ -518,7 +518,7 @@ describe("DELETE /api/users/delete/account", () => {
       .send({
         password: "Abcdef1@",
       })
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
     expect(response.status).toBe(500);
     expect(response.body.error).toBe("Test error");
   });
@@ -531,7 +531,7 @@ describe("DELETE /api/users/delete/account", () => {
       .send({
         password: "",
       })
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(400);
     expect(response.body.error).toBe("server.global.errors.missing_fields");
@@ -545,7 +545,7 @@ describe("DELETE /api/users/delete/account", () => {
       .send({
         password: "wrongPassword",
       })
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(400);
     expect(response.body.error).toBe("server.users.errors.password_incorrect");
@@ -578,7 +578,7 @@ describe("GET /api/users/stats/authTypes", () => {
       { username: "user2", email: "u2@test.com", auth_type: authTypes.GOOGLE, name: "N", forename: "F", password: "p" },
     ]);
 
-    const res = await request(app).get("/api/users/stats/authTypes").set("Cookie", `__access__token=${adminToken}`);
+    const res = await request(app).get("/api/users/stats/authTypes").set("Authorization", `Bearer ${adminToken}`);
 
     expect(res.status).toBe(200);
     expect(Array.isArray(res.body.data)).toBe(true);
@@ -606,7 +606,8 @@ describe("GET /api/users/stats/authTypes", () => {
 
     const res = await request(app).get("/api/users/stats/authTypes").set("Authorization", `Bearer ${token}`);
 
-    expect(res.status).toBe(401);
+    expect(res.status).toBe(403);
+    expect(res.body.error).toBe("Access restricted");
   });
 
   it("should return 500 if an error occurs", async () => {
@@ -614,7 +615,7 @@ describe("GET /api/users/stats/authTypes", () => {
       throw new Error("Test error");
     });
 
-    const res = await request(app).get("/api/users/stats/authTypes").set("Cookie", `__access__token=${adminToken}`);
+    const res = await request(app).get("/api/users/stats/authTypes").set("Authorization", `Bearer ${adminToken}`);
 
     expect(res.status).toBe(500);
     expect(res.body.error).toBe("Test error");
