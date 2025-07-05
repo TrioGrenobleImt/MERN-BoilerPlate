@@ -1,5 +1,5 @@
 import { app } from "../../../src/app.js";
-import { pathAvatarOldTest, userAdminWithAvatar } from "../../fixtures/users.js";
+import { pathAvatarOldTest, userAdminWithAvatar } from "../../fixtures/index.js";
 import { describe, it, expect } from "vitest";
 import "dotenv/config";
 import request from "supertest";

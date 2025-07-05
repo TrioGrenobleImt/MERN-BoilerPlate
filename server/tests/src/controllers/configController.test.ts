@@ -3,7 +3,7 @@ import "dotenv/config";
 import request from "supertest";
 import { User } from "../../../src/models/userModel.js";
 import { generateAccessToken } from "../../../src/utils/generateAccessToken.js";
-import { adminUser } from "../../fixtures/users.js";
+import { adminUser } from "../../fixtures/index.js";
 
 //Import server and app
 import { app } from "../../../src/app.js";

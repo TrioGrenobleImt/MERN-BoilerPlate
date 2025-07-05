@@ -4,8 +4,8 @@ import fs from "fs";
 import mongoose from "mongoose";
 import { EventEmitter } from "events";
 import { PassThrough } from "stream";
-import { saveAvatarFromUrl } from "../../../src/utils/saveAvatarFromUrl";
-import { stablePhotoURL } from "../../fixtures/users";
+import { saveAvatarFromUrl } from "../../../src/utils/saveAvatarFromUrl.js";
+import { stablePhotoURL } from "../../fixtures/index.js";
 
 describe("saveAvatarFromUrl", () => {
   beforeEach(() => {
