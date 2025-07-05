@@ -23,7 +23,6 @@ describe("POST /api/auth/register", () => {
   it("should return a 201 status, create an account and stock the token into the cookies", async () => {
     const response = await request(app).post("/api/auth/register").send(registerUser);
     expect(response.status).toBe(201);
-    expect(response.headers["set-cookie"][0].startsWith("__access__token=")).toBe(true);
     expect(response.body.message).toBe("server.auth.messages.register_success");
     expect(response.body.user.auth_type).toBe(authTypes.LOCAL);
     expect(response.body.password).toBe(undefined);
@@ -38,7 +37,6 @@ describe("POST /api/auth/register", () => {
         photoURL: stablePhotoURL,
       });
     expect(response.status).toBe(201);
-    expect(response.headers["set-cookie"][0].startsWith("__access__token=")).toBe(true);
     expect(response.body.message).toBe("server.auth.messages.register_success");
     expect(response.body.user.auth_type).toBe(authTypes.GOOGLE);
     expect(response.body.password).toBe(undefined);
@@ -64,7 +62,6 @@ describe("POST /api/auth/register", () => {
         photoURL: "invalid-url",
       });
     expect(response.status).toBe(201);
-    expect(response.headers["set-cookie"][0].startsWith("__access__token=")).toBe(true);
     expect(response.body.message).toBe("server.auth.messages.register_success");
   });
 
@@ -121,7 +118,6 @@ describe("POST /api/auth/login", () => {
     });
 
     expect(response.status).toBe(201);
-    expect(response.headers["set-cookie"][0].startsWith("__access__token=")).toBe(true);
     expect(response.body.message).toBe("server.auth.messages.login_success");
     expect(response.body.password).toBe(undefined);
   });
@@ -135,7 +131,6 @@ describe("POST /api/auth/login", () => {
     });
 
     expect(response.status).toBe(201);
-    expect(response.headers["set-cookie"][0].startsWith("__access__token=")).toBe(true);
     expect(response.body.message).toBe("server.auth.messages.login_success");
     expect(response.body.password).toBe(undefined);
   });
@@ -149,7 +144,6 @@ describe("POST /api/auth/login", () => {
     });
 
     expect(response.status).toBe(201);
-    expect(response.headers["set-cookie"][0].startsWith("__access__token=")).toBe(true);
     expect(response.body.message).toBe("server.auth.messages.login_success");
     expect(response.body.password).toBe(undefined);
   });
@@ -219,7 +213,6 @@ describe("GET /api/auth/login/google", () => {
     });
 
     expect(response.status).toBe(201);
-    expect(response.headers["set-cookie"][0].startsWith("__access__token=")).toBe(true);
     expect(response.body.message).toBe("server.auth.messages.login_success");
     expect(response.body.password).toBe(undefined);
   });
@@ -261,26 +254,10 @@ describe("GET /api/auth/logout", () => {
     await user.save();
     const response = await request(app)
       .get("/api/auth/logout")
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(200);
     expect(response.body.message).toBe("server.auth.messages.logout_success");
-    expect(response.headers["set-cookie"][0].startsWith("__access__token=;")).toBe(true);
-  });
-  it("should return a 500 error status in case of an internal error", async () => {
-    const req = {} as Request;
-    const error = new Error("Test error");
-    const res = {
-      clearCookie: vitest.fn(() => {
-        throw new Error("Test error");
-      }),
-      status: vitest.fn().mockReturnThis(),
-      json: vitest.fn(),
-    } as unknown as Response;
-
-    await logout(req, res);
-    expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.json).toHaveBeenCalledWith({ error: error.message });
   });
 });
 
@@ -294,7 +271,7 @@ describe("GET /api/auth/me", () => {
   it("should return a 200 status and the connected user infos", async () => {
     const response = await request(app)
       .get("/api/auth/me")
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
     expect(response.status).toBe(200);
   });
 
@@ -303,7 +280,7 @@ describe("GET /api/auth/me", () => {
 
     const response = await request(app)
       .get("/api/auth/me")
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
 
     expect(response.status).toBe(500);
     expect(response.body.error).toBe("Test error");
