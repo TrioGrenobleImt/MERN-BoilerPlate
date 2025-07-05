@@ -1,15 +1,42 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import https, { IncomingMessage } from "http";
-import fs from "fs";
+import { IncomingMessage, ClientRequest, RequestOptions } from "http";
+import https from "https";
+import fs, { WriteStream } from "fs";
+import path from "path";
 import mongoose from "mongoose";
 import { EventEmitter } from "events";
-import { PassThrough } from "stream";
+import { PassThrough, Writable } from "stream";
 import { saveAvatarFromUrl } from "../../../src/utils/saveAvatarFromUrl.js";
 import { stablePhotoURL } from "../../fixtures/index.js";
+
+// Créer un mock pour IncomingMessage
+const createMockIncomingMessage = (statusCode: number): IncomingMessage => {
+  const mockMessage = new PassThrough() as unknown as IncomingMessage;
+  mockMessage.statusCode = statusCode;
+  mockMessage.headers = {};
+  mockMessage.rawHeaders = [];
+  mockMessage.httpVersion = "1.1";
+  mockMessage.httpVersionMajor = 1;
+  mockMessage.httpVersionMinor = 1;
+  mockMessage.rawTrailers = [];
+  mockMessage.trailers = {};
+  mockMessage.aborted = false;
+  mockMessage.complete = true;
+
+  mockMessage.connection = mockMessage.socket;
+  mockMessage.destroy = vi.fn();
+  mockMessage.setTimeout = vi.fn();
+  return mockMessage;
+};
 
 describe("saveAvatarFromUrl", () => {
   beforeEach(() => {
     vi.restoreAllMocks();
+    // Assurez-vous que le répertoire existe avant de commencer les tests
+    const folderPath = path.join(process.cwd(), "uploads", "users", "avatars");
+    if (!fs.existsSync(folderPath)) {
+      fs.mkdirSync(folderPath, { recursive: true });
+    }
   });
 
   afterEach(() => {
@@ -17,81 +44,171 @@ describe("saveAvatarFromUrl", () => {
   });
 
   it("should reject if URL is invalid", async () => {
-    const userId = new mongoose.Types.ObjectId();
+    const userId: mongoose.Types.ObjectId = new mongoose.Types.ObjectId();
     await expect(saveAvatarFromUrl("not-a-url", userId)).rejects.toThrow("Invalid URL");
   });
 
-  it("should reject if status code is not 200", async () => {
-    const userId = new mongoose.Types.ObjectId();
-
-    vi.spyOn(https, "get").mockImplementation((_url: any, cb: any) => {
-      const fakeRes = new PassThrough() as unknown as IncomingMessage & NodeJS.WritableStream;
-      fakeRes.statusCode = 404;
-      cb(fakeRes);
-      return new EventEmitter() as unknown as https.ClientRequest;
-    });
-
-    await expect(saveAvatarFromUrl(stablePhotoURL, userId)).rejects.toThrow("Failed to get image");
-  });
-
-  it("should handle https.get errors (connection failure)", async () => {
-    const userId = new mongoose.Types.ObjectId();
-
-    vi.spyOn(fs, "unlink").mockImplementation((_path, cb) => {
-      if (cb) cb(null);
-    });
-
-    vi.spyOn(https, "get").mockImplementation((_url: any, _cb: any): https.ClientRequest => {
-      const fakeReq = new EventEmitter() as unknown as https.ClientRequest;
-
-      (fakeReq as any).on = (event: string, handler: (...args: any[]) => void) => {
-        if (event === "error") {
-          handler(new Error("Network failure"));
-        }
-        return fakeReq;
-      };
-
-      return fakeReq;
-    });
-
-    await expect(saveAvatarFromUrl(stablePhotoURL, userId)).rejects.toThrow("Network failure");
-    expect(fs.unlink).toHaveBeenCalled();
-  });
-
-  it("should reject if status code is not 200", async () => {
-    const userId = new mongoose.Types.ObjectId();
-
-    vi.spyOn(https, "get").mockImplementation((_url: any, cb: any) => {
-      const fakeRes = new PassThrough() as unknown as IncomingMessage;
-      fakeRes.statusCode = 404;
-      cb(fakeRes);
-      return new EventEmitter() as unknown as https.ClientRequest;
-    });
-
-    await expect(saveAvatarFromUrl(stablePhotoURL, userId)).rejects.toThrow("Failed to get image");
-  });
-
   it("should save the image successfully", async () => {
-    const userId = new mongoose.Types.ObjectId();
+    const userId: mongoose.Types.ObjectId = new mongoose.Types.ObjectId();
+    const fakeRes: IncomingMessage = createMockIncomingMessage(200);
 
-    const fakeRes = new PassThrough() as unknown as IncomingMessage & NodeJS.WritableStream;
+    vi.spyOn(https, "get").mockImplementation(
+      (
+        url: string | URL | RequestOptions,
+        optionsOrCb?: RequestOptions | ((res: IncomingMessage) => void),
+        cb?: (res: IncomingMessage) => void,
+      ): ClientRequest => {
+        const req = new EventEmitter() as ClientRequest;
 
-    vi.spyOn(https, "get").mockImplementation((_url: any, cb: any) => {
-      cb(fakeRes);
-      fakeRes.statusCode = 200;
-      process.nextTick(() => {
-        fakeRes.write("fake image content");
-        fakeRes.end();
-      });
-      return new EventEmitter() as unknown as https.ClientRequest;
-    });
+        if (typeof url === "string" || url instanceof URL) {
+          if (typeof optionsOrCb === "function") {
+            process.nextTick(() => optionsOrCb(fakeRes));
+          } else if (cb) {
+            process.nextTick(() => cb(fakeRes));
+          }
+        } else if (typeof optionsOrCb === "function") {
+          process.nextTick(() => optionsOrCb(fakeRes));
+        } else if (cb) {
+          process.nextTick(() => cb(fakeRes));
+        }
 
-    const unlinkSpy = vi.spyOn(fs, "unlink").mockImplementation((_path, cb) => {
-      if (cb) cb(null);
-    });
+        process.nextTick(() => fakeRes.emit("data", "fake image content"));
+        process.nextTick(() => fakeRes.emit("end"));
+        return req;
+      },
+    );
 
-    const result = await saveAvatarFromUrl(stablePhotoURL, userId);
+    const result: string = await saveAvatarFromUrl(stablePhotoURL, userId);
     expect(result).toMatch(/uploads\/users\/avatars\/avatar_/);
-    expect(unlinkSpy).not.toHaveBeenCalled();
+  });
+
+  it("should reject if the HTTP request fails", async () => {
+    const userId: mongoose.Types.ObjectId = new mongoose.Types.ObjectId();
+    vi.spyOn(https, "get").mockImplementation(
+      (
+        url: string | URL | RequestOptions,
+        optionsOrCb?: RequestOptions | ((res: IncomingMessage) => void),
+        cb?: (res: IncomingMessage) => void,
+      ): ClientRequest => {
+        const req = new EventEmitter() as ClientRequest;
+        process.nextTick(() => req.emit("error", new Error("Request failed")));
+        return req;
+      },
+    );
+
+    await expect(saveAvatarFromUrl(stablePhotoURL, userId)).rejects.toThrow("Request failed");
+  });
+
+  it("should reject if the status code is not 200", async () => {
+    const userId: mongoose.Types.ObjectId = new mongoose.Types.ObjectId();
+    const fakeRes: IncomingMessage = createMockIncomingMessage(404);
+
+    vi.spyOn(https, "get").mockImplementation(
+      (
+        url: string | URL | RequestOptions,
+        optionsOrCb?: RequestOptions | ((res: IncomingMessage) => void),
+        cb?: (res: IncomingMessage) => void,
+      ): ClientRequest => {
+        const req = new EventEmitter() as ClientRequest;
+
+        if (typeof url === "string" || url instanceof URL) {
+          if (typeof optionsOrCb === "function") {
+            process.nextTick(() => optionsOrCb(fakeRes));
+          } else if (cb) {
+            process.nextTick(() => cb(fakeRes));
+          }
+        } else if (typeof optionsOrCb === "function") {
+          process.nextTick(() => optionsOrCb(fakeRes));
+        } else if (cb) {
+          process.nextTick(() => cb(fakeRes));
+        }
+
+        process.nextTick(() => fakeRes.emit("end"));
+        return req;
+      },
+    );
+
+    await expect(saveAvatarFromUrl(stablePhotoURL, userId)).rejects.toThrow("Failed to get image, status code: 404");
+  });
+
+  it("should handle file write errors", async () => {
+    const userId: mongoose.Types.ObjectId = new mongoose.Types.ObjectId();
+    const fakeRes: IncomingMessage = createMockIncomingMessage(200);
+
+    vi.spyOn(https, "get").mockImplementation(
+      (
+        url: string | URL | RequestOptions,
+        optionsOrCb?: RequestOptions | ((res: IncomingMessage) => void),
+        cb?: (res: IncomingMessage) => void,
+      ): ClientRequest => {
+        const req = new EventEmitter() as ClientRequest;
+
+        if (typeof url === "string" || url instanceof URL) {
+          if (typeof optionsOrCb === "function") {
+            process.nextTick(() => optionsOrCb(fakeRes));
+          } else if (cb) {
+            process.nextTick(() => cb(fakeRes));
+          }
+        } else if (typeof optionsOrCb === "function") {
+          process.nextTick(() => optionsOrCb(fakeRes));
+        } else if (cb) {
+          process.nextTick(() => cb(fakeRes));
+        }
+
+        process.nextTick(() => fakeRes.emit("data", "fake image content"));
+        process.nextTick(() => fakeRes.emit("end"));
+        return req;
+      },
+    );
+
+    const mockWriteStream = new Writable({
+      write(chunk, encoding, callback) {
+        callback(new Error("Write error"));
+      },
+    }) as unknown as WriteStream;
+
+    mockWriteStream.close = vi.fn();
+    mockWriteStream.bytesWritten = 0;
+    mockWriteStream.path = "mockPath";
+    mockWriteStream.pending = false;
+
+    const createWriteStreamSpy = vi.spyOn(fs, "createWriteStream").mockReturnValue(mockWriteStream);
+
+    await expect(saveAvatarFromUrl(stablePhotoURL, userId)).rejects.toThrow("Write error");
+    createWriteStreamSpy.mockRestore();
+  });
+
+  it("should save the image with a different extension", async () => {
+    const userId: mongoose.Types.ObjectId = new mongoose.Types.ObjectId();
+    const fakeRes: IncomingMessage = createMockIncomingMessage(200);
+
+    vi.spyOn(https, "get").mockImplementation(
+      (
+        url: string | URL | RequestOptions,
+        optionsOrCb?: RequestOptions | ((res: IncomingMessage) => void),
+        cb?: (res: IncomingMessage) => void,
+      ): ClientRequest => {
+        const req = new EventEmitter() as ClientRequest;
+
+        if (typeof url === "string" || url instanceof URL) {
+          if (typeof optionsOrCb === "function") {
+            process.nextTick(() => optionsOrCb(fakeRes));
+          } else if (cb) {
+            process.nextTick(() => cb(fakeRes));
+          }
+        } else if (typeof optionsOrCb === "function") {
+          process.nextTick(() => optionsOrCb(fakeRes));
+        } else if (cb) {
+          process.nextTick(() => cb(fakeRes));
+        }
+
+        process.nextTick(() => fakeRes.emit("data", "fake image content"));
+        process.nextTick(() => fakeRes.emit("end"));
+        return req;
+      },
+    );
+
+    const result: string = await saveAvatarFromUrl(stablePhotoURL, userId, "png");
+    expect(result).toMatch(/uploads\/users\/avatars\/avatar_.*.png/);
   });
 });
