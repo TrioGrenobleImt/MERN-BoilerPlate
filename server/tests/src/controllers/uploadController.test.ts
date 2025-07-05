@@ -16,7 +16,7 @@ describe("Tests uploads files", () => {
 
     const response = await request(app)
       .post(`/api/uploads/avatar/${user._id}`)
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
 
     expect(response.body.error).toBe("server.upload.errors.no_file");
     expect(response.statusCode).toBe(400);
@@ -27,7 +27,7 @@ describe("Tests uploads files", () => {
 
     const response = await request(app)
       .post(`/api/uploads/avatar/${new mongoose.Types.ObjectId()}`) // ID invalide
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
 
     expect(response.body.error).toBe("server.global.errors.no_such_user");
     expect(response.statusCode).toBe(400);
@@ -41,7 +41,7 @@ describe("Tests uploads files", () => {
 
     const response = await request(app)
       .post(`/api/uploads/avatar/${user._id}`)
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`)
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`)
       .attach("avatar", path, "hello-world.txt");
 
     expect(response.body.error).toBe("server.upload.errors.invalid_file_type");
@@ -59,7 +59,7 @@ describe("Tests uploads files", () => {
 
     const response = await request(app)
       .post(`/api/uploads/avatar/${user._id}`)
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
 
     expect(response.body.error).toBe("Test error");
     expect(response.statusCode).toBe(500);
@@ -90,7 +90,7 @@ describe("Tests uploads files", () => {
     // Appel à ta route upload
     const response = await request(app)
       .post(`/api/uploads/avatar/${user._id}`)
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`)
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`)
       .attach("avatar", pathNewAvatar, "hello-world.png");
 
     // Check que l'ancien avatar a bien été supprimé
@@ -118,7 +118,7 @@ describe("Tests uploads files", () => {
 
     const response = await request(app)
       .post(`/api/uploads/avatar/${user._id}`)
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`)
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`)
       .attach("avatar", pathNewAvatar, "hello-world.png");
 
     expect(response.statusCode).toBe(400);
