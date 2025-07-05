@@ -15,7 +15,7 @@ describe("GET /api/config", () => {
     const user: IUser = await User.create(adminUser);
     const res = await request(app)
       .get("/api/config")
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`)
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`)
       .send();
     expect(res.status).toBe(200);
     expect(res.body.config.length).toBe(0);
@@ -29,7 +29,7 @@ describe("GET /api/config", () => {
     });
     const res = await request(app)
       .get("/api/config?keys=key1")
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`)
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`)
       .send();
 
     expect(res.status).toBe(200);
@@ -46,7 +46,7 @@ describe("GET /api/config", () => {
 
     const response = await request(app)
       .get(`/api/config?keys=${["key1", "key2"].join(",")}`)
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
     expect(response.status).toBe(500);
     expect(response.body.error).toBe("Test error");
   });
@@ -62,7 +62,7 @@ describe("PUT /api/config", () => {
 
     const res = await request(app)
       .put("/api/config")
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`)
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`)
       .send({
         keys: ["key1"],
         config: {
@@ -83,7 +83,7 @@ describe("PUT /api/config", () => {
 
     const res = await request(app)
       .put("/api/config")
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`)
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`)
       .send({
         keys: ["key2"],
         config: {
@@ -104,7 +104,7 @@ describe("PUT /api/config", () => {
 
     const res = await request(app)
       .put("/api/config")
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`)
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`)
       .send({
         keys: "key2",
         config: {
@@ -125,7 +125,7 @@ describe("PUT /api/config", () => {
 
     const res = await request(app)
       .put("/api/config")
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`)
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`)
       .send({
         keys: ["key2"],
         config: "test",
@@ -144,7 +144,7 @@ describe("PUT /api/config", () => {
 
     const res = await request(app)
       .put("/api/config")
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`)
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`)
       .send({
         keys: ["key2"],
       });
@@ -166,7 +166,7 @@ describe("PUT /api/config", () => {
 
     const response = await request(app)
       .put("/api/config")
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`)
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`)
       .send({
         keys: ["key1"],
         config: {
