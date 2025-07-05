@@ -1,4 +1,4 @@
-import mongoose, { Types } from "mongoose";
+import mongoose from "mongoose";
 import { describe, it, expect, vitest, vi } from "vitest";
 import "dotenv/config";
 import request from "supertest";
@@ -11,7 +11,7 @@ import { app } from "../../../src/app.js";
 import { logLevels } from "../../../src/utils/enums/logLevels.js";
 import { createLog } from "../../../src/controllers/logController.js";
 import { adminUser } from "../../fixtures/users.js";
-import { basicLog, logWithMissingParams } from "../../fixtures/logs.js";
+import { basicLog } from "../../fixtures/logs.js";
 
 describe("GET api/logs/", () => {
   it("should return a 200 success status and the list of the logs", async () => {
@@ -21,7 +21,7 @@ describe("GET api/logs/", () => {
 
     const res = await request(app)
       .get("/api/logs/")
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`)
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`)
       .send();
 
     expect(res.status).toBe(200);
@@ -38,7 +38,7 @@ describe("GET api/logs/", () => {
 
     const response = await request(app)
       .get("/api/logs/")
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
     expect(response.status).toBe(500);
     expect(response.body.error).toBe("Test error");
   });
@@ -80,7 +80,7 @@ describe("DELETE api/logs/", () => {
 
     const res = await request(app)
       .delete("/api/logs/")
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`)
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`)
       .send();
 
     expect(res.status).toBe(200);
@@ -97,7 +97,7 @@ describe("DELETE api/logs/", () => {
 
     const response = await request(app)
       .delete("/api/logs/")
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
     expect(response.status).toBe(500);
     expect(response.body.error).toBe("Test error");
   });
@@ -111,7 +111,7 @@ describe("DELETE api/logs/:id", () => {
 
     const res = await request(app)
       .delete(`/api/logs/${log._id}`)
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`)
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`)
       .send();
 
     expect(res.body.message).toBe("server.admin.messages.log_deleted");
@@ -124,7 +124,7 @@ describe("DELETE api/logs/:id", () => {
 
     const res = await request(app)
       .delete(`/api/logs/${new mongoose.Types.ObjectId()}`)
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`)
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`)
       .send();
 
     expect(res.status).toBe(400);
@@ -143,7 +143,7 @@ describe("DELETE api/logs/:id", () => {
 
     const response = await request(app)
       .delete(`/api/logs/${log._id}`)
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
     expect(response.status).toBe(500);
     expect(response.body.error).toBe("Test error");
   });
@@ -155,7 +155,7 @@ describe("GET api/logs/log-levels/", () => {
 
     const res = await request(app)
       .get("/api/logs/log-levels/")
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`)
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`)
       .send();
 
     expect(res.status).toBe(200);

@@ -6,15 +6,3 @@ export const basicLog = {
   userId: new mongoose.Types.ObjectId(),
   level: logLevels.INFO,
 };
-
-export const logWithMissingParams = {
-  message: "Log message",
-  userId: null,
-  level: logLevels.INFO,
-};
-
-export const logInvalidLevel = {
-  message: "Log message",
-  userId: "test",
-  level: "invalidLevel",
-};
