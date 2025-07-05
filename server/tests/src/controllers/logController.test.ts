@@ -10,8 +10,7 @@ import { generateAccessToken } from "../../../src/utils/generateAccessToken.js";
 import { app } from "../../../src/app.js";
 import { logLevels } from "../../../src/utils/enums/logLevels.js";
 import { createLog } from "../../../src/controllers/logController.js";
-import { adminUser } from "../../fixtures/users.js";
-import { basicLog } from "../../fixtures/logs.js";
+import { adminUser, basicLog } from "../../fixtures/index.js";
 
 describe("GET api/logs/", () => {
   it("should return a 200 success status and the list of the logs", async () => {

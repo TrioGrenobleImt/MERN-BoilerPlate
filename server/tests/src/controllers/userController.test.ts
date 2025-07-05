@@ -19,7 +19,7 @@ import {
   userWithHashPassword,
   userWithSameEmail,
   userWithSameUsername,
-} from "../../fixtures/users.js";
+} from "../../fixtures/index.js";
 import path from "path";
 import { authTypes } from "../../../src/utils/enums/authTypes.js";
 import { userRoles } from "../../../src/utils/enums/userRoles.js";

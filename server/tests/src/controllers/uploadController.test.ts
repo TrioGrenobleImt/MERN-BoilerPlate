@@ -5,7 +5,7 @@ import fs from "fs";
 import { User } from "../../../src/models/userModel.js";
 import { generateAccessToken } from "../../../src/utils/generateAccessToken.js";
 import { app } from "../../../src/app.js";
-import { adminUser, pathAvatarOldTest, userAdminWithAvatar } from "../../fixtures/users.js";
+import { adminUser, pathAvatarOldTest, userAdminWithAvatar } from "../../fixtures/index.js";
 import path from "path";
 import mongoose from "mongoose";
 import { IUser } from "../../../src/interfaces/IUser.js";

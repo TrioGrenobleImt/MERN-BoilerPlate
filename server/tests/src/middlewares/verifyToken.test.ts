@@ -6,7 +6,7 @@ import { User } from "../../../src/models/userModel";
 import jwt from "jsonwebtoken";
 import { app } from "../../../src/app";
 import { generateAccessToken } from "../../../src/utils/generateAccessToken";
-import { regularUser } from "../../fixtures/users";
+import { regularUser } from "../../fixtures/index.js";
 
 describe("verifyToken Middleware", () => {
   it("should return 401 if no token is provided", async () => {

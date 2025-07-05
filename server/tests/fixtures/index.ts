@@ -1,5 +1,13 @@
+import mongoose from "mongoose";
+import { logLevels } from "../../src/utils/enums/logLevels";
 import fs from "fs";
 import bcrypt from "bcryptjs";
+
+export const basicLog = {
+  message: "Log message",
+  userId: new mongoose.Types.ObjectId(),
+  level: logLevels.INFO,
+};
 
 export const adminUser = {
   name: "Admin User",
@@ -98,11 +106,6 @@ export const badConfirmPasswordRegisterUser = {
   email: "user@gmail.com",
   password: "Abcdef1@",
   confirmPassword: "Abcdef1@f",
-};
-
-export const googleUser = {
-  name: "Google User",
-  email: "google@gmail.com",
 };
 
 export const stablePhotoURL = "https://raw.githubusercontent.com/github/explore/main/topics/javascript/javascript.png";

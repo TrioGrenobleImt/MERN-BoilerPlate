@@ -15,7 +15,7 @@ import {
   stablePhotoURL,
   userWithSameEmail,
   userWithSameUsername,
-} from "../../fixtures/users.js";
+} from "../../fixtures/index.js";
 import { authTypes } from "../../../src/utils/enums/authTypes.js";
 import { Request, Response } from "express";
 
