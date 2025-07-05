@@ -20,7 +20,7 @@ describe("Tests uploads files", () => {
     // Requête upload avec auth et fichier attaché
     const response = await request(app)
       .post(`/api/uploads/avatar/${user._id}`)
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`)
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`)
       .attach("avatar", pathNewAvatar, "hello-world.png");
 
     // Vérifie que l'ancien avatar a été supprimé
