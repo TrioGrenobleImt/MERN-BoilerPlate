@@ -7,6 +7,7 @@ import jwt from "jsonwebtoken";
 import { app } from "../../../src/app";
 import { generateAccessToken } from "../../../src/utils/generateAccessToken";
 import { regularUser } from "../../fixtures/index.js";
+import { IUser } from "../../../src/interfaces/IUser.js";
 
 describe("verifyToken Middleware", () => {
   it("should return 401 if no token is provided", async () => {
@@ -17,21 +18,18 @@ describe("verifyToken Middleware", () => {
   });
 
   it("should return 403 if the token is invalid", async () => {
-    const res = await request(app).get("/api/users/").set("Cookie", "__access__token=invalidtoken").send();
+    const res = await request(app).get("/api/users/").set("Authorization", `Bearer ${"invalidtoken"}`);
 
     expect(res.status).toBe(403);
     expect(res.body.error).toBe("Access Token is invalid");
   });
 
   it("should call next middleware if the token is valid and no role is required", async () => {
-    const user = { id: "userId123" };
+    const user: IUser = await User.create(regularUser);
 
-    if (!process.env.SECRET_ACCESS_TOKEN) {
-      throw new Error("Missing SECRET_ACCESS_TOKEN environment variable");
-    }
-    const token = jwt.sign(user, process.env.SECRET_ACCESS_TOKEN);
-
-    const res = await request(app).get("/api/auth/me/").set("Cookie", `__access__token=${token}`).send();
+    const res = await request(app)
+      .get("/api/auth/me/")
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
 
     expect(res.status).not.toBe(401);
     expect(res.status).not.toBe(400);
@@ -39,13 +37,9 @@ describe("verifyToken Middleware", () => {
   });
 
   it("should return 400 if the user does not exist", async () => {
-    const nonExistentUserId = { id: new mongoose.Types.ObjectId() };
-    if (!process.env.SECRET_ACCESS_TOKEN) {
-      throw new Error("Missing SECRET_ACCESS_TOKEN environment variable");
-    }
-    const token = jwt.sign(nonExistentUserId, process.env.SECRET_ACCESS_TOKEN);
-
-    const res = await request(app).get("/api/users").set("Cookie", `__access__token=${token}`).send();
+    const res = await request(app)
+      .get("/api/users")
+      .set("Authorization", `Bearer ${generateAccessToken(new mongoose.Types.ObjectId())}`);
 
     expect(res.status).toBe(400);
     expect(res.body.error).toBe("No such user");
@@ -56,7 +50,7 @@ describe("verifyToken Middleware", () => {
 
     const res = await request(app)
       .get("/api/users/")
-      .set("Cookie", `__access__token=${generateAccessToken(user._id)}`);
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
 
     // Vérifiez que l'accès est restreint
     expect(res.status).toBe(403);
@@ -64,15 +58,11 @@ describe("verifyToken Middleware", () => {
   });
 
   it("should return a 500 status error when there is a database error", async () => {
-    const user = { id: "userId123" };
-    if (!process.env.SECRET_ACCESS_TOKEN) {
-      throw new Error("Missing SECRET_ACCESS_TOKEN environment variable");
-    }
-    const token = jwt.sign(user, process.env.SECRET_ACCESS_TOKEN);
-
     const findByIdMock = vi.spyOn(User, "findOne").mockRejectedValue(new Error("Database error"));
 
-    const res = await request(app).get("/api/users/").set("Cookie", `__access__token=${token}`).send();
+    const res = await request(app)
+      .get("/api/users")
+      .set("Authorization", `Bearer ${generateAccessToken(new mongoose.Types.ObjectId())}`);
 
     expect(res.status).toBe(500);
     expect(res.body.error).toBe("Database error");

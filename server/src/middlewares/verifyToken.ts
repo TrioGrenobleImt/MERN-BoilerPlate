@@ -21,7 +21,7 @@ interface VerifyTokenOptions {
 export const verifyToken = ({ role }: VerifyTokenOptions = {}) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
-    if (!authHeader) return res.status(401).json({ error: "Not Authenticated" });
+    if (!authHeader) return res.status(401).json({ error: "global.expired_session" });
 
     try {
       const token = authHeader.split(" ")[1];
