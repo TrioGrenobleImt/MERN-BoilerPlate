@@ -28,10 +28,15 @@ describe("Server Tests", () => {
 
   it("should log an error and exit if PORT is not specified", () => {
     delete process.env.PORT;
-    const exitSpy = vi.spyOn(process, "exit").mockImplementation({} as any);
+
+    const exitSpy = vi.spyOn(process, "exit").mockImplementation(() => {
+      throw new Error("fake exit");
+    });
     const logSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
-    initServer();
+    expect(() => {
+      initServer();
+    }).toThrow("fake exit");
 
     expect(logSpy).toHaveBeenCalledWith(expect.stringContaining("Please specify the port number for the HTTP server"));
     expect(exitSpy).toHaveBeenCalledWith(1);
