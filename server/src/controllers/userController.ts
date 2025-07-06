@@ -9,27 +9,7 @@ import { generateRandomPassword } from "../utils/generateRandomPassword.js";
 import { authTypes } from "../utils/enums/authTypes.js";
 import { generateRandomAvatar } from "../utils/generateRandomAvatar.js";
 import { logLevels } from "../utils/enums/logLevels.js";
-import { IUser } from "../interfaces/IUser.js";
 import { Constants } from "../constants/constants.js";
-
-/**
- * @function getUser
- * @description Retrieves a single user by ID.
- * @returns {Object} JSON response with user details or error message.
- */
-export const getUser = async (req: Request, res: Response): Promise<void> => {
-  const { id } = req.params;
-  try {
-    const user = await User.findById(id);
-    if (!user) {
-      res.status(400).json({ error: "No such user" });
-      return;
-    }
-    res.status(200).json(user);
-  } catch (err: any) {
-    res.status(500).json({ error: err.message });
-  }
-};
 
 /**
  * @function getUsers
