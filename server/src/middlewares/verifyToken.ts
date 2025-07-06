@@ -19,9 +19,12 @@ interface VerifyTokenOptions {
  * @returns Express middleware function.
  */
 export const verifyToken = ({ role }: VerifyTokenOptions = {}) => {
-  return async (req: Request, res: Response, next: NextFunction) => {
+  return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const authHeader = req.headers.authorization;
-    if (!authHeader) return res.status(401).json({ error: "global.expired_session" });
+    if (!authHeader) {
+      res.status(401).json({ error: "global.expired_session" });
+      return;
+    }
 
     try {
       const token = authHeader.split(" ")[1];
@@ -52,7 +55,6 @@ export const verifyToken = ({ role }: VerifyTokenOptions = {}) => {
         return;
       }
       res.status(500).json({ error: err.message });
-      return;
     }
   };
 };
