@@ -30,7 +30,7 @@ export const verifyToken = ({ role }: VerifyTokenOptions = {}) => {
       const token = authHeader.split(" ")[1];
       const decoded = jwt.verify(token, process.env.SECRET_ACCESS_TOKEN as string) as TokenPayload;
 
-      const user = await User.findById(decoded.id);
+      const user = await User.findOne({ _id: decoded.id });
       if (!user) {
         res.status(400).json({ error: "No such user" });
         return;
