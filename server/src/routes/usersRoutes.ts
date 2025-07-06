@@ -1,7 +1,6 @@
 import express, { Router } from "express";
 import {
   getUsers,
-  getUser,
   createUser,
   updateUser,
   deleteUser,
