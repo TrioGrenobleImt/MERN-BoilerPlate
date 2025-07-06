@@ -333,10 +333,9 @@ export const getAuthTypesStat = async (req: Request, res: Response): Promise<voi
     // Transform stats into chart data format
     const chartData = {
       data: Object.entries(stats).map(([type, count]) => ({
-        label: type.charAt(0).toUpperCase() + type.slice(1), // ex: "google" -> "Google"
+        label: type.charAt(0).toUpperCase() + type.slice(1),
         value: count,
       })),
-      valueFormatter: (number) => `${number}%`,
     };
 
     res.status(200).json(chartData);
