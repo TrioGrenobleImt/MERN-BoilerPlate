@@ -8,12 +8,8 @@ import { Config } from "../models/configModel.js";
  * @returns {Object} JSON response with configuration settings.
  */
 export const getConfig = async (req: Request, res: Response): Promise<void> => {
-  let keys: string[] = [];
-  if (typeof req.query.keys === "string") {
-    keys = req.query.keys.split(",");
-  } else if (Array.isArray(req.query.keys)) {
-    keys = req.query.keys.flatMap((k) => (typeof k === "string" ? k.split(",") : []));
-  }
+  const raw = req.query.keys as string | string[] | undefined;
+  const keys = Array.isArray(raw) ? raw.flatMap((k) => k.split(",")) : (raw?.split(",") ?? []);
 
   try {
     const configItems = await Config.find({ key: { $in: keys } });
