@@ -37,6 +37,63 @@ describe("GET /api/config", () => {
     expect(res.body.config[0].key).toBe("key1");
   });
 
+  it("should return empty config if no keys param", async () => {
+    const user: IUser = await User.create(adminUser);
+
+    const res = await request(app)
+      .get("/api/config")
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
+    expect(res.status).toBe(200);
+    expect(res.body.config).toStrictEqual([]);
+  });
+
+  it("should parse keys from single comma-separated string param", async () => {
+    const user: IUser = await User.create(adminUser);
+
+    await Config.create([
+      { key: "key1", value: "val1" },
+      { key: "key2", value: "val2" },
+      { key: "key3", value: "val3" },
+    ]);
+
+    const res = await request(app)
+      .get("/api/config?keys=key1,key2")
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
+
+    expect(res.status).toBe(200);
+    expect(res.body.config.length).toBe(2);
+    expect(res.body.config.map((c: any) => c.key).sort()).toEqual(["key1", "key2"]);
+  });
+
+  it("should parse keys from multiple keys params (array)", async () => {
+    const user: IUser = await User.create(adminUser);
+
+    await Config.create([
+      { key: "key1", value: "val1" },
+      { key: "key2", value: "val2" },
+      { key: "key3", value: "val3" },
+    ]);
+
+    const res = await request(app)
+      .get("/api/config?keys=key1&keys=key3")
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
+
+    expect(res.status).toBe(200);
+    expect(res.body.config.length).toBe(2);
+    expect(res.body.config.map((c: any) => c.key).sort()).toEqual(["key1", "key3"]);
+  });
+
+  it("should handle empty string keys param as empty array", async () => {
+    const user: IUser = await User.create(adminUser);
+
+    const res = await request(app)
+      .get("/api/config?keys=")
+      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
+
+    expect(res.status).toBe(200);
+    expect(res.body.config).toStrictEqual([]);
+  });
+
   it("should return a 500 status if an error occurs", async () => {
     const user: IUser = await User.create(adminUser);
 
