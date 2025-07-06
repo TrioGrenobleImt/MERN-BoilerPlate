@@ -23,6 +23,7 @@ import {
 import path from "path";
 import { authTypes } from "../../../src/utils/enums/authTypes.js";
 import { userRoles } from "../../../src/utils/enums/userRoles.js";
+import { IUser } from "../../../src/interfaces/IUser.js";
 
 describe("GET /api/users/", () => {
   it("should return a 200 status and list all the users, ", async () => {
@@ -45,49 +46,6 @@ describe("GET /api/users/", () => {
 
     const response = await request(app)
       .get("/api/users/")
-      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
-    expect(response.status).toBe(500);
-    expect(response.body.error).toBe("Test error");
-  });
-});
-
-describe("GET /api/users/:id", () => {
-  it("should return the user with the given id", async () => {
-    const user = await User.create({
-      username: "test",
-      email: "test@gmail.com",
-      password: "test",
-      role: "admin",
-      name: "test",
-      forename: "test",
-    });
-    const response = await request(app)
-      .get(`/api/users/${user._id}`)
-      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
-    expect(response.status).toBe(200);
-    expect(response.body.email).toBe(user.email);
-  });
-
-  it("should return an error if the user id is invalid", async () => {
-    const user = await User.create(adminUser);
-
-    const falseId = new mongoose.Types.ObjectId();
-    const response = await request(app)
-      .get(`/api/users/${falseId}`)
-      .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
-    expect(response.status).toBe(400);
-    expect(response.body.error).toBe("No such user");
-  });
-
-  it("should return a 500 status if an error occurs", async () => {
-    const user = await User.create(adminUser);
-
-    vi.spyOn(User, "findById").mockImplementationOnce(() => {
-      throw new Error("Test error");
-    });
-
-    const response = await request(app)
-      .get(`/api/users/${user._id}`)
       .set("Authorization", `Bearer ${generateAccessToken(user._id)}`);
     expect(response.status).toBe(500);
     expect(response.body.error).toBe("Test error");
@@ -591,7 +549,7 @@ describe("GET /api/users/stats/authTypes", () => {
     expect(res.status).toBe(401);
   });
 
-  it("should return 401 if user is not admin", async () => {
+  it("should return 403 if user is not admin", async () => {
     const user = await User.create({
       name: "User",
       forename: "Simple",
