@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import { OAuth } from "./oauth";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useConfigContext } from "@/contexts/configContext";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -58,98 +57,94 @@ export const RegisterForm = ({
   }, [getConfigValue]);
 
   return (
-    <div className="flex flex-col items-center justify-center gap-6 p-6 min-h-svh bg-muted md:p-10">
-      <div className="flex flex-col w-full max-w-2xl gap-6 px-4 md:px-0">
-        <div className="flex items-center gap-2 self-center sm:text-4xl text-2xl font-medium text-accent">{configValues["APP_NAME"]}</div>
-        <Card className="w-full">
-          <CardHeader className="text-center">
-            <CardTitle className="text-xl md:text-2xl">
-              {oauth ? t("pages.register.title") : t("pages.register.password_creation")}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="flex flex-col items-center gap-6">
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">
-                <div className="flex flex-col gap-4 md:flex-row md:items-center">
-                  {["forename", "name"].map((fieldName) => (
-                    <FormField
-                      key={fieldName}
-                      control={form.control}
-                      name={fieldName as any}
-                      render={({ field }) => (
-                        <FormItem className="w-full">
-                          <FormLabel>{t(`pages.register.${fieldName}`)}</FormLabel>
-                          <FormControl>
-                            <Input {...field} disabled={disabledFields.includes(fieldName)} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  ))}
-                </div>
-
-                {["username", "email"].map((fieldName) => (
+    <div className="flex flex-col items-center justify-center min-h-svh gap-6 px-2 py-4 md:px-10 md:py-10">
+      <div className="flex items-center self-center gap-2 text-2xl font-medium sm:text-4xl text-accent">{configValues["APP_NAME"]}</div>
+      <div className="flex flex-col w-full max-w-2xl gap-6 bg-background p-4 md:p-8 sm:rounded-2xl sm:shadow">
+        <div className="text-center">
+          <h1 className="text-xl md:text-2xl">{oauth ? t("pages.register.title") : t("pages.register.password_creation")}</h1>
+        </div>
+        <div className="flex flex-col items-center gap-6">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">
+              <div className="flex flex-col gap-4 md:flex-row md:items-center">
+                {["forename", "name"].map((fieldName) => (
                   <FormField
                     key={fieldName}
                     control={form.control}
                     name={fieldName as any}
                     render={({ field }) => (
-                      <FormItem>
+                      <FormItem className="w-full">
                         <FormLabel>{t(`pages.register.${fieldName}`)}</FormLabel>
                         <FormControl>
                           <Input {...field} disabled={disabledFields.includes(fieldName)} />
                         </FormControl>
-                        {fieldName === "username" && <FormDescription>{t("pages.register.username_description")}</FormDescription>}
-                        {fieldName === "email" && <FormDescription>{t("pages.register.email_description")}</FormDescription>}
                         <FormMessage />
                       </FormItem>
                     )}
                   />
                 ))}
-
-                {["password", "confirmPassword"].map((fieldName) => (
-                  <FormField
-                    key={fieldName}
-                    control={form.control}
-                    name={fieldName as any}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>{t(`pages.register.${fieldName}`)}</FormLabel>
-                        <FormControl>
-                          <Input type="password" {...field} disabled={disabledFields.includes(fieldName)} />
-                        </FormControl>
-                        <FormDescription>{t(`pages.register.${fieldName}_description`)}</FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                ))}
-
-                <Button type="submit" className="w-full" disabled={loading}>
-                  {submitLabel || t("pages.register.register")}
-                </Button>
-
-                {import.meta.env.VITE_FIREBASE_API_KEY && oauth && (
-                  <>
-                    <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
-                      <span className="bg-background text-muted-foreground relative z-10 px-2">{t("pages.login.or_continue_with")}</span>
-                    </div>
-                    <OAuth message="pages.register.register" />
-                  </>
-                )}
-              </form>
-            </Form>
-            {oauth && (
-              <div className="text-sm text-center md:text-base">
-                {t("pages.register.already_have_account")}{" "}
-                <Link to="/login" className="underline underline-offset-4">
-                  {t("pages.register.login")}
-                </Link>
               </div>
-            )}
-          </CardContent>
-        </Card>
+
+              {["username", "email"].map((fieldName) => (
+                <FormField
+                  key={fieldName}
+                  control={form.control}
+                  name={fieldName as any}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t(`pages.register.${fieldName}`)}</FormLabel>
+                      <FormControl>
+                        <Input {...field} disabled={disabledFields.includes(fieldName)} />
+                      </FormControl>
+                      {fieldName === "username" && <FormDescription>{t("pages.register.username_description")}</FormDescription>}
+                      {fieldName === "email" && <FormDescription>{t("pages.register.email_description")}</FormDescription>}
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              ))}
+
+              {["password", "confirmPassword"].map((fieldName) => (
+                <FormField
+                  key={fieldName}
+                  control={form.control}
+                  name={fieldName as any}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t(`pages.register.${fieldName}`)}</FormLabel>
+                      <FormControl>
+                        <Input type="password" {...field} disabled={disabledFields.includes(fieldName)} />
+                      </FormControl>
+                      <FormDescription>{t(`pages.register.${fieldName}_description`)}</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              ))}
+
+              <Button type="submit" className="w-full" disabled={loading}>
+                {submitLabel || t("pages.register.register")}
+              </Button>
+
+              {import.meta.env.VITE_FIREBASE_API_KEY && oauth && (
+                <>
+                  <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
+                    <span className="relative z-10 bg-background px-2 text-muted-foreground">{t("pages.login.or_continue_with")}</span>
+                  </div>
+                  <OAuth message="pages.register.register" />
+                </>
+              )}
+            </form>
+          </Form>
+          {oauth && (
+            <div className="text-center text-sm md:text-base">
+              {t("pages.register.already_have_account")}{" "}
+              <Link to="/login" className="underline underline-offset-4 text-accent">
+                {t("pages.register.login")}
+              </Link>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
